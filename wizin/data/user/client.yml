@@ -1,0 +1,58 @@
+docomo:
+    mobile:true
+    agent:
+        - "^docomo\/.*"
+    host:"docomo\.ne\.jp$"
+    uniqid:""
+    encoding:"sjis-win"
+    charset:"shift_jis"
+    function:"checkDocomo"
+
+au:
+    mobile:true
+    agent:
+        - "^up\.browser\/"
+        - "^kddi\-"
+    host:"(ezweb|ido|brew)\.ne\.jp$"
+    uniqid:"http_x_up_subno"
+    encoding:"sjis-win"
+    charset:"shift_jis"
+    function:""
+
+softbank:
+    mobile:true
+    agent:
+        - "^j\-phone\/"
+        - "^vodafone\/"
+        - "^softbank\/"
+        - "^mot\-[vc]\/"
+        - "^vemulator\/"
+    host:"jp\-[kcqt]\.ne\.jp$"
+    uniqid:"http_x_jphone_uid"
+    encoding:"utf-8"
+    charset:"utf-8"
+    function:"checkSoftbank"
+
+willcom:
+    mobile:true
+    agent:
+        - "(willcom|ddipocket)"
+    host:"prin\.ne\.jp$"
+    uniqid:""
+    encoding:"sjis-win"
+    charset:"shift_jis"
+    function:"checkWillcom"
+    function:"checkWillcom"
+
+othermobile:
+    mobile:true
+    agent:
+        - "windows *ce"
+        - "jigbrowserweb"
+        - "netfront"
+        - "(y!j\-srd\/1|y!j\-mbs\/1)"
+    host:""
+    uniqid:""
+    encoding:"sjis-win"
+    charset:"shift_jis"
+    function:""
