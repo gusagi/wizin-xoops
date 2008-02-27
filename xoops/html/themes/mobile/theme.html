@@ -1,0 +1,150 @@
+<html>
+<head>
+<title><{$xoops_sitename}> - <{if $xoops_pagetitle}><{$xoops_pagetitle}><{else}><{$xoops_slogan}><{/if}></title>
+<meta http-equiv="content-type" content="text/html; charset=<{$xoops_charset}>" />
+<meta http-equiv="content-language" content="<{$xoops_langcode}>" />
+</head>
+
+<body>
+<a name="PageTop">
+<{$xoops_sitename}> - <{if $xoops_pagetitle}><{$xoops_pagetitle}><{else}><{$xoops_slogan}><{/if}>
+</a>
+<br /><br />
+
+<{* login form(from) *}>
+<div style="font-size: 0.7em; text-align: center;">
+<{if $xoops_isuser === false}>
+    <div>
+        <form action="<{$xoops_url}>/user.php" method="post" style="margin-top: 0px;">
+            UserName
+            <{xoops_input type=text name=uname size=5 value=$block.unamevalue maxlength=25 id="`$smarty.const.XOOPS_INPUT_DEFID_PREFIX`block_uname"}>
+            Password
+            <{xoops_input type=password name=pass size=5 maxlength=32 id="`$smarty.const.XOOPS_INPUT_DEFID_PREFIX`block_pass"}>
+            <br />
+            <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>" />
+            <{xoops_input type=hidden name=op value=login id="`$smarty.const.XOOPS_INPUT_DEFID_PREFIX`block_op"}>
+            <{xoops_input type=submit name=submit value="Login" id="`$smarty.const.XOOPS_INPUT_DEFID_PREFIX`block_submit"}>
+        </form>
+    </div>
+<{else}>
+    <div>
+        Welcome <{$xoops_uname}> !
+    </div>
+<{/if}>
+<{if $smarty.session.redirect_message}>
+    <div id="redirect_message">
+        <{$smarty.session.redirect_message}>
+    </div>
+    <{php}>
+        unset( $_SESSION['redirect_message'] );
+    <{/php}>
+<{/if}>
+</div>
+<hr />
+<{* login form(to) *}>
+
+<{* page navi(from) *}>
+<div style="font-size: 0.7em; text-align: left;">
+<a href="<{$xoops_url}>/"} accesskey="0">[0]Home</a>
+<a href="#PageBottom" accesskey="8">[8]Page Bottom</a>
+<{if $xoops_isuser === true}>
+    <a href="<{$xoops_url}>/user.php?op=logout">Logout</a>
+<{/if}>
+<hr />
+</div>
+<{* page navi(to) *}>
+
+<{* blocks area(from) *}>
+<div style="font-size: 0.7em; text-align: center;">
+<{* left blocks *}>
+<{foreach name="xoops_lblocks" item=block from=$xoops_lblocks}>
+    <{if $smarty.foreach.xoops_lblocks.index !== 0}>/<{/if}>
+    <{if $block.title|regex_replace:"/.*none/":"none" ne "none"}>
+        <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZXC_URI_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
+    <{/if}>
+<{/foreach}>
+<br />
+
+<{* right blocks *}>
+<{foreach name="xoops_rblocks" item=block from=$xoops_rblocks}>
+    <{if $smarty.foreach.xoops_rblocks.index !== 0}>/<{/if}>
+    <{if $block.title|regex_replace:"/.*none/":"none" ne "none"}>
+        <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZXC_URI_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
+    <{/if}>
+<{/foreach}>
+<br />
+
+<{* center-center blocks *}>
+<{if $xoops_ccblocks}>
+    <{foreach name="xoops_ccblocks" item=block from=$xoops_ccblocks}>
+        <{if $smarty.foreach.xoops_ccblocks.index !== 0}>/<{/if}>
+        <{if $block.title|regex_replace:"/.*none/":"none" ne "none"}>
+            <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZXC_URI_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
+        <{/if}>
+    <{/foreach}>
+    <br />
+<{/if}>
+
+<{* center-left blocks *}>
+<{if $xoops_clblocks}>
+    <{foreach name="xoops_clblocks" item=block from=$xoops_clblocks}>
+        <{if $smarty.foreach.xoops_clblocks.index !== 0}>/<{/if}>
+        <{if $block.title|regex_replace:"/.*none/":"none" ne "none"}>
+            <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZXC_URI_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
+        <{/if}>
+    <{/foreach}>
+    <br />
+<{/if}>
+
+<{* center-right blocks *}>
+<{if $xoops_crblocks}>
+    <{foreach name="xoops_crblocks" item=block from=$xoops_crblocks}>
+        <{if $smarty.foreach.xoops_crblocks.index !== 0}>/<{/if}>
+        <{if $block.title|regex_replace:"/.*none/":"none" ne "none"}>
+            <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZXC_URI_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
+        <{/if}>
+    <{/foreach}>
+    <br />
+<{/if}>
+</div>
+<{* blocks area(to) *}>
+<hr />
+
+<{* block contents area(from) *}>
+<{if $wizMobileBlockContents != ''}>
+<div style="font-size: 0.7em; text-align: left;">
+    <{$wizMobileBlockContents}>
+    <hr />
+</div>
+<{/if}>
+<{* block contents area(to) *}>
+
+
+<{* xoops_contents area(from) *}>
+<{if $xoops_contents != ''}>
+<div style="font-size: 0.8em;">
+    <{$xoops_contents}>
+    <hr />
+</div>
+<{/if}>
+<{* xoops_contents area(to) *}>
+
+
+<{* page navi(from) *}>
+<div style="font-size: 0.7em; text-align: left;">
+<a href="<{$xoops_url}>/"} accesskey="0">[0]Home</a>
+<a href="#PageTop" accesskey="2">[2]Page Top</a>
+<{if $xoops_isuser === true}>
+    <a href="<{$xoops_url}>/user.php?op=logout">Logout</a>
+<{/if}>
+<{* page navi(to) *}>
+
+<hr />
+<div  style="font-size: 0.8em;">
+<a name="PageBottom">
+Copyright&copy;2007 - 2008 Hodajuku All Rights Reserved.
+</a>
+</div>
+
+</body>
+</html>
