@@ -5,7 +5,6 @@ if (!defined('XOOPS_ROOT_PATH')) exit();
 if ( !defined('LEGACY_CONTROLLER_STATE_PUBLIC') ) {
     include_once( XOOPS_ROOT_PATH . '/modules/legacy/kernel/Legacy_Controller.class.php' );
 }
-var_dump( 999 );
 
 if( ! class_exists( 'Legacy_WizMobileController' ) ) {
     class Legacy_WizMobileController extends Legacy_Controller
