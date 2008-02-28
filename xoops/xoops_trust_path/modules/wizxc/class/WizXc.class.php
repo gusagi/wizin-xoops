@@ -3,34 +3,35 @@
  *
  * PHP Versions 4
  *
- * @package  WizXC
+ * @package  WizXc
  * @author  gusagi<gusagi@gusagi.com>
  * @copyright  2007 - 2008 gusagi
  *
  */
 
-if ( ! class_exists('WizXC') ) {
-    class WizXC
+if ( ! class_exists('WizXc') ) {
+    class WizXc
     {
-        function WizXC()
+        function WizXc()
         {
-            WizXC::_require();
-            WizXC::_define();
-            WizXC::_setup();
+            WizXc::_require();
+            WizXc::_define();
+            WizXc::_setup();
         }
 
-		function &getSingleton()
-		{
-			static $instance;
-			if ( ! isset($instance) ) {
-        	    $instance = new WizXC();
-			}
-			return $instance;
-		}
+        function &getSingleton()
+        {
+            static $instance;
+            if ( ! isset($instance) ) {
+                $instance = new WizXc();
+            }
+            return $instance;
+        }
 
         function _require()
         {
             require_once XOOPS_TRUST_PATH . '/wizin/src/Wizin.class.php';
+            require_once dirname( __FILE__ ) . '/WizXcUtil.class.php';
         }
 
         function _define()

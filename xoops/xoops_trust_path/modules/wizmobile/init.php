@@ -20,5 +20,5 @@ if ( file_exists($initScript) && is_readable($initScript) ) {
     require_once $initScript;
 }
 
-require dirname( __FILE__ ) . '/class/wizmobile.class.php';
+require dirname( __FILE__ ) . '/class/WizMobile.class.php';
 $wizMobile =& WizMobile::getSingleton();

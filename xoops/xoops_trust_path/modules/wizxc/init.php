@@ -15,5 +15,5 @@ if ( $scriptFileName === __FILE__ ) {
     exit();
 }
 
-require dirname( __FILE__ ) . '/class/wizxc.class.php';
-$wizXc =& WizXC::getSingleton();
+require dirname( __FILE__ ) . '/class/WizXc.class.php';
+$wizXc =& WizXc::getSingleton();

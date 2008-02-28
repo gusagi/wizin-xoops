@@ -37,6 +37,8 @@ if ( ! class_exists('CallWizMobile') ) {
                 $xcRoot->mDelegateManager->add( 'Site.Logout', array($wizMobile, 'sessionRegenerateId'), XCUBE_DELEGATE_PRIORITY_FIRST );
                 $xcRoot->mDelegateManager->add( 'Site.Logout.Success', array($wizMobile, 'directLogout'), XCUBE_DELEGATE_PRIORITY_FINAL+1 );
                 $xcRoot->mDelegateManager->add( 'Legacy_AdminControllerStrategy.SetupBlock', array($wizMobile, 'denyAccessAdminArea'), XCUBE_DELEGATE_PRIORITY_FIRST );
+                // check session
+                $wizMobile->checkMobileSession();
                 // insert session_id
                 ob_start( array($wizMobile, '_obTransSid') );
                 // get block contents

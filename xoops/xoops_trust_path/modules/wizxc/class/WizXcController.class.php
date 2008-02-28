@@ -6,8 +6,8 @@ if ( !defined('LEGACY_CONTROLLER_STATE_PUBLIC') ) {
     include_once( XOOPS_ROOT_PATH . '/modules/legacy/kernel/Legacy_Controller.class.php' );
 }
 
-if( ! class_exists( 'Legacy_WizMobileController' ) ) {
-    class Legacy_WizMobileController extends Legacy_Controller
+if( ! class_exists( 'Legacy_WizXcController' ) ) {
+    class Legacy_WizXcController extends Legacy_Controller
     {
         function executeRedirect($url, $time = 1, $message = null, $addRedirect = true)
         {

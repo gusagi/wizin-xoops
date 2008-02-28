@@ -103,6 +103,38 @@ if ( ! class_exists('WizMobile') ) {
             $filter->filterOutputEncoding( $user->sEncoding, $user->sCharset );
         }
 
+        function checkMobileSession()
+        {
+            $xcRoot =& XCube_Root::getSingleton();
+            $userAgent = getenv( 'HTTP_USER_AGENT' );
+            if ( empty($_SESSION['WIZ_USER_AGENT']) ) {
+                $_SESSION['WIZ_USER_AGENT'] = $userAgent;
+            } else if ( $_SESSION['WIZ_USER_AGENT'] !== $userAgent ) {
+                WizXcUtil::sessionDestroy();
+                $_SESSION["redirect_message"] = WIZMOBILE_MSG_SESSION_LIMIT_TIME;
+                $_SESSION['WIZ_SESSION_ZERO_POINT'] = time();
+                header("Location: " . XOOPS_URL. '/' . '?' . SID );
+                exit();
+            }
+            if ( empty($_SESSION['WIZ_SESSION_ZERO_POINT']) ) {
+                $_SESSION['WIZ_SESSION_ZERO_POINT'] = time();
+            } else if ( $_SESSION['WIZ_SESSION_ZERO_POINT'] < time() - 300 ) {
+                $encodeSession = session_encode();
+                $_SESSION = array();
+                session_regenerate_id();
+                session_decode( $encodeSession );
+                if ( $_SESSION['WIZ_SESSION_ZERO_POINT'] < time() - 600 && is_object($xcRoot->mContext->mXoopsUser) ) {
+                    WizXcUtil::sessionDestroy();
+                    session_regenerate_id();
+                    $_SESSION["redirect_message"] = WIZMOBILE_MSG_SESSION_LIMIT_TIME;
+                    $_SESSION['WIZ_SESSION_ZERO_POINT'] = time();
+                    header("Location: " . XOOPS_URL. '/' . '?' . SID );
+                    exit();
+                }
+                $_SESSION['WIZ_SESSION_ZERO_POINT'] = time();
+            }
+        }
+
         function _exchangeRenderSystem()
         {
             $xcRoot =& XCube_Root::getSingleton();
@@ -139,13 +171,8 @@ if ( ! class_exists('WizMobile') ) {
 
         function directLogout()
         {
-            $sessionId = session_id();
-            if ( empty($sessionId) ) {
-                $xcRoot =& XCube_Root::getSingleton();
-                $xcRoot->mSession->start();
-                $_SESSION = array();
-                session_regenerate_id();
-            }
+            WizXcUtil::sessionDestroy();
+            session_regenerate_id();
             $_SESSION["redirect_message"] = htmlspecialchars( _MD_LEGACY_MESSAGE_LOGGEDOUT, ENT_QUOTES ) . '<br />';
             $_SESSION["redirect_message"] .= htmlspecialchars( _MD_LEGACY_MESSAGE_THANKYOUFORVISIT, ENT_QUOTES );
             header("Location: " . XOOPS_URL. '/' . '?' . SID );
