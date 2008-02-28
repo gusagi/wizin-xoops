@@ -199,12 +199,12 @@ if ( ! class_exists('WizMobile') ) {
                     $check = strstr( $value, XOOPS_URL );
                     if ( $check !== false ) {
                         if ( ! strpos($value, session_name()) ) {
-                            if ( ! strpos($value, '?') ) {
+                            if ( ! strstr($value, '?') ) {
                                 $connector = '?';
                             } else {
-                                $connector = '&';
+                                $connector = '&amp;';
                             }
-                            if ( strpos($value, '#') !== false ) {
+                            if ( strstr($value, '#') ) {
                                 $hrefArray = explode( '#', $value );
                                 $href .= $hrefArray[0] . $connector . SID;
                                 if ( ! empty($hrefArray[1]) ) {
