@@ -125,7 +125,9 @@ if ( ! class_exists('WizMobile') ) {
                 session_decode( $encodeSession );
                 $_SESSION['WIZ_SESSION_ZERO_POINT'] = time();
             }
-            if ( $_SESSION['WIZ_SESSION_LAST_ACCESS'] < time() - 900 && is_object($xcRoot->mContext->mXoopsUser) ) {
+            if ( ! empty($_SESSION['WIZ_SESSION_LAST_ACCESS']) &&
+                $_SESSION['WIZ_SESSION_LAST_ACCESS'] < time() - 900 &&
+                is_object($xcRoot->mContext->mXoopsUser) ) {
                 WizXcUtil::sessionDestroy();
                 session_regenerate_id();
                 $_SESSION["redirect_message"] = WIZMOBILE_MSG_SESSION_LIMIT_TIME;
