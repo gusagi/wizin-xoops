@@ -123,16 +123,18 @@ if ( ! class_exists('WizMobile') ) {
                 $_SESSION = array();
                 session_regenerate_id();
                 session_decode( $encodeSession );
-                if ( $_SESSION['WIZ_SESSION_ZERO_POINT'] < time() - 600 && is_object($xcRoot->mContext->mXoopsUser) ) {
-                    WizXcUtil::sessionDestroy();
-                    session_regenerate_id();
-                    $_SESSION["redirect_message"] = WIZMOBILE_MSG_SESSION_LIMIT_TIME;
-                    $_SESSION['WIZ_SESSION_ZERO_POINT'] = time();
-                    header("Location: " . XOOPS_URL. '/' . '?' . SID );
-                    exit();
-                }
                 $_SESSION['WIZ_SESSION_ZERO_POINT'] = time();
             }
+            if ( $_SESSION['WIZ_SESSION_LAST_ACCESS'] < time() - 900 && is_object($xcRoot->mContext->mXoopsUser) ) {
+                WizXcUtil::sessionDestroy();
+                session_regenerate_id();
+                $_SESSION["redirect_message"] = WIZMOBILE_MSG_SESSION_LIMIT_TIME;
+                $_SESSION['WIZ_SESSION_ZERO_POINT'] = time();
+                $_SESSION['WIZ_SESSION_LAST_ACCESS'] = time();
+                header("Location: " . XOOPS_URL. '/' . '?' . SID );
+                exit();
+            }
+            $_SESSION['WIZ_SESSION_LAST_ACCESS'] = time();
         }
 
         function _exchangeRenderSystem()
