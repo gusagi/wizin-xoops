@@ -186,11 +186,11 @@ if ( ! class_exists('WizMobile') ) {
                             } else {
                                 $href = $value . $connector . SID;
                             }
+                            $href = str_replace( XOOPS_URL, '', $href );
+                            $buf = str_replace( 'href="' .$value .'"', 'href="' .$href .'"', $buf );
+                            $buf = str_replace( "href='" .$value ."'", "href='" .$href ."'", $buf );
                         }
-                        $href = str_replace( XOOPS_URL, '', $href );
                     }
-                    $buf = str_replace( 'href="' .$value .'"', 'href="' .$href .'"', $buf );
-                    $buf = str_replace( "href='" .$value ."'", "href='" .$href ."'", $buf );
                 }
             }
             // post method
