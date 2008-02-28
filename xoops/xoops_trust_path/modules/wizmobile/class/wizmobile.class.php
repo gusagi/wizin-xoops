@@ -34,6 +34,10 @@ if ( ! class_exists('WizMobile') ) {
             require_once XOOPS_TRUST_PATH . '/wizin/src/user/Wizin_User.class.php';
             require_once XOOPS_TRUST_PATH . '/wizin/src/session/Wizin_Session.class.php';
             require_once XOOPS_TRUST_PATH . '/wizin/src/filter/Wizin_Filter.class.php';
+            $language = empty( $GLOBALS['xoopsConfig']['language'] ) ? 'english' : $GLOBALS['xoopsConfig']['language'];
+            if( file_exists( dirname(dirname(__FILE__)) . '/language/' . $language . '/main.php' ) ) {
+                require dirname(dirname(__FILE__)) . '/language/' . $language . '/main.php';
+            }
         }
 
         function _define()
@@ -144,6 +148,13 @@ if ( ! class_exists('WizMobile') ) {
             }
             $_SESSION["redirect_message"] = htmlspecialchars( _MD_LEGACY_MESSAGE_LOGGEDOUT, ENT_QUOTES ) . '<br />';
             $_SESSION["redirect_message"] .= htmlspecialchars( _MD_LEGACY_MESSAGE_THANKYOUFORVISIT, ENT_QUOTES );
+            header("Location: " . XOOPS_URL. '/' . '?' . SID );
+            exit();
+        }
+
+        function denyAccessAdminArea()
+        {
+            $_SESSION["redirect_message"] = WIZMOBILE_MSG_DENY_ADMIN_AREA;
             header("Location: " . XOOPS_URL. '/' . '?' . SID );
             exit();
         }

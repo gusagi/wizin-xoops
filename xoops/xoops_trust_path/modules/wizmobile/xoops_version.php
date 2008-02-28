@@ -14,10 +14,10 @@ if ( ! defined('XOOPS_ROOT_PATH') || ! defined('XOOPS_TRUST_PATH') ) {
 
 $modversion = array();
 $modversion['name']        = 'WizMobile';
-$modversion['version']     = '0.01';
+$modversion['version']     = '0.1.0';
 $modversion['description'] = 'WizMobile';
-$modversion['credits']     = 'Makoto Hashiguchi / gusagi';
-$modversion['author']      = 'Makoto Hashiguchi / gusagi &lt;gusagi&#64;gusagi.com&gt;<br />url : http://www.gusagi.com';
+$modversion['credits']     = 'gusagi';
+$modversion['author']      = 'gusagi &lt;gusagi&#64;gusagi.com&gt;<br />url : http://www.gusagi.com';
 $modversion['help']        = 'help.html';
 $modversion['license']     = 'GPL see LICENSE';
 $modversion['official']    = 0;
