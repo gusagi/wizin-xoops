@@ -166,22 +166,31 @@ if ( ! class_exists('WizMobile') ) {
             preg_match_all( "/" .$pattern ."/i", $buf, $matches, PREG_SET_ORDER );
             if ( ! empty($matches) ) {
                 foreach ( $matches as $key => $match) {
+                    $href = '';
+                    $hrefArray = array();
                     $value = $match[5];
-                    $href = $value;
-                    $check = strstr( $href, XOOPS_URL );
+                    $check = strstr( $value, XOOPS_URL );
                     if ( $check !== false ) {
-                        if ( ! strpos($href, session_name()) ) {
-                            if ( ! strpos($href, '?') ) {
-                                $href .= '?' .SID;
+                        if ( ! strpos($value, session_name()) ) {
+                            if ( ! strpos($value, '?') ) {
+                                $connector = '?';
                             } else {
-                                $href .= '&' .SID;
+                                $connector = '&';
+                            }
+                            if ( strpos($value, '#') !== false ) {
+                                $hrefArray = explode( '#', $value );
+                                $href .= $hrefArray[0] . $connector . SID;
+                                if ( ! empty($hrefArray[1]) ) {
+                                    $href .= '#' . $hrefArray[1];
+                                }
+                            } else {
+                                $href = $value . $connector . SID;
                             }
                         }
                         $href = str_replace( XOOPS_URL, '', $href );
                     }
                     $buf = str_replace( 'href="' .$value .'"', 'href="' .$href .'"', $buf );
                     $buf = str_replace( "href='" .$value ."'", "href='" .$href ."'", $buf );
-                    $href = '';
                 }
             }
             // post method
