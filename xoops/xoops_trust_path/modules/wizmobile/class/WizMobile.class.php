@@ -63,6 +63,7 @@ if ( ! class_exists('WizMobile') ) {
             @ $mobileConfig = $xcRoot->getSiteConfig( 'Mobile' );
             $lookup = false;
             $otherMobile = false;
+            $emulate = false;
             if ( ! empty($mobileConfig) ) {
                 if ( ! empty($mobileConfig['lookup']) && $mobileConfig['lookup'] == true ) {
                     $lookup = true;
@@ -70,10 +71,18 @@ if ( ! class_exists('WizMobile') ) {
                 if ( ! empty($mobileConfig['othermobile']) && $mobileConfig['othermobile'] == true ) {
                     $otherMobile = true;
                 }
+                if ( ! empty($mobileConfig['emulate']) && $mobileConfig['emulate'] == true ) {
+                    $emulate = true;
+                }
             }
             $user->checkClient( $lookup );
             if ( $user->sCarrier === 'othermobile' ) {
                 $user->bIsMobile = $otherMobile;
+            }
+            if ( $emulate === true && $user->sCarrier === 'unknown' ) {
+                $user->bIsMobile = true;
+                $user->sEncoding = _CHARSET;
+                $user->sCharset = _CHARSET;
             }
         }
 
