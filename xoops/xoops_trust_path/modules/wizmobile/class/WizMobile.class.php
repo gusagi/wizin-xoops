@@ -177,9 +177,31 @@ if ( ! class_exists('WizMobile') ) {
             }
         }
 
-        function sessionRegenerateId()
+        function directRedirect()
         {
-            session_regenerate_id();
+            $args = func_get_args();
+            $url = ! empty( $args['url'] ) ? $args['url'] : '';
+            if ( strpos($url, XOOPS_URL) === 0 ) {
+                if (!strstr($url, '?')) {
+                    $connector = '?';
+                }
+                else {
+                    $connector = '&';
+                }
+                if (strstr($url, '#')) {
+                    $urlArray = explode( '#', $url );
+                    $url = $urlArray[0] . $connector . SID;
+                    if ( ! empty($urlArray[1]) ) {
+                        $url .= '#' . $urlArray[1];
+                    }
+                } else {
+                    $url .= $connector . SID;
+                }
+            }
+            $message = ! empty( $args['message'] ) ? $args['message'] : '';
+            $_SESSION["redirect_message"] = htmlspecialchars( $message, ENT_QUOTES );
+            header("Location: " . $url );
+            exit();
         }
 
         function directLogin()

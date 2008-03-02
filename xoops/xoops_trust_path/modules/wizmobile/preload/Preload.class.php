@@ -33,9 +33,8 @@ if ( ! class_exists('CallWizMobile') ) {
                 $wizMobile =& WizMobile::getSingleton();
                 $wizMobile->exchangeTheme();
                 // regenerate session id
-                $xcRoot->mDelegateManager->add( 'Site.CheckLogin.Success', array($wizMobile, 'sessionRegenerateId') );
-                $xcRoot->mDelegateManager->add( 'Site.executeRedirect', array($wizMobile, 'directLogin') );
-                $xcRoot->mDelegateManager->add( 'Site.Logout', array($wizMobile, 'sessionRegenerateId'), XCUBE_DELEGATE_PRIORITY_FIRST );
+                $xcRoot->mDelegateManager->add( 'Site.CheckLogin.Success', array($wizMobile, 'directLogin') );
+                $xcRoot->mDelegateManager->add( 'Site.executeRedirect', array($wizMobile, 'directRedirect') );
                 $xcRoot->mDelegateManager->add( 'Site.Logout.Success', array($wizMobile, 'directLogout'), XCUBE_DELEGATE_PRIORITY_FINAL+1 );
                 $xcRoot->mDelegateManager->add( 'Legacy_AdminControllerStrategy.SetupBlock', array($wizMobile, 'denyAccessAdminArea'), XCUBE_DELEGATE_PRIORITY_FIRST );
                 // check session
