@@ -14,4 +14,5 @@ if ( ! defined('WIZMOBILE_MODINFO_NAME') ) {
     define( 'WIZMOBILE_LANG_LOGOUT', 'ログアウト' );
     define( 'WIZMOBILE_LANG_PAGE_TOP', 'ページトップ' );
     define( 'WIZMOBILE_LANG_MAIN_CONTENTS', 'メインコンテンツ' );
+    define( 'WIZMOBILE_LANG_SEARCH', '検索' );
 }

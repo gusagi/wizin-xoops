@@ -14,4 +14,5 @@ if ( ! defined('WIZMOBILE_MODINFO_NAME') ) {
     define( 'WIZMOBILE_LANG_LOGOUT', 'Logout' );
     define( 'WIZMOBILE_LANG_PAGE_TOP', 'Page Top' );
     define( 'WIZMOBILE_LANG_MAIN_CONTENTS', 'Main Contents' );
+    define( 'WIZMOBILE_LANG_SEARCH', 'Search' );
 }

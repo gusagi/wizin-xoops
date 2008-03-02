@@ -36,13 +36,15 @@
 <{* page navi(from) *}>
 <div style="font-size: 0.7em; text-align: left;">
 <a href="<{$xoops_url}>/" accesskey="0">[0]Home</a>
-<{if $xoops_contents != ''}>
-    <a href="#Maincontents" accesskey="5">[5]<{$smarty.const.WIZMOBILE_LANG_MAIN_CONTENTS}></a>
-<{/if}>
+<a href="<{$xoops_url}>/search.php" accesskey="*">[*]<{$smarty.const.WIZMOBILE_LANG_SEARCH}></a>
 <{if $xoops_isuser === true}>
-    <a href="<{$xoops_url}>/user.php?op=logout" accesskey="9">[9]<{$smarty.const.WIZMOBILE_LANG_LOGOUT}></a>
+    <a href="<{$xoops_url}>/user.php?op=logout" accesskey="#">[#]<{$smarty.const.WIZMOBILE_LANG_LOGOUT}></a>
 <{else}>
-    <a href="<{$xoops_url}>/user.php" accesskey="9">[9]<{$smarty.const.WIZMOBILE_LANG_LOGIN}></a>
+    <a href="<{$xoops_url}>/user.php" accesskey="#">[#]<{$smarty.const.WIZMOBILE_LANG_LOGIN}></a>
+<{/if}>
+<{if $xoops_contents != ''}>
+    <br />
+    <a href="#Maincontents" accesskey="5">[5]<{$smarty.const.WIZMOBILE_LANG_MAIN_CONTENTS}></a>
 <{/if}>
 <hr />
 </div>
@@ -129,13 +131,15 @@
 <div style="font-size: 0.7em; text-align: left;">
 <a href="<{$xoops_url}>/" accesskey="0">[0]Home</a>
 <a href="#PageTop" accesskey="2">[2]<{$smarty.const.WIZMOBILE_LANG_PAGE_TOP}></a>
-<{if $xoops_contents != ''}>
-    <a href="#Maincontents" accesskey="5">[5]<{$smarty.const.WIZMOBILE_LANG_MAIN_CONTENTS}></a>
-<{/if}>
+<a href="<{$xoops_url}>/search.php" accesskey="*">[*]<{$smarty.const.WIZMOBILE_LANG_SEARCH}></a>
 <{if $xoops_isuser === true}>
-    <a href="<{$xoops_url}>/user.php?op=logout" accesskey="9">[9]<{$smarty.const.WIZMOBILE_LANG_LOGOUT}></a>
+    <a href="<{$xoops_url}>/user.php?op=logout" accesskey="#">[#]<{$smarty.const.WIZMOBILE_LANG_LOGOUT}></a>
 <{else}>
-    <a href="<{$xoops_url}>/user.php" accesskey="9">[9]<{$smarty.const.WIZMOBILE_LANG_LOGIN}></a>
+    <a href="<{$xoops_url}>/user.php" accesskey="#">[#]<{$smarty.const.WIZMOBILE_LANG_LOGIN}></a>
+<{/if}>
+<{if $xoops_contents != ''}>
+    <br />
+    <a href="#Maincontents" accesskey="5">[5]<{$smarty.const.WIZMOBILE_LANG_MAIN_CONTENTS}></a>
 <{/if}>
 <{* page navi(to) *}>
 
