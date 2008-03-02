@@ -22,6 +22,8 @@ if( ! class_exists( 'Legacy_WizXcController' ) ) {
                     $url = substr( $url, 0, strlen($url) - 1 );
                 }
             }
+            $args = array( 'url' => $url, 'time' => $time, 'message' => $message, 'addRedirect' => $addRedirect );
+            XCube_DelegateUtils::call( "Site.executeRedirect", new XCube_Ref($args) );
             parent::executeRedirect( $url, $time, $message, $addRedirect );
         }
 

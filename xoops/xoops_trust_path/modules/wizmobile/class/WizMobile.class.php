@@ -182,6 +182,15 @@ if ( ! class_exists('WizMobile') ) {
             session_regenerate_id();
         }
 
+        function directLogin()
+        {
+            $xcRoot =& XCube_Root::getSingleton();
+            session_regenerate_id();
+            $_SESSION["redirect_message"] = XCube_Utils::formatMessage( _MD_LEGACY_MESSAGE_LOGIN_SUCCESS, $xcRoot->mContext->mXoopsUser->get('uname') );
+            header("Location: " . XOOPS_URL. '/' . '?' . SID );
+            exit();
+        }
+
         function directLogout()
         {
             WizXcUtil::sessionDestroy();
