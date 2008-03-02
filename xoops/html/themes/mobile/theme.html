@@ -6,27 +6,17 @@
 </head>
 
 <body>
+<div style="font-size: 0.9em; text-align: center;">
 <a name="PageTop">
-<{$xoops_sitename}> - <{if $xoops_pagetitle}><{$xoops_pagetitle}><{else}><{$xoops_slogan}><{/if}>
+<img src="<{$xoops_url}>/themes/<{$xoops_theme}>/images/mobile_head.jpg" alt="<{$xoops_sitename}>" /><br />
+<{$xoops_sitename}>
 </a>
-<br /><br />
+</div>
+<br />
 
 <{* login form(from) *}>
 <div style="font-size: 0.7em; text-align: center;">
-<{if $xoops_isuser === false}>
-    <div>
-        <form action="<{$xoops_url}>/user.php" method="post" style="margin-top: 0px;">
-            UserName
-            <{xoops_input type=text name=uname size=5 value=$block.unamevalue maxlength=25 id="`$smarty.const.XOOPS_INPUT_DEFID_PREFIX`block_uname"}>
-            Password
-            <{xoops_input type=password name=pass size=5 maxlength=32 id="`$smarty.const.XOOPS_INPUT_DEFID_PREFIX`block_pass"}>
-            <br />
-            <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>" />
-            <{xoops_input type=hidden name=op value=login id="`$smarty.const.XOOPS_INPUT_DEFID_PREFIX`block_op"}>
-            <{xoops_input type=submit name=submit value="Login" id="`$smarty.const.XOOPS_INPUT_DEFID_PREFIX`block_submit"}>
-        </form>
-    </div>
-<{else}>
+<{if $xoops_isuser === true}>
     <div>
         Welcome <{$xoops_uname}> !
     </div>
@@ -45,10 +35,14 @@
 
 <{* page navi(from) *}>
 <div style="font-size: 0.7em; text-align: left;">
-<a href="<{$xoops_url}>/"} accesskey="0">[0]Home</a>
-<a href="#PageBottom" accesskey="8">[8]Page Bottom</a>
+<a href="<{$xoops_url}>/" accesskey="0">[0]Home</a>
+<{if $xoops_contents != ''}>
+    <a href="#Maincontents" accesskey="5">[5]<{$smarty.const.WIZMOBILE_LANG_MAIN_CONTENTS}></a>
+<{/if}>
 <{if $xoops_isuser === true}>
-    <a href="<{$xoops_url}>/user.php?op=logout">Logout</a>
+    <a href="<{$xoops_url}>/user.php?op=logout" accesskey="9">[9]<{$smarty.const.WIZMOBILE_LANG_LOGOUT}></a>
+<{else}>
+    <a href="<{$xoops_url}>/user.php" accesskey="9">[9]<{$smarty.const.WIZMOBILE_LANG_LOGIN}></a>
 <{/if}>
 <hr />
 </div>
@@ -123,6 +117,7 @@
 <{* xoops_contents area(from) *}>
 <{if $xoops_contents != ''}>
 <div style="font-size: 0.8em;">
+    <a name="Maincontents">&nbsp;</a>
     <{$xoops_contents}>
     <hr />
 </div>
@@ -132,10 +127,15 @@
 
 <{* page navi(from) *}>
 <div style="font-size: 0.7em; text-align: left;">
-<a href="<{$xoops_url}>/"} accesskey="0">[0]Home</a>
-<a href="#PageTop" accesskey="2">[2]Page Top</a>
+<a href="<{$xoops_url}>/" accesskey="0">[0]Home</a>
+<a href="#PageTop" accesskey="2">[2]<{$smarty.const.WIZMOBILE_LANG_PAGE_TOP}></a>
+<{if $xoops_contents != ''}>
+    <a href="#Maincontents" accesskey="5">[5]<{$smarty.const.WIZMOBILE_LANG_MAIN_CONTENTS}></a>
+<{/if}>
 <{if $xoops_isuser === true}>
-    <a href="<{$xoops_url}>/user.php?op=logout">Logout</a>
+    <a href="<{$xoops_url}>/user.php?op=logout" accesskey="9">[9]<{$smarty.const.WIZMOBILE_LANG_LOGOUT}></a>
+<{else}>
+    <a href="<{$xoops_url}>/user.php" accesskey="9">[9]<{$smarty.const.WIZMOBILE_LANG_LOGIN}></a>
 <{/if}>
 <{* page navi(to) *}>
 

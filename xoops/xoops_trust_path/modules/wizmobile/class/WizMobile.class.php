@@ -202,7 +202,7 @@ if ( ! class_exists('WizMobile') ) {
         function _obTransSid( $buf )
         {
             // get method
-            $pattern = '(<a)(.*)(href=)([\"\'])(\S*)([\"\'])';
+            $pattern = '(<a)([^>]*)(href=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
             preg_match_all( "/" .$pattern ."/i", $buf, $matches, PREG_SET_ORDER );
             if ( ! empty($matches) ) {
                 foreach ( $matches as $key => $match) {
@@ -215,7 +215,7 @@ if ( ! class_exists('WizMobile') ) {
                             if ( ! strstr($value, '?') ) {
                                 $connector = '?';
                             } else {
-                                $connector = '&amp;';
+                                $connector = '&';
                             }
                             if ( strstr($value, '#') ) {
                                 $hrefArray = explode( '#', $value );
@@ -226,7 +226,6 @@ if ( ! class_exists('WizMobile') ) {
                             } else {
                                 $href = $value . $connector . SID;
                             }
-                            $href = str_replace( XOOPS_URL, '', $href );
                             $buf = str_replace( 'href="' .$value .'"', 'href="' .$href .'"', $buf );
                             $buf = str_replace( "href='" .$value ."'", "href='" .$href ."'", $buf );
                         }
@@ -235,7 +234,7 @@ if ( ! class_exists('WizMobile') ) {
             }
             // post method
             // pattern 1 ( "method=, action=" pattern )
-            $pattern = '(<form)(.*)(method=)([\"\'])(post|get)([\"\'])(.*)(action=)([\"\'])(\S*)([\"\'])(.*)(>)';
+            $pattern = '(<form)([^>]*)(method=)([\"\'])(post|get)([\"\'])([^>]*)(action=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
             preg_match_all( "/" .$pattern ."/i", $buf, $matches, PREG_SET_ORDER );
             if ( ! empty($matches) ) {
                 foreach ( $matches as $key => $match) {
@@ -243,15 +242,13 @@ if ( ! class_exists('WizMobile') ) {
                     $check = strstr( $action, XOOPS_URL );
                     if ( $check !== false ) {
                         $tag = '<input type="hidden" name="' . session_name() . '" value="' . session_id() . '">';
-                        $actionTag = $match[8] . $match[9] . str_replace( XOOPS_URL, '', $match[10] ) . $match[11];
-                        $formTag = str_replace( $match[8] . $match[9] . $match[10] . $match[11], $actionTag, $match[0] );
-                        $buf = str_replace( $match[0], $formTag . $tag, $buf );
+                        $buf = str_replace( $match[0], $match[0] . $tag, $buf );
                     }
                     $action = '';
                 }
             }
             // pattern 2 ( "action=, method=" pattern )
-            $pattern = '(<form)(.*)(action=)([\"\'])(\S*)([\"\'])(.*)(method=)([\"\'])(post|get)([\"\'])(.*)(>)';
+            $pattern = '(<form)([^>]*)(action=)([\"\'])(\S*)([\"\'])([^>]*)(method=)([\"\'])(post|get)([\"\'])([^>]*)(>)';
             preg_match_all( "/" .$pattern ."/i", $buf, $matches, PREG_SET_ORDER );
             if ( ! empty($matches) ) {
                 foreach ( $matches as $key => $match) {
@@ -259,16 +256,14 @@ if ( ! class_exists('WizMobile') ) {
                     $check = strstr( $action, XOOPS_URL );
                     if ( $check !== false ) {
                         $tag = '<input type="hidden" name="' . session_name() . '" value="' . session_id() . '">';
-                        $actionTag = $match[3] . $match[4] . str_replace( XOOPS_URL, '', $match[5] ) . $match[6];
-                        $formTag = str_replace( $match[3] . $match[4] . $match[5] . $match[6], $actionTag, $match[0] );
-                        $buf = str_replace( $match[0], $formTag . $tag, $buf );
+                        $buf = str_replace( $match[0], $match[0] . $tag, $buf );
                     }
                     $action = '';
                 }
             }
             // replace input type "password" => "text"
-            $pattern = '(<input)(.*)(type=)([\"\'])(password)([\"\'])(.*)(>)';
-            $inputStyle = 'style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;;-wap-input-format:*m;"';
+            $pattern = '(<input)([^>]*)(type=)([\"\'])(password)([\"\'])([^>]*)(>)';
+            $inputStyle = '';
             $replacement = '${1}${2}${3}${4}text${6} ' . $inputStyle . '${7}${8}';
             $buf = preg_replace( "/" .$pattern ."/i", $replacement, $buf );
             return $buf;
