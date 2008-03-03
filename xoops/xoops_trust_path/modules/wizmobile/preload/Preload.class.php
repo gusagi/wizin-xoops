@@ -33,14 +33,16 @@ if ( ! class_exists('CallWizMobile') ) {
                 $wizMobile =& WizMobile::getSingleton();
                 $wizMobile->exchangeTheme();
                 // regenerate session id
-                $xcRoot->mDelegateManager->add( 'Site.CheckLogin.Success', array($wizMobile, 'directLogin') );
-                $xcRoot->mDelegateManager->add( 'Site.executeRedirect', array($wizMobile, 'directRedirect') );
+                $xcRoot->mDelegateManager->add( 'Site.CheckLogin.Success', array($wizMobile, 'directLoginSuccess') );
+                $xcRoot->mDelegateManager->add( 'Site.CheckLogin.Fail', array($wizMobile, 'directLoginFail') );
                 $xcRoot->mDelegateManager->add( 'Site.Logout.Success', array($wizMobile, 'directLogout'), XCUBE_DELEGATE_PRIORITY_FINAL+1 );
+                $xcRoot->mDelegateManager->add( 'Site.Logout.Fail', array($wizMobile, 'directLogout'), XCUBE_DELEGATE_PRIORITY_FINAL+1 );
                 $xcRoot->mDelegateManager->add( 'Legacy_AdminControllerStrategy.SetupBlock', array($wizMobile, 'denyAccessAdminArea'), XCUBE_DELEGATE_PRIORITY_FIRST );
                 // check session
                 $wizMobile->checkMobileSession();
                 // insert session_id
                 ob_start( array($wizMobile, '_obTransSid') );
+                ob_start( array($wizMobile, '_obDirectRedirect') );
                 // get block contents
                 $theme =& $xcRoot->mController->_mStrategy->getMainThemeObject();
                 if (!is_object($theme)) {

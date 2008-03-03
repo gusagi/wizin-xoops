@@ -177,39 +177,21 @@ if ( ! class_exists('WizMobile') ) {
             }
         }
 
-        function directRedirect()
-        {
-            $args = func_get_args();
-            $url = ! empty( $args['url'] ) ? $args['url'] : '';
-            if ( strpos($url, XOOPS_URL) === 0 ) {
-                if (!strstr($url, '?')) {
-                    $connector = '?';
-                }
-                else {
-                    $connector = '&';
-                }
-                if (strstr($url, '#')) {
-                    $urlArray = explode( '#', $url );
-                    $url = $urlArray[0] . $connector . SID;
-                    if ( ! empty($urlArray[1]) ) {
-                        $url .= '#' . $urlArray[1];
-                    }
-                } else {
-                    $url .= $connector . SID;
-                }
-            }
-            $message = ! empty( $args['message'] ) ? $args['message'] : '';
-            $_SESSION["redirect_message"] = htmlspecialchars( $message, ENT_QUOTES );
-            header("Location: " . $url );
-            exit();
-        }
-
-        function directLogin()
+        function directLoginSuccess()
         {
             $xcRoot =& XCube_Root::getSingleton();
             session_regenerate_id();
             $_SESSION["redirect_message"] = XCube_Utils::formatMessage( _MD_LEGACY_MESSAGE_LOGIN_SUCCESS, $xcRoot->mContext->mXoopsUser->get('uname') );
             header("Location: " . XOOPS_URL. '/' . '?' . SID );
+            exit();
+        }
+
+        function directLoginFail()
+        {
+            $xcRoot =& XCube_Root::getSingleton();
+            session_regenerate_id();
+            $_SESSION["redirect_message"] = _MD_LEGACY_ERROR_INCORRECTLOGIN;
+            header("Location: " . XOOPS_URL. '/user.php' . '?' . SID );
             exit();
         }
 
@@ -297,6 +279,77 @@ if ( ! class_exists('WizMobile') ) {
             $inputStyle = '';
             $replacement = '${1}${2}${3}${4}text${6} ' . $inputStyle . '${7}${8}';
             $buf = preg_replace( "/" .$pattern ."/i", $replacement, $buf );
+            // delete needless strings
+            $buf = str_replace( '?&', '?', $buf );
+            $buf = str_replace( '&&', '&', $buf );
+            return $buf;
+        }
+
+        function _obDirectRedirect( $buf )
+        {
+            $url = '';
+            $message = '';
+            // pattern 1 ( "http-equiv=, url=" pattern )
+            $pattern = '(<meta)([^>]*)(http-equiv=)([\"\'])(refresh)([\"\'])([^>]*)(content=)([\"\'])([^>]*)(;[^>]*)(url=)(\S*)([\"\'])([^>]*)(>)';
+            preg_match( "/" .$pattern ."/i", $buf, $match );
+            if ( ! empty($match) ) {
+                $url = $match[13];
+            }
+            // pattern 2 ( "url=, http-equiv=" pattern )
+            $pattern = '(<meta)([^>]*)(content=)([\"\'])([^>]*)(;[^>]*)(url=)(\S*)([\"\'])([^>]*)(http-equiv=)([\"\'])(refresh)([\"\'])([^>]*)(>)';
+            preg_match( "/" .$pattern ."/i", $buf, $match );
+            if ( ! empty($match) ) {
+                $url = $match[8];
+            }
+            // message
+            $pattern = '(<h4>)(.*)(<\/h4>)';
+            preg_match( "/" .$pattern ."/i", $buf, $match );
+            if ( ! empty($match) ) {
+                $message = $match[2];
+            }
+            if ( ! empty($url) ) {
+                if ( substr($url, 0, 4) !== 'http' ) {
+                    if ( substr($url, 0, 1) === '/' ) {
+                        $parseUrl = parse_url( XOOPS_URL );
+                        $url = str_replace( $parseUrl['path'], '', XOOPS_URL ) . $url;
+                    } else {
+                        $url = dirname( WIZMOBILE_CURRENT_URI ) . '/' . $url;
+                    }
+                }
+                $sessionName = ini_get( 'session.name' );
+                if ( strpos($url, $sessionName) > 0 ) {
+                    $sessionIdLength = strlen( session_id() );
+                    $delstr = $sessionName . '=';
+                    $delstr = "/(.*)(" . $delstr . ")(\w{" . $sessionIdLength . "})(.*)/i";
+                    $url = preg_replace( $delstr, '${1}${4}', $url );
+                    if ( strstr($url, '?&') ) {
+                        $url = str_replace( '?&', '?', $url );
+                    }
+                    if ( substr($url, -1, 1) === '?' ) {
+                        $url = substr( $url, 0, strlen($url) - 1 );
+                    }
+                }
+                if ( strpos($url, XOOPS_URL) === 0 ) {
+                    if (!strstr($url, '?')) {
+                        $connector = '?';
+                    }
+                    else {
+                        $connector = '&';
+                    }
+                    if (strstr($url, '#')) {
+                        $urlArray = explode( '#', $url );
+                        $url = $urlArray[0] . $connector . SID;
+                        if ( ! empty($urlArray[1]) ) {
+                            $url .= '#' . $urlArray[1];
+                        }
+                    } else {
+                        $url .= $connector . SID;
+                    }
+                }
+                $_SESSION["redirect_message"] = $message;
+                header("Location: " . $url );
+                exit();
+            }
             return $buf;
         }
 
