@@ -324,6 +324,10 @@ if ( ! class_exists('WizMobile') ) {
             // delete needless strings
             $buf = str_replace( '?&', '?', $buf );
             $buf = str_replace( '&&', '&', $buf );
+            // delete script tags
+            $pattern = '@<script[^>]*?>.*?<\/script>@si';
+            $replacement = '';
+            $buf = preg_replace( $pattern, $replacement, $buf );
             return $buf;
         }
 
