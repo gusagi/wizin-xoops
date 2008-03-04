@@ -251,11 +251,32 @@ if ( ! class_exists('WizMobile') ) {
             preg_match_all( "/" .$pattern ."/i", $buf, $matches, PREG_SET_ORDER );
             if ( ! empty($matches) ) {
                 foreach ( $matches as $key => $match) {
-                    $action = $match[10];
+                    if ( ! empty($match[10]) ) {
+                        $form = $match[0];
+                        $action = $match[10];
+                    } else {
+                        $url = WIZXC_CURRENT_URI;
+                        $sessionName = ini_get( 'session.name' );
+                        if ( strpos($url, $sessionName) > 0 ) {
+                            $sessionIdLength = strlen( session_id() );
+                            $delstr = $sessionName . '=';
+                            $delstr = "/(.*)(" . $delstr . ")(\w{" . $sessionIdLength . "})(.*)/i";
+                            $url = preg_replace( $delstr, '${1}${4}', $url );
+                            if ( strstr($url, '?&') ) {
+                                $url = str_replace( '?&', '?', $url );
+                            }
+                            if ( substr($url, -1, 1) === '?' ) {
+                                $url = substr( $url, 0, strlen($url) - 1 );
+                            }
+                        }
+                        $form = str_replace( $match[8] . $match[9] . $match[10] . $match[11],
+                            $match[8] . $match[9] . $url . $match[11], $match[0] );
+                        $action = $url;
+                    }
                     $check = strstr( $action, XOOPS_URL );
                     if ( $check !== false ) {
                         $tag = '<input type="hidden" name="' . session_name() . '" value="' . session_id() . '">';
-                        $buf = str_replace( $match[0], $match[0] . $tag, $buf );
+                        $buf = str_replace( $match[0], $form . $tag, $buf );
                     }
                     $action = '';
                 }
@@ -265,11 +286,32 @@ if ( ! class_exists('WizMobile') ) {
             preg_match_all( "/" .$pattern ."/i", $buf, $matches, PREG_SET_ORDER );
             if ( ! empty($matches) ) {
                 foreach ( $matches as $key => $match) {
-                    $action = $match[5];
+                    if ( ! empty($match[5]) ) {
+                        $form = $match[0];
+                        $action = $match[5];
+                    } else {
+                        $url = WIZXC_CURRENT_URI;
+                        $sessionName = ini_get( 'session.name' );
+                        if ( strpos($url, $sessionName) > 0 ) {
+                            $sessionIdLength = strlen( session_id() );
+                            $delstr = $sessionName . '=';
+                            $delstr = "/(.*)(" . $delstr . ")(\w{" . $sessionIdLength . "})(.*)/i";
+                            $url = preg_replace( $delstr, '${1}${4}', $url );
+                            if ( strstr($url, '?&') ) {
+                                $url = str_replace( '?&', '?', $url );
+                            }
+                            if ( substr($url, -1, 1) === '?' ) {
+                                $url = substr( $url, 0, strlen($url) - 1 );
+                            }
+                        }
+                        $form = str_replace( $match[3] . $match[4] . $match[5] . $match[6],
+                            $match[3] . $match[4] . $url . $match[6], $match[0] );
+                        $action = $url;
+                    }
                     $check = strstr( $action, XOOPS_URL );
                     if ( $check !== false ) {
                         $tag = '<input type="hidden" name="' . session_name() . '" value="' . session_id() . '">';
-                        $buf = str_replace( $match[0], $match[0] . $tag, $buf );
+                        $buf = str_replace( $match[0], $form . $tag, $buf );
                     }
                     $action = '';
                 }
@@ -277,7 +319,7 @@ if ( ! class_exists('WizMobile') ) {
             // replace input type "password" => "text"
             $pattern = '(<input)([^>]*)(type=)([\"\'])(password)([\"\'])([^>]*)(>)';
             $inputStyle = '';
-            $replacement = '${1}${2}${3}${4}text${6} ' . $inputStyle . '${7}${8}';
+            $replacement = '${1}${2}${3}${4}text${6} ${7}${8}';
             $buf = preg_replace( "/" .$pattern ."/i", $replacement, $buf );
             // delete needless strings
             $buf = str_replace( '?&', '?', $buf );

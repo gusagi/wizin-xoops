@@ -17,7 +17,7 @@ $wizMobile =& WizMobile::getSingleton();
 
 $modversion = array();
 $modversion['name']        = WIZMOBILE_MODINFO_NAME;
-$modversion['version']     = '0.1.0';
+$modversion['version']     = '0.1.1';
 $modversion['description'] = WIZMOBILE_MODINFO_DESC;
 $modversion['credits']     = 'gusagi';
 $modversion['author']      = 'gusagi &lt;gusagi&#64;gusagi.com&gt;<br />url : http://www.gusagi.com';

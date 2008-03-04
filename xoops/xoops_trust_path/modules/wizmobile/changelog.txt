@@ -1,0 +1,7 @@
+----------------------------------
+[2008-03.04 Ver 0.1.0 -> 0.1.1]
+- Fixed bug about session does not continue, When action in form tag is blank.
+----------------------------------
+[2008-03.03 Ver 0.1.0]
+- First release.
+----------------------------------
