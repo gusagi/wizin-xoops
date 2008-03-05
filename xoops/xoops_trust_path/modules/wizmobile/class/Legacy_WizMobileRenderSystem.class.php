@@ -10,58 +10,42 @@ include_once( XOOPS_TRUST_PATH . '/modules/wizmobile/class/Legacy_WizMobileRende
 if( ! class_exists( 'Legacy_WizMobileRenderSystem' ) ) {
     class Legacy_WizMobileRenderSystem extends Legacy_RenderSystem
     {
-    	/**
-    	 * @deprecated
-    	 */
-    	function sendHeader()
-    	{
-    		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-    		header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
-    		header('Cache-Control: no-store, no-cache, must-revalidate');
-    		header('Cache-Control: post-check=0, pre-check=0', false);
-    		header('Pragma: no-cache');
-    	}
-
-    	/**
-    	 * @TODO This function is not cool!
-    	 */
-    	function &getThemeRenderTarget($isDialog = false)
-    	{
-    		$screenTarget = $isDialog ? new Legacy_WizMobileDialogRenderTarget() : new Legacy_WizMobileThemeRenderTarget();
-    		return $screenTarget;
-    	}
-
-        function renderBlock(&$target)
+        /**
+         * @deprecated
+         */
+        function sendHeader()
         {
-            $this->_commonPrepareRender();
+            header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+            header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
+            header('Cache-Control: no-store, no-cache, must-revalidate');
+            header('Cache-Control: post-check=0, pre-check=0', false);
+            header('Pragma: no-cache');
+        }
 
-            if (isset($GLOBALS['xoopsUserIsAdmin'])) {
-                $this->mXoopsTpl->assign('xoops_isadmin', $GLOBALS['xoopsUserIsAdmin']);
+        /**
+         * @TODO This function is not cool!
+         */
+        function &getThemeRenderTarget($isDialog = false)
+        {
+            $screenTarget = $isDialog ? new Legacy_WizMobileDialogRenderTarget() : new Legacy_WizMobileThemeRenderTarget();
+            return $screenTarget;
+        }
+
+        function renderTheme(&$target)
+        {
+            $root =& XCube_Root::getSingleton();
+            $legacy_BlockContents =& $root->mContext->mAttributes['legacy_BlockContents'];
+            if ( ! empty($_REQUEST['mobilebid']) && ! empty($legacy_BlockContents) ) {
+                foreach ( $legacy_BlockContents as $index => $blockArea ) {
+                    foreach ( $blockArea as $key => $block ) {
+                        $blockId = intval( $block['id'] );
+                        if ( intval($_REQUEST['mobilebid']) === $blockId ) {
+                            $this->mXoopsTpl->assign( 'wizMobileBlockContents', $block['content'] );
+                        }
+                    }
+                }
             }
-
-            //
-            // Temporary
-            //
-            $this->mXoopsTpl->xoops_setCaching(0);
-
-            foreach($target->getAttributes() as $key=>$value) {
-                $this->mXoopsTpl->assign( $key,$value );
-            }
-
-            $targetBid = intval( $target->getAttribute("bid") );
-            if ( ! empty($_REQUEST['mobilebid']) && intval($_REQUEST['mobilebid']) === $targetBid ) {
-                $wizMobileBlockContents =& $this->mXoopsTpl->fetchBlock( $target->getTemplateName(), $target->getAttribute("bid") );
-                $this->mXoopsTpl->assign( 'wizMobileBlockContents', $wizMobileBlockContents );
-            }
-
-            //
-            // Reset
-            //
-            foreach($target->getAttributes() as $key=>$value) {
-                $this->mXoopsTpl->clear_assign($key);
-            }
-
-            parent::renderBlock( $target );
+            parent::renderTheme( $target );
         }
     }
 }
