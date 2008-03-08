@@ -1,4 +1,9 @@
 ----------------------------------
+[2008-03.08 Ver 0.1.1 -> 0.1.2]
+- Fixed bug about session does not continue, When action in form tag is only file name. (thx naao)
+- Fixed bug about failed assign values of $GLOBALS['xoopsTpl']. (thx naao)
+- Fixed bug about wrong character set change. (thx kotepan)
+----------------------------------
 [2008-03.04 Ver 0.1.0 -> 0.1.1]
 - Fixed bug about session does not continue, When action in form tag is blank.
 - Fixed bug about the block whose cache is effective is not indicated.

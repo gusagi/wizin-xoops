@@ -1,6 +1,6 @@
 /**************************************************
  * < Module name > WizMobile
- * < Version >     0.1.1
+ * < Version >     0.1.2
  * < Proprietor >  gusagi
  * < Developer >   gusagi
  * < License >     GNU General Public License Version 2 (GPL2)

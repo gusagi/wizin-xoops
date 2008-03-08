@@ -34,14 +34,26 @@ if( ! class_exists( 'Legacy_WizMobileRenderSystem' ) ) {
         function renderTheme(&$target)
         {
             $root =& XCube_Root::getSingleton();
+            // testcode >>
+            $nondisplayBlocks = WizMobile::getNondisplayBlocks();
+            // testcode <<
             $legacy_BlockContents =& $root->mContext->mAttributes['legacy_BlockContents'];
-            if ( ! empty($_REQUEST['mobilebid']) && ! empty($legacy_BlockContents) ) {
+            $blockFlagMap = array( 'xoops_showlblock', 'xoops_showcblock', 'xoops_showcblock',
+                'xoops_showcblock', 'xoops_showrblock' );
+            if ( ! empty($legacy_BlockContents) ) {
                 foreach ( $legacy_BlockContents as $index => $blockArea ) {
                     foreach ( $blockArea as $key => $block ) {
                         $blockId = intval( $block['id'] );
-                        if ( intval($_REQUEST['mobilebid']) === $blockId ) {
-                            $this->mXoopsTpl->assign( 'wizMobileBlockContents', $block['content'] );
+                        if ( ! in_array($blockId, $nondisplayBlocks) ) {
+                            if ( ! empty($_REQUEST['mobilebid']) && intval($_REQUEST['mobilebid']) === $blockId ) {
+                                $this->mXoopsTpl->assign( 'wizMobileBlockContents', $block['content'] );
+                            }
+                        } else {
+                            unset( $root->mContext->mAttributes['legacy_BlockContents'][$index][$key] );
                         }
+                    }
+                    if ( count($root->mContext->mAttributes['legacy_BlockContents'][$index]) === 0 ) {
+                        $root->mContext->mAttributes['legacy_BlockShowFlags'][$index] = false;
                     }
                 }
             }

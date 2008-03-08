@@ -43,13 +43,6 @@ if ( ! class_exists('CallWizMobile') ) {
                 // insert session_id
                 ob_start( array($wizMobile, '_obTransSid') );
                 ob_start( array($wizMobile, '_obDirectRedirect') );
-                // get block contents
-                $theme =& $xcRoot->mController->_mStrategy->getMainThemeObject();
-                if (!is_object($theme)) {
-                    die("Could not found any themes.");
-                }
-                $xcRoot->mContext->mBaseRenderSystemName = $theme->get('render_system');
-
             }
             parent::postFilter();
         }

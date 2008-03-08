@@ -95,8 +95,10 @@ if ( ! class_exists('WizMobile') ) {
                 $this->_outputFilter();
                 $this->_exchangeRenderSystem();
                 register_shutdown_function( array($this, '_sendHeader') );
+            } else {
+                ini_set( 'default_charset', _CHARSET );
+                header( 'Content-Type:text/html; charset=' . _CHARSET );
             }
-            ini_set( 'default_charset', _CHARSET );
         }
 
         function _inputFilter()
@@ -150,10 +152,16 @@ if ( ! class_exists('WizMobile') ) {
 
         function _exchangeRenderSystem()
         {
+            // exchange render system
             $xcRoot =& XCube_Root::getSingleton();
             $xcRoot->mDelegateManager->add( 'LegacyThemeHandler.GetInstalledThemes',
                 'LegacyWizMobileRender_DelegateFunctions::getInstalledThemes',
                 XOOPS_TRUST_PATH . '/modules/wizmobile/class/DelegateFunctions.class.php' );
+            // this logic enable until fix bug of Legacy_RenderSystem
+            $xcRoot->overrideSiteConfig( array('Legacy_RenderSystem' => $xcRoot->mSiteConfig['Legacy_WizMobileRenderSystem']) );
+            /* comment out until fix bug of Legacy_RenderSystem
+            $xcRoot->mContext->mBaseRenderSystemName = 'Legacy_WizMobileRenderSystem';
+            */
         }
 
         function exchangeTheme()
@@ -221,26 +229,34 @@ if ( ! class_exists('WizMobile') ) {
                 foreach ( $matches as $key => $match) {
                     $href = '';
                     $hrefArray = array();
-                    $value = $match[5];
-                    $check = strstr( $value, XOOPS_URL );
+                    $url = $match[5];
+                    if ( substr($url, 0, 4) !== 'http' ) {
+                        if ( substr($url, 0, 1) === '/' ) {
+                            $parseUrl = parse_url( XOOPS_URL );
+                            $url = str_replace( $parseUrl['path'], '', XOOPS_URL ) . $url;
+                        } else {
+                            $url = dirname( WIZMOBILE_CURRENT_URI ) . '/' . $url;
+                        }
+                    }
+                    $check = strstr( $url, XOOPS_URL );
                     if ( $check !== false ) {
-                        if ( ! strpos($value, session_name()) ) {
-                            if ( ! strstr($value, '?') ) {
+                        if ( ! strpos($url, session_name()) ) {
+                            if ( ! strstr($url, '?') ) {
                                 $connector = '?';
                             } else {
                                 $connector = '&';
                             }
-                            if ( strstr($value, '#') ) {
-                                $hrefArray = explode( '#', $value );
+                            if ( strstr($url, '#') ) {
+                                $hrefArray = explode( '#', $url );
                                 $href .= $hrefArray[0] . $connector . SID;
                                 if ( ! empty($hrefArray[1]) ) {
                                     $href .= '#' . $hrefArray[1];
                                 }
                             } else {
-                                $href = $value . $connector . SID;
+                                $href = $url . $connector . SID;
                             }
-                            $buf = str_replace( 'href="' .$value .'"', 'href="' .$href .'"', $buf );
-                            $buf = str_replace( "href='" .$value ."'", "href='" .$href ."'", $buf );
+                            $buf = str_replace( 'href="' .$url .'"', 'href="' .$href .'"', $buf );
+                            $buf = str_replace( "href='" .$url ."'", "href='" .$href ."'", $buf );
                         }
                     }
                 }
@@ -254,6 +270,14 @@ if ( ! class_exists('WizMobile') ) {
                     if ( ! empty($match[10]) ) {
                         $form = $match[0];
                         $action = $match[10];
+                        if ( substr($action, 0, 4) !== 'http' ) {
+                            if ( substr($action, 0, 1) === '/' ) {
+                                $parseUrl = parse_url( XOOPS_URL );
+                                $action = str_replace( $parseUrl['path'], '', XOOPS_URL ) . $action;
+                            } else {
+                                $action = dirname( WIZMOBILE_CURRENT_URI ) . '/' . $action;
+                            }
+                        }
                     } else {
                         $url = WIZXC_CURRENT_URI;
                         $sessionName = ini_get( 'session.name' );
@@ -289,6 +313,14 @@ if ( ! class_exists('WizMobile') ) {
                     if ( ! empty($match[5]) ) {
                         $form = $match[0];
                         $action = $match[5];
+                        if ( substr($action, 0, 4) !== 'http' ) {
+                            if ( substr($action, 0, 1) === '/' ) {
+                                $parseUrl = parse_url( XOOPS_URL );
+                                $action = str_replace( $parseUrl['path'], '', XOOPS_URL ) . $action;
+                            } else {
+                                $action = dirname( WIZMOBILE_CURRENT_URI ) . '/' . $action;
+                            }
+                        }
                     } else {
                         $url = WIZXC_CURRENT_URI;
                         $sessionName = ini_get( 'session.name' );
@@ -412,6 +444,12 @@ if ( ! class_exists('WizMobile') ) {
                 $function = '_execute' . ucfirst( $act );
                 $this->$function();
             }
+        }
+
+        function getNondisplayBlocks()
+        {
+            $nondisplayBlocks = array( 20, 23, 28, 33, 41, 42 );
+            return $nondisplayBlocks;
         }
 
     }

@@ -12,12 +12,14 @@ if ( ! defined('XOOPS_ROOT_PATH') || ! defined('XOOPS_TRUST_PATH') ) {
     exit();
 }
 
-require dirname( __FILE__ ) . '/init.php';
-$wizMobile =& WizMobile::getSingleton();
+$language = empty( $GLOBALS['xoopsConfig']['language'] ) ? 'english' : $GLOBALS['xoopsConfig']['language'];
+if( file_exists( dirname(__FILE__) . '/language/' . $language . '/main.php' ) ) {
+    require dirname(__FILE__) . '/language/' . $language . '/main.php';
+}
 
 $modversion = array();
 $modversion['name']        = WIZMOBILE_MODINFO_NAME;
-$modversion['version']     = '0.1.1';
+$modversion['version']     = '0.1.2';
 $modversion['description'] = WIZMOBILE_MODINFO_DESC;
 $modversion['credits']     = 'gusagi';
 $modversion['author']      = 'gusagi &lt;gusagi&#64;gusagi.com&gt;<br />url : http://www.gusagi.com';
