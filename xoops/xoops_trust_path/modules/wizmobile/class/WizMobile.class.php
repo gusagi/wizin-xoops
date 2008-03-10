@@ -255,8 +255,8 @@ if ( ! class_exists('WizMobile') ) {
                             } else {
                                 $href = $url . $connector . SID;
                             }
-                            $buf = str_replace( 'href="' .$url .'"', 'href="' .$href .'"', $buf );
-                            $buf = str_replace( "href='" .$url ."'", "href='" .$href ."'", $buf );
+                            $buf = str_replace( $match[3] . $match[4] .$match[5] . $match[6],
+                                $match[3] . $match[4] .$href . $match[6], $buf );
                         }
                     }
                 }

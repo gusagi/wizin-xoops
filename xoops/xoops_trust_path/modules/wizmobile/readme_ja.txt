@@ -1,6 +1,6 @@
 /**************************************************
  * 【 モジュール名 】WizMobile
- * 【  バージョン  】0.1.2
+ * 【  バージョン  】0.1.3
  * 【   権 利 者   】gusagi
  * 【   作 成 者   】gusagi
  * 【  ライセンス  】GNU General Public License Version 2(GPL2)

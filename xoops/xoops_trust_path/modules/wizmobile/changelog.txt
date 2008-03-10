@@ -1,4 +1,7 @@
 ----------------------------------
+[2008-03.10 Ver 0.1.2 -> 0.1.3]
+- Fixed bug about session does not continue, When href in a tag is only file name. (thx naao)
+----------------------------------
 [2008-03.08 Ver 0.1.1 -> 0.1.2]
 - Fixed bug about session does not continue, When action in form tag is only file name. (thx naao)
 - Fixed bug about failed assign values of $GLOBALS['xoopsTpl']. (thx naao)

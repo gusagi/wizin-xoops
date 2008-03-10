@@ -19,7 +19,7 @@ if( file_exists( dirname(__FILE__) . '/language/' . $language . '/main.php' ) ) 
 
 $modversion = array();
 $modversion['name']        = WIZMOBILE_MODINFO_NAME;
-$modversion['version']     = '0.1.2';
+$modversion['version']     = '0.1.3';
 $modversion['description'] = WIZMOBILE_MODINFO_DESC;
 $modversion['credits']     = 'gusagi';
 $modversion['author']      = 'gusagi &lt;gusagi&#64;gusagi.com&gt;<br />url : http://www.gusagi.com';
