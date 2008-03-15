@@ -8,7 +8,10 @@
  *
  */
 
-if ( file_exists(dirname(__FILE__) . '/images/modicon.png') ) {
+if ( file_exists(dirname($frontFile) . '/modicon.png') ) {
+    header("Content-type: image/png");
+    readfile( dirname(__FILE__) . '/images/modicon.png' );
+} else if ( file_exists(dirname(__FILE__) . '/images/modicon.png') ) {
     header("Content-type: image/png");
     readfile( dirname(__FILE__) . '/images/modicon.png' );
 }

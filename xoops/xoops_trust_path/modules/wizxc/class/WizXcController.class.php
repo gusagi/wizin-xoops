@@ -18,12 +18,13 @@ if( ! class_exists( 'Legacy_WizXcController' ) ) {
                 $delstr = $sessionName . '=';
                 $delstr = "/(.*)(" . $delstr . ")(\w{" . $sessionIdLength . "})(.*)/i";
                 $url = preg_replace( $delstr, '${1}${4}', $url );
+                if ( strstr($url, '?&') ) {
+                    $url = str_replace( '?&', '?', $url );
+                }
                 if ( substr($url, -1, 1) === '?' ) {
                     $url = substr( $url, 0, strlen($url) - 1 );
                 }
             }
-            $args = array( 'url' => $url, 'time' => $time, 'message' => $message, 'addRedirect' => $addRedirect );
-            XCube_DelegateUtils::call( "Site.executeRedirect", new XCube_Ref($args) );
             parent::executeRedirect( $url, $time, $message, $addRedirect );
         }
 
@@ -31,12 +32,21 @@ if( ! class_exists( 'Legacy_WizXcController' ) ) {
         {
             ob_start();
             $sessionName = ini_get( 'session.name' );
-            if ( ! empty($_GET[$sessionName]) || ! empty($_POST[$sessionName]) ) {
+            if ( ! empty($_REQUEST[$sessionName]) ) {
                 if ( ! strpos($url, $sessionName) && strpos($url, XOOPS_URL) === 0 ) {
-                    if ( ! strstr($url, '?') ) {
-                        $url .= '?' . SID;
+                    if ( !strstr($url, '?') ) {
+                        $connector = '?';
                     } else {
-                        $url .= '&' . SID;
+                        $connector = '&';
+                    }
+                    if ( strstr($url, '#') ) {
+                        $urlArray = explode( '#', $url );
+                        $url = $urlArray[0] . $connector . SID;
+                        if ( ! empty($urlArray[1]) ) {
+                            $url .= '#' . $urlArray[1];
+                        }
+                    } else {
+                        $url .= $connector . SID;
                     }
                 }
             }
