@@ -5,9 +5,9 @@
  * PHP Versions 5
  *
  * @package  Wizin
- * @author  gusagi<gusagi@gusagi.com>
- * @copyright  2007 - 2008 gusagi
- * @license http://creativecommons.org/licenses/by-nc-sa/2.1/jp/  Creative Commons ( Attribution - Noncommercial - Share Alike 2.1 Japan )
+ * @author  Makoto Hashiguchi a.k.a. gusagi<gusagi@gusagi.com>
+ * @copyright 2008 Makoto Hashiguchi
+ * @license http://www.opensource.org/licenses/bsd-license.php The BSD License
  *
  */
 
@@ -30,9 +30,9 @@ if ( ! class_exists('Wizin_StdClass') ) {
         public function __set( $key, $value )
         {
             if ( is_array($value) ) {
-                $this->_aVars[$key] = new ArrayObject($value, ArrayObject::ARRAY_AS_PROPS);
+                $this->_aVars[$key] =& new ArrayObject($value, ArrayObject::ARRAY_AS_PROPS);
             } else {
-                $this->_aVars[$key] = $value;
+                $this->_aVars[$key] =& $value;
             }
         }
 
