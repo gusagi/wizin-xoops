@@ -29,10 +29,15 @@ if ( ! class_exists('Wizin_StdClass') ) {
          */
         public function __set( $key, $value )
         {
-            if ( is_array($value) ) {
-                $this->_aVars[$key] =& new ArrayObject($value, ArrayObject::ARRAY_AS_PROPS);
+            if ( is_object($value) && get_class($value) === 'Wizin_Ref' ) {
+                $var =& $value->get();
             } else {
-                $this->_aVars[$key] =& $value;
+                $var =& $value;
+            }
+            if ( is_array($var) ) {
+                $this->_aVars[$key] =& new ArrayObject($var, ArrayObject::ARRAY_AS_PROPS);
+            } else {
+                $this->_aVars[$key] =& $var;
             }
         }
 
@@ -42,12 +47,14 @@ if ( ! class_exists('Wizin_StdClass') ) {
          * @param string $key
          * @return mixed
          */
-        public function __get( $key )
+        public function & __get( $key )
         {
             if ( isset($this->_aVars[$key]) ) {
-                return $this->_aVars[$key];
+                $var =& $this->_aVars[$key];
+                return $var;
             } else {
-                return NULL;
+                $var = null;
+                return $var;
             }
         }
     }

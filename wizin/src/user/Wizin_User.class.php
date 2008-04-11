@@ -5,9 +5,9 @@
  * PHP Versions 4
  *
  * @package  Wizin
- * @author  gusagi <gusagi@gusagi.com>
- * @copyright  2007 - 2008 gusagi
- * @license http://creativecommons.org/licenses/by-nc-sa/2.1/jp/  Creative Commons ( Attribution - Noncommercial - Share Alike 2.1 Japan )
+ * @author  Makoto Hashiguchi a.k.a. gusagi<gusagi@gusagi.com>
+ * @copyright 2008 Makoto Hashiguchi
+ * @license http://www.opensource.org/licenses/bsd-license.php The BSD License
  *
  */
 
@@ -21,6 +21,8 @@ if ( ! class_exists('Wizin_User') ) {
         {
             $this->_bLookup = false;
             $this->bIsMobile = false;
+            $this->bIsBot = false;
+            $this->bCookie = true;
             $this->sCarrier = 'unknown';
             $this->sUniqId = '';
             $this->sEncoding = '';
@@ -51,6 +53,8 @@ if ( ! class_exists('Wizin_User') ) {
             }
             if ( ! empty($data) ) {
                 $this->bIsMobile = $data['mobile'];
+                $this->bIsBot = $data['bot'];
+                $this->bCookie = $data['cookie'];
                 $this->sCarrier = $data['carrier'];
                 $uniqid = getenv( $data['uniqid'] );
                 if ( ! empty($uniqid) ) {
@@ -70,10 +74,15 @@ if ( ! class_exists('Wizin_User') ) {
                 } else {
                     $this->sCharset = '';
                 }
-                $function = $data['function'];
-                if ( ! empty($function) && method_exists($this, $function) ) {
-                    // TODO : function not in this file, and dynamic include enable
-                    $this->$function();
+                $plugin = $data['plugin'];
+                if ( ! empty($plugin) ) {
+                    if ( ! empty($plugin['path']) && file_exists(WIZIN_ROOT_PATH . '/' . $plugin['path']) ) {
+                        include WIZIN_ROOT_PATH . '/' . $plugin['path'];
+                    }
+                    if ( ! empty($plugin['class']) && class_exists($plugin['class']) ) {
+                        $class = $plugin['class'];
+                        $instance = new $class;
+                    }
                 }
             }
         }
@@ -111,46 +120,5 @@ if ( ! class_exists('Wizin_User') ) {
             return null;
         }
 
-        // TODO : function not in this file, and dynamic include enable
-        function checkDocomo()
-        {
-            $agent = getenv( 'HTTP_USER_AGENT' );
-            preg_match( "/ser([a-zA-Z0-9]+)/", $agent, $matches );
-            // mova
-            if ( ! empty($matches[1]) && strlen($matches[1]) === 11 ) {
-                $this->sUniqId = $matches[1];
-            } elseif ( ! empty($matches[1]) && strlen($matches[1]) === 15 ) {
-                preg_match( "/icc([a-zA-Z0-9]+)/", $agent, $matches2 );
-                if ( strlen($matches2[1]) === 20 ) {
-                    // foma card id
-                    $this->sUniqId = $matches2[1];
-                } else {
-                    // foma terminal id
-                    $this->sUniqId = $matches[1];
-                }
-            }
-        }
-
-        // TODO : function not in this file, and dynamic include enable
-        function checkSoftbank()
-        {
-            $this->sUniqId = substr( $this->sUniqId, 1 );
-        }
-
-        // TODO : function not in this file, and dynamic include enable
-        function checkWillcom()
-        {
-            if ( $this->_bLookup ) {
-                $agent = getenv( 'HTTP_USER_AGENT' );
-                if ( ! preg_match("/(willcom|ddipocket)/i", $agent) ) {
-                    $this->bIsMobile = true;
-                    $this->sCarrier = 'othermobile';
-                    $this->sUniqId = '';
-                    $this->sEncoding = 'sjis-win';
-                    $this->sCharset = 'shift_jis';
-                }
-            }
-            return null;
-        }
     }
 }

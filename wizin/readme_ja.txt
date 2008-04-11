@@ -1,9 +1,9 @@
 /**************************************************
  * 【ソフトウェア名】Wizin
  * 【  バージョン  】0.1.0
- * 【   権 利 者   】Makoto Hashiguchi / gusagi
- * 【   作 成 者   】Makoto Hashiguchi / gusagi
- * 【  ライセンス  】Creative Commons ( Attribution - Noncommercial - Share Alike 2.1 Japan )
+ * 【   権 利 者   】Makoto Hashiguchi a.k.a. gusagi
+ * 【   作 成 者   】Makoto Hashiguchi a.k.a. gusagi
+ * 【  ライセンス  】new BSD License
  * 【 ホームページ 】http://www.gusagi.com
  * 【メールアドレス】gusagi@gusagi.com
  * 【   動作環境   】Apache + PHP4.3以上(一部、PHP5以上)
@@ -19,14 +19,9 @@
 
 【ライセンス】
 ----
-Wizin本体（dataディレクトリ・srcディレクトリの配下）は、クリエイティブ・コモンズライセンス（表示-非営利-継承）となります。
-商用で利用される場合は、お手数ですが権利者までご確認下さい。
-詳細は、以下のURLをご確認下さい。
-    http://creativecommons.org/licenses/by-nc-sa/2.1/jp/
-    http://creativecommons.org/licenses/by-nc-sa/2.1/jp/legalcode
-----
+Wizin本体（dataディレクトリ・srcディレクトリの配下）は、修正BSDライセンスとなります。
 libディレクトリ配下は、各ソフトウェアのライセンスとなります。
-    - spyc：MIT License  ( http://www.opensource.org/licenses/mit-license.php
+    - spyc：MIT License  ( http://www.opensource.org/licenses/mit-license.php )
 
 
 【謝辞】

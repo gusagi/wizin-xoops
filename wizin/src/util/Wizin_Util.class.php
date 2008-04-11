@@ -5,9 +5,9 @@
  * PHP Versions 4
  *
  * @package  Wizin
- * @author  gusagi <gusagi@gusagi.com>
- * @copyright  2007 - 2008 gusagi
- * @license http://creativecommons.org/licenses/by-nc-sa/2.1/jp/  Creative Commons ( Attribution - Noncommercial - Share Alike 2.1 Japan )
+ * @author  Makoto Hashiguchi a.k.a. gusagi<gusagi@gusagi.com>
+ * @copyright 2008 Makoto Hashiguchi
+ * @license http://www.opensource.org/licenses/bsd-license.php The BSD License
  *
  */
 
@@ -33,5 +33,19 @@ if ( ! class_exists('Wizin_Util') ) {
             }
     	    return $prefix;
         }
+
+        function callUserFuncArrayReference( $function, $args = array() )
+        {
+            $result = null;
+            $process = null;
+            $param = array();
+            if ( is_array($args) ) {
+                for ( $index = 0; $index < count($args); $index ++ ) {
+                    $param[] =& $args[$index];
+                }
+            }
+            call_user_func_array( $function, $param );
+        }
+
     }
 }

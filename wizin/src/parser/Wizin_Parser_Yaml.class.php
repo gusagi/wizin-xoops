@@ -5,11 +5,10 @@
  * PHP Versions 4
  *
  * @package  Wizin
- * @author  gusagi <gusagi@gusagi.com>
- * @copyright  2007 - 2008 gusagi
- * @license http://creativecommons.org/licenses/by-nc-sa/2.1/jp/  Creative Commons ( Attribution - Noncommercial - Share Alike 2.1 Japan )
+ * @author  Makoto Hashiguchi a.k.a. gusagi<gusagi@gusagi.com>
+ * @copyright 2008 Makoto Hashiguchi
+ * @license http://www.opensource.org/licenses/bsd-license.php The BSD License
  *
- * thx SUNAOKA Norifumi ( http://pocari.org/ )
  */
 
 if( ! class_exists( 'Wizin_Parser_Yaml' ) ) {

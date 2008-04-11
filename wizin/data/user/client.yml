@@ -1,15 +1,35 @@
-docomo:
+googlebot-mobile:
     mobile:true
+    bot:true
+    cookie:true
     agent:
-        - "^docomo\/.*"
-    host:"docomo\.ne\.jp$"
+        - "([a-zA-Z_0-9\/.;() -]+)(googlebot-mobile)([a-zA-Z_0-9\/.;() -]+)"
+    host:"[a-zA-Z_0-9-]\.googlebot\.com$"
     uniqid:""
     encoding:"sjis-win"
     charset:"shift_jis"
-    function:"checkDocomo"
+    plugin:
+        path:""
+        class:""
+
+docomo:
+    mobile:true
+    bot:false
+    cookie:false
+    agent:
+        - "^docomo\/.*"
+    host:"docomo\.ne\.jp$"
+    uniqid:"HTTP_X_DCMGUID"
+    encoding:"sjis-win"
+    charset:"shift_jis"
+    plugin:
+        path:"plugins/user/Wizin_Plugin_User_Docomo.class.php"
+        class:"Wizin_Plugin_User_Docomo"
 
 au:
     mobile:true
+    bot:false
+    cookie:true
     agent:
         - "^up\.browser\/"
         - "^kddi\-"
@@ -18,9 +38,14 @@ au:
     encoding:"sjis-win"
     charset:"shift_jis"
     function:""
+    plugin:
+        path:""
+        class:""
 
 softbank:
     mobile:true
+    bot:false
+    cookie:true
     agent:
         - "^j\-phone\/"
         - "^vodafone\/"
@@ -31,21 +56,29 @@ softbank:
     uniqid:"http_x_jphone_uid"
     encoding:"utf-8"
     charset:"utf-8"
-    function:"checkSoftbank"
+    plugin:
+        path:"plugins/user/Wizin_Plugin_User_Softbank.class.php"
+        class:"Wizin_Plugin_User_Softbank"
 
 willcom:
     mobile:true
+    bot:false
+    cookie:true
     agent:
         - "(willcom|ddipocket)"
     host:"prin\.ne\.jp$"
     uniqid:""
     encoding:"sjis-win"
     charset:"shift_jis"
-    function:"checkWillcom"
-    function:"checkWillcom"
+    plugin:
+        path:"plugins/user/Wizin_Plugin_User_Willcom.class.php"
+        class:"Wizin_Plugin_User_Willcom"
+
 
 othermobile:
     mobile:true
+    bot:false
+    cookie:true
     agent:
         - "windows *ce"
         - "jigbrowserweb"
@@ -55,4 +88,6 @@ othermobile:
     uniqid:""
     encoding:"sjis-win"
     charset:"shift_jis"
-    function:""
+    plugin:
+        path:""
+        class:""

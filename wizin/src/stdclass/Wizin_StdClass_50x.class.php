@@ -29,7 +29,12 @@ if ( ! class_exists('Wizin_StdClass') ) {
          */
         public function __set( $key, $value )
         {
-            $this->_aVars[$key] =& $value;
+            if ( is_object($value) && get_class($value) === 'Wizin_Ref' ) {
+                $var =& $value->get();
+            } else {
+                $var =& $value;
+            }
+            $this->_aVars[$key] =& $var;
         }
 
         /**
@@ -38,12 +43,14 @@ if ( ! class_exists('Wizin_StdClass') ) {
          * @param string $key
          * @return mixed
          */
-        public function __get( $key )
+        public function & __get( $key )
         {
             if ( isset($this->_aVars[$key]) ) {
-                return $this->_aVars[$key];
+                $var =& $this->_aVars[$key];
+                return $var;
             } else {
-                return NULL;
+                $var = null;
+                return $var;
             }
         }
     }
