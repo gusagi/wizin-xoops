@@ -15,9 +15,9 @@ if ( ! defined('WIZIN_LOADED') ) {
     define( 'WIZIN_LOADED', true );
     define( 'WIZIN_ROOT_PATH', dirname(dirname(__FILE__)) );
     set_include_path( get_include_path() . PATH_SEPARATOR . dirname(dirname(__FILE__)) );
-    require_once 'src/stdclass/Wizin_StdClass.php';
-    require_once 'src/ref/Wizin_Ref.php';
-    require_once 'src/util/Wizin_Util.class.php';
+    require_once 'src/Wizin_StdClass.php';
+    require_once 'src/Wizin_Ref.php';
+    require_once 'src/Wizin_Util.class.php';
 
     /**
      * @access public

@@ -12,7 +12,7 @@
  */
 
 if ( ! class_exists('Wizin_Session') ) {
-    require dirname( dirname(__FILE__) ) . '/Wizin.class.php';
+    require 'Wizin.class.php';
 
     class Wizin_Session extends Wizin_StdClass
     {

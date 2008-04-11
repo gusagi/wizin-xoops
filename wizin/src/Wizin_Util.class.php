@@ -12,7 +12,7 @@
  */
 
 if ( ! class_exists('Wizin_Util') ) {
-    require dirname( dirname(__FILE__) ) . '/Wizin.class.php';
+    require 'Wizin.class.php';
 
     /**
      * @access public

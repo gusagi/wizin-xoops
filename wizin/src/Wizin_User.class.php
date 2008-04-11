@@ -12,8 +12,8 @@
  */
 
 if ( ! class_exists('Wizin_User') ) {
-    require dirname( dirname(__FILE__) ) . '/Wizin.class.php';
-    require 'src/parser/Wizin_Parser_Yaml.class.php';
+    require 'Wizin.class.php';
+    require 'src/parser/Yaml.class.php';
 
     class Wizin_User extends Wizin_StdClass
     {
