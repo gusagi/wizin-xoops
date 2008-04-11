@@ -21,7 +21,7 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
 
         function _require()
         {
-            require_once 'src/filter/Wizin_Filter.class.php';
+            require_once 'src/Wizin_Filter.class.php';
         }
 
         function _setup()
