@@ -12,6 +12,21 @@ googlebot-mobile:
         path:""
         class:""
 
+yahoo-mobile:
+    mobile:true
+    bot:true
+    cookie:true
+    agent:
+        - "y!j-srd\/1\.0"
+        - "y!j-mbs\/1\.0"
+    host:"search\.\w*\.yahoo\.co\.jp.$"
+    uniqid:""
+    encoding:"sjis-win"
+    charset:"shift_jis"
+    plugin:
+        path:""
+        class:""
+
 docomo:
     mobile:true
     bot:false
@@ -23,7 +38,7 @@ docomo:
     encoding:"sjis-win"
     charset:"shift_jis"
     plugin:
-        path:"plugins/user/Wizin_Plugin_User_Docomo.class.php"
+        path:"plugins/user/Docomo.class.php"
         class:"Wizin_Plugin_User_Docomo"
 
 au:
@@ -50,14 +65,14 @@ softbank:
         - "^j\-phone\/"
         - "^vodafone\/"
         - "^softbank\/"
-        - "^mot\-[vc]\/"
+        - "^mot\-[vc]"
         - "^vemulator\/"
     host:"jp\-[kcqt]\.ne\.jp$"
     uniqid:"http_x_jphone_uid"
     encoding:"utf-8"
     charset:"utf-8"
     plugin:
-        path:"plugins/user/Wizin_Plugin_User_Softbank.class.php"
+        path:"plugins/user/Softbank.class.php"
         class:"Wizin_Plugin_User_Softbank"
 
 willcom:
@@ -71,8 +86,24 @@ willcom:
     encoding:"sjis-win"
     charset:"shift_jis"
     plugin:
-        path:"plugins/user/Wizin_Plugin_User_Willcom.class.php"
+        path:"plugins/user/Willcom.class.php"
         class:"Wizin_Plugin_User_Willcom"
+
+
+emobile:
+    mobile:true
+    bot:false
+    cookie:true
+    agent:
+        - "emobile\/"
+        - "iemobile"
+    host:"emobile\.ad\.jp$"
+    uniqid:"http_x_em_uid"
+    encoding:"sjis-win"
+    charset:"shift_jis"
+    plugin:
+        path:""
+        class:""
 
 
 othermobile:

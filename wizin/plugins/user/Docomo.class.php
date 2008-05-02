@@ -76,6 +76,8 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                     $url = $match[5];
                     if ( preg_match('/' . $insertString . '/i', $url) ) {
                         continue;
+                    } else if ( substr($url, 0, 1) === '#' ) {
+                        continue;
                     }
                     if ( ! strstr($url, '?') ) {
                         $connector = '?';

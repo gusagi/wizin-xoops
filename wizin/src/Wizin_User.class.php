@@ -44,7 +44,7 @@ if ( ! class_exists('Wizin_User') ) {
             $ip = getenv( 'REMOTE_ADDR' );
             $agent = getenv( 'HTTP_USER_AGENT' );
             $parser =& Wizin_Parser_Yaml::getSingleton();
-            $yaml = dirname( dirname(dirname(__FILE__)) ) . '/data/user/client.yml';
+            $yaml = WIZIN_ROOT_PATH . '/data/user/client.yml';
             $mobileData = $parser->parse( $yaml );
             if ( $lookup ) {
                 $data = $this->_advancedCheck( $mobileData );

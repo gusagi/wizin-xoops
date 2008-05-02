@@ -1,10 +1,33 @@
 <?php
 /**
- * PHP Versions 4
+ * PHP Versions 4.4.X or upper version
  *
  * @package  WizMobile
- * @author  gusagi<gusagi@gusagi.com>
- * @copyright  2007 - 2008 gusagi
+ * @author  Makoto Hashiguchi a.k.a. gusagi<gusagi@gusagi.com>
+ * @copyright 2008 Makoto Hashiguchi
+ * @license GNU General Public License Version2
+ *
+ */
+
+/**
+ * GNU General Public License Version2
+ *
+ * Copyright (C) 2008  < Makoto Hashiguchi a.k.a. gusagi >
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
 
@@ -12,115 +35,63 @@ if ( ! defined('XOOPS_ROOT_PATH') || ! defined('XOOPS_TRUST_PATH') ) {
     exit();
 }
 
+$frontDirname = basename( dirname($frontFile) );
 $language = empty( $GLOBALS['xoopsConfig']['language'] ) ? 'english' : $GLOBALS['xoopsConfig']['language'];
+if( file_exists( XOOPS_ROOT_PATH . '/modules/' . $myfrontdirname . '/language/' . $language . '/main.php' ) ) {
+    require XOOPS_ROOT_PATH . '/modules/' . $myfrontdirname . '/language/' . $language . '/main.php';
+}
 if( file_exists( dirname(__FILE__) . '/language/' . $language . '/main.php' ) ) {
     require dirname(__FILE__) . '/language/' . $language . '/main.php';
 }
 
+// module infomation
 $modversion = array();
-$modversion['name']        = WIZMOBILE_MODINFO_NAME;
-$modversion['version']     = '0.1.3';
-$modversion['description'] = WIZMOBILE_MODINFO_DESC;
-$modversion['credits']     = 'gusagi';
-$modversion['author']      = 'gusagi &lt;gusagi&#64;gusagi.com&gt;<br />url : http://www.gusagi.com';
-$modversion['help']        = 'help.html';
-$modversion['license']     = 'GPL see LICENSE';
+$modversion['name']        = Wizin_Util::constant( 'WIZMOBILE_MODINFO_NAME' );
+$modversion['version']     = '0.20';
+$modversion['description'] = Wizin_Util::constant( 'WIZMOBILE_MODINFO_DESC' );
+$modversion['credits']     = 'Makoto Hashiguchi a.k.a. gusagi';
+$modversion['author']      = 'Makoto Hashiguchi a.k.a. gusagi &lt;gusagi&#64;gusagi.com&gt;<br />url : http://www.gusagi.com';
+$modversion['license']     = 'GNU General Public License';
 $modversion['official']    = 0;
 $modversion['image']       = file_exists( dirname($frontFile) .'/modicon.png' ) ? 'modicon.png' : 'modicon.php';
 $modversion['dirname']     = basename( dirname($frontFile) );
-
-//$modversion['sqlfile']['mysql'] = "sql/mysql.sql";
-//$modversion['sqlfile']['postgresql'] = "sql/pgsql.sql";
-//$modversion['tables'] = array(
-//);
-
-//$modversion['onInstall']   = 'index.php';
-//$modversion['onUpdate']    = 'index.php';
-//$modversion['onUninstall'] = 'index.php';
-
 $modversion['use_smarty'] = 0;
+$modversion['cube_style'] = true;
 
+// installer
+$modversion['disable_legacy_2nd_installer'] = true;
+$modversion['legacy_installer']['installer']['filepath'] = dirname( __FILE__ ) . '/class/WizMobileInstaller.class.php';
+$modversion['legacy_installer']['installer']['class'] = 'WizMobileInstaller';
+
+// updater
+$modversion['legacy_installer']['updater']['filepath'] = dirname( __FILE__ ) . '/class/WizMobileUpdater.class.php';
+$modversion['legacy_installer']['updater']['class'] = 'WizMobileUpdater';
 /*
-$modversion['templates'][] = array(
-    'file' => 'AdminAction.tpl',
-    'description' => ''
-);
+// database
+$modversion['sqlfile']['mysql'] = "sql/mysql.sql";
+$modversion['tables'][] = "{prefix}_{dirname}_mailjob";
+
+// Templates
+$modversion['templates'][] = array( 'file' => 'user_userinfo.html',
+    'description' => 'Display a user information in userinfo.php' );
 */
 
-//$modversion['blocks'][1] = array(
-//  'file'          => 'ModSample0_block1.php' ,
-//  'name'          => _MI_MODSAMPLE0_BLOCK_BLOCK1 ,
-//  'description'   => _MI_MODSAMPLE0_BLOCK_BLOCK1_DESC ,
-//  'show_func'     => 'ModSample0_block1_show' ,
-//  'edit_func'     => 'ModSample0_block1_edit' ,
-//  'template'      => 'ModSample0_block1.html' ,
-//  'options'       => '10|20' ,
-//  'can_clone'     => true
-//) ;
-
-$modversion['hasMain']   = 0;
+// access permission
 $modversion['read_any']  = true;
 
-//$modversion['sub'][1]=array(
-//  'name' => _MI_MODSAMPLE0_SUBMENU1,
-//  'url'  => "submenu1.php",
-//);
+// main menu
+$modversion['hasMain']   = 0;
 
+// admin view
+$modversion['hasAdmin']   = 1;
+$modversion['adminindex'] = 'admin/admin.php';
+$modversion['adminmenu']  = 'adminmenu.php';
+
+// search
 $modversion['hasSearch'] = 0;
 
-//$modversion['search'] = array(
-//  'file' => "include/search.inc.php",
-//  'func' => "ModSample0_search",
-//);
-
+// comments
 $modversion['hasComments'] = 0;
 
-//$modversion['comments'] = array(
-//  'itemName' => 'event_id',
-//  'pageName' => 'index.php',
-//  'callbackFile' => 'include/comment_functions.php',
-//  'callback' => array(
-//      'approve' => 'ModSample0_comments_approve',
-//      'update' => 'ModSample0_comments_update',
-//  ),
-//);
-
-$modversion['hasAdmin'] = 0;
-//$modversion['adminindex'] = "index.php";
-//$modversion['adminmenu'] = "index.php";
-
-$modversion['hasconfig'] = 0;
-//$modversion['config'][1] = array(
-//  'name'          => 'ModSample0_field1' ,
-//  'title'         => '_MI_MODSAMPLE0_FIELD1' ,
-//  'description'   => '_MI_MODSAMPLE0_FIELD1_DESC' ,
-//  'formtype'      => 'textbox' ,
-//  'valuetype'     => 'text' ,
-//  'default'       => 'DEFAULT' ,
-//  'options'       => array(),
-//);
-
+// notification
 $modversion['hasNotification'] = 0;
-//$modversion['notification']['lookup_file'] = 'include/notification.inc.php';
-//$modversion['notification']['lookup_func'] = 'ModSample0_notify_iteminfo';
-
-//$modversion['notification']['category'][1] = array(
-//  'name' => 'global',
-//  'title' => _MI_MODSAMPLE0_GLOBAL_NOTIFY,
-//  'description' => _MI_MODSAMPLE0_GLOBAL_NOTIFYDSC,
-//  'subscribe_from' => array(
-//      'index.php',
-//  ),
-//  'item_name' => 'cid',
-//  'allow_bookmark' => 0,
-//);
-
-//$modversion['notification']['event'][1] = array(
-//  'name' => 'new_event',
-//  'category' => 'global',
-//  'title' => _MI_MODSAMPLE0_GLOBAL_NEWEVENT_NOTIFY,
-//  'caption' => _MI_MODSAMPLE0_GLOBAL_NEWEVENT_NOTIFYCAP,
-//  'description' => _MI_MODSAMPLE0_GLOBAL_NEWEVENT_NOTIFYDSC,
-//  'mail_template' => 'global_newevent_notify',
-//  'mail_subject' => _MI_MODSAMPLE0_GLOBAL_NEWEVENT_NOTIFYSBJ,
-//);

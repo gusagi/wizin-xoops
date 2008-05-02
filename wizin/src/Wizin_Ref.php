@@ -13,7 +13,7 @@
 
 $phpVersion = intval( PHP_VERSION );
 if ( $phpVersion < 5 ) {
-    require_once 'src/ref/Wizin_Ref_Php4x.class.php';
+    require_once 'src/ref/Php4x.class.php';
 } else {
-    require_once 'src/ref/Wizin_Ref_Php5x.class.php';
+    require_once 'src/ref/Php5x.class.php';
 }

@@ -18,7 +18,19 @@ if ( ! class_exists('Wizin_Plugin_User_Softbank') ) {
             static $calledFlag;
             if ( ! isset($calledFlag) ) {
                 $calledFlag = true;
+                $this->_check3GC();
                 $this->_updateUniqId();
+            }
+        }
+
+        function _check3GC()
+        {
+            $agent = getenv( 'HTTP_USER_AGENT' );
+            $user =& Wizin_User::getSingleton();
+            $pattern = '/^j\-phone\//i';
+            if ( preg_match($pattern, $agent, $matches) ) {
+                $user->sEncoding = 'sjis-win';
+                $user->sCharset = 'shift_jis';
             }
         }
 

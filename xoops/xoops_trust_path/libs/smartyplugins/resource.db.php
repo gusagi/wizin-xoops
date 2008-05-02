@@ -6,6 +6,7 @@
  * Type:     resource
  * Name:     db
  * Purpose:  Fetches templates from a database
+ * Version:  for HD1.0
  * -------------------------------------------------------------
  */
 
@@ -72,7 +73,7 @@ function smarty_resource_db_tplinfo( $tpl_name )
 	static $cache = array();
 	global $xoopsConfig;
 
-	// First, check the cache
+	// 1st, check the cache
 	if ( isset( $cache[$tpl_name] ) ) {
 		return $cache[$tpl_name];
 	}
@@ -80,16 +81,27 @@ function smarty_resource_db_tplinfo( $tpl_name )
 	$tplset = isset( $xoopsConfig['template_set'] ) ? $xoopsConfig['template_set']: 'default' ;
 	$theme = isset( $xoopsConfig['theme_set'] ) ? $xoopsConfig['theme_set'] : 'default';
 
-	// Second, check templates under themes/(theme)/templates/ (file template)
+	// 2nd, check templates under themes/(theme)/templates/ (file template)
 	$filepath = XOOPS_THEME_PATH . '/' . $theme . '/templates/' . $tpl_name ;
 	if ( file_exists( $filepath ) ) {
 		return $cache[$tpl_name] = $filepath ;
 	}
 
-	// Third, find a DB template of the selected tplset
+	// 3rd, check templates under themes/(theme)/templates/(trust based template)
+	@list( $dirname , $base_tpl_name ) = explode( '_' , $tpl_name , 2 ) ;
+	$mytrustdirname = '' ;
+	@include XOOPS_ROOT_PATH.'/modules/'.$dirname.'/mytrustdirname.php' ;
+	if( $mytrustdirname && $base_tpl_name ) {
+		$filepath = XOOPS_THEME_PATH . '/' . $theme . '/templates/' . $mytrustdirname . '/' . $base_tpl_name ;
+		if ( file_exists( $filepath ) ) {
+			return $cache[$tpl_name] = $filepath ;
+		}
+	}
+
+	// 4th, find a DB template of the selected tplset
 	$tplfile_handler =& xoops_gethandler('tplfile');
 	$tplobj = $tplfile_handler->find( $tplset, null, null, null, $tpl_name, true);	if ( empty( $tplobj ) ) {
-		// Forth, find a DB template in default tplset
+		// 5th, find a DB template in default tplset
 		$tplobj = $tplfile_handler->find( 'default', null, null, null, $tpl_name, true);
 		if( empty( $tplobj ) ) return false ;
 	}

@@ -1,12 +1,12 @@
 /**************************************************
  * 【 モジュール名 】WizMobile
- * 【  バージョン  】0.1.3
- * 【   権 利 者   】gusagi
- * 【   作 成 者   】gusagi
- * 【  ライセンス  】GNU General Public License Version 2(GPL2)
+ * 【  バージョン  】0.20
+ * 【   権 利 者   】Makoto Hashiguchi a.k.a. gusagi
+ * 【   作 成 者   】Makoto Hashiguchi a.k.a. gusagi
+ * 【  ライセンス  】GNU General Public License Version2 with the special exception
  * 【 ホームページ 】http://www.gusagi.com/
  * 【メールアドレス】gusagi@gusagi.com
- * 【   動作環境   】XOOPS Cube Legacy 2.1.3以降
+ * 【   動作環境   】XOOPS Cube Legacy 2.1.4以降
 **************************************************/
 
 【はじめに】
@@ -35,6 +35,13 @@ XOOPS_ROOT_PATH側にhtml配下を、XOOPS_TRUST_PATH側にxoops_trust_path配下を
 アップロード後は、XOOPS Cubeの管理画面からモジュールインストールを実行して下さい。
 モジュールの管理画面は、現時点では存在しません。
 インストールが完了した時点で導入完了となります。
+
+
+【必須設定】（※ホダ塾ディストリビューションをご利用の場合は、この設定は不要です）
+同梱のsite_custom.ini.phpを、XOOPS_ROOT_PATH/settingsにコピーして下さい。
+既にsite_custom.ini.phpが存在する場合は、[RenderSystems][Legacy]
+[Legacy_Controller][Legacy_WizMobileRenderSystem]に関する記述を追記して下さい。
+
 
 
 【追加設定】
@@ -67,15 +74,9 @@ othermobile = true
 と記入して下さい。
 XOOPS_ROOT_PATH/settings/site_custom.ini.phpが存在しない場合は、作成して下さい。
 
-
 【注意事項】
-本モジュール自体のライセンスはGPL2ですが、本モジュールが依存する
-フレームワーク"Wizin"は、Creative Commons(表示 - 非営利 - 継承)となります。
-フレームワークの使用許諾条件を満たせない場合、フレームワーク部分については
-使用を制限させて頂く場合がありますので、ご注意下さい。
-Creative Commonsの使用許諾条件は、下記URLをご確認下さい。
-  http://creativecommons.org/licenses/by-nc-sa/2.1/jp/
-  http://creativecommons.org/licenses/by-nc-sa/2.1/jp/legalcode
+本モジュール自体のライセンスはGPL2ですが、修正BSDライセンスの
+フレームワーク"Wizin"に依存しています。
 
 
 【今後の予定】

@@ -1,12 +1,12 @@
 /**************************************************
  * 【 モジュール名 】WizXC
- * 【  バージョン  】0.1.0
- * 【   権 利 者   】gusagi
- * 【   作 成 者   】gusagi
- * 【  ライセンス  】GNU General Public License Version 2(GPL2)
+ * 【  バージョン  】0.1.1
+ * 【   権 利 者   】Makoto Hashiguchi a.k.a. gusagi
+ * 【   作 成 者   】Makoto Hashiguchi a.k.a. gusagi
+ * 【  ライセンス  】GNU General Public License Version2 with the special exception
  * 【 ホームページ 】http://www.gusagi.com/
  * 【メールアドレス】gusagi@gusagi.com
- * 【   動作環境   】XOOPS Cube Legacy 2.1.3以降
+ * 【   動作環境   】XOOPS Cube Legacy 2.1.4以降
 **************************************************/
 
 【はじめに】
@@ -27,13 +27,8 @@
 XOOPS_TRUST_PATH/modulesにアップロードして下さい。
 
 【注意事項】
-本モジュール自体のライセンスはGPL2ですが、本モジュールが依存する
-フレームワーク"Wizin"は、Creative Commons(表示 - 非営利 - 継承)となります。
-フレームワークの使用許諾条件を満たせない場合、フレームワーク部分については
-使用を制限させて頂く場合がありますので、ご注意下さい。
-Creative Commonsの使用許諾条件は、下記URLをご確認下さい。
-  http://creativecommons.org/licenses/by-nc-sa/2.1/jp/
-  http://creativecommons.org/licenses/by-nc-sa/2.1/jp/legalcode
+本モジュール自体のライセンスはGPL2ですが、修正BSDライセンスの
+フレームワーク"Wizin"に依存しています。
 
 【今後の予定】
 ・未定

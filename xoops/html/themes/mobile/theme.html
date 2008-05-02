@@ -7,12 +7,10 @@
 
 <body>
 <div style="font-size: 0.9em; text-align: center;">
-<a name="PageTop">
+<a name="PageTop" id="PageTop"></a>
 <img src="<{$xoops_url}>/themes/<{$xoops_theme}>/images/mobile_head.jpg" alt="<{$xoops_sitename}>" /><br />
-<{$xoops_sitename}>
-</a>
+<{$xoops_sitename}><br />
 </div>
-<br />
 
 <{* login form(from) *}>
 <div style="font-size: 0.7em; text-align: center;">
@@ -36,15 +34,16 @@
 <{* page navi(from) *}>
 <div style="font-size: 0.7em; text-align: left;">
 <a href="<{$xoops_url}>/" accesskey="0">[0]Home</a>
-<a href="<{$xoops_url}>/search.php" accesskey="*">[*]<{$smarty.const.WIZMOBILE_LANG_SEARCH}></a>
+<a href="#PageBottom" accesskey="8">[8]<{"WIZMOBILE_LANG_PAGE_BOTTOM"|wiz_constant}></a>
+<a href="<{$xoops_url}>/search.php" accesskey="*">[*]<{"WIZMOBILE_LANG_SEARCH"|wiz_constant}></a>
 <{if $xoops_isuser === true}>
-    <a href="<{$xoops_url}>/user.php?op=logout" accesskey="#">[#]<{$smarty.const.WIZMOBILE_LANG_LOGOUT}></a>
+    <a href="<{$xoops_url}>/user.php?op=logout" accesskey="#">[#]<{"WIZMOBILE_LANG_LOGOUT"|wiz_constant}></a>
 <{else}>
-    <a href="<{$xoops_url}>/user.php" accesskey="#">[#]<{$smarty.const.WIZMOBILE_LANG_LOGIN}></a>
+    <a href="<{$xoops_url}>/user.php" accesskey="#">[#]<{"WIZMOBILE_LANG_LOGIN"|wiz_constant}></a>
 <{/if}>
 <{if $xoops_contents != ''}>
     <br />
-    <a href="#Maincontents" accesskey="5">[5]<{$smarty.const.WIZMOBILE_LANG_MAIN_CONTENTS}></a>
+    <a href="#Maincontents" accesskey="5">[5]<{"WIZMOBILE_LANG_MAIN_CONTENTS"|wiz_constant}></a>
 <{/if}>
 <hr />
 </div>
@@ -56,7 +55,7 @@
 <{foreach name="xoops_lblocks" item=block from=$xoops_lblocks}>
     <{if $smarty.foreach.xoops_lblocks.index !== 0}>/<{/if}>
     <{if $block.title|regex_replace:"/.*none/":"none" ne "none"}>
-        <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZXC_URI_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
+        <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZMOBILE_BID_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
     <{/if}>
 <{/foreach}>
 <br />
@@ -65,7 +64,7 @@
 <{foreach name="xoops_rblocks" item=block from=$xoops_rblocks}>
     <{if $smarty.foreach.xoops_rblocks.index !== 0}>/<{/if}>
     <{if $block.title|regex_replace:"/.*none/":"none" ne "none"}>
-        <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZXC_URI_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
+        <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZMOBILE_BID_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
     <{/if}>
 <{/foreach}>
 <br />
@@ -75,7 +74,7 @@
     <{foreach name="xoops_ccblocks" item=block from=$xoops_ccblocks}>
         <{if $smarty.foreach.xoops_ccblocks.index !== 0}>/<{/if}>
         <{if $block.title|regex_replace:"/.*none/":"none" ne "none"}>
-            <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZXC_URI_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
+            <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZMOBILE_BID_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
         <{/if}>
     <{/foreach}>
     <br />
@@ -86,7 +85,7 @@
     <{foreach name="xoops_clblocks" item=block from=$xoops_clblocks}>
         <{if $smarty.foreach.xoops_clblocks.index !== 0}>/<{/if}>
         <{if $block.title|regex_replace:"/.*none/":"none" ne "none"}>
-            <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZXC_URI_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
+            <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZMOBILE_BID_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
         <{/if}>
     <{/foreach}>
     <br />
@@ -97,7 +96,7 @@
     <{foreach name="xoops_crblocks" item=block from=$xoops_crblocks}>
         <{if $smarty.foreach.xoops_crblocks.index !== 0}>/<{/if}>
         <{if $block.title|regex_replace:"/.*none/":"none" ne "none"}>
-            <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZXC_URI_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
+            <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZMOBILE_BID_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
         <{/if}>
     <{/foreach}>
     <br />
@@ -119,8 +118,8 @@
 <{* xoops_contents area(from) *}>
 <{if $xoops_contents != ''}>
 <div style="font-size: 0.8em;">
-    <a name="Maincontents">&nbsp;</a>
-    <{$xoops_contents}>
+    <a name="Maincontents"></a>
+    <{$xoops_contents|wiz_pager:8}>
     <hr />
 </div>
 <{/if}>
@@ -130,24 +129,24 @@
 <{* page navi(from) *}>
 <div style="font-size: 0.7em; text-align: left;">
 <a href="<{$xoops_url}>/" accesskey="0">[0]Home</a>
-<a href="#PageTop" accesskey="2">[2]<{$smarty.const.WIZMOBILE_LANG_PAGE_TOP}></a>
-<a href="<{$xoops_url}>/search.php" accesskey="*">[*]<{$smarty.const.WIZMOBILE_LANG_SEARCH}></a>
+<a href="#PageTop" accesskey="2">[2]<{"WIZMOBILE_LANG_PAGE_TOP"|wiz_constant}></a>
+<a href="<{$xoops_url}>/search.php" accesskey="*">[*]<{"WIZMOBILE_LANG_SEARCH"|wiz_constant}></a>
 <{if $xoops_isuser === true}>
-    <a href="<{$xoops_url}>/user.php?op=logout" accesskey="#">[#]<{$smarty.const.WIZMOBILE_LANG_LOGOUT}></a>
+    <a href="<{$xoops_url}>/user.php?op=logout" accesskey="#">[#]<{"WIZMOBILE_LANG_LOGOUT"|wiz_constant}></a>
 <{else}>
-    <a href="<{$xoops_url}>/user.php" accesskey="#">[#]<{$smarty.const.WIZMOBILE_LANG_LOGIN}></a>
+    <a href="<{$xoops_url}>/user.php" accesskey="#">[#]<{"WIZMOBILE_LANG_LOGIN"|wiz_constant}></a>
 <{/if}>
 <{if $xoops_contents != ''}>
     <br />
-    <a href="#Maincontents" accesskey="5">[5]<{$smarty.const.WIZMOBILE_LANG_MAIN_CONTENTS}></a>
+    <a href="#Maincontents" accesskey="5">[5]<{"WIZMOBILE_LANG_MAIN_CONTENTS"|wiz_constant}></a>
 <{/if}>
+</div>
 <{* page navi(to) *}>
 
 <hr />
 <div  style="font-size: 0.8em;">
-<a name="PageBottom">
+<a name="PageBottom" id="PageBottom"></a>
 Copyright&copy;2007 - 2008 Hodajuku All Rights Reserved.
-</a>
 </div>
 
 </body>

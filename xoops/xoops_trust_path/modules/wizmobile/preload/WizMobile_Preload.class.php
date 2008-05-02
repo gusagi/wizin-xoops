@@ -1,7 +1,5 @@
 <?php
 /**
- * WizMobile module preload script for XOOPS Cube Legacy2.1
- *
  * PHP Versions 4.4.X or upper version
  *
  * @package  WizMobile
@@ -33,15 +31,8 @@
  *
  */
 
-if( ! defined( 'XOOPS_ROOT_PATH' ) ) exit ;
-
-$initScript = dirname( dirname(__FILE__) ) . '/init.php';
-if ( file_exists($initScript) && is_readable($initScript) ) {
-    require_once $initScript;
-}
-
-if ( ! class_exists('CallWizMobile') ) {
-    class CallWizMobile extends XCube_ActionFilter
+if ( ! class_exists('WizMobile_Preload') ) {
+    class WizMobile_Preload extends XCube_ActionFilter
     {
         function preBlockFilter()
         {
@@ -106,5 +97,5 @@ $mod_dir = basename( dirname(dirname($frontFile)) );
 preg_match( "/(\w+)\.class\.php/", strtolower(basename(__FILE__)), $matches );
 $className = $mod_dir . "_" . $matches[1];
 if ( ! class_exists($className) ) {
-    eval( "class $className extends CallWizMobile {}" );
+    eval( "class $className extends WizMobile_Preload {}" );
 }

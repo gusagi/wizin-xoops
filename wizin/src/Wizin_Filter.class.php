@@ -13,6 +13,7 @@
 
 if ( ! class_exists('Wizin_Filter') ) {
     require 'Wizin.class.php';
+    require_once 'src/util/Web.class.php';
 
     class Wizin_Filter extends Wizin_StdClass
     {
@@ -66,23 +67,6 @@ if ( ! class_exists('Wizin_Filter') ) {
             $this->_aOutputFilter[] = array( $function, $params );
         }
 
-        /*
-        function executeOutputFilter()
-        {
-            $outputFilter = & $this->_aOutputFilter;
-            for ( $index = 0; $index < count($outputFilter); $index ++ ) {
-                $filter = & $outputFilter[$index];
-                $function =& $filter[0];
-                $args =& $filter[1];
-                Wizin_Util::callUserFuncArrayReference( $function, $args );
-                unset( $filter );
-                unset( $function );
-                unset( $args );
-            }
-            $this->_aOutputFilter = array();
-        }
-        */
-
         function executeOutputFilter( & $contents )
         {
             $outputFilter = & $this->_aOutputFilter;
@@ -106,7 +90,7 @@ if ( ! class_exists('Wizin_Filter') ) {
         {
             if ( extension_loaded('mbstring') ) {
                 if ( empty($inputEncoding) ) {
-                    $inputEncoding = mb_detect_encoding( serialize($_REQUEST) );
+                    $inputEncoding = mb_detect_encoding( serialize($_REQUEST), 'auto' );
                 }
                 $internalEncoding = mb_internal_encoding();
                 mb_convert_variables( $internalEncoding, $inputEncoding, $_GET );
@@ -131,8 +115,10 @@ if ( ! class_exists('Wizin_Filter') ) {
             return $contents;
         }
 
-        function filterOptimizeMobile( & $contents )
+        function filterOptimizeMobile( & $contents, $baseUri, $currentUri, $basePath, $createDir = WIZIN_CACHE_DIR )
         {
+            $maxImageWidth = 228;
+            Wizin_Util_Web::createThumbnail( $contents, $baseUri, $currentUri, $basePath, $createDir, $maxImageWidth );
             // replace input type "password" => "text"
             $pattern = '(<input)([^>]*)(type=)([\"\'])(password)([\"\'])([^>]*)(>)';
             $replacement = '${1}${2}${3}${4}text${6} ${7}${8}';
@@ -141,13 +127,17 @@ if ( ! class_exists('Wizin_Filter') ) {
             $pattern = '@<script[^>]*?>.*?<\/script>@si';
             $replacement = '';
             $contents = preg_replace( $pattern, $replacement, $contents );
+            // delete del tags
+            $pattern = '@<del[^>]*?>.*?<\/del>@si';
+            $replacement = '';
+            $contents = preg_replace( $pattern, $replacement, $contents );
             // delete comment
             $pattern = '<!--[\s\S]*?-->';
             $replacement = '';
             $contents = preg_replace( "/" .$pattern ."/", $replacement, $contents );
             // convert from zenkaku to hankaku
             if ( extension_loaded('mbstring') ) {
-                $contents = mb_convert_kana( $contents, 'ak' );
+                $contents = mb_convert_kana( $contents, 'knr' );
             }
             return $contents;
         }
@@ -163,7 +153,9 @@ if ( ! class_exists('Wizin_Filter') ) {
                     $hrefArray = array();
                     $url = $match[5];
                     if ( substr($url, 0, 4) !== 'http' ) {
-                        if ( substr($url, 0, 1) === '/' ) {
+                        if ( substr($url, 0, 1) === '#' ) {
+                            continue;
+                        } else if ( substr($url, 0, 1) === '/' ) {
                             $parseUrl = parse_url( $baseUri );
                             $url = str_replace( $parseUrl['path'], '', $baseUri ) . $url;
                         } else {
@@ -188,7 +180,7 @@ if ( ! class_exists('Wizin_Filter') ) {
                                 $href = $url . $connector . SID;
                             }
                             $contents = str_replace( $match[3] . $match[4] .$match[5] . $match[6],
-                                $match[3] . $match[4] .$href . $match[6], $contents );
+                                $match[3] . $match[4] . $href . $match[6], $contents );
                         }
                     }
                 }
@@ -203,7 +195,9 @@ if ( ! class_exists('Wizin_Filter') ) {
                         $form = $match[0];
                         $action = $match[10];
                         if ( substr($action, 0, 4) !== 'http' ) {
-                            if ( substr($action, 0, 1) === '/' ) {
+                            if ( substr($action, 0, 1) === '#' ) {
+                                continue;
+                            } else if ( substr($action, 0, 1) === '/' ) {
                                 $parseUrl = parse_url( $baseUri );
                                 $action = str_replace( $parseUrl['path'], '', $baseUri ) . $action;
                             } else {
@@ -246,7 +240,9 @@ if ( ! class_exists('Wizin_Filter') ) {
                         $form = $match[0];
                         $action = $match[5];
                         if ( substr($action, 0, 4) !== 'http' ) {
-                            if ( substr($action, 0, 1) === '/' ) {
+                            if ( substr($action, 0, 1) === '#' ) {
+                                continue;
+                            } else if ( substr($action, 0, 1) === '/' ) {
                                 $parseUrl = parse_url( $baseUri );
                                 $action = str_replace( $parseUrl['path'], '', $baseUri ) . $action;
                             } else {

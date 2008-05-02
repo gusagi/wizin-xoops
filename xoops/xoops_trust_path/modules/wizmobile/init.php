@@ -2,23 +2,58 @@
 /**
  * WizMobile module init script for XOOPS Cube Legacy2.1
  *
- * PHP Versions 4
+ * PHP Versions 4.4.X or upper version
  *
  * @package  WizMobile
- * @author  gusagi<gusagi@gusagi.com>
- * @copyright  2007 - 2008 gusagi
+ * @author  Makoto Hashiguchi a.k.a. gusagi<gusagi@gusagi.com>
+ * @copyright 2008 Makoto Hashiguchi
+ * @license GNU General Public License Version2
  *
  */
 
+/**
+ * GNU General Public License Version2
+ *
+ * Copyright (C) 2008  < Makoto Hashiguchi a.k.a. gusagi >
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ */
+
+// direct access protect
 $scriptFileName = getenv( 'SCRIPT_FILENAME' );
 if ( $scriptFileName === __FILE__ ) {
     exit();
 }
 
+// call wizxc's init process
 $initScript = XOOPS_TRUST_PATH . '/modules/wizxc/init.php';
 if ( file_exists($initScript) && is_readable($initScript) ) {
     require_once $initScript;
 }
 
+// include language file
+$language = empty( $GLOBALS['xoopsConfig']['language'] ) ? 'english' : $GLOBALS['xoopsConfig']['language'];
+if( file_exists( XOOPS_ROOT_PATH . '/modules/' . $myfrontdirname . '/language/' . $language . '/main.php' ) ) {
+    require XOOPS_ROOT_PATH . '/modules/' . $myfrontdirname . '/language/' . $language . '/main.php';
+}
+if( file_exists( dirname(__FILE__) . '/language/' . $language . '/main.php' ) ) {
+    require dirname(__FILE__) . '/language/' . $language . '/main.php';
+}
+
+// call this module's init process
 require dirname( __FILE__ ) . '/class/WizMobile.class.php';
 $wizMobile =& WizMobile::getSingleton();
