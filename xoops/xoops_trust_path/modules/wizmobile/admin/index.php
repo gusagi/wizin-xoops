@@ -53,20 +53,20 @@ $systemStatus = array();
 // image resize
 $createDir = XOOPS_ROOT_PATH . '/uploads/wizmobile';
 if ( extension_loaded('gd') && file_exists($createDir) && is_dir($createDir) && is_writable($createDir) ) {
-    $systemStatus['imageResize']['result'] = Wizin_Util::constant( 'WIZMOBILE_ENABLE' );
+    $systemStatus['imageResize']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_ENABLE' );
 } else {
-    $systemStatus['imageResize']['result'] = Wizin_Util::constant( 'WIZMOBILE_DISABLE' );
+    $systemStatus['imageResize']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_DISABLE' );
     $systemStatus['imageResize']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_GD_NOT_EXISTS' );
 }
 
 // partition page
 if ( class_exists('DOMDocument') && class_exists('SimpleXMLElement') ) {
-    $systemStatus['partitionPage']['result'] = Wizin_Util::constant( 'WIZMOBILE_ENABLE' );
+    $systemStatus['partitionPage']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_ENABLE' );
     if ( ! function_exists('tidy_repair_string') ) {
         $systemStatus['partitionPage']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_TIDY_NOT_EXISTS' );
     }
 } else {
-    $systemStatus['partitionPage']['result'] = Wizin_Util::constant( 'WIZMOBILE_DISABLE' );
+    $systemStatus['partitionPage']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_DISABLE' );
     if ( ! class_exists('DOMDocument') ) {
         $systemStatus['partitionPage']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_DOM_NOT_EXISTS' );
     }
