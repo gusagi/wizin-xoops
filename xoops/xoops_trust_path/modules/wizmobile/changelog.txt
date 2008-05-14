@@ -1,24 +1,33 @@
 ----------------------------------
-[2008-04.19 Ver 0.1.4 -> 0.1.5]
+[2008-05-14 Ver 0.1.5 -> 0.20]
+- Fixed some bug.
+- Adding some functions.
+  - Resize image.
+  - Page division.
+  - Non display block setting.
+  - Simple login.
+- Rewrite many codes.
+----------------------------------
+[2008-04-19 Ver 0.1.4 -> 0.1.5]
 - Fixed bug about failed mb_detect_encoding, when "mbstring.detect_order" not exists in php.ini.(thx mitsunobu)
 - Exchange resource.db.php.
 ----------------------------------
-[2008-04.06 Ver 0.1.3 -> 0.1.4]
+[2008-04-06 Ver 0.1.3 -> 0.1.4]
 - Adding the preamble of the license.
 - Adding PHP version check logic.
 ----------------------------------
-[2008-03.10 Ver 0.1.2 -> 0.1.3]
+[2008-03-10 Ver 0.1.2 -> 0.1.3]
 - Fixed bug about session does not continue, When href in a tag is only file name. (thx naao)
 ----------------------------------
-[2008-03.08 Ver 0.1.1 -> 0.1.2]
+[2008-03-08 Ver 0.1.1 -> 0.1.2]
 - Fixed bug about session does not continue, When action in form tag is only file name. (thx naao)
 - Fixed bug about failed assign values of $GLOBALS['xoopsTpl']. (thx naao)
 - Fixed bug about wrong character set change. (thx kotepan)
 ----------------------------------
-[2008-03.04 Ver 0.1.0 -> 0.1.1]
+[2008-03-04 Ver 0.1.0 -> 0.1.1]
 - Fixed bug about session does not continue, When action in form tag is blank.
 - Fixed bug about the block whose cache is effective is not indicated.
 ----------------------------------
-[2008-03.03 Ver 0.1.0]
+[2008-03-03 Ver 0.1.0]
 - First release.
 ----------------------------------

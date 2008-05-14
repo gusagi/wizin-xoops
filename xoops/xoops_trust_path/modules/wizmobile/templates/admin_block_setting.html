@@ -1,0 +1,32 @@
+<div style="margin-left: 0.5em; padding: 1em;">
+    <form action="" method="post">
+        <table class="outer" style="margin-bottom: 1em;">
+            <tr class="head">
+                <th style="width: 4em; text-align: center;"><{"WIZMOBILE_LANG_NON_DISPLAY"|wiz_constant}></th>
+                <th><{"WIZMOBILE_LANG_BLOCK_TITLE"|wiz_constant}></th>
+                <th><{"WIZMOBILE_LANG_MODULE_NAME"|wiz_constant}></th>
+                <th><{"WIZMOBILE_LANG_DIRNAME"|wiz_constant}></th>
+            </tr>
+            <{foreach name=fe_blocks item=itm_blocks key=key_blocks from=$blocks}>
+            <tr class="<{cycle values="odd, even"}>">
+                <td style="text-align: center;">
+                    <input type="checkbox" name="wmb_bid[]" value="<{$itm_blocks.bid}>" <{if $itm_blocks.bid|@in_array:$nonDisplayBlocks}>checked="checked"<{/if}> />
+                </td>
+                <td>
+                    <{$itm_blocks.title}>
+                </td>
+                <td>
+                    <{$itm_blocks.module_name|default:"--"}>
+                </td>
+                <td>
+                    <{$itm_blocks.dirname|default:"--"}>
+                </td>
+            </tr>
+            <{/foreach}>
+        </table>
+        <div style="text-align: center; width: 100%; margin: auto;">
+            <{wiz_gticket area=$wizmobile_dirname}>
+            <input type="submit" value="<{"WIZMOBILE_LANG_UPDATE"|wiz_constant}>" />
+        </div>
+    </form>
+</div>

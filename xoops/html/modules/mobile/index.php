@@ -33,11 +33,6 @@
  *
  */
 
-$scriptFileName = getenv( 'SCRIPT_FILENAME' );
-if ( $scriptFileName === __FILE__ ) {
-    exit();
-}
-
 require dirname( dirname(dirname(__FILE__)) ) . '/mainfile.php';
 require dirname( __FILE__ ) . '/mytrustdirname.php';
 

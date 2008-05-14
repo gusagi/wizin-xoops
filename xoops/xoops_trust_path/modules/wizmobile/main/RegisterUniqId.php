@@ -1,6 +1,5 @@
 <?php
 /**
- * WizMobile module index script for XOOPS Cube Legacy2.1
  *
  * PHP Versions 4.4.X or upper version
  *
@@ -39,24 +38,33 @@ if ( $scriptFileName === __FILE__ ) {
     exit();
 }
 
-$frontDirname = basename( dirname(dirname($frontFile)) );
-require dirname( __FILE__ ) . '/init.php';
-
-if ( class_exists('Wizin') ) {
-    require dirname( __FILE__ ) . '/class/WizMobile.class.php';
-
-    // execute
-    $wizMobile =& WizMobile::getSingleton();
-    $actionScript = dirname( __FILE__ ) . '/class/WizMobile_Action.class.php';
-    if ( file_exists($actionScript) ) {
-        require $actionScript;
-        if ( class_exists($className) ) {
-            $wizMobileAction = new $className();
-            $wizMobile->setActionClass( $wizMobileAction );
-        }
-    }
-    $preloadScript = dirname( __FILE__ ) . '/preload/WizMobile_Preload.class.php';
-    if ( file_exists($preloadScript) ) {
-        require $preloadScript;
-    }
+// init process
+$xcRoot =& XCube_Root::getSingleton();
+$wizMobile =& WizMobile::getSingleton();
+if ( ! is_object($xcRoot->mContext->mXoopsUser) ) {
+    $xcRoot->mController->executeRedirect( XOOPS_URL . '/user.php', 1, _NOPERM );
+    exit();
 }
+$renderTarget =& $xcRoot->mContext->mModule->getRenderTarget();
+$frontDirname = str_replace( '_wizmobile_action', '', strtolower(get_class($this)) );
+$tplFile = $frontDirname . '_main_register_uniqid.html';
+$renderTarget->setTemplateName( $tplFile );
+
+// if login disabled
+$configs = $this->getModuleConfigs();
+if ( empty($configs['login']) || $configs['login']['wmc_value'] !== '1' ) {
+    $xcRoot->mController->executeForward( XOOPS_URL );
+}
+
+// register and redirect
+$method = getenv( 'REQUEST_METHOD' );
+if ( strtolower($method) === 'post' ) {
+    $this->registerUniqId();
+}
+
+// call header
+require_once XOOPS_ROOT_PATH . '/header.php';
+
+// call footer
+require_once XOOPS_ROOT_PATH . '/footer.php';
+

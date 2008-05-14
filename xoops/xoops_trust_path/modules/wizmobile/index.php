@@ -42,14 +42,18 @@ if ( $scriptFileName === __FILE__ ) {
 $frontDirname = basename( dirname($frontFile) );
 require dirname( __FILE__ ) . '/init.php';
 
-// execute
-$wizMobile =& WizMobile::getSingleton();
-$actionScript = dirname( __FILE__ ) . '/class/WizMobile_Action.class.php';
-if ( file_exists($actionScript) ) {
-    require $actionScript;
-    if ( class_exists($className) ) {
-        $wizMobileAction = new $className();
-        $wizMobile->setActionClass( $wizMobileAction );
-        $wizMobileAction->execute();
+if ( class_exists('Wizin') ) {
+    require dirname( __FILE__ ) . '/class/WizMobile.class.php';
+
+    // execute
+    $wizMobile =& WizMobile::getSingleton();
+    $actionScript = dirname( __FILE__ ) . '/class/WizMobile_Action.class.php';
+    if ( file_exists($actionScript) ) {
+        require $actionScript;
+        if ( class_exists($className) ) {
+            $wizMobileAction = new $className();
+            $wizMobile->setActionClass( $wizMobileAction );
+            $wizMobileAction->execute();
+        }
     }
 }

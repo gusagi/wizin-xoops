@@ -34,12 +34,17 @@
 <{* page navi(from) *}>
 <div style="font-size: 0.7em; text-align: left;">
 <a href="<{$xoops_url}>/" accesskey="0">[0]Home</a>
+<{if $xoops_isuser === true}>
+    <a href="<{$xoops_url}>/modules/<{$wizmobile_dirname}>/index.php?act=Setting" accesskey="1">[1]<{"WIZMOBILE_LANG_SETTING"|wiz_constant}></a>
+<{/if}>
 <a href="#PageBottom" accesskey="8">[8]<{"WIZMOBILE_LANG_PAGE_BOTTOM"|wiz_constant}></a>
 <a href="<{$xoops_url}>/search.php" accesskey="*">[*]<{"WIZMOBILE_LANG_SEARCH"|wiz_constant}></a>
 <{if $xoops_isuser === true}>
     <a href="<{$xoops_url}>/user.php?op=logout" accesskey="#">[#]<{"WIZMOBILE_LANG_LOGOUT"|wiz_constant}></a>
 <{else}>
-    <a href="<{$xoops_url}>/user.php" accesskey="#">[#]<{"WIZMOBILE_LANG_LOGIN"|wiz_constant}></a>
+    <{if $wizmobile_configs.login.wmc_value == 1}>
+        <a href="<{$xoops_url}>/modules/<{$wizmobile_dirname}>/index.php?act=Login" accesskey="#">[#]<{"WIZMOBILE_LANG_LOGIN"|wiz_constant}></a>
+    <{/if}>
 <{/if}>
 <{if $xoops_contents != ''}>
     <br />
@@ -115,6 +120,16 @@
 <{* block contents area(to) *}>
 
 
+<{* submenu contents area(from) *}>
+<{if $wizMobileSubMenuContents != ''}>
+<div style="font-size: 0.7em; text-align: left;">
+    <{$wizMobileSubMenuContents}>
+    <hr />
+</div>
+<{/if}>
+<{* submenu contents area(to) *}>
+
+
 <{* xoops_contents area(from) *}>
 <{if $xoops_contents != ''}>
 <div style="font-size: 0.8em;">
@@ -128,17 +143,22 @@
 
 <{* page navi(from) *}>
 <div style="font-size: 0.7em; text-align: left;">
-<a href="<{$xoops_url}>/" accesskey="0">[0]Home</a>
+<a href="<{$xoops_url}>/">[0]Home</a>
+<{if $xoops_isuser === true}>
+    <a href="<{$xoops_url}>/modules/<{$wizmobile_dirname}>/index.php?act=Setting">[1]<{"WIZMOBILE_LANG_SETTING"|wiz_constant}></a>
+<{/if}>
 <a href="#PageTop" accesskey="2">[2]<{"WIZMOBILE_LANG_PAGE_TOP"|wiz_constant}></a>
-<a href="<{$xoops_url}>/search.php" accesskey="*">[*]<{"WIZMOBILE_LANG_SEARCH"|wiz_constant}></a>
+<a href="<{$xoops_url}>/search.php">[*]<{"WIZMOBILE_LANG_SEARCH"|wiz_constant}></a>
 <{if $xoops_isuser === true}>
     <a href="<{$xoops_url}>/user.php?op=logout" accesskey="#">[#]<{"WIZMOBILE_LANG_LOGOUT"|wiz_constant}></a>
 <{else}>
-    <a href="<{$xoops_url}>/user.php" accesskey="#">[#]<{"WIZMOBILE_LANG_LOGIN"|wiz_constant}></a>
+    <{if $wizmobile_configs.login.wmc_value == 1}>
+        <a href="<{$xoops_url}>/modules/<{$wizmobile_dirname}>/index.php?act=Login">[#]<{"WIZMOBILE_LANG_LOGIN"|wiz_constant}></a>
+    <{/if}>
 <{/if}>
 <{if $xoops_contents != ''}>
     <br />
-    <a href="#Maincontents" accesskey="5">[5]<{"WIZMOBILE_LANG_MAIN_CONTENTS"|wiz_constant}></a>
+    <a href="#Maincontents">[5]<{"WIZMOBILE_LANG_MAIN_CONTENTS"|wiz_constant}></a>
 <{/if}>
 </div>
 <{* page navi(to) *}>

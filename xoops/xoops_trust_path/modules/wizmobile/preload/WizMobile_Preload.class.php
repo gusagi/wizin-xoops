@@ -36,40 +36,33 @@ if ( ! class_exists('WizMobile_Preload') ) {
     {
         function preBlockFilter()
         {
-            $wizMobile =& WizMobile::getSingleton();
-            preg_match( "/(\w+)\.class\.php/", strtolower(basename(__FILE__)), $matches );
-            $frontDirname = str_replace( '_' . $matches[1], '', get_class($this) );
-            $actionScript = dirname( dirname(__FILE__) ) . '/class/WizMobile_Action.class.php';
-            if ( file_exists($actionScript) ) {
-                require_once $actionScript;
-                if ( class_exists($className) ) {
-                    $wizMobileAction = new $className();
-                    $wizMobile->setActionClass( $wizMobileAction );
-                }
-            }
+            $this->_preBlockFilter();
             parent::preBlockFilter();
         }
 
         function postFilter()
         {
-            // test code >>
-            if ( strpos($_SERVER['REQUEST_URI'], 'PHPSESSID') !== false ) {
-                $urlArray = explode( 'PHPSESSID', WIZXC_CURRENT_URI );
-                $url = $urlArray[0];
-                if ( substr($url, -1, 1) === '?' || substr($url, -1, 1) === '&' ) {
-                    $url = substr( $url, 0, strlen($url) - 1 );
-                }
-                header( "HTTP/1.1 404 Not Found" );
-                exit();
-            }
-            // test code <<
+            $this->_postFilter();
+            parent::postFilter();
+        }
+
+        function _preBlockFilter()
+        {
+            $wizMobile =& WizMobile::getSingleton();
+            $wizMobile->oneTimeProcess();
+        }
+
+        function _postFilter()
+        {
             $wizMobile =& WizMobile::getSingleton();
             $user = & Wizin_User::getSingleton();
             if ( $user->bIsMobile ) {
                 $xcRoot =& XCube_Root::getSingleton();
+                $wizMobileAction =& $wizMobile->getActionClass();
                 // exchange theme
                 $wizMobile->exchangeTheme();
-                // regenerate session id
+                $xcRoot->mDelegateManager->delete( 'Site.CheckLogin', 'User_LegacypageFunctions::checkLogin' );
+                $xcRoot->mDelegateManager->add( 'Site.CheckLogin', array( $wizMobileAction , 'easyLogin') ) ;
                 $xcRoot->mDelegateManager->add( 'Site.CheckLogin.Success', array($wizMobile, 'directLoginSuccess'), XCUBE_DELEGATE_PRIORITY_FINAL );
                 $xcRoot->mDelegateManager->add( 'Site.CheckLogin.Fail', array($wizMobile, 'directLoginFail') );
                 $xcRoot->mDelegateManager->add( 'Site.Logout.Success', array($wizMobile, 'directLogout'),
@@ -78,17 +71,19 @@ if ( ! class_exists('WizMobile_Preload') ) {
                     XCUBE_DELEGATE_PRIORITY_FINAL+1 );
                 $xcRoot->mDelegateManager->add( 'Legacy_AdminControllerStrategy.SetupBlock',
                     array($wizMobile, 'denyAccessAdminArea'), XCUBE_DELEGATE_PRIORITY_FIRST );
-                // insert session_id
                 if ( ! $user->bIsBot ) {
                     // check session
                     $wizMobile->checkMobileSession();
                 } else {
-                    $wizMobile->checkSessionFixation();
+                    // test code >>
+                    //$wizMobile->checkSessionFixation();
+                    // test code <<
                 }
             } else {
-                $wizMobile->checkSessionFixation();
+                // test code >>
+                //$wizMobile->checkSessionFixation();
+                // test code <<
             }
-            parent::postFilter();
         }
     }
 }

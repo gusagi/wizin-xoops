@@ -40,11 +40,18 @@ if ( $scriptFileName === __FILE__ ) {
 
 $frontDirname = basename( dirname($frontFile) );
 require dirname( __FILE__ ) . '/init.php';
-$wizMobile =& WizMobile::getSingleton();
 
 $adminmenu = array();
 $adminmenu[] = array(
-    'title' => 'TEST2' ,
-    'link' => 'admin/admin.php'
+    'title' => Wizin_Util::constant('WIZMOBILE_LANG_SYSTEM_STATUS'),
+    'link' => 'admin/admin.php?act=SystemStatus'
+);
+$adminmenu[] = array(
+    'title' => Wizin_Util::constant('WIZMOBILE_LANG_NON_DISPLAY_BLOCK_SETTING'),
+    'link' => 'admin/admin.php?act=BlockSetting'
+);
+$adminmenu[] = array(
+    'title' => Wizin_Util::constant('WIZMOBILE_LANG_GENERAL_SETTING'),
+    'link' => 'admin/admin.php?act=GeneralSetting'
 );
 

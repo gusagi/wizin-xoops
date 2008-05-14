@@ -43,36 +43,14 @@ XOOPS_ROOT_PATH側にhtml配下を、XOOPS_TRUST_PATH側にxoops_trust_path配下を
 [Legacy_Controller][Legacy_WizMobileRenderSystem]に関する記述を追記して下さい。
 
 
+【0.1系からの変更点】
+site_custom.ini.phpで設定していた項目の幾つかを管理画面で設定するように変更しました。
+また、以下の新機能を追加しています。
+・簡単ログイン
+・画像のリサイズ
+・ページ分割
+・携帯からアクセスした場合に非表示にするブロックの設定
 
-【追加設定】
-(1) host名によるチェックを有効にしたい場合
-XOOPS_ROOT_PATH/settings/site_custom.ini.phpに
-----
-[Mobile]
-lookup = false
-----
-と記入して下さい。
-XOOPS_ROOT_PATH/settings/site_custom.ini.phpが存在しない場合は、作成して下さい。
-
-(2) 携帯用のテーマを変更したい場合
-XOOPS_ROOT_PATH/settings/site_custom.ini.phpに
-----
-[Mobile]
-theme = 変更したいテーマ名
-----
-と記入して下さい。
-XOOPS_ROOT_PATH/settings/site_custom.ini.phpが存在しない場合は、作成して下さい。
-また、携帯用テーマ内の構成、manifesto.ini.phpは、mobileと同じ構成にして下さい。
-（site_custom.ini.phpに上記を記入の上で、mobileをリネームした方が簡単ですが・・・）
-
-(3) WillcomのAdvanced/W-ZERO3[es]なども携帯として扱いたい場合
-XOOPS_ROOT_PATH/settings/site_custom.ini.phpに
-----
-[Mobile]
-othermobile = true
-----
-と記入して下さい。
-XOOPS_ROOT_PATH/settings/site_custom.ini.phpが存在しない場合は、作成して下さい。
 
 【注意事項】
 本モジュール自体のライセンスはGPL2ですが、修正BSDライセンスの
@@ -80,16 +58,17 @@ XOOPS_ROOT_PATH/settings/site_custom.ini.phpが存在しない場合は、作成して下さい。
 
 
 【今後の予定】
-・簡単ログイン
-・画像のリサイズ
 ・絵文字対応
 
 
 【謝辞】
 ・本モジュールのアイコンは、Argon氏が作成して下さいました。
-　本当にありがとうございます。
+・本モジュールで利用しているテーマ下テンプレート、並びにGチケットはGIJOE氏が開発したものを
+　利用しています。
+本当にありがとうございます。
 
 
 --------------
 
 2008年 2月 26日 作成
+2008年 5月 14日 更新

@@ -72,9 +72,8 @@ if ( ! class_exists('WizMobile') ) {
                     // countermeasure against bug which exists until version 0.1.4 >>
                     preg_match_all( '/(mobilebid)/i', $queryString, $matches, PREG_SET_ORDER );
                     if ( count($matches) > 2 ) {
-                        header( "HTTP/1.1 404 Not Found" );
-//                        header( "HTTP/1.1 301 Moved Permanently" );
-//                        header( "Location: " . $currentUri );
+                        header( "HTTP/1.1 301 Moved Permanently" );
+                        header( "Location: " . $currentUri );
                         exit();
                     }
                     // countermeasure against bug which exists until version 0.1.4 <<
@@ -97,51 +96,12 @@ if ( ! class_exists('WizMobile') ) {
 
         function _setup()
         {
-            $xcRoot =& XCube_Root::getSingleton();
-            $user = & Wizin_User::getSingleton();
-            $filter = & Wizin_Filter::getSingleton();
-            @ $mobileConfig = $xcRoot->getSiteConfig( 'Mobile' );
-            $lookup = false;
-            $otherMobile = false;
-            $emulate = false;
-            if ( ! empty($mobileConfig) ) {
-                if ( ! empty($mobileConfig['lookup']) && $mobileConfig['lookup'] == true ) {
-                    $lookup = true;
-                }
-                if ( ! empty($mobileConfig['othermobile']) && $mobileConfig['othermobile'] == true ) {
-                    $otherMobile = true;
-                }
-                if ( ! empty($mobileConfig['emulate']) && $mobileConfig['emulate'] == true ) {
-                    $emulate = true;
-                }
-            }
-            $user->checkClient( $lookup );
-            if ( $user->sCarrier === 'othermobile' ) {
-                $user->bIsMobile = $otherMobile;
-            }
-            if ( $emulate === true && $user->sCarrier === 'unknown' ) {
-                $user->bIsMobile = true;
-                $user->sEncoding = _CHARSET;
-                $user->sCharset = _CHARSET;
-            }
         }
 
         function _init()
         {
             $xcRoot =& XCube_Root::getSingleton();
-            $user = & Wizin_User::getSingleton();
-            if ( $user->bIsMobile ) {
-                if ( ! $user->bCookie ) {
-                    Wizin_Session::overrideSessionIni( false );
-                }
-                $this->_inputFilter();
-                $this->_exchangeRenderSystem();
-                $xcRoot->mDelegateManager->add( 'XoopsTpl.New' , array( $this , 'registerModifier' ) ) ;
-                register_shutdown_function( array($this, '_finishFilter') );
-            } else {
-                ini_set( 'default_charset', _CHARSET );
-                header( 'Content-Type:text/html; charset=' . _CHARSET );
-            }
+            $xcRoot->mDelegateManager->add( 'XoopsTpl.New' , array( $this , 'assignVars' ) ) ;
         }
 
         function setActionClass( & $actionClass )
@@ -155,11 +115,48 @@ if ( ! class_exists('WizMobile') ) {
             return $actionClass;
         }
 
+        function oneTimeProcess()
+        {
+            static $callFlag;
+            if ( ! isset($callFlag) ) {
+                $callFlag = true;
+                $xcRoot =& XCube_Root::getSingleton();
+                $user = & Wizin_User::getSingleton();
+                $filter = & Wizin_Filter::getSingleton();
+                $actionClass =& $this->getActionClass();
+                $configs = $actionClass->getModuleConfigs();
+                if ( ! empty($configs['lookup']) && $configs['lookup']['wmc_value'] === '1' ) {
+                    $lookup = true;
+                } else {
+                    $lookup = false;
+                }
+                if ( ! empty($configs['otherMobile']) && $configs['otherMobile']['wmc_value'] === '1' ) {
+                    $otherMobile = true;
+                } else {
+                    $otherMobile = false;
+                }
+                $user->checkClient( $lookup );
+                if ( $user->sCarrier === 'othermobile' ) {
+                    $user->bIsMobile = $otherMobile;
+                }
+                if ( $user->bIsMobile ) {
+                    if ( ! $user->bCookie ) {
+                        Wizin_Session::overrideSessionIni( false );
+                    }
+                    $this->_inputFilter();
+                    $this->_exchangeRenderSystem();
+                    register_shutdown_function( array($this, '_finishFilter') );
+                } else {
+                    ini_set( 'default_charset', _CHARSET );
+                    header( 'Content-Type:text/html; charset=' . _CHARSET );
+                }
+            }
+        }
+
         function _inputFilter()
         {
             $user = & Wizin_User::getSingleton();
             $filter =& Wizin_Filter::getSingleton();
-//            $filter->filterInputEncoding();
             $params = array( $user->sEncoding );
             $filter->addInputFilter( array( $filter, 'filterInputEncoding' ), $params );
             $filter->executeInputFilter();
@@ -208,21 +205,16 @@ if ( ! class_exists('WizMobile') ) {
             $xcRoot->mDelegateManager->add( 'LegacyThemeHandler.GetInstalledThemes',
                 'LegacyWizMobileRender_DelegateFunctions::getInstalledThemes',
                 XOOPS_TRUST_PATH . '/modules/wizmobile/class/DelegateFunctions.class.php' );
-//            $xcRoot->overrideSiteConfig( array('Legacy_RenderSystem' => $xcRoot->mSiteConfig['Legacy_WizMobileRenderSystem']) );
             $xcRoot->mContext->mBaseRenderSystemName = 'Legacy_WizMobileRenderSystem';
         }
 
         function exchangeTheme()
         {
             $xcRoot =& XCube_Root::getSingleton();
-            @ $mobileConfig = $xcRoot->getSiteConfig( 'Mobile' );
-            if ( ! empty($mobileConfig) ) {
-                // theme
-                if ( ! empty($mobileConfig['theme']) && $mobileConfig['theme'] !== 'mobile' ) {
-                    $theme = $mobileConfig['theme'];
-                } else {
-                    $theme = 'mobile';
-                }
+            $actionClass =& $this->getActionClass();
+            $configs = $actionClass->getModuleConfigs();
+            if ( ! empty($configs) && ! empty($configs['theme']) && ! empty($configs['theme']['wmc_value']) ) {
+                $theme = $configs['theme']['wmc_value'];
             } else {
                 $theme = 'mobile';
             }
@@ -236,10 +228,11 @@ if ( ! class_exists('WizMobile') ) {
         function directLoginSuccess()
         {
             $xcRoot =& XCube_Root::getSingleton();
-            session_regenerate_id();
+            $xcRoot->mSession->regenerate();
             $user = & Wizin_User::getSingleton();
             $url = ( ! $user->bCookie ) ? XOOPS_URL. '/' . '?' . SID : XOOPS_URL;
-            $_SESSION["redirect_message"] = XCube_Utils::formatMessage( _MD_LEGACY_MESSAGE_LOGIN_SUCCESS, $xcRoot->mContext->mXoopsUser->get('uname') );
+            $_SESSION["redirect_message"] = XCube_Utils::formatMessage( _MD_LEGACY_MESSAGE_LOGIN_SUCCESS,
+                $xcRoot->mContext->mXoopsUser->get('uname') );
             header("Location: " . $url );
             exit();
         }
@@ -247,9 +240,9 @@ if ( ! class_exists('WizMobile') ) {
         function directLoginFail()
         {
             $xcRoot =& XCube_Root::getSingleton();
-            session_regenerate_id();
+            $xcRoot->mSession->regenerate();
             $user = & Wizin_User::getSingleton();
-            $url = ( $user->bCookie ) ? XOOPS_URL. '/' . '?' . SID : XOOPS_URL;
+            $url = ( ! $user->bCookie ) ? XOOPS_URL. '/' . '?' . SID : XOOPS_URL;
             $_SESSION["redirect_message"] = _MD_LEGACY_ERROR_INCORRECTLOGIN;
             header("Location: " . $url );
             exit();
@@ -258,7 +251,8 @@ if ( ! class_exists('WizMobile') ) {
         function directLogout()
         {
             WizXc_Util::sessionDestroy();
-            session_regenerate_id();
+            $xcRoot =& XCube_Root::getSingleton();
+            $xcRoot->mSession->regenerate();
             $user = & Wizin_User::getSingleton();
             $url = ( ! $user->bCookie ) ? XOOPS_URL. '/' . '?' . SID : XOOPS_URL;
             $_SESSION["redirect_message"] = htmlspecialchars( _MD_LEGACY_MESSAGE_LOGGEDOUT, ENT_QUOTES ) . '<br />';
@@ -362,34 +356,13 @@ if ( ! class_exists('WizMobile') ) {
             $filter->addOutputFilter( array( $filter, 'filterOutputEncoding' ), $params );
             $filter->addOutputFilter( array( $filter, '_directRedirect' ) );
             $filter->executeOutputFilter( $contents );
-            /*
-            if ( ! $user->bCookie ) {
-                $params = array( & $contents, XOOPS_URL, WIZMOBILE_CURRENT_URI );
-                $filter->addOutputFilter( array( $filter, 'filterTransSid' ), $params );
-            }
-            $params = array( & $contents );
-            $filter->addOutputFilter( array( $filter, 'filterOptimizeMobile' ), $params );
-            $params = array( & $contents, $user->sEncoding, $user->sCharset );
-            $filter->addOutputFilter( array( $filter, 'filterOutputEncoding' ), $params );
-            $params = array( & $contents );
-            $filter->addOutputFilter( array( $filter, '_directRedirect' ), $params );
-            $filter->executeOutputFilter();
-            */
-            /*
-            if ( ! $user->bCookie ) {
-                $contents = $filter->filterTransSid( $contents, XOOPS_URL, WIZMOBILE_CURRENT_URI );
-            }
-            $contents = $filter->filterOptimizeMobile( $contents );
-            $contents = $filter->filterOutputEncoding( $contents, $user->sEncoding, $user->sCharset );
-            $contents = $this->_directRedirect( $contents );
-            */
             header( 'Content-Type:application/xhtml+xml; charset=' . $user->sCharset );
             echo $contents;
         }
 
         function checkSessionFixation()
         {
-            if ( strpos($_SERVER['REQUEST_URI'], session_name()) !== false ) {
+            if ( strpos($_SERVER['REQUEST_URI'], session_name()) !== false && strpos(WIZXC_CURRENT_URI, XOOPS_URL . '/user.php') !== 0 ) {
                 $urlArray = explode( session_name(), WIZXC_CURRENT_URI );
                 $url = $urlArray[0];
                 if ( substr($url, -1, 1) === '?' || substr($url, -1, 1) === '&' ) {
@@ -398,6 +371,20 @@ if ( ! class_exists('WizMobile') ) {
                 header( "HTTP/1.1 404 Not Found" );
                 exit();
             }
+        }
+
+        function assignVars( & $xoopsTpl )
+        {
+            $user = & Wizin_User::getSingleton();
+            $carrier = $user->sCarrier;
+            $xoopsTpl->assign( 'wizmobile_carrier', $carrier );
+            $isMobile = $user->bIsMobile;
+            $xoopsTpl->assign( 'wizmobile_ismobile', $isMobile );
+            $actionClass =& $this->getActionClass();
+            $frontDirName = str_replace( '_wizmobile_action', '', strtolower(get_class($actionClass)) );
+            $xoopsTpl->assign( 'wizmobile_dirname', $frontDirName );
+            $configs = $actionClass->getModuleConfigs();
+            $xoopsTpl->assign( 'wizmobile_configs', $configs );
         }
 
     }

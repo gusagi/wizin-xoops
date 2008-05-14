@@ -53,7 +53,3 @@ if( file_exists( XOOPS_ROOT_PATH . '/modules/' . $myfrontdirname . '/language/' 
 if( file_exists( dirname(__FILE__) . '/language/' . $language . '/main.php' ) ) {
     require dirname(__FILE__) . '/language/' . $language . '/main.php';
 }
-
-// call this module's init process
-require dirname( __FILE__ ) . '/class/WizMobile.class.php';
-$wizMobile =& WizMobile::getSingleton();

@@ -15,11 +15,8 @@ if ( ! class_exists('Wizin_Plugin_User_Willcom') ) {
     {
         function __construct()
         {
-            static $calledFlag;
-            if ( ! isset($calledFlag) ) {
-                $calledFlag = true;
-                $this->_advancedCheck();
-            }
+            $calledFlag = true;
+            $this->_advancedCheck();
         }
 
         function _advancedCheck()

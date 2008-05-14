@@ -1,0 +1,91 @@
+<div style="margin-left: 0.5em; padding: 1em;">
+    <form action="" method="post">
+        <table class="outer" style="margin-bottom: 1em;">
+            <tr class="head">
+                <th style="width: 24em;"><{"WIZMOBILE_LANG_ITEM"|wiz_constant}></th>
+                <th><{"WIZMOBILE_LANG_VALUE"|wiz_constant}></th>
+            </tr>
+            <{* Login *}>
+            <tr class="<{cycle values="odd, even"}>">
+                <td>
+                    <div style="font-size: 110%; font-weight: bolder;"><{"WIZMOBILE_LANG_LOGIN"|wiz_constant}></div>
+                </td>
+                <td>
+                    <span style="margin: 0 0.5em 0 0.5em;">
+                        <label>
+                            <input type="radio" name="wmc_item[login]" value="1" <{if $configs.login.wmc_value == 1}>checked="checked"<{/if}> />
+                            <{"WIZMOBILE_LANG_ENABLE"|wiz_constant}>
+                        </label>
+                    </span>
+                    <span style="margin: 0 0.5em 0 0.5em;">
+                        <label>
+                            <input type="radio" name="wmc_item[login]" value="0" <{if $configs.login.wmc_value == 0}>checked="checked"<{/if}>/>
+                            <{"WIZMOBILE_LANG_DISABLE"|wiz_constant}>
+                        </label>
+                    </span>
+                    <div style="font-size: 90%; font-weight: lighter; margin: 0.5em 0 0 2em;"><{"WIZMOBILE_LANG_LOGIN_DESC"|wiz_constant}></div>
+                </td>
+            </tr>
+            <{* Theme *}>
+            <tr class="<{cycle values="odd, even"}>">
+                <td>
+                    <div style="font-size: 110%; font-weight: bolder;"><{"WIZMOBILE_LANG_THEME"|wiz_constant}></div>
+                </td>
+                <td>
+                    <select name="wmc_item[theme]">
+                        <{foreach name=fe_themes item=itm_themes key=key_themes from=$themes}>
+                            <option value="<{$itm_themes}>" style="min-width: 120px;" <{if $configs.theme.wmc_value == $itm_themes}>selected="selected"<{/if}> ><{$itm_themes}></option>
+                        <{/foreach}>
+                    </select>
+                    <div style="font-size: 90%; font-weight: lighter; margin: 0.5em 0 0 2em;"><{"WIZMOBILE_LANG_THEME_DESC"|wiz_constant}></div>
+                </td>
+            </tr>
+            <{* Lookup *}>
+            <tr class="<{cycle values="odd, even"}>">
+                <td>
+                    <div style="font-size: 110%; font-weight: bolder;"><{"WIZMOBILE_LANG_LOOKUP"|wiz_constant}></div>
+                </td>
+                <td>
+                    <span style="margin: 0 0.5em 0 0.5em;">
+                        <label>
+                            <input type="radio" name="wmc_item[lookup]" value="1" <{if $configs.lookup.wmc_value == 1}>checked="checked"<{/if}> />
+                            <{"WIZMOBILE_LANG_ENABLE"|wiz_constant}>
+                        </label>
+                    </span>
+                    <span style="margin: 0 0.5em 0 0.5em;">
+                        <label>
+                            <input type="radio" name="wmc_item[lookup]" value="0" <{if $configs.lookup.wmc_value == 0}>checked="checked"<{/if}>/>
+                            <{"WIZMOBILE_LANG_DISABLE"|wiz_constant}>
+                        </label>
+                    </span>
+                    <div style="font-size: 90%; font-weight: lighter; margin: 0.5em 0 0 2em;"><{"WIZMOBILE_LANG_LOOKUP_DESC"|wiz_constant}></div>
+                </td>
+            </tr>
+            <{* OtherMobile *}>
+            <tr class="<{cycle values="odd, even"}>">
+                <td>
+                    <div style="font-size: 110%; font-weight: bolder;"><{"WIZMOBILE_LANG_OTHERMOBILE"|wiz_constant}></div>
+                </td>
+                <td>
+                    <span style="margin: 0 0.5em 0 0.5em;">
+                        <label>
+                            <input type="radio" name="wmc_item[othermobile]" value="1" <{if $configs.othermobile.wmc_value == 1}>checked="checked"<{/if}> />
+                            <{"WIZMOBILE_LANG_ENABLE"|wiz_constant}>
+                        </label>
+                    </span>
+                    <span style="margin: 0 0.5em 0 0.5em;">
+                        <label>
+                            <input type="radio" name="wmc_item[othermobile]" value="0" <{if $configs.othermobile.wmc_value == 0}>checked="checked"<{/if}>/>
+                            <{"WIZMOBILE_LANG_DISABLE"|wiz_constant}>
+                        </label>
+                    </span>
+                    <div style="font-size: 90%; font-weight: lighter; margin: 0.5em 0 0 2em;"><{"WIZMOBILE_LANG_OTHERMOBILE_DESC"|wiz_constant}></div>
+                </td>
+            </tr>
+        </table>
+        <div style="text-align: center; width: 100%; margin: auto;">
+            <{wiz_gticket area=$wizmobile_dirname}>
+            <input type="submit" value="<{"WIZMOBILE_LANG_UPDATE"|wiz_constant}>" />
+        </div>
+    </form>
+</div>

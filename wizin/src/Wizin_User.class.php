@@ -17,17 +17,6 @@ if ( ! class_exists('Wizin_User') ) {
 
     class Wizin_User extends Wizin_StdClass
     {
-        function __construct()
-        {
-            $this->_bLookup = false;
-            $this->bIsMobile = false;
-            $this->bIsBot = false;
-            $this->bCookie = true;
-            $this->sCarrier = 'unknown';
-            $this->sUniqId = '';
-            $this->sEncoding = '';
-            $this->sCharset = '';
-        }
 
         function &getSingleton()
         {
@@ -40,7 +29,6 @@ if ( ! class_exists('Wizin_User') ) {
 
         function checkClient( $lookup = false )
         {
-            $this->_bLookup = $lookup;
             $ip = getenv( 'REMOTE_ADDR' );
             $agent = getenv( 'HTTP_USER_AGENT' );
             $parser =& Wizin_Parser_Yaml::getSingleton();
@@ -84,6 +72,14 @@ if ( ! class_exists('Wizin_User') ) {
                         $instance = new $class;
                     }
                 }
+            } else {
+                $this->bIsMobile = false;
+                $this->bIsBot = false;
+                $this->bCookie = true;
+                $this->sCarrier = 'unknown';
+                $this->sUniqId = '';
+                $this->sEncoding = '';
+                $this->sCharset = '';
             }
         }
 

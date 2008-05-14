@@ -19,24 +19,26 @@ if ( ! defined('WIZIN_LOADED') ) {
     require_once 'src/Wizin_Ref.php';
     require_once 'src/Wizin_Util.class.php';
 
-    /**
-     * @access public
-     *
-     */
-    class Wizin extends Wizin_StdClass
-    {
-
+    if ( class_exists('Wizin_StdClass') ) {
         /**
          * @access public
-         * @return Wizin
+         *
          */
-        function &getSingleton()
+        class Wizin extends Wizin_StdClass
         {
-            static $instance;
-            if ( ! isset($instance) ) {
-                $instance = new Wizin();
+
+            /**
+             * @access public
+             * @return Wizin
+             */
+            function &getSingleton()
+            {
+                static $instance;
+                if ( ! isset($instance) ) {
+                    $instance = new Wizin();
+                }
+                return $instance;
             }
-            return $instance;
         }
     }
 }

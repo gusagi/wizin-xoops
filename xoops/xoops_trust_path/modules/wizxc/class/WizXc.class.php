@@ -35,7 +35,7 @@
 if ( ! class_exists('WizXc') ) {
     class WizXc
     {
-        function WizXc()
+        function __construct()
         {
             WizXc::_require();
             WizXc::_define();
@@ -56,6 +56,7 @@ if ( ! class_exists('WizXc') ) {
         {
             require_once XOOPS_TRUST_PATH . '/wizin/src/Wizin.class.php';
             require_once dirname( __FILE__ ) . '/WizXc_Util.class.php';
+            require_once dirname( __FILE__ ) . '/gtickets.php';
         }
 
         function _define()
@@ -85,12 +86,18 @@ if ( ! class_exists('WizXc') ) {
         {
             $xcRoot =& XCube_Root::getSingleton();
             $xcRoot->mDelegateManager->add( 'XoopsTpl.New' , array( $this , 'registerModifier' ) ) ;
+            $xcRoot->mDelegateManager->add( 'XoopsTpl.New' , array( $this , 'registerFunction' ) ) ;
         }
 
         function registerModifier( &$xoopsTpl )
         {
             $xoopsTpl->register_modifier( 'wiz_constant', array('Wizin_Util', 'constant') );
             $xoopsTpl->register_modifier( 'wiz_pager', array('Wizin_Util_Web', 'pager') );
+        }
+
+        function registerFunction( &$xoopsTpl )
+        {
+            $xoopsTpl->register_function( 'wiz_gticket', array('WizXc_Util', 'getGTicketHtml') );
         }
 
     }

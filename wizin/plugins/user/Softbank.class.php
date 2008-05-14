@@ -15,12 +15,9 @@ if ( ! class_exists('Wizin_Plugin_User_Softbank') ) {
     {
         function __construct()
         {
-            static $calledFlag;
-            if ( ! isset($calledFlag) ) {
-                $calledFlag = true;
-                $this->_check3GC();
-                $this->_updateUniqId();
-            }
+            $calledFlag = true;
+            $this->_check3GC();
+            $this->_updateUniqId();
         }
 
         function _check3GC()
@@ -37,7 +34,9 @@ if ( ! class_exists('Wizin_Plugin_User_Softbank') ) {
         function _updateUniqId()
         {
             $user =& Wizin_User::getSingleton();
-            $user->sUniqId = substr( $user->sUniqId, 1 );
+            if ( strlen($user->sUniqId) === 16 ) {
+                $user->sUniqId = substr( $user->sUniqId, 1 );
+            }
         }
     }
 }

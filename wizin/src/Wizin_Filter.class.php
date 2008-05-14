@@ -117,7 +117,7 @@ if ( ! class_exists('Wizin_Filter') ) {
 
         function filterOptimizeMobile( & $contents, $baseUri, $currentUri, $basePath, $createDir = WIZIN_CACHE_DIR )
         {
-            $maxImageWidth = 228;
+            $maxImageWidth = 220;
             Wizin_Util_Web::createThumbnail( $contents, $baseUri, $currentUri, $basePath, $createDir, $maxImageWidth );
             // replace input type "password" => "text"
             $pattern = '(<input)([^>]*)(type=)([\"\'])(password)([\"\'])([^>]*)(>)';

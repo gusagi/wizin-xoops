@@ -18,7 +18,7 @@ if ( ! class_exists('Wizin_Util') ) {
      * @access public
      *
      */
-    class Wizin_Util extends Wizin_StdClass
+    class Wizin_Util
     {
         function getPrefix( $salt = '' )
         {

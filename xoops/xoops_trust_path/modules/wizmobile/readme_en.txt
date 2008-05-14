@@ -15,4 +15,5 @@ Someone, we ask the compilation of README of English edition(this file) please..
 The license of this module itself is GPL2, but it depends on the framework
 "Wizin" of new BSD license.
 
-2008 February 26th
+2008 February 26th create.
+2008 May 14th update.

@@ -1,0 +1,24 @@
+<div style="margin-left: 0.5em; padding: 1em;">
+    <fieldset style="padding-left: 0.5em;">
+        <legend>&nbsp;<{"WIZMOBILE_LANG_SYSTEM_STATUS"|wiz_constant}>&nbsp;</legend>
+        <!-- Image Resize -->
+        <div>
+            <span><{"WIZMOBILE_LANG_IMAGE_RESIZE"|wiz_constant}></span>
+            <br />
+            <span style="margin-left: 1em;">&raquo;&nbsp;<{$systemStatus.imageResize.result}></span><br />
+            <{foreach name="fe_message" key="key_message" item="itm_message" from=$systemStatus.imageResize.messages}>
+                <span style="margin-left: 2.5em;"><{$itm_message}></span><br />
+            <{/foreach}>
+        </div>
+
+        <!-- Partition Page -->
+        <div>
+            <span><{"WIZMOBILE_LANG_PARTITION_PAGE"|wiz_constant}></span>
+            <br />
+            <span style="margin-left: 1em;">&raquo;&nbsp;<{$systemStatus.partitionPage.result}></span><br />
+            <{foreach name="fe_message" key="key_message" item="itm_message" from=$systemStatus.partitionPage.messages}>
+                <span style="margin-left: 2.5em;"><{$itm_message}></span><br />
+            <{/foreach}>
+        </div>
+    </fieldset>
+</div>

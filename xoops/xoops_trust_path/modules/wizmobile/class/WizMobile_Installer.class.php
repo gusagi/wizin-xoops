@@ -42,7 +42,7 @@ if ( ! class_exists('WizMobile_Installer') ) {
             // php version check
             $phpVersion = floatval( PHP_VERSION );
             if ( $phpVersion < 4.4 ) {
-                $this->mLog->addError( 'ERROR!' );
+                $this->mLog->addError( Wizin_Util::constant('WIZMOBILE_ERR_PHP_VERSION') );
                 return false;
             }
             // thumbnail directory permission check
@@ -55,6 +55,20 @@ if ( ! class_exists('WizMobile_Installer') ) {
                 $this->mLog->addError( "Failed to install : " . $thumbnailDir . " needs writable permission. Prease check it's permission.");
                 return false;
             }
+            /** This code block copied from "Legacy_ModuleInstaller" >> */
+            $memberHandler =& xoops_gethandler( 'member' );
+            $groupObjects =& $memberHandler->getGroups();
+            //
+            // Add a permission all group members and guest can read.
+            //
+            foreach ( $groupObjects as $group ) {
+                $readPerm =& $this->_createPermission( $group->getVar('groupid') );
+                $readPerm->setVar( 'gperm_name', 'module_read' );
+                if ( ! $gpermHandler->insert($readPerm) ) {
+                    $this->mLog->addError( _AD_LEGACY_ERROR_COULD_NOT_SET_READ_PERMISSION );
+                }
+            }
+            /** This code block copied from "Legacy_ModuleInstaller" << */
             return parent::executeInstall();
         }
     }

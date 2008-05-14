@@ -60,17 +60,20 @@ $modversion['cube_style'] = true;
 
 // installer
 $modversion['disable_legacy_2nd_installer'] = true;
-$modversion['legacy_installer']['installer']['filepath'] = dirname( __FILE__ ) . '/class/WizMobileInstaller.class.php';
-$modversion['legacy_installer']['installer']['class'] = 'WizMobileInstaller';
+$modversion['legacy_installer']['installer']['filepath'] = dirname( __FILE__ ) . '/class/WizMobile_Installer.class.php';
+$modversion['legacy_installer']['installer']['class'] = 'WizMobile_Installer';
 
 // updater
-$modversion['legacy_installer']['updater']['filepath'] = dirname( __FILE__ ) . '/class/WizMobileUpdater.class.php';
-$modversion['legacy_installer']['updater']['class'] = 'WizMobileUpdater';
-/*
+$modversion['legacy_installer']['updater']['filepath'] = dirname( __FILE__ ) . '/class/WizMobile_Updater.class.php';
+$modversion['legacy_installer']['updater']['class'] = 'WizMobile_Updater';
+
 // database
 $modversion['sqlfile']['mysql'] = "sql/mysql.sql";
-$modversion['tables'][] = "{prefix}_{dirname}_mailjob";
+$modversion['tables'][] = "{prefix}_{dirname}_login";
+$modversion['tables'][] = "{prefix}_{dirname}_config";
+$modversion['tables'][] = "{prefix}_{dirname}_block";
 
+/*
 // Templates
 $modversion['templates'][] = array( 'file' => 'user_userinfo.html',
     'description' => 'Display a user information in userinfo.php' );
@@ -84,7 +87,7 @@ $modversion['hasMain']   = 0;
 
 // admin view
 $modversion['hasAdmin']   = 1;
-$modversion['adminindex'] = 'admin/admin.php';
+$modversion['adminindex'] = 'admin/admin.php?act=SystemStatus';
 $modversion['adminmenu']  = 'adminmenu.php';
 
 // search

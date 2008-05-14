@@ -1,7 +1,5 @@
 <?php
 /**
- * WizMobile module index script for XOOPS Cube Legacy2.1
- *
  * PHP Versions 4.4.X or upper version
  *
  * @package  WizMobile
@@ -39,24 +37,28 @@ if ( $scriptFileName === __FILE__ ) {
     exit();
 }
 
-$frontDirname = basename( dirname(dirname($frontFile)) );
-require dirname( __FILE__ ) . '/init.php';
+// init process
+$xcRoot =& XCube_Root::getSingleton();
+$renderTarget =& $xcRoot->mContext->mModule->getRenderTarget();
+$frontDirname = str_replace( '_wizmobile_action', '', strtolower(get_class($this)) );
+$tplFile = $frontDirname . '_main_login.html';
+$renderTarget->setTemplateName( $tplFile );
 
-if ( class_exists('Wizin') ) {
-    require dirname( __FILE__ ) . '/class/WizMobile.class.php';
-
-    // execute
-    $wizMobile =& WizMobile::getSingleton();
-    $actionScript = dirname( __FILE__ ) . '/class/WizMobile_Action.class.php';
-    if ( file_exists($actionScript) ) {
-        require $actionScript;
-        if ( class_exists($className) ) {
-            $wizMobileAction = new $className();
-            $wizMobile->setActionClass( $wizMobileAction );
-        }
-    }
-    $preloadScript = dirname( __FILE__ ) . '/preload/WizMobile_Preload.class.php';
-    if ( file_exists($preloadScript) ) {
-        require $preloadScript;
-    }
+// if login disabled
+$configs = $this->getModuleConfigs();
+if ( empty($configs['login']) || $configs['login']['wmc_value'] !== '1' ) {
+    $xcRoot->mController->executeForward( XOOPS_URL );
 }
+
+// include language file of user module
+$language = empty( $GLOBALS['xoopsConfig']['language'] ) ? 'english' : $GLOBALS['xoopsConfig']['language'];
+if( file_exists( XOOPS_ROOT_PATH . '/modules/user/language/' . $language . '/main.php' ) ) {
+    require_once XOOPS_ROOT_PATH . '/modules/user/language/' . $language . '/blocks.php';
+}
+
+// call header
+require_once XOOPS_ROOT_PATH . '/header.php';
+
+
+// call footer
+require_once XOOPS_ROOT_PATH . '/footer.php';

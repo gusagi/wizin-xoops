@@ -1,0 +1,7 @@
+<ul>
+    <li><a href="<{$xoops_url}>/user.php"><{$smarty.const._MB_LEGACY_VACNT}></a></li>
+    <li><a href="<{$xoops_url}>/edituser.php"><{$smarty.const._MB_LEGACY_EACNT}></a></li>
+    <{if $wizmobile_configs.login.wmc_value == 1}>
+        <li><a href="<{$xoops_url}>/modules/<{$wizmobile_dirname}>/index.php?act=RegisterUniqId"><{"WIZMOBILE_LANG_REGISTER_UNIQID"|wiz_constant}></a></li>
+    <{/if}>
+</ul>

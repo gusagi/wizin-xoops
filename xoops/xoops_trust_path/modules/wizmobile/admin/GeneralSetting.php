@@ -1,10 +1,8 @@
 <?php
 /**
- * call WizXC module init process preload
+ * PHP Versions 4.4.X or upper version
  *
- * PHP Versions 4
- *
- * @package  WizXC
+ * @package  WizMobile
  * @author  Makoto Hashiguchi a.k.a. gusagi<gusagi@gusagi.com>
  * @copyright 2008 Makoto Hashiguchi
  * @license GNU General Public License Version2
@@ -33,28 +31,38 @@
  *
  */
 
-if( ! defined( 'XOOPS_ROOT_PATH' ) ) exit ;
-
-if ( ! class_exists('CallWizXC') && defined('XOOPS_TRUST_PATH') ) {
-    class CallWizXC extends XCube_ActionFilter
-    {
-        function preFilter()
-        {
-            $initScript = XOOPS_TRUST_PATH . '/modules/wizxc/init.php';
-            if ( file_exists($initScript) && is_readable($initScript) ) {
-                require_once $initScript;
-            }
-            parent::preFilter();
-        }
-
-        function preBlockFilter()
-        {
-            parent::preBlockFilter();
-        }
-
-        function postFilter()
-        {
-            parent::postFilter();
-        }
-    }
+// direct access protect
+$scriptFileName = getenv( 'SCRIPT_FILENAME' );
+if ( $scriptFileName === __FILE__ ) {
+    exit();
 }
+
+// init process
+$xcRoot =& XCube_Root::getSingleton();
+$xoopsTpl = WizXc_Util::getXoopsTpl();
+$frontDirname = str_replace( '_wizmobile_action', '', strtolower(get_class($this)) );
+$tplFile = 'db:' . $frontDirname . '_admin_general_setting.html';
+
+// register and redirect
+$method = getenv( 'REQUEST_METHOD' );
+if ( strtolower($method) === 'post' ) {
+    $this->updateConfigs();
+}
+
+// get module config
+$configs = $this->getModuleConfigs();
+$themes = $this->getMobileThemes();
+
+//
+// render admin view
+//
+// call header
+require_once XOOPS_ROOT_PATH . '/header.php';
+
+// display main templates
+$xoopsTpl->assign( 'configs', $configs );
+$xoopsTpl->assign( 'themes', $themes );
+$xoopsTpl->display( $tplFile );
+
+// call footer
+require_once XOOPS_ROOT_PATH . '/footer.php';

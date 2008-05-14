@@ -66,6 +66,7 @@ if( ! class_exists( 'Legacy_WizMobileRenderSystem' ) ) {
         {
             $root =& XCube_Root::getSingleton();
             $wizMobile =& WizMobile::getSingleton();
+            // display block
             $wizMobileAction =& $wizMobile->getActionClass();
             $nondisplayBlocks = $wizMobileAction->getNondisplayBlocks();
             $legacy_BlockContents =& $root->mContext->mAttributes['legacy_BlockContents'];
@@ -88,8 +89,29 @@ if( ! class_exists( 'Legacy_WizMobileRenderSystem' ) ) {
                     }
                 }
             }
-            $this->mXoopsTpl->register_modifier( 'wiz_pager', array('Wizin_Util_Web', 'pager') );
+            // display sub menu
+            $subMenuContents = '';
+            if ( function_exists('b_legacy_mainmenu_show') ) {
+                $xoopsModule =& $root->mContext->mXoopsModule;
+                if ( isset($xoopsModule) && is_object($xoopsModule) ) {
+                    if ( $xoopsModule->getVar('hasmain') == 1 && $xoopsModule->getVar('weight') > 0 ) {
+                        $dirname = $xoopsModule->getVar( 'dirname' );
+                        $modname = $xoopsModule->getVar( 'name' );
+                        $subMenuContents .= '<a href="' . XOOPS_URL . '/modules/' . htmlspecialchars( $dirname, ENT_QUOTES ) .
+                            '/">[' . htmlspecialchars( $modname, ENT_QUOTES ) . ']</a>&nbsp;';
+                        $subLinks = $xoopsModule->subLink();
+                        foreach ( $subLinks as $index => $subLink ) {
+                            if ( $index !== 0 ) {
+                                $subMenuContents .= "&nbsp;/&nbsp;";
+                            }
+                            $subMenuContents .= '<a href="' . $subLink['url'] . '">' . $subLink['name'] . '</a>';
+                        }
+                        $this->mXoopsTpl->assign( 'wizMobileSubMenuContents', $subMenuContents );
+                    }
+                }
+            }
             parent::renderTheme( $target );
         }
+
     }
 }

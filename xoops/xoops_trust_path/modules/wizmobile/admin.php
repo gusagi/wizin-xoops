@@ -42,20 +42,24 @@ if ( $scriptFileName === __FILE__ ) {
 $frontDirname = basename( dirname(dirname($frontFile)) );
 require dirname( __FILE__ ) . '/init.php';
 
-// permission check
-$xcRoot =& XCube_Root::getSingleton();
-if ( ! $xcRoot->mContext->mUser->isInRole( 'Module.' . $frontDirname . '.Admin' ) ) {
-    $xcRoot->mController->executeRedirect( XOOPS_URL . '/user.php', 1, _NOPERM );
-}
+if ( class_exists('Wizin') ) {
+    require dirname( __FILE__ ) . '/class/WizMobile.class.php';
 
-// execute
-$wizMobile =& WizMobile::getSingleton();
-$actionScript = dirname( __FILE__ ) . '/class/WizMobile_Action.class.php';
-if ( file_exists($actionScript) ) {
-    require $actionScript;
-    if ( class_exists($className) ) {
-        $wizMobileAction = new $className();
-        $wizMobile->setActionClass( $wizMobileAction );
-        $wizMobileAction->executeAdmin();
+    // permission check
+    $xcRoot =& XCube_Root::getSingleton();
+    if ( ! $xcRoot->mContext->mUser->isInRole( 'Module.' . $frontDirname . '.Admin' ) ) {
+        $xcRoot->mController->executeRedirect( XOOPS_URL . '/user.php', 1, _NOPERM );
+    }
+
+    // execute
+    $wizMobile =& WizMobile::getSingleton();
+    $actionScript = dirname( __FILE__ ) . '/class/WizMobile_Action.class.php';
+    if ( file_exists($actionScript) ) {
+        require $actionScript;
+        if ( class_exists($className) ) {
+            $wizMobileAction = new $className();
+            $wizMobile->setActionClass( $wizMobileAction );
+            $wizMobileAction->executeAdmin();
+        }
     }
 }

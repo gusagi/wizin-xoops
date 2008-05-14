@@ -22,12 +22,12 @@ if ( ! class_exists('Wizin_Ref') ) {
     {
         var $_mReference;
 
-        public function Wizin_Ref( & $value )
+        function Wizin_Ref( & $value )
         {
             $this->_mReference =& $value;
         }
 
-        public function & get()
+        function & get()
         {
             if ( isset($this->_mReference) ) {
                 $return = & $this->_mReference;

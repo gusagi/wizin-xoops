@@ -100,5 +100,15 @@ if ( ! class_exists('WizXc_Util') ) {
             $xoopsTpl = new XoopsTpl();
             return $xoopsTpl;
         }
+
+        function getGTicketHtml( $params, &$xoopsTpl )
+        {
+            $gTicket = new XoopsGTicket();
+            $salt = isset($params['salt']) ? $params['salt'] : XOOPS_SALT;
+            $timeout = isset($params['timeout']) ? $params['timeout'] : 1800;
+            $area = isset($params['area']) ? $params['area'] : '';
+            return $gTicket->getTicketHtml( $salt, $timeout, $area );
+        }
+
     }
 }

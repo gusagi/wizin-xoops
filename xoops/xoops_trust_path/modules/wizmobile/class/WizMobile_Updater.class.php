@@ -65,6 +65,18 @@ if ( ! class_exists('WizMobile_Updater') ) {
                 $this->mLog->addError( _AD_LEGACY_ERROR_COULD_NOT_SET_ADMIN_PERMISSION );
                 return false;
             }
+            $memberHandler =& xoops_gethandler( 'member' );
+            $groupObjects =& $memberHandler->getGroups();
+            //
+            // Add a permission all group members and guest can read.
+            //
+            foreach ( $groupObjects as $group ) {
+                $readPerm =& $this->_createPermission( $group->getVar('groupid') );
+                $readPerm->setVar( 'gperm_name', 'module_read' );
+                if ( ! $gpermHandler->insert($readPerm) ) {
+                    $this->mLog->addError( _AD_LEGACY_ERROR_COULD_NOT_SET_READ_PERMISSION );
+                }
+            }
             /** This code block copied from "Legacy_ModuleInstaller" << */
             $this->_mTargetXoopsModule->set('version', '20');
             return $this->executeAutomaticUpgrade();

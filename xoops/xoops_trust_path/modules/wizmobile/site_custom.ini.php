@@ -22,9 +22,6 @@ class=Legacy_WizMobileRenderSystem
 #        #
 
 [Mobile]
-lookup = false
-theme = mobile
-othermobile = false
 emulate = false
 
 **/

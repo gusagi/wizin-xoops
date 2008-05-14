@@ -123,7 +123,9 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                 }
                 // convert to html-entities
                 $string = trim( $string );
-                $string = mb_convert_encoding( $string, 'html-entities', $encode );
+                if ( extension_loaded('mbstring') ) {
+                    $string = mb_convert_encoding( $string, 'html-entities', $encode );
+                }
                 // repair
                 if ( function_exists('tidy_repair_string') ) {
                     $string = tidy_repair_string( $string );
@@ -155,7 +157,7 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                     require_once 'Pager/Pager.php';
                     $params = array(
                         'mode' => 'sliding',
-                        'delta' => 2,
+                        'delta' => 3,
                         'perPage' => 1,
                         'prevImg' => '&laquo; Prev',
                         'nextImg' => 'Next &raquo;',
@@ -166,8 +168,8 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                         );
                     $pager =& Pager::factory($params);
                     $pageNavi = $pager->links;
-                    $string .= $pageNavi;
-                    $string .= $array[$index];
+                    $string .= $pageNavi . '<br />';
+                    $string .= $array[$index] . '<br />';
                     $string .= $pageNavi;
                     set_include_path( $includePath );
                 }
@@ -183,6 +185,7 @@ if ( ! class_exists('Wizin_Util_Web') ) {
             }
             $maxByte = $maxKbyte * 1024;
             $buffer = '';
+            $noPartitionTag = array( 'form', 'tr' );
             $array = array();
             $convertMap = array(
                 0x0, 0x20, 0, 0xfffff,
@@ -191,11 +194,13 @@ if ( ! class_exists('Wizin_Util_Web') ) {
             $allAttribute = $xml->asXML();
             $allAttribute = strtr( $allAttribute, array('<body>' => '', '</body>' => '') );
             $allAttribute = strtr( $allAttribute, array('&amp;' => '&') );
-            $excludedHex = $allAttribute;
-            if ( preg_match("/&#[xX][0-9a-zA-Z]{1,8};/", $allAttribute) ) {
-                $excludedHex = preg_replace( "/&#[xX]([0-9a-zA-Z]{1,8});/e", "'&#'.hexdec('$1').';'", $allAttribute );
+            if ( extension_loaded('mbstring') ) {
+                $excludedHex = $allAttribute;
+                if ( preg_match("/&#[xX][0-9a-zA-Z]{1,8};/", $allAttribute) ) {
+                    $excludedHex = preg_replace( "/&#[xX]([0-9a-zA-Z]{1,8});/e", "'&#'.hexdec('$1').';'", $allAttribute );
+                }
+                $allAttribute = mb_decode_numericentity( $excludedHex, $convertMap, $encode );
             }
-            $allAttribute = mb_decode_numericentity( $excludedHex, $convertMap, $encode );
             if ( strlen($allAttribute) <= $maxByte ) {
                 $array[] = $allAttribute;
             } else {
@@ -205,17 +210,21 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                     $attribute = $child->asXML();
                     $attribute = strtr( $attribute, array('<body>' => '', '</body>' => '') );
                     $attribute = strtr( $attribute, array('&amp;' => '&') );
-
-                    $excludedHex = $attribute;
-                    if ( preg_match("/&#[xX][0-9a-zA-Z]{1,8};/", $attribute) ) {
-                        $excludedHex = preg_replace( "/&#[xX]([0-9a-zA-Z]{1,8});/e", "'&#'.hexdec('$1').';'", $attribute );
+                    if ( extension_loaded('mbstring') ) {
+                        $excludedHex = $attribute;
+                        if ( preg_match("/&#[xX][0-9a-zA-Z]{1,8};/", $attribute) ) {
+                            $excludedHex = preg_replace( "/&#[xX]([0-9a-zA-Z]{1,8});/e", "'&#'.hexdec('$1').';'", $attribute );
+                        }
+                        $attribute = mb_decode_numericentity( $excludedHex, $convertMap, $encode );
                     }
-                    $attribute = mb_decode_numericentity( $excludedHex, $convertMap, $encode );
-                    if ( strlen($attribute) > $maxByte && strtolower($nodeName) !== 'form' ) {
+                    if ( strlen($attribute) > $maxByte && ! in_array( strtolower($nodeName), $noPartitionTag) ) {
                         $array[] = $buffer;
                         $buffer = '';
-
-                        $html = mb_convert_encoding( $attribute, 'html-entities', $encode );
+                        if ( extension_loaded('mbstring') ) {
+                            $html = mb_convert_encoding( $attribute, 'html-entities', $encode );
+                        } else {
+                            $html = $attribute;
+                        }
                         $domDoc = new DOMDocument();
                         $domDoc->loadHTML( $html );
                         $string = $domDoc->saveXML();
@@ -238,12 +247,19 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                             // not bottom layer
                             $buffer .= $attribute;
                             while ( strlen($buffer) > $maxByte ) {
-                            	$cutString = mb_substr( $buffer, 0, $maxByte );
+                                if ( extension_loaded('mbstring') ) {
+                                	$cutString = mb_substr( $buffer, 0, $maxByte );
+                                } else {
+                                	$cutString = substr( $buffer, 0, $maxByte );
+                                }
                             	$cutStringArray = explode( '<', $cutString );
                             	array_pop( $cutStringArray );
                             	$cutString = implode( '<', $cutStringArray );
-
-                                $html = mb_convert_encoding( $cutString, 'html-entities', $encode );
+                                if ( extension_loaded('mbstring') ) {
+                                    $html = mb_convert_encoding( $cutString, 'html-entities', $encode );
+                                } else {
+                                    $html = $cutString;
+                                }
                                 $domDoc = new DOMDocument();
                                 $domDoc->loadHTML( $html );
                                 $string = $domDoc->saveXML();
@@ -254,13 +270,13 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                                 $string = $cutXml->body->asXML();
                                 $string = strtr( $string, array('<body>' => '', '</body>' => '') );
                                 $string = strtr( $string, array('&amp;' => '&') );
-
-                                $excludedHex = $string;
-                                if ( preg_match("/&#[xX][0-9a-zA-Z]{1,8};/", $string) ) {
-                                    $excludedHex = preg_replace( "/&#[xX]([0-9a-zA-Z]{1,8});/e", "'&#'.hexdec('$1').';'", $string );
+                                if ( extension_loaded('mbstring') ) {
+                                    $excludedHex = $string;
+                                    if ( preg_match("/&#[xX][0-9a-zA-Z]{1,8};/", $string) ) {
+                                        $excludedHex = preg_replace( "/&#[xX]([0-9a-zA-Z]{1,8});/e", "'&#'.hexdec('$1').';'", $string );
+                                    }
+                                    $string = mb_decode_numericentity( $excludedHex, $convertMap, $encode );
                                 }
-                                $string = mb_decode_numericentity( $excludedHex, $convertMap, $encode );
-
                             	$array[] = $string;
                             	$buffer = str_replace( $cutString, '', $buffer );
                             }
