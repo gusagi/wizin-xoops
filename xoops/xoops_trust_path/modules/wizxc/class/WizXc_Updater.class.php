@@ -36,6 +36,25 @@ if ( ! class_exists('WizXc_Updater') ) {
 
     class WizXc_Updater extends Legacy_ModulePhasedUpgrader
     {
+        function executeUpgrade()
+        {
+            //
+            // clear theme cache
+            //
+            if ( $handler = opendir(XOOPS_COMPILE_PATH) ) {
+                while ( ($file = readdir($handler)) !== false ) {
+                    if ( $file === '.' || $file === '..' ) {
+                        continue;
+                    }
+                    if ( substr($file, -14) === 'theme.html.php' ) {
+                        unlink( XOOPS_COMPILE_PATH . '/' . $file );
+                    }
+                }
+                closedir($handler);
+            }
+            parent::executeUpgrade();
+        }
+
         /**
          * Updates all of module templates.
          *

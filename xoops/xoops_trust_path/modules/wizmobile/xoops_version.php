@@ -35,10 +35,11 @@ if ( ! defined('XOOPS_ROOT_PATH') || ! defined('XOOPS_TRUST_PATH') ) {
     exit();
 }
 
+require_once XOOPS_TRUST_PATH . '/wizin/src/Wizin_Util.class.php';
 $frontDirname = basename( dirname($frontFile) );
 $language = empty( $GLOBALS['xoopsConfig']['language'] ) ? 'english' : $GLOBALS['xoopsConfig']['language'];
-if( file_exists( XOOPS_ROOT_PATH . '/modules/' . $myfrontdirname . '/language/' . $language . '/main.php' ) ) {
-    require XOOPS_ROOT_PATH . '/modules/' . $myfrontdirname . '/language/' . $language . '/main.php';
+if( file_exists( XOOPS_ROOT_PATH . '/modules/' . $frontDirname . '/language/' . $language . '/main.php' ) ) {
+    require XOOPS_ROOT_PATH . '/modules/' . $frontDirname . '/language/' . $language . '/main.php';
 }
 if( file_exists( dirname(__FILE__) . '/language/' . $language . '/main.php' ) ) {
     require dirname(__FILE__) . '/language/' . $language . '/main.php';

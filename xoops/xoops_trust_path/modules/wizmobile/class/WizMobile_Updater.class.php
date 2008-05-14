@@ -51,7 +51,18 @@ if ( ! class_exists('WizMobile_Updater') ) {
                 $this->mLog->addError( "Failed to update : " . $thumbnailDir . " needs writable permission. Prease check it's permission.");
                 return false;
             }
+            // cache directory permission check
+            $cacheDir = XOOPS_TRUST_PATH . '/cache';
+            if ( ! file_exists($cacheDir) || ! is_dir($cacheDir) ) {
+                $this->mLog->addError( "Failed to update : Prease cleate '" . $cacheDir . "' directory.");
+                return false;
+            }
+            if ( ! is_writable($cacheDir) ) {
+                $this->mLog->addError( "Failed to update : " . $cacheDir . " needs writable permission. Prease check it's permission.");
+                return false;
+            }
             /** This code block copied from "Legacy_ModuleInstaller" >> */
+
             //
             // Add a permission which administrators can manage.
             //
@@ -67,11 +78,15 @@ if ( ! class_exists('WizMobile_Updater') ) {
             }
             $memberHandler =& xoops_gethandler( 'member' );
             $groupObjects =& $memberHandler->getGroups();
+
             //
             // Add a permission all group members and guest can read.
             //
             foreach ( $groupObjects as $group ) {
-                $readPerm =& $this->_createPermission( $group->getVar('groupid') );
+                $readPerm =& $gpermHandler->create();
+                $readPerm->setVar( 'gperm_groupid', $group->getVar('groupid') );
+                $readPerm->setVar( 'gperm_itemid', $this->_mTargetXoopsModule->getVar('mid') );
+                $readPerm->setVar( 'gperm_modid', 1 );
                 $readPerm->setVar( 'gperm_name', 'module_read' );
                 if ( ! $gpermHandler->insert($readPerm) ) {
                     $this->mLog->addError( _AD_LEGACY_ERROR_COULD_NOT_SET_READ_PERMISSION );

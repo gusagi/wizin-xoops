@@ -92,7 +92,7 @@ if ( ! class_exists('WizXc_Util') ) {
                     }
                 }
             }
-            xoops_template_clear_module_cache( $module, $mid );
+            xoops_template_clear_module_cache( $mid );
         }
 
         function createTableByFile( &$module, &$log, $filePath )

@@ -20,7 +20,7 @@ require dirname( dirname(__FILE__) ) . '/mytrustdirname.php';
 
 if ( defined('XOOPS_TRUST_PATH') ) {
     $frontFile = __FILE__;
-    $trustFile = XOOPS_TRUST_PATH . '/modules/' . $mytrustdirname . '/preload.class.php';
+    $trustFile = XOOPS_TRUST_PATH . '/modules/' . $mytrustdirname . '/preload.php';
     if ( file_exists($trustFile) ) {
         require $trustFile;
     }

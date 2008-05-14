@@ -49,8 +49,6 @@ if ( ! class_exists('Wizin_Util') ) {
 
         function define( $name, $value = '', $prefix = '' )
         {
-            if ( defined('OH_MY_GOD_HELP_ME') ) {
-            }
             if ( ! defined(strtoupper($prefix . '_' . $name)) ) {
                 define( strtoupper($prefix . '_' . $name), $value );
             }

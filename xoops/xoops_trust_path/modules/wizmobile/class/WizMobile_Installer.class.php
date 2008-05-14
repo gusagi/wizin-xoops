@@ -55,6 +55,16 @@ if ( ! class_exists('WizMobile_Installer') ) {
                 $this->mLog->addError( "Failed to install : " . $thumbnailDir . " needs writable permission. Prease check it's permission.");
                 return false;
             }
+            // cache directory permission check
+            $cacheDir = XOOPS_TRUST_PATH . '/cache';
+            if ( ! file_exists($cacheDir) || ! is_dir($cacheDir) ) {
+                $this->mLog->addError( "Failed to install : Prease cleate '" . $cacheDir . "' directory.");
+                return false;
+            }
+            if ( ! is_writable($cacheDir) ) {
+                $this->mLog->addError( "Failed to install : " . $cacheDir . " needs writable permission. Prease check it's permission.");
+                return false;
+            }
             /** This code block copied from "Legacy_ModuleInstaller" >> */
             $memberHandler =& xoops_gethandler( 'member' );
             $groupObjects =& $memberHandler->getGroups();
