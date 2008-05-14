@@ -92,7 +92,28 @@ if ( ! class_exists('WizXc_Util') ) {
                     }
                 }
             }
-            xoops_template_clear_module_cache( $mid );
+            xoops_template_clear_module_cache( $module, $mid );
+        }
+
+        function createTableByFile( &$module, &$log, $filePath )
+        {
+            require_once XOOPS_MODULE_PATH . '/legacy/admin/class/Legacy_SQLScanner.class.php';
+            $scanner =& new Legacy_SQLScanner();
+            $scanner->setDB_PREFIX( XOOPS_DB_PREFIX );
+            $scanner->setDirname( $module->get('dirname') );
+            if ( ! $scanner->loadFile($filePath) ) {
+                $log->addError( XCube_Utils::formatMessage(_AD_LEGACY_ERROR_SQL_FILE_NOT_FOUND, basename($filePath)) );
+                return false;
+            }
+            $scanner->parse();
+            $sqls = $scanner->getSQL();
+            $db =& XoopsDatabaseFactory::getDatabaseConnection();
+            foreach ( $sqls as $sql ) {
+                if ( ! $db->query($sql) ) {
+                    $log->addError( $db->error() );
+                    return;
+                }
+            }
         }
 
         function getXoopsTpl()

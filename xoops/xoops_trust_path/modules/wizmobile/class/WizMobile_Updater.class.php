@@ -78,6 +78,15 @@ if ( ! class_exists('WizMobile_Updater') ) {
                 }
             }
             /** This code block copied from "Legacy_ModuleInstaller" << */
+
+            //
+            // Create tables
+            //
+            $sqlFilePath = dirname( dirname(__FILE__) ) . '/sql/mysql.020.sql';
+            if ( file_exists($sqlFilePath) && is_readable($sqlFilePath) ) {
+                WizXc_Util::createTableByFile( $this->_mTargetXoopsModule, $this->mLog, $sqlFilePath );
+            }
+
             $this->_mTargetXoopsModule->set('version', '20');
             return $this->executeAutomaticUpgrade();
         }
