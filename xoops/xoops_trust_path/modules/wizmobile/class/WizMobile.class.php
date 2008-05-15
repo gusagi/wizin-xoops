@@ -169,13 +169,15 @@ if ( ! class_exists('WizMobile') ) {
         {
             $xcRoot =& XCube_Root::getSingleton();
             $userAgent = getenv( 'HTTP_USER_AGENT' );
+            $user = & Wizin_User::getSingleton();
+            $url = ( ! $user->bCookie ) ? XOOPS_URL. '/' . '?' . SID : XOOPS_URL;
             if ( empty($_SESSION['WIZ_USER_AGENT']) ) {
                 $_SESSION['WIZ_USER_AGENT'] = $userAgent;
             } else if ( $_SESSION['WIZ_USER_AGENT'] !== $userAgent ) {
                 WizXc_Util::sessionDestroy();
-                $_SESSION["redirect_message"] = Wizin_Util::constant( 'WIZMOBILE_MSG_SESSION_LIMIT_TIME' );
+                $_SESSION['redirect_message'] = Wizin_Util::constant( 'WIZMOBILE_MSG_SESSION_LIMIT_TIME' );
                 $_SESSION['WIZ_SESSION_ZERO_POINT'] = time();
-                header("Location: " . XOOPS_URL. '/' . '?' . SID );
+                header("Location: " . $url );
                 exit();
             }
             if ( empty($_SESSION['WIZ_SESSION_ZERO_POINT']) ) {
@@ -192,10 +194,10 @@ if ( ! class_exists('WizMobile') ) {
                 is_object($xcRoot->mContext->mXoopsUser) ) {
                 WizXc_Util::sessionDestroy();
                 session_regenerate_id();
-                $_SESSION["redirect_message"] = Wizin_Util::constant( 'WIZMOBILE_MSG_SESSION_LIMIT_TIME' );
+                $_SESSION['redirect_message'] = Wizin_Util::constant( 'WIZMOBILE_MSG_SESSION_LIMIT_TIME' );
                 $_SESSION['WIZ_SESSION_ZERO_POINT'] = time();
                 $_SESSION['WIZ_SESSION_LAST_ACCESS'] = time();
-                header("Location: " . XOOPS_URL. '/' . '?' . SID );
+                header("Location: " . $url );
                 exit();
             }
             $_SESSION['WIZ_SESSION_LAST_ACCESS'] = time();
@@ -234,7 +236,7 @@ if ( ! class_exists('WizMobile') ) {
             $xcRoot->mSession->regenerate();
             $user = & Wizin_User::getSingleton();
             $url = ( ! $user->bCookie ) ? XOOPS_URL. '/' . '?' . SID : XOOPS_URL;
-            $_SESSION["redirect_message"] = XCube_Utils::formatMessage( _MD_LEGACY_MESSAGE_LOGIN_SUCCESS,
+            $_SESSION['redirect_message'] = XCube_Utils::formatMessage( _MD_LEGACY_MESSAGE_LOGIN_SUCCESS,
                 $xcRoot->mContext->mXoopsUser->get('uname') );
             header("Location: " . $url );
             exit();
@@ -246,7 +248,7 @@ if ( ! class_exists('WizMobile') ) {
             $xcRoot->mSession->regenerate();
             $user = & Wizin_User::getSingleton();
             $url = ( ! $user->bCookie ) ? XOOPS_URL. '/' . '?' . SID : XOOPS_URL;
-            $_SESSION["redirect_message"] = _MD_LEGACY_ERROR_INCORRECTLOGIN;
+            $_SESSION['redirect_message'] = _MD_LEGACY_ERROR_INCORRECTLOGIN;
             header("Location: " . $url );
             exit();
         }
@@ -258,8 +260,8 @@ if ( ! class_exists('WizMobile') ) {
             $xcRoot->mSession->regenerate();
             $user = & Wizin_User::getSingleton();
             $url = ( ! $user->bCookie ) ? XOOPS_URL. '/' . '?' . SID : XOOPS_URL;
-            $_SESSION["redirect_message"] = htmlspecialchars( _MD_LEGACY_MESSAGE_LOGGEDOUT, ENT_QUOTES ) . '<br />';
-            $_SESSION["redirect_message"] .= htmlspecialchars( _MD_LEGACY_MESSAGE_THANKYOUFORVISIT, ENT_QUOTES );
+            $_SESSION['redirect_message'] = htmlspecialchars( _MD_LEGACY_MESSAGE_LOGGEDOUT, ENT_QUOTES ) . '<br />';
+            $_SESSION['redirect_message'] .= htmlspecialchars( _MD_LEGACY_MESSAGE_THANKYOUFORVISIT, ENT_QUOTES );
             header("Location: " . $url );
             exit();
         }
@@ -268,7 +270,7 @@ if ( ! class_exists('WizMobile') ) {
         {
             $user = & Wizin_User::getSingleton();
             $url = ( ! $user->bCookie ) ? XOOPS_URL. '/' . '?' . SID : XOOPS_URL;
-            $_SESSION["redirect_message"] = Wizin_Util::constant( 'WIZMOBILE_MSG_DENY_ADMIN_AREA' );
+            $_SESSION['redirect_message'] = Wizin_Util::constant( 'WIZMOBILE_MSG_DENY_ADMIN_AREA' );
             header("Location: " . $url );
             exit();
         }
@@ -295,6 +297,9 @@ if ( ! class_exists('WizMobile') ) {
             preg_match( "/" .$pattern ."/i", $contents, $match );
             if ( ! empty($match) ) {
                 $message = $match[2];
+                if ( extension_loaded('mbstring') ) {
+                    $message = mb_convert_encoding( $message, mb_internal_encoding(), $user->sEncoding );
+                }
             }
             if ( ! empty($url) ) {
                 if ( substr($url, 0, 4) !== 'http' ) {
@@ -337,7 +342,7 @@ if ( ! class_exists('WizMobile') ) {
                         }
                     }
                 }
-                $_SESSION["redirect_message"] = $message;
+                $_SESSION['redirect_message'] = $message;
                 header("Location: " . $url );
                 exit();
             }
@@ -357,7 +362,7 @@ if ( ! class_exists('WizMobile') ) {
             $filter->addOutputFilter( array( $filter, 'filterOptimizeMobile' ), $params );
             $params = array( $user->sEncoding, $user->sCharset );
             $filter->addOutputFilter( array( $filter, 'filterOutputEncoding' ), $params );
-            $filter->addOutputFilter( array( $filter, '_directRedirect' ) );
+            $filter->addOutputFilter( array( $this, '_directRedirect' ) );
             $filter->executeOutputFilter( $contents );
             header( 'Content-Type:application/xhtml+xml; charset=' . $user->sCharset );
             echo $contents;
