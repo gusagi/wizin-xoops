@@ -42,7 +42,7 @@ if ( ! class_exists('WizMobile_Action') ) {
             $this->_mFrontDirName = str_replace( '_wizmobile_action', '', strtolower(get_class($this)) );
         }
 
-        function easyLogin( &$xoopsUser )
+        function simpleLogin( &$xoopsUser )
         {
             $xcRoot = XCube_Root::getSingleton();
             $wizMobile =& WizMobile::getSingleton();
@@ -223,7 +223,7 @@ if ( ! class_exists('WizMobile_Action') ) {
                 sprintf(Wizin_Util::constant('WIZMOBILE_MSG_UPDATE_BLOCK_SETTING_SUCCESS')) );
         }
 
-        function getModuleConfigs()
+        function getConfigs()
         {
             static $configs;
             if ( isset($configs) ) {

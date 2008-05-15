@@ -59,11 +59,15 @@ if ( ! class_exists('WizMobile_Preload') ) {
             if ( $user->bIsMobile ) {
                 $xcRoot =& XCube_Root::getSingleton();
                 $wizMobileAction =& $wizMobile->getActionClass();
+                $configs = $wizMobileAction->getConfigs();
                 // exchange theme
                 $wizMobile->exchangeTheme();
-                $xcRoot->mDelegateManager->delete( 'Site.CheckLogin', 'User_LegacypageFunctions::checkLogin' );
-                $xcRoot->mDelegateManager->add( 'Site.CheckLogin', array( $wizMobileAction , 'easyLogin') ) ;
-                $xcRoot->mDelegateManager->add( 'Site.CheckLogin.Success', array($wizMobile, 'directLoginSuccess'), XCUBE_DELEGATE_PRIORITY_FINAL );
+                // add delegate
+                if ( ! empty($configs['login']) && $configs['login']['wmc_value'] === '1' ) {
+                    $xcRoot->mDelegateManager->add( 'Site.CheckLogin', array( $wizMobileAction , 'simpleLogin') ) ;
+                }
+                $xcRoot->mDelegateManager->add( 'Site.CheckLogin.Success', array($wizMobile, 'directLoginSuccess'),
+                    XCUBE_DELEGATE_PRIORITY_FINAL );
                 $xcRoot->mDelegateManager->add( 'Site.CheckLogin.Fail', array($wizMobile, 'directLoginFail') );
                 $xcRoot->mDelegateManager->add( 'Site.Logout.Success', array($wizMobile, 'directLogout'),
                     XCUBE_DELEGATE_PRIORITY_FINAL+1 );

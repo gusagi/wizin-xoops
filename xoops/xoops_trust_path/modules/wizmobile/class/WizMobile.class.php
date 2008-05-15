@@ -70,11 +70,14 @@ if ( ! class_exists('WizMobile') ) {
                         $currentUri = substr( $currentUri, 0, strlen($currentUri) - 1 );
                     }
                     // countermeasure against bug which exists until version 0.1.4 >>
-                    preg_match_all( '/(mobilebid)/i', $queryString, $matches, PREG_SET_ORDER );
-                    if ( count($matches) > 2 ) {
-                        header( "HTTP/1.1 301 Moved Permanently" );
-                        header( "Location: " . $currentUri );
-                        exit();
+                    $method = getenv( 'REQUEST_METHOD' );
+                    if ( strtolower($method) === 'get' ) {
+                        preg_match_all( '/(mobilebid)/i', $queryString, $matches, PREG_SET_ORDER );
+                        if ( count($matches) > 2 ) {
+                            header( "HTTP/1.1 301 Moved Permanently" );
+                            header( "Location: " . $currentUri );
+                            exit();
+                        }
                     }
                     // countermeasure against bug which exists until version 0.1.4 <<
                     $queryString = preg_replace( '/' . $pattern . '/', '', $queryString );
@@ -124,7 +127,7 @@ if ( ! class_exists('WizMobile') ) {
                 $user = & Wizin_User::getSingleton();
                 $filter = & Wizin_Filter::getSingleton();
                 $actionClass =& $this->getActionClass();
-                $configs = $actionClass->getModuleConfigs();
+                $configs = $actionClass->getConfigs();
                 if ( ! empty($configs['lookup']) && $configs['lookup']['wmc_value'] === '1' ) {
                     $lookup = true;
                 } else {
@@ -212,7 +215,7 @@ if ( ! class_exists('WizMobile') ) {
         {
             $xcRoot =& XCube_Root::getSingleton();
             $actionClass =& $this->getActionClass();
-            $configs = $actionClass->getModuleConfigs();
+            $configs = $actionClass->getConfigs();
             if ( ! empty($configs) && ! empty($configs['theme']) && ! empty($configs['theme']['wmc_value']) ) {
                 $theme = $configs['theme']['wmc_value'];
             } else {
@@ -383,7 +386,7 @@ if ( ! class_exists('WizMobile') ) {
             $actionClass =& $this->getActionClass();
             $frontDirName = str_replace( '_wizmobile_action', '', strtolower(get_class($actionClass)) );
             $xoopsTpl->assign( 'wizmobile_dirname', $frontDirName );
-            $configs = $actionClass->getModuleConfigs();
+            $configs = $actionClass->getConfigs();
             $xoopsTpl->assign( 'wizmobile_configs', $configs );
         }
 

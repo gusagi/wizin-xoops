@@ -74,7 +74,7 @@ Wizin_Util::define( 'WIZMOBILE_ERR_TICKET_NOT_FOUND', 'ワンタイムチケッ�
 //
 // language for main area
 //
-Wizin_Util::define( 'WIZMOBILE_LANG_EASY_LOGIN', '簡単ログイン' );
+Wizin_Util::define( 'WIZMOBILE_LANG_SIMPLE_LOGIN', '簡単ログイン' );
 Wizin_Util::define( 'WIZMOBILE_LANG_REGISTER_UNIQID', '機種ID登録' );
 
 //

@@ -50,7 +50,7 @@ if ( strtolower($method) === 'post' ) {
 }
 
 // get module config
-$configs = $this->getModuleConfigs();
+$configs = $this->getConfigs();
 $themes = $this->getMobileThemes();
 
 //

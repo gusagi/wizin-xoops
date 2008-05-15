@@ -74,7 +74,7 @@ Wizin_Util::define( 'WIZMOBILE_ERR_TICKET_NOT_FOUND', 'The one-time ticket is no
 //
 // language for main area
 //
-Wizin_Util::define( 'WIZMOBILE_LANG_EASY_LOGIN', 'Simple Login' );
+Wizin_Util::define( 'WIZMOBILE_LANG_SIMPLE_LOGIN', 'Simple Login' );
 Wizin_Util::define( 'WIZMOBILE_LANG_REGISTER_UNIQID', 'Register terminal specific ID' );
 
 //

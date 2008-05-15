@@ -45,7 +45,7 @@ $tplFile = $frontDirname . '_main_login.html';
 $renderTarget->setTemplateName( $tplFile );
 
 // if login disabled
-$configs = $this->getModuleConfigs();
+$configs = $this->getConfigs();
 if ( empty($configs['login']) || $configs['login']['wmc_value'] !== '1' ) {
     $xcRoot->mController->executeForward( XOOPS_URL );
 }

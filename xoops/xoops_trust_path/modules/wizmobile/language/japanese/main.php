@@ -74,7 +74,7 @@ Wizin_Util::define( 'WIZMOBILE_ERR_TICKET_NOT_FOUND', '¥ï¥ó¥¿¥¤¥à¥Á¥±¥Ã¥È¤¬¸«¤Ä¤
 //
 // language for main area
 //
-Wizin_Util::define( 'WIZMOBILE_LANG_EASY_LOGIN', '´ÊÃ±¥í¥°¥¤¥ó' );
+Wizin_Util::define( 'WIZMOBILE_LANG_SIMPLE_LOGIN', '´ÊÃ±¥í¥°¥¤¥ó' );
 Wizin_Util::define( 'WIZMOBILE_LANG_REGISTER_UNIQID', 'µ¡¼ïIDÅÐÏ¿' );
 
 //
