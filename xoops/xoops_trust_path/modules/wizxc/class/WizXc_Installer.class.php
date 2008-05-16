@@ -36,9 +36,6 @@ if ( ! class_exists('WizXc_Installer') ) {
 
     class WizXc_Installer extends Legacy_ModuleInstaller
     {
-        /**
-         * @static
-         */
         function _installTemplates()
         {
             parent::_installTemplates();
@@ -49,6 +46,20 @@ if ( ! class_exists('WizXc_Installer') ) {
                 $templatesDir = XOOPS_TRUST_PATH . '/modules/' . $mytrustdirname . '/templates';
                 if ( file_exists($templatesDir) && is_dir($templatesDir) ) {
                     WizXc_Util::installD3Templates( $this->_mXoopsModule, $this->mLog, $templatesDir );
+                }
+            }
+        }
+
+        function _installTables()
+        {
+            $myTrustDirFile = XOOPS_ROOT_PATH . '/modules/' . $this->_mXoopsModule->getVar( 'dirname' ) .
+                '/mytrustdirname.php';
+            if ( file_exists($myTrustDirFile) && is_readable($myTrustDirFile) ) {
+                include $myTrustDirFile;
+                $sqlFilePath = XOOPS_TRUST_PATH . '/modules/' . $mytrustdirname . '/sql/' .
+                    strtolower( XOOPS_DB_TYPE ) . '.sql';
+                if ( file_exists($sqlFilePath) && is_readable($sqlFilePath) ) {
+                    WizXc_Util::createTableByFile( $this->_mXoopsModule, $this->mLog, $sqlFilePath );
                 }
             }
         }
