@@ -42,14 +42,11 @@ if ( ! class_exists('WizXc_Installer') ) {
         function _installTemplates()
         {
             parent::_installTemplates();
-            $myTrustDirFile = XOOPS_ROOT_PATH . '/modules/' . $this->_mXoopsModule->getVar( 'dirname' ) . '/mytrustdirname.php';
+            $myTrustDirFile = XOOPS_ROOT_PATH . '/modules/' . $this->_mXoopsModule->getVar( 'dirname' ) .
+                '/mytrustdirname.php';
             if ( file_exists($myTrustDirFile) && is_readable($myTrustDirFile) ) {
                 include $myTrustDirFile;
-                $templatesDir = XOOPS_TRUST_PATH . '/modules/' . $mytrustdirname . '/templates/admin';
-                if ( file_exists($templatesDir) && is_dir($templatesDir) ) {
-                    WizXc_Util::installD3Templates( $this->_mXoopsModule, $this->mLog, $templatesDir );
-                }
-                $templatesDir = XOOPS_TRUST_PATH . '/modules/' . $mytrustdirname . '/templates/main';
+                $templatesDir = XOOPS_TRUST_PATH . '/modules/' . $mytrustdirname . '/templates';
                 if ( file_exists($templatesDir) && is_dir($templatesDir) ) {
                     WizXc_Util::installD3Templates( $this->_mXoopsModule, $this->mLog, $templatesDir );
                 }
