@@ -60,10 +60,20 @@ if ( in_array($controllerClass, $supportControllers) ) {
     $systemStatus['controller']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_CONTROLLER_IS_NOT_EXCHANGED' );
     $systemStatus['controller']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_CONTROLLER_PATCH' );
     $systemStatus['controller']['code'] = '[RenderSystems]
-        Legacy_AdminRenderSystem=Legacy_AltsysAdminRenderSystem
-        [Legacy_AltsysAdminRenderSystem]
-        path=/modules/altsys/include
-        class=Legacy_AltsysAdminRenderSystem';
+        Legacy_WizMobileRenderSystem=Legacy_WizMobileRenderSystem
+
+        [Legacy]
+        AllowDBProxy=false
+
+        [Legacy_Controller]
+        root=XOOPS_TRUST_PATH
+        path=/modules/wizxc/class
+        class=Legacy_WizXcController
+
+        [Legacy_WizMobileRenderSystem]
+        root=XOOPS_TRUST_PATH
+        path=/modules/wizmobile/class
+        class=Legacy_WizMobileRenderSystem';
 }
 
 // image resize

@@ -103,6 +103,7 @@ if ( ! class_exists('WizMobile') ) {
 
         function _init()
         {
+            ob_start();
             $xcRoot =& XCube_Root::getSingleton();
             $xcRoot->mDelegateManager->add( 'XoopsTpl.New' , array( $this , 'assignVars' ) ) ;
         }

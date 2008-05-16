@@ -57,22 +57,26 @@
 <{* blocks area(from) *}>
 <div style="font-size: 0.7em; text-align: center;">
 <{* left blocks *}>
-<{foreach name="xoops_lblocks" item=block from=$xoops_lblocks}>
-    <{if $smarty.foreach.xoops_lblocks.index !== 0}>/<{/if}>
-    <{if $block.title|regex_replace:"/.*none/":"none" ne "none"}>
-        <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZMOBILE_BID_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
-    <{/if}>
-<{/foreach}>
-<br />
+<{if $xoops_lblocks}>
+    <{foreach name="xoops_lblocks" item=block from=$xoops_lblocks}>
+        <{if $smarty.foreach.xoops_lblocks.index !== 0}>/<{/if}>
+        <{if $block.title|regex_replace:"/.*none/":"none" ne "none"}>
+            <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZMOBILE_BID_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
+        <{/if}>
+    <{/foreach}>
+    <br />
+<{/if}>
 
 <{* right blocks *}>
-<{foreach name="xoops_rblocks" item=block from=$xoops_rblocks}>
-    <{if $smarty.foreach.xoops_rblocks.index !== 0}>/<{/if}>
-    <{if $block.title|regex_replace:"/.*none/":"none" ne "none"}>
-        <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZMOBILE_BID_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
-    <{/if}>
-<{/foreach}>
-<br />
+<{if $xoops_rblocks}>
+    <{foreach name="xoops_rblocks" item=block from=$xoops_rblocks}>
+        <{if $smarty.foreach.xoops_rblocks.index !== 0}>/<{/if}>
+        <{if $block.title|regex_replace:"/.*none/":"none" ne "none"}>
+            <a href="<{$smarty.const.WIZMOBILE_CURRENT_URI|escape}><{$smarty.const.WIZMOBILE_BID_CONNECTOR}>mobilebid=<{$block.id}>"><{$block.title}></a>
+        <{/if}>
+    <{/foreach}>
+    <br />
+<{/if}>
 
 <{* center-center blocks *}>
 <{if $xoops_ccblocks}>
