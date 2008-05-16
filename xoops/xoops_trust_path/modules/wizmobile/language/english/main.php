@@ -46,7 +46,11 @@ Wizin_Util::define( 'WIZMOBILE_MSG_DENY_ADMIN_AREA', 'Sorry, there is no excuse,
 Wizin_Util::define( 'WIZMOBILE_MSG_SESSION_LIMIT_TIME', 'It passed the existence time of session for portable telephone.<br />There is no excuse, but login please do again to do once more.' );
 
 // admin area / system status
+Wizin_Util::define( 'WIZMOBILE_MSG_CONTROLLER_IS_NOT_EXCHANGED', 'Controller class is not exchanged.' );
+Wizin_Util::define( 'WIZMOBILE_MSG_CONTROLLER_PATCH', 'Please write this code in ' . XOOPS_ROOT_PATH . '/settings/site_custom.ini.php .' );
 Wizin_Util::define( 'WIZMOBILE_MSG_GD_NOT_EXISTS', 'Because the GD library does not exist, resize function of the image has become invalid.' );
+Wizin_Util::define( 'WIZMOBILE_MSG_RESIZED_IMAGE_DIR_NOT_EXISTS', 'Because ' . XOOPS_ROOT_PATH . '/uploads/wizmobile directory does not exist, resize function of the image has become invalid.' );
+Wizin_Util::define( 'WIZMOBILE_MSG_RESIZED_IMAGE_DIR_NOT_WRITABLE', 'Because ' . XOOPS_ROOT_PATH . '/uploads/wizmobile directory is not writable, resize function of the image has become invalid.' );
 Wizin_Util::define( 'WIZMOBILE_MSG_DOM_NOT_EXISTS', 'Because DOMDocument class does not exist, page divided function has become invalid.' );
 Wizin_Util::define( 'WIZMOBILE_MSG_SIMPLEXML_NOT_EXISTS', 'Because SimpleXMLElement class does not exist, page divided function has become invalid.' );
 Wizin_Util::define( 'WIZMOBILE_MSG_TIDY_NOT_EXISTS', 'Because Tidy extension does not exist, the automatic operation correction of HTML is not done.' );
@@ -85,6 +89,7 @@ Wizin_Util::define( 'WIZMOBILE_LANG_NON_DISPLAY_BLOCK_SETTING', 'Non display blo
 Wizin_Util::define( 'WIZMOBILE_LANG_GENERAL_SETTING', 'Generality setting' );
 
 // system status
+Wizin_Util::define( 'WIZMOBILE_LANG_EXCHANGE_CONTROLLER', 'Exchange Controller' );
 Wizin_Util::define( 'WIZMOBILE_LANG_IMAGE_RESIZE', 'Resize of image' );
 Wizin_Util::define( 'WIZMOBILE_LANG_PARTITION_PAGE', 'Page division' );
 

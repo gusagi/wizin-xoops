@@ -50,13 +50,37 @@ $tplFile = 'db:' . $frontDirname . '_admin_system_status.html';
 //
 $systemStatus = array();
 
+// exchange controller
+$supportControllers = array( 'legacy_wizxccontroller', 'hdlegacy_controller' );
+$controllerClass = strtolower( get_class($xcRoot->mController) );
+if ( in_array($controllerClass, $supportControllers) ) {
+    $systemStatus['controller']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_ENABLE' );
+} else {
+    $systemStatus['controller']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_DISABLE' );
+    $systemStatus['controller']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_CONTROLLER_IS_NOT_EXCHANGED' );
+    $systemStatus['controller']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_CONTROLLER_PATCH' );
+    $systemStatus['controller']['code'] = '[RenderSystems]
+        Legacy_AdminRenderSystem=Legacy_AltsysAdminRenderSystem
+        [Legacy_AltsysAdminRenderSystem]
+        path=/modules/altsys/include
+        class=Legacy_AltsysAdminRenderSystem';
+}
+
 // image resize
 $createDir = XOOPS_ROOT_PATH . '/uploads/wizmobile';
 if ( extension_loaded('gd') && file_exists($createDir) && is_dir($createDir) && is_writable($createDir) ) {
     $systemStatus['imageResize']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_ENABLE' );
 } else {
     $systemStatus['imageResize']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_DISABLE' );
-    $systemStatus['imageResize']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_GD_NOT_EXISTS' );
+    if ( ! extension_loaded('gd') ) {
+        $systemStatus['imageResize']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_GD_NOT_EXISTS' );
+    }
+    if ( ! file_exists($createDir) || ! is_dir($createDir) ) {
+        $systemStatus['imageResize']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_RESIZED_IMAGE_DIR_NOT_EXISTS' );
+    }
+    if ( ! is_writable($createDir) ) {
+        $systemStatus['imageResize']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_RESIZED_IMAGE_DIR_NOT_WRITABLE' );
+    }
 }
 
 // partition page

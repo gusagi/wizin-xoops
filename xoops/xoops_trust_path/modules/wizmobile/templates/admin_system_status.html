@@ -1,11 +1,28 @@
 <div style="margin-left: 0.5em; padding: 1em;">
     <fieldset style="padding-left: 0.5em;">
         <legend>&nbsp;<{"WIZMOBILE_LANG_SYSTEM_STATUS"|wiz_constant}>&nbsp;</legend>
+        <!-- Exchange Controller -->
+        <div>
+            <span><{"WIZMOBILE_LANG_EXCHANGE_CONTROLLER"|wiz_constant}></span>
+            <br />
+            <span style="margin-left: 1em; color: <{if $systemStatus.controller.result == "WIZMOBILE_LANG_ENABLE"|wiz_constant}>#0000ff<{else}>#ff0000<{/if}>;">&raquo;&nbsp;
+                <{$systemStatus.controller.result}>
+            </span><br />
+            <{foreach name="fe_message" key="key_message" item="itm_message" from=$systemStatus.controller.messages}>
+                <span style="margin-left: 2.5em;"><{$itm_message}></span><br />
+            <{/foreach}>
+            <{if  $systemStatus.controller.result == "WIZMOBILE_LANG_DISABLE"|wiz_constant}>
+                <fieldset style="margin: 0.3em 3em 0.5em 3em;"><{$systemStatus.controller.code|nl2br}></fieldset>
+            <{/if}>
+        </div>
+
         <!-- Image Resize -->
         <div>
             <span><{"WIZMOBILE_LANG_IMAGE_RESIZE"|wiz_constant}></span>
             <br />
-            <span style="margin-left: 1em;">&raquo;&nbsp;<{$systemStatus.imageResize.result}></span><br />
+            <span style="margin-left: 1em; color: <{if $systemStatus.imageResize.result == "WIZMOBILE_LANG_ENABLE"|wiz_constant}>#0000ff<{else}>#ff0000<{/if}>;">&raquo;&nbsp;
+                <{$systemStatus.imageResize.result}>
+            </span><br />
             <{foreach name="fe_message" key="key_message" item="itm_message" from=$systemStatus.imageResize.messages}>
                 <span style="margin-left: 2.5em;"><{$itm_message}></span><br />
             <{/foreach}>
@@ -15,7 +32,9 @@
         <div>
             <span><{"WIZMOBILE_LANG_PARTITION_PAGE"|wiz_constant}></span>
             <br />
-            <span style="margin-left: 1em;">&raquo;&nbsp;<{$systemStatus.partitionPage.result}></span><br />
+            <span style="margin-left: 1em; color: <{if $systemStatus.partitionPage.result == "WIZMOBILE_LANG_ENABLE"|wiz_constant}>#0000ff<{else}>#ff0000<{/if}>;">&raquo;&nbsp;
+                <{$systemStatus.partitionPage.result}>
+            </span><br />
             <{foreach name="fe_message" key="key_message" item="itm_message" from=$systemStatus.partitionPage.messages}>
                 <span style="margin-left: 2.5em;"><{$itm_message}></span><br />
             <{/foreach}>

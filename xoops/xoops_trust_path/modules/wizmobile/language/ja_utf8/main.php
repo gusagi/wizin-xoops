@@ -46,7 +46,11 @@ Wizin_Util::define( 'WIZMOBILE_MSG_DENY_ADMIN_AREA', '申し訳ありません�
 Wizin_Util::define( 'WIZMOBILE_MSG_SESSION_LIMIT_TIME', '携帯端末で有効なセッションの継続時間を過ぎました<br />申し訳ありませんが、もう一度ログインし直して下さい' );
 
 // admin area / system status
+Wizin_Util::define( 'WIZMOBILE_MSG_CONTROLLER_IS_NOT_EXCHANGED', 'コントローラが換装されていません' );
+Wizin_Util::define( 'WIZMOBILE_MSG_CONTROLLER_PATCH', '以下のコードを ' . XOOPS_ROOT_PATH . '/settings/site_custom.ini.php に書き込んで下さい' );
 Wizin_Util::define( 'WIZMOBILE_MSG_GD_NOT_EXISTS', 'GDライブラリが存在しないため、画像のリサイズ機能は無効となっています' );
+Wizin_Util::define( 'WIZMOBILE_MSG_RESIZED_IMAGE_DIR_NOT_EXISTS', XOOPS_ROOT_PATH . '/uploads/wizmobile が存在しないため、画像のリサイズ機能は無効となっています' );
+Wizin_Util::define( 'WIZMOBILE_MSG_RESIZED_IMAGE_DIR_NOT_WRITABLE', XOOPS_ROOT_PATH . '/uploads/wizmobile に書き込み権限がないため、画像のリサイズ機能は無効となっています' );
 Wizin_Util::define( 'WIZMOBILE_MSG_DOM_NOT_EXISTS', 'DOM拡張が存在しないため、ページ分割機能は無効となっています' );
 Wizin_Util::define( 'WIZMOBILE_MSG_SIMPLEXML_NOT_EXISTS', 'SimpleXMLが存在しないため、ページ分割機能は無効となっています' );
 Wizin_Util::define( 'WIZMOBILE_MSG_TIDY_NOT_EXISTS', 'Tidy拡張が存在しないため、HTMLの自動修正は行われません' );
@@ -85,6 +89,7 @@ Wizin_Util::define( 'WIZMOBILE_LANG_NON_DISPLAY_BLOCK_SETTING', '非表示ブロ
 Wizin_Util::define( 'WIZMOBILE_LANG_GENERAL_SETTING', '一般設定' );
 
 // system status
+Wizin_Util::define( 'WIZMOBILE_LANG_EXCHANGE_CONTROLLER', 'コントローラの換装' );
 Wizin_Util::define( 'WIZMOBILE_LANG_IMAGE_RESIZE', '画像のリサイズ' );
 Wizin_Util::define( 'WIZMOBILE_LANG_PARTITION_PAGE', 'ページ分割' );
 

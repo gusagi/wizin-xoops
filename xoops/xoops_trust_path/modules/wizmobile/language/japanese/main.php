@@ -46,7 +46,11 @@ Wizin_Util::define( 'WIZMOBILE_MSG_DENY_ADMIN_AREA', '¿½¤·Ìõ¤¢¤ê¤Þ¤»¤ó¤¬¡¢·ÈÂÓ¤«
 Wizin_Util::define( 'WIZMOBILE_MSG_SESSION_LIMIT_TIME', '·ÈÂÓÃ¼Ëö¤ÇÍ­¸ú¤Ê¥»¥Ã¥·¥ç¥ó¤Î·ÑÂ³»þ´Ö¤ò²á¤®¤Þ¤·¤¿<br />¿½¤·Ìõ¤¢¤ê¤Þ¤»¤ó¤¬¡¢¤â¤¦°ìÅÙ¥í¥°¥¤¥ó¤·Ä¾¤·¤Æ²¼¤µ¤¤' );
 
 // admin area / system status
+Wizin_Util::define( 'WIZMOBILE_MSG_CONTROLLER_IS_NOT_EXCHANGED', '¥³¥ó¥È¥í¡¼¥é¤¬´¹Áõ¤µ¤ì¤Æ¤¤¤Þ¤»¤ó' );
+Wizin_Util::define( 'WIZMOBILE_MSG_CONTROLLER_PATCH', '°Ê²¼¤Î¥³¡¼¥É¤ò ' . XOOPS_ROOT_PATH . '/settings/site_custom.ini.php ¤Ë½ñ¤­¹þ¤ó¤Ç²¼¤µ¤¤' );
 Wizin_Util::define( 'WIZMOBILE_MSG_GD_NOT_EXISTS', 'GD¥é¥¤¥Ö¥é¥ê¤¬Â¸ºß¤·¤Ê¤¤¤¿¤á¡¢²èÁü¤Î¥ê¥µ¥¤¥ºµ¡Ç½¤ÏÌµ¸ú¤È¤Ê¤Ã¤Æ¤¤¤Þ¤¹' );
+Wizin_Util::define( 'WIZMOBILE_MSG_RESIZED_IMAGE_DIR_NOT_EXISTS', XOOPS_ROOT_PATH . '/uploads/wizmobile ¤¬Â¸ºß¤·¤Ê¤¤¤¿¤á¡¢²èÁü¤Î¥ê¥µ¥¤¥ºµ¡Ç½¤ÏÌµ¸ú¤È¤Ê¤Ã¤Æ¤¤¤Þ¤¹' );
+Wizin_Util::define( 'WIZMOBILE_MSG_RESIZED_IMAGE_DIR_NOT_WRITABLE', XOOPS_ROOT_PATH . '/uploads/wizmobile ¤Ë½ñ¤­¹þ¤ß¸¢¸Â¤¬¤Ê¤¤¤¿¤á¡¢²èÁü¤Î¥ê¥µ¥¤¥ºµ¡Ç½¤ÏÌµ¸ú¤È¤Ê¤Ã¤Æ¤¤¤Þ¤¹' );
 Wizin_Util::define( 'WIZMOBILE_MSG_DOM_NOT_EXISTS', 'DOM³ÈÄ¥¤¬Â¸ºß¤·¤Ê¤¤¤¿¤á¡¢¥Ú¡¼¥¸Ê¬³äµ¡Ç½¤ÏÌµ¸ú¤È¤Ê¤Ã¤Æ¤¤¤Þ¤¹' );
 Wizin_Util::define( 'WIZMOBILE_MSG_SIMPLEXML_NOT_EXISTS', 'SimpleXML¤¬Â¸ºß¤·¤Ê¤¤¤¿¤á¡¢¥Ú¡¼¥¸Ê¬³äµ¡Ç½¤ÏÌµ¸ú¤È¤Ê¤Ã¤Æ¤¤¤Þ¤¹' );
 Wizin_Util::define( 'WIZMOBILE_MSG_TIDY_NOT_EXISTS', 'Tidy³ÈÄ¥¤¬Â¸ºß¤·¤Ê¤¤¤¿¤á¡¢HTML¤Î¼«Æ°½¤Àµ¤Ï¹Ô¤ï¤ì¤Þ¤»¤ó' );
@@ -85,6 +89,7 @@ Wizin_Util::define( 'WIZMOBILE_LANG_NON_DISPLAY_BLOCK_SETTING', 'ÈóÉ½¼¨¥Ö¥í¥Ã¥¯¤
 Wizin_Util::define( 'WIZMOBILE_LANG_GENERAL_SETTING', '°ìÈÌÀßÄê' );
 
 // system status
+Wizin_Util::define( 'WIZMOBILE_LANG_EXCHANGE_CONTROLLER', '¥³¥ó¥È¥í¡¼¥é¤Î´¹Áõ' );
 Wizin_Util::define( 'WIZMOBILE_LANG_IMAGE_RESIZE', '²èÁü¤Î¥ê¥µ¥¤¥º' );
 Wizin_Util::define( 'WIZMOBILE_LANG_PARTITION_PAGE', '¥Ú¡¼¥¸Ê¬³ä' );
 
