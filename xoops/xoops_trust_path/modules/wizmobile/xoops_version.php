@@ -69,7 +69,7 @@ $modversion['legacy_installer']['updater']['filepath'] = dirname( __FILE__ ) . '
 $modversion['legacy_installer']['updater']['class'] = 'WizMobile_Updater';
 
 // database
-$modversion['sqlfile']['mysql'] = "sql/mysql.sql";
+$modversion['sqlfile']['mysql'] = "";
 $modversion['tables'][] = "{prefix}_{dirname}_login";
 $modversion['tables'][] = "{prefix}_{dirname}_config";
 $modversion['tables'][] = "{prefix}_{dirname}_block";

@@ -65,21 +65,28 @@ if ( ! class_exists('WizMobile_Installer') ) {
                 $this->mLog->addError( "Failed to install : " . $cacheDir . " needs writable permission. Prease check it's permission.");
                 return false;
             }
-            /** This code block copied from "Legacy_ModuleInstaller" >> */
-            $memberHandler =& xoops_gethandler( 'member' );
-            $groupObjects =& $memberHandler->getGroups();
+            return parent::executeInstall();
+        }
+
+        function _installModule()
+        {
+            parent::_installModule();
             //
             // Add a permission all group members and guest can read.
             //
+            $memberHandler =& xoops_gethandler( 'member' );
+            $groupObjects =& $memberHandler->getGroups();
+            $gpermHandler =& xoops_gethandler('groupperm');
             foreach ( $groupObjects as $group ) {
-                $readPerm =& $this->_createPermission( $group->getVar('groupid') );
+                $readPerm =& $gpermHandler->create();
+                $readPerm->setVar( 'gperm_groupid', $group->getVar('groupid') );
+                $readPerm->setVar( 'gperm_itemid', $this->_mXoopsModule->getVar('mid') );
+                $readPerm->setVar( 'gperm_modid', 1 );
                 $readPerm->setVar( 'gperm_name', 'module_read' );
                 if ( ! $gpermHandler->insert($readPerm) ) {
                     $this->mLog->addError( _AD_LEGACY_ERROR_COULD_NOT_SET_READ_PERMISSION );
                 }
             }
-            /** This code block copied from "Legacy_ModuleInstaller" << */
-            return parent::executeInstall();
         }
     }
 }
