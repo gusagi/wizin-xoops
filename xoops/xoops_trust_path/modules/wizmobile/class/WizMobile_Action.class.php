@@ -50,8 +50,7 @@ if ( ! class_exists('WizMobile_Action') ) {
             $user = & Wizin_User::getSingleton();
             $user->checkClient( true );
             if ( ! $user->bIsMobile ) {
-                header( "HTTP/1.1 404 Not Found" );
-                exit();
+                return null;
             }
             $loginTable = $db->prefix( $this->_mFrontDirName . '_login' );
             $uniqId = md5( $user->sUniqId . XOOPS_SALT );
@@ -91,8 +90,9 @@ if ( ! class_exists('WizMobile_Action') ) {
             $user = & Wizin_User::getSingleton();
             $user->checkClient( true );
             if ( ! $user->bIsMobile ) {
-                header( "HTTP/1.1 404 Not Found" );
-                exit();
+                $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
+                    $this->_mFrontDirName . '/index.php?act=Setting', 1,
+                    sprintf(Wizin_Util::constant('WIZMOBILE_MSG_REGISTER_UNIQID_FAILED'), WIZMOBILE_LANG_REGISTER) );
             }
             $loginTable = $db->prefix( $this->_mFrontDirName . '_login' );
             $uid = $xcRoot->mContext->mXoopsUser->get( 'uid' );
