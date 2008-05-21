@@ -36,8 +36,11 @@ if ( ! class_exists('Wizin_Filter') ) {
             return $instance;
         }
 
-        function addInputFilter( $function, & $params = array() )
+        function addInputFilter( $function, & $params )
         {
+            if ( ! isset($params) ) {
+                $params = array();
+            }
             if ( is_null($this->_aInputFilter) ) {
                 $this->_aInputFilter = array();
             }
@@ -46,7 +49,7 @@ if ( ! class_exists('Wizin_Filter') ) {
 
         function executeInputFilter()
         {
-            $inputFilter = & $this->_aInputFilter;
+            $inputFilter = $this->_aInputFilter;
             for ( $index = 0; $index < count($inputFilter); $index ++ ) {
                 $filter = & $inputFilter[$index];
                 $function =& $filter[0];
@@ -59,8 +62,11 @@ if ( ! class_exists('Wizin_Filter') ) {
             $this->_aInputFilter = array();
         }
 
-        function addOutputFilter( $function, & $params = array() )
+        function addOutputFilter( $function, & $params )
         {
+            if ( ! isset($params) ) {
+                $params = array();
+            }
             if ( is_null($this->_aOutputFilter) ) {
                 $this->_aOutputFilter = array();
             }
@@ -69,7 +75,7 @@ if ( ! class_exists('Wizin_Filter') ) {
 
         function executeOutputFilter( & $contents )
         {
-            $outputFilter = & $this->_aOutputFilter;
+            $outputFilter = $this->_aOutputFilter;
             for ( $index = 0; $index < count($outputFilter); $index ++ ) {
                 $filter = & $outputFilter[$index];
                 $function =& $filter[0];

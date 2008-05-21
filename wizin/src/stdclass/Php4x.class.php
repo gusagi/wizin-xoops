@@ -74,14 +74,14 @@ if ( ! class_exists('Wizin_StdClass') ) {
          * @param string $key
          * @return mixed
          */
-        function & __get( $key, &$return )
+        function __get( $key, &$return )
         {
             if ( isset($this->_aVars[$key]) ) {
                 $var =& $this->_aVars[$key];
-                $return =& $var;
+                $return = $var;
             } else {
                 $var = null;
-                $return =& $var;
+                $return = $var;
             }
             return true;
         }

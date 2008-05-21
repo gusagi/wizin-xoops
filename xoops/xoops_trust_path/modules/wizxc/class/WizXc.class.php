@@ -35,7 +35,7 @@
 if ( ! class_exists('WizXc') ) {
     class WizXc
     {
-        function __construct()
+        function WizXc()
         {
             WizXc::_require();
             WizXc::_define();
@@ -56,7 +56,9 @@ if ( ! class_exists('WizXc') ) {
         {
             require_once XOOPS_TRUST_PATH . '/wizin/src/Wizin.class.php';
             require_once dirname( __FILE__ ) . '/WizXc_Util.class.php';
-            require_once dirname( __FILE__ ) . '/gtickets.php';
+            if ( ! class_exists('XoopsGTicket') ) {
+                require_once dirname( __FILE__ ) . '/gtickets.php';
+            }
         }
 
         function _define()

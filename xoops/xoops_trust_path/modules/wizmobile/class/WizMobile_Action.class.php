@@ -39,7 +39,18 @@ if ( ! class_exists('WizMobile_Action') ) {
         function _setup()
         {
             $this->_sModuleDir = XOOPS_TRUST_PATH . '/modules/wizmobile';
-            $this->_mFrontDirName = str_replace( '_wizmobile_action', '', strtolower(get_class($this)) );
+            $this->_sFrontDirName = str_replace( '_wizmobile_action', '', strtolower(get_class($this)) );
+            $this->_sClassName = $this->_sFrontDirName . '_WizMobile_Action';
+        }
+
+        function &getSingletonByOwn()
+        {
+            static $instance;
+            if ( ! isset($instance) ) {
+                $className = $this->_sClassName;
+                $instance = new $className();
+            }
+            return $instance;
         }
 
         function simpleLogin( &$xoopsUser )
@@ -52,7 +63,7 @@ if ( ! class_exists('WizMobile_Action') ) {
             if ( ! $user->bIsMobile ) {
                 return null;
             }
-            $loginTable = $db->prefix( $this->_mFrontDirName . '_login' );
+            $loginTable = $db->prefix( $this->_sFrontDirName . '_login' );
             $uniqId = md5( $user->sUniqId . XOOPS_SALT );
             // TODO : use ORM
             $sql = "SELECT `wml_uid` FROM `$loginTable` WHERE CAST(`wml_uniqid` AS BINARY) = '$uniqId' AND `wml_delete_datetime` = '0000-00-00 00:00:00';";
@@ -82,19 +93,19 @@ if ( ! class_exists('WizMobile_Action') ) {
             $xcRoot = XCube_Root::getSingleton();
             $db =& XoopsDatabaseFactory::getDatabaseConnection();
             $gTicket = new XoopsGTicket();
-            if ( ! $gTicket->check(true, $this->_mFrontDirName, false) ) {
+            if ( ! $gTicket->check(true, $this->_sFrontDirName, false) ) {
                 $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
-                    $this->_mFrontDirName . '/index.php?act=Setting', 1,
+                    $this->_sFrontDirName . '/index.php?act=Setting', 1,
                     sprintf(Wizin_Util::constant('WIZMOBILE_ERR_TICKET_NOT_FOUND')) );
             }
             $user = & Wizin_User::getSingleton();
             $user->checkClient( true );
             if ( ! $user->bIsMobile ) {
                 $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
-                    $this->_mFrontDirName . '/index.php?act=Setting', 1,
+                    $this->_sFrontDirName . '/index.php?act=Setting', 1,
                     sprintf(Wizin_Util::constant('WIZMOBILE_MSG_REGISTER_UNIQID_FAILED'), WIZMOBILE_LANG_REGISTER) );
             }
-            $loginTable = $db->prefix( $this->_mFrontDirName . '_login' );
+            $loginTable = $db->prefix( $this->_sFrontDirName . '_login' );
             $uid = $xcRoot->mContext->mXoopsUser->get( 'uid' );
             $uniqId = md5( $user->sUniqId . XOOPS_SALT );
             $now = date( 'Y-m-d H:i:s' );
@@ -114,11 +125,11 @@ if ( ! class_exists('WizMobile_Action') ) {
             }
             if ( $db->query($sql) ) {
                 $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
-                    $this->_mFrontDirName . '/index.php?act=Setting', 1,
+                    $this->_sFrontDirName . '/index.php?act=Setting', 1,
                     sprintf(Wizin_Util::constant('WIZMOBILE_MSG_REGISTER_UNIQID_SUCCESS'), $mode) );
             } else {
                 $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
-                    $this->_mFrontDirName . '/index.php?act=Setting', 1,
+                    $this->_sFrontDirName . '/index.php?act=Setting', 1,
                     sprintf(Wizin_Util::constant('WIZMOBILE_MSG_REGISTER_UNIQID_FAILED'), $mode) );
             }
             exit();
@@ -155,7 +166,7 @@ if ( ! class_exists('WizMobile_Action') ) {
         {
             $nondisplayBlocks = array();
             $db =& XoopsDatabaseFactory::getDatabaseConnection();
-            $blockTable = $db->prefix( $this->_mFrontDirName . '_block' );
+            $blockTable = $db->prefix( $this->_sFrontDirName . '_block' );
             // TODO : use ORM
             $sql = "SELECT `wmb_bid` FROM `$blockTable` WHERE `wmb_delete_datetime` = '0000-00-00 00:00:00';";
             if ( $resource = $db->query($sql) ) {
@@ -172,12 +183,12 @@ if ( ! class_exists('WizMobile_Action') ) {
         {
             $xcRoot = XCube_Root::getSingleton();
             $gTicket = new XoopsGTicket();
-            if ( ! $gTicket->check(true, $this->_mFrontDirName, false) ) {
+            if ( ! $gTicket->check(true, $this->_sFrontDirName, false) ) {
                 $xcRoot->mController->executeRedirect( WIZXC_CURRENT_URI, 3,
                     sprintf(Wizin_Util::constant('WIZMOBILE_ERR_TICKET_NOT_FOUND')) );
             }
             $db =& XoopsDatabaseFactory::getDatabaseConnection();
-            $blockTable = $db->prefix( $this->_mFrontDirName . '_block' );
+            $blockTable = $db->prefix( $this->_sFrontDirName . '_block' );
             $newblocksTable = $db->prefix( 'newblocks' );
             $insertBlocks = array();
             $updateBlocks = array();
@@ -231,7 +242,7 @@ if ( ! class_exists('WizMobile_Action') ) {
             }
             $xcRoot = XCube_Root::getSingleton();
             $db =& XoopsDatabaseFactory::getDatabaseConnection();
-            $configTable = $db->prefix( $this->_mFrontDirName . '_config' );
+            $configTable = $db->prefix( $this->_sFrontDirName . '_config' );
             $configs = array();
             // TODO : use ORM
             $sql = "SELECT * FROM `$configTable` WHERE `wmc_delete_datetime` = '0000-00-00 00:00:00';";
@@ -250,12 +261,12 @@ if ( ! class_exists('WizMobile_Action') ) {
         {
             $xcRoot = XCube_Root::getSingleton();
             $gTicket = new XoopsGTicket();
-            if ( ! $gTicket->check(true, $this->_mFrontDirName, false) ) {
+            if ( ! $gTicket->check(true, $this->_sFrontDirName, false) ) {
                 $xcRoot->mController->executeRedirect( WIZXC_CURRENT_URI, 3,
                     sprintf(Wizin_Util::constant('WIZMOBILE_ERR_TICKET_NOT_FOUND')) );
             }
             $db =& XoopsDatabaseFactory::getDatabaseConnection();
-            $configTable = $db->prefix( $this->_mFrontDirName . '_config' );
+            $configTable = $db->prefix( $this->_sFrontDirName . '_config' );
             $now = date( 'Y-m-d H:i:s' );
             $allowItems = array( 'login', 'theme', 'lookup', 'othermobile' );
             $sqlArray = array();

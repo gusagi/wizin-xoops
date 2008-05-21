@@ -51,8 +51,7 @@ if ( class_exists('Wizin') ) {
     if ( file_exists($actionScript) ) {
         require $actionScript;
         if ( class_exists($className) ) {
-            $wizMobileAction = new $className();
-            $wizMobile->setActionClass( $wizMobileAction );
+            $wizMobile->sActionClassName = $className;
         }
     }
     $preloadScript = dirname( __FILE__ ) . '/preload/WizMobile_Preload.class.php';

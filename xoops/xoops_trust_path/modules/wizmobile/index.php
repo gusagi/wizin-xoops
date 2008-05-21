@@ -51,8 +51,8 @@ if ( class_exists('Wizin') ) {
     if ( file_exists($actionScript) ) {
         require $actionScript;
         if ( class_exists($className) ) {
+            $wizMobile->sActionClassName = $className;
             $wizMobileAction = new $className();
-            $wizMobile->setActionClass( $wizMobileAction );
             $wizMobileAction->execute();
         }
     }

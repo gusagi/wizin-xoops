@@ -108,14 +108,12 @@ if ( ! class_exists('WizMobile') ) {
             $xcRoot->mDelegateManager->add( 'XoopsTpl.New' , array( $this , 'assignVars' ) ) ;
         }
 
-        function setActionClass( & $actionClass )
-        {
-            $this->_oActionClass = new Wizin_Ref( $actionClass );
-        }
-
         function & getActionClass()
         {
-            $actionClass =& $this->_oActionClass;
+            $className = $this->sActionClassName;
+            $class = new $className();
+            $actionClass =& $class->getSingletonByOwn();
+            unset( $class );
             return $actionClass;
         }
 
@@ -384,12 +382,13 @@ if ( ! class_exists('WizMobile') ) {
 
         function assignVars( & $xoopsTpl )
         {
+            $wizMobile = & WizMobile::getSingleton();
             $user = & Wizin_User::getSingleton();
             $carrier = $user->sCarrier;
             $xoopsTpl->assign( 'wizmobile_carrier', $carrier );
             $isMobile = $user->bIsMobile;
             $xoopsTpl->assign( 'wizmobile_ismobile', $isMobile );
-            $actionClass =& $this->getActionClass();
+            $actionClass =& $wizMobile->getActionClass();
             $frontDirName = str_replace( '_wizmobile_action', '', strtolower(get_class($actionClass)) );
             $xoopsTpl->assign( 'wizmobile_dirname', $frontDirName );
             $configs = $actionClass->getConfigs();
