@@ -48,6 +48,14 @@ if( ! class_exists( 'Legacy_WizMobileThemeRenderTarget' ) ) {
     		header('Cache-Control: post-check=0, pre-check=0', false);
     		header('Pragma: no-cache');
     	}
+
+        function setResult($result)
+        {
+            $wizMobile =& WizMobile::getSingleton();
+            ob_start();
+            parent::setResult( $result );
+            $wizMobile->renderContents();
+        }
     }
 }
 
@@ -62,5 +70,14 @@ if( ! class_exists( 'Legacy_WizMobileDialogRenderTarget' ) ) {
     		header('Cache-Control: post-check=0, pre-check=0', false);
     		header('Pragma: no-cache');
     	}
+
+        function setResult($result)
+        {
+            $wizMobile =& WizMobile::getSingleton();
+            ob_start();
+            parent::setResult( $result );
+            $wizMobile->renderContents();
+        }
+
     }
 }

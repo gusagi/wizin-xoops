@@ -147,7 +147,6 @@ if ( ! class_exists('WizMobile') ) {
                     }
                     $this->_inputFilter();
                     $this->_exchangeRenderSystem();
-                    register_shutdown_function( array($this, '_finishFilter') );
                 } else {
                     ini_set( 'default_charset', _CHARSET );
                     header( 'Content-Type:text/html; charset=' . _CHARSET );
@@ -348,7 +347,7 @@ if ( ! class_exists('WizMobile') ) {
             return $contents;
         }
 
-        function _finishFilter()
+        function renderContents()
         {
             $user = & Wizin_User::getSingleton();
             $filter =& Wizin_Filter::getSingleton();

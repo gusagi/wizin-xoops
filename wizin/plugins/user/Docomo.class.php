@@ -32,7 +32,7 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                 $filter =& Wizin_Filter::getSingleton();
                 $params = array();
                 $filter->addOutputFilter( array( $this, 'filterDocomo' ), $params );
-                $this->_checkGuid();
+                //$this->_checkGuid();
             }
         }
 
@@ -40,27 +40,30 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
         {
             $checkString = 'guid=on';
             $requestUri = getenv( 'REQUEST_URI' );
-            if ( ! preg_match('/' . $checkString . '/i', $requestUri) ) {
-                $https = getenv( 'HTTPS' );
-                if ( ! empty($https) && strtolower($https) === 'on' ) {
-                    $scheme = 'https';
-                } else {
-                    $scheme = 'http';
+            $method = getenv( 'REQUEST_METHOD' );
+            if ( strtolower($method) === 'get' ) {
+                if ( ! preg_match('/' . $checkString . '/i', $requestUri) ) {
+                    $https = getenv( 'HTTPS' );
+                    if ( ! empty($https) && strtolower($https) === 'on' ) {
+                        $scheme = 'https';
+                    } else {
+                        $scheme = 'http';
+                    }
+                    $serverName = getenv( 'SERVER_NAME' );
+                    $currentUrl = $scheme . '://' . $serverName;
+                    $port = getenv( 'SERVER_PORT' );
+                    if ( ! empty($port) && $port !== '80' && $port !== '443' ) {
+                        $currentUrl .= ':' . $port;
+                    }
+                    $currentUrl .= $requestUri;
+                    $queryString = getenv( 'QUERY_STRING' );
+                    if ( isset($queryString) && $queryString !== '' ) {
+                        $currentUrl .= '&' . $checkString;
+                    } else {
+                        $currentUrl .= '?' . $checkString;
+                    }
+                    header( 'Location: ' . $currentUrl );
                 }
-                $serverName = getenv( 'SERVER_NAME' );
-                $currentUrl = $scheme . '://' . $serverName;
-                $port = getenv( 'SERVER_PORT' );
-                if ( ! empty($port) && $port !== '80' && $port !== '443' ) {
-                    $currentUrl .= ':' . $port;
-                }
-                $currentUrl .= $requestUri;
-                $queryString = getenv( 'QUERY_STRING' );
-                if ( isset($queryString) && $queryString !== '' ) {
-                    $currentUrl .= '&' . $checkString;
-                } else {
-                    $currentUrl .= '?' . $checkString;
-                }
-                header( 'Location: ' . $currentUrl );
             }
         }
 
