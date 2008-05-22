@@ -55,7 +55,7 @@ if ( ! class_exists('WizMobile') ) {
         {
             require_once XOOPS_TRUST_PATH . '/wizin/src/Wizin_User.class.php';
             require_once XOOPS_TRUST_PATH . '/wizin/src/Wizin_Session.class.php';
-            require_once XOOPS_TRUST_PATH . '/wizin/src/Wizin_Filter.class.php';
+            require_once XOOPS_TRUST_PATH . '/wizin/src/Wizin_Filter.php';
             require_once XOOPS_TRUST_PATH . '/wizin/src/util/Web.class.php';
         }
 
@@ -358,10 +358,11 @@ if ( ! class_exists('WizMobile') ) {
                 $filter->addOutputFilter( array( $filter, 'filterTransSid' ), $params );
             }
             $params = array( XOOPS_URL, WIZMOBILE_CURRENT_URI, XOOPS_ROOT_PATH, XOOPS_ROOT_PATH . '/uploads/wizmobile' );
-            $filter->addOutputFilter( array( $filter, 'filterOptimizeMobile' ), $params );
+            $filter->addOutputFilter( array($filter, 'filterOptimizeMobile'), $params );
             $params = array( $user->sEncoding, $user->sCharset );
-            $filter->addOutputFilter( array( $filter, 'filterOutputEncoding' ), $params );
-            $filter->addOutputFilter( array( $this, '_directRedirect' ) );
+            $filter->addOutputFilter( array($filter, 'filterOutputEncoding'), $params );
+            $params = array();
+            $filter->addOutputFilter( array($this, '_directRedirect'), $params );
             $filter->executeOutputFilter( $contents );
             header( 'Content-Type:application/xhtml+xml; charset=' . $user->sCharset );
             echo $contents;

@@ -21,7 +21,7 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
 
         function _require()
         {
-            require_once 'src/Wizin_Filter.class.php';
+            require_once 'src/Wizin_Filter.php';
         }
 
         function _setup()
@@ -30,7 +30,8 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
             if ( ! isset($calledFlag) ) {
                 $calledFlag = true;
                 $filter =& Wizin_Filter::getSingleton();
-                $filter->addOutputFilter( array( $this, 'filterDocomo' ) );
+                $params = array();
+                $filter->addOutputFilter( array( $this, 'filterDocomo' ), $params );
                 $this->_checkGuid();
             }
         }

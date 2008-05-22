@@ -11,11 +11,11 @@
  *
  */
 
-if ( ! class_exists('Wizin_Filter') ) {
-    require 'Wizin.class.php';
+if ( ! class_exists('Wizin_Filter_Common') ) {
+    require dirname( dirname(__FILE__) ) . '/Wizin.class.php';
     require_once 'src/util/Web.class.php';
 
-    class Wizin_Filter extends Wizin_StdClass
+    class Wizin_Filter_Common extends Wizin_StdClass
     {
         function __construct()
         {
@@ -36,17 +36,6 @@ if ( ! class_exists('Wizin_Filter') ) {
             return $instance;
         }
 
-        function addInputFilter( $function, & $params = null )
-        {
-            if ( is_null($params) ) {
-                $params = array();
-            }
-            if ( is_null($this->_aInputFilter) ) {
-                $this->_aInputFilter = array();
-            }
-            $this->_aInputFilter[] = array( $function, $params );
-        }
-
         function executeInputFilter()
         {
             $inputFilter = $this->_aInputFilter;
@@ -60,17 +49,6 @@ if ( ! class_exists('Wizin_Filter') ) {
                 unset( $params );
             }
             $this->_aInputFilter = array();
-        }
-
-        function addOutputFilter( $function, & $params = null )
-        {
-            if ( is_null($params) ) {
-                $params = array();
-            }
-            if ( is_null($this->_aOutputFilter) ) {
-                $this->_aOutputFilter = array();
-            }
-            $this->_aOutputFilter[] = array( $function, $params );
         }
 
         function executeOutputFilter( & $contents )
