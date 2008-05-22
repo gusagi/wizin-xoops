@@ -59,6 +59,7 @@ Wizin_Util::define( 'WIZMOBILE_MSG_TIDY_NOT_EXISTS', 'Because Tidy extension doe
 Wizin_Util::define( 'WIZMOBILE_MSG_REGISTER_UNIQID_SUCCESS', '%s of terminal specific ID completed.' );
 Wizin_Util::define( 'WIZMOBILE_MSG_REGISTER_UNIQID_FAILED', 'It failed in %s of terminal specific ID.' );
 Wizin_Util::define( 'WIZMOBILE_MSG_REGISTER_UNIQID', 'The terminal specific ID which is utilized with simple login is registered. (In case of the register being completed terminal specific ID is updated).<br />When terminal specific ID is registered, it reaches the point which just clicks the simple login button, can do login.' );
+Wizin_Util::define( 'WIZMOBILE_MSG_CANNOT_GET_UNIQID', 'It cannot get The terminal specific ID.<br />Please check whether it does not prohibit the terminal specific ID.' );
 
 // admin area / block setting
 Wizin_Util::define( 'WIZMOBILE_MSG_UPDATE_BLOCK_SETTING_SUCCESS', 'Update of non display block setting completed.' );

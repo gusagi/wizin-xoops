@@ -59,6 +59,7 @@ Wizin_Util::define( 'WIZMOBILE_MSG_TIDY_NOT_EXISTS', 'Tidy拡張が存在しな�
 Wizin_Util::define( 'WIZMOBILE_MSG_REGISTER_UNIQID_SUCCESS', '機種IDの%sが完了しました' );
 Wizin_Util::define( 'WIZMOBILE_MSG_REGISTER_UNIQID_FAILED', '機種IDの%sに失敗しました' );
 Wizin_Util::define( 'WIZMOBILE_MSG_REGISTER_UNIQID', '簡単ログインで利用する携帯の機種IDを登録します。（登録済みの場合は機種IDを更新します）<br />機種IDを登録すると、簡単ログインボタンをクリックするだけで、ログインが出来るようになります。' );
+Wizin_Util::define( 'WIZMOBILE_MSG_CANNOT_GET_UNIQID', '機種IDが取得出来ません。<br />機種IDの送信を禁止していないか、確認して下さい。' );
 
 // admin area / block setting
 Wizin_Util::define( 'WIZMOBILE_MSG_UPDATE_BLOCK_SETTING_SUCCESS', '非表示ブロック設定の更新が完了しました' );

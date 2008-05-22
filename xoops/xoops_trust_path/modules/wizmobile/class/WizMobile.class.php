@@ -388,6 +388,8 @@ if ( ! class_exists('WizMobile') ) {
             $xoopsTpl->assign( 'wizmobile_carrier', $carrier );
             $isMobile = $user->bIsMobile;
             $xoopsTpl->assign( 'wizmobile_ismobile', $isMobile );
+            $uniqId = $user->sUniqId;
+            $xoopsTpl->assign( 'wizmobile_uniqid', $uniqId );
             $actionClass =& $wizMobile->getActionClass();
             $frontDirName = str_replace( '_wizmobile_action', '', strtolower(get_class($actionClass)) );
             $xoopsTpl->assign( 'wizmobile_dirname', $frontDirName );

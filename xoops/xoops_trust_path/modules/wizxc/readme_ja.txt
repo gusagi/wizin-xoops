@@ -1,6 +1,6 @@
 /**************************************************
  * 【 モジュール名 】WizXC
- * 【  バージョン  】0.20
+ * 【  バージョン  】0.21
  * 【   権 利 者   】Makoto Hashiguchi a.k.a. gusagi
  * 【   作 成 者   】Makoto Hashiguchi a.k.a. gusagi
  * 【  ライセンス  】GNU General Public License Version2 with the special exception
@@ -39,4 +39,4 @@ XOOPS_TRUST_PATH/modulesにアップロードして下さい。
 --------------
 
 2008年 2月 26日 作成
-2008年 5月 14日 更新
+2008年 5月 22日 更新

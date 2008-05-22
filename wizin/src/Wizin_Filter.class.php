@@ -36,9 +36,9 @@ if ( ! class_exists('Wizin_Filter') ) {
             return $instance;
         }
 
-        function addInputFilter( $function, & $params )
+        function addInputFilter( $function, & $params = null )
         {
-            if ( ! isset($params) ) {
+            if ( is_null($params) ) {
                 $params = array();
             }
             if ( is_null($this->_aInputFilter) ) {
@@ -62,9 +62,9 @@ if ( ! class_exists('Wizin_Filter') ) {
             $this->_aInputFilter = array();
         }
 
-        function addOutputFilter( $function, & $params )
+        function addOutputFilter( $function, & $params = null )
         {
-            if ( ! isset($params) ) {
+            if ( is_null($params) ) {
                 $params = array();
             }
             if ( is_null($this->_aOutputFilter) ) {

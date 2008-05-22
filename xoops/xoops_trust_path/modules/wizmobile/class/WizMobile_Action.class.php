@@ -58,9 +58,16 @@ if ( ! class_exists('WizMobile_Action') ) {
             $xcRoot = XCube_Root::getSingleton();
             $wizMobile =& WizMobile::getSingleton();
             $db =& XoopsDatabaseFactory::getDatabaseConnection();
+            $configs = $this->getConfigs();
+            if ( ! empty($configs['lookup']) && $configs['lookup']['wmc_value'] === '1' ) {
+                $lookup = true;
+            } else {
+                $lookup = false;
+            }
             $user = & Wizin_User::getSingleton();
             $user->checkClient( true );
             if ( ! $user->bIsMobile ) {
+                $user->checkClient( $lookup );
                 return null;
             }
             $loginTable = $db->prefix( $this->_sFrontDirName . '_login' );
@@ -85,6 +92,7 @@ if ( ! class_exists('WizMobile_Action') ) {
                     /** This code block copied from "User_LegacypageFunctions" << */
                 }
             }
+            $user->checkClient( $lookup );
             return ;
         }
 
@@ -104,6 +112,11 @@ if ( ! class_exists('WizMobile_Action') ) {
                 $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
                     $this->_sFrontDirName . '/index.php?act=Setting', 1,
                     sprintf(Wizin_Util::constant('WIZMOBILE_MSG_REGISTER_UNIQID_FAILED'), WIZMOBILE_LANG_REGISTER) );
+            }
+            if ( $user->sUniqId === '' ) {
+                $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
+                    $this->_sFrontDirName . '/index.php?act=Setting', 1,
+                    sprintf(Wizin_Util::constant('WIZMOBILE_MSG_CANNOT_GET_UNIQID'), WIZMOBILE_LANG_REGISTER) );
             }
             $loginTable = $db->prefix( $this->_sFrontDirName . '_login' );
             $uid = $xcRoot->mContext->mXoopsUser->get( 'uid' );

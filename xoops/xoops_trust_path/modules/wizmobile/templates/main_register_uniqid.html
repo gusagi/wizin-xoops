@@ -3,8 +3,14 @@
     <div style="text-align: left;">
         <{"WIZMOBILE_MSG_REGISTER_UNIQID"|wiz_constant}>
     </div>
-    <form action="" method="post">
-        <{wiz_gticket area=$wizmobile_dirname}>
-        <input type="submit" value="<{"WIZMOBILE_LANG_REGISTER"|wiz_constant}>" />
-    </form>
+    <{if $wizmobile_uniqid !== ''}>
+        <form action="" method="post">
+            <{wiz_gticket area=$wizmobile_dirname}>
+            <input type="submit" value="<{"WIZMOBILE_LANG_REGISTER"|wiz_constant}>" />
+        </form>
+    <{else}>
+    <div style="margin-top: 1em; color: #ff0000;">
+        <{"WIZMOBILE_MSG_CANNOT_GET_UNIQID"|wiz_constant}>
+    </div>
+    <{/if}>
 </div>

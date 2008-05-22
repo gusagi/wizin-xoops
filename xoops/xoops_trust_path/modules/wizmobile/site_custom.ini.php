@@ -17,11 +17,4 @@ root=XOOPS_TRUST_PATH
 path=/modules/wizmobile/class
 class=Legacy_WizMobileRenderSystem
 
-#        #
-# mobile #
-#        #
-
-[Mobile]
-emulate = false
-
 **/
