@@ -21,10 +21,12 @@ if ( ! class_exists('Wizin_Filter') ) {
             if ( is_null($params) ) {
                 $params = array();
             }
-            if ( is_null($this->_aInputFilter) ) {
-                $this->_aInputFilter = array();
+            $inputFilter = $this->_aInputFilter;
+            if ( empty($inputFilter) ) {
+                $inputFilter = array();
             }
-            $this->_aInputFilter[] = array( $function, $params );
+            $inputFilter[] = array( $function, $params );
+            $this->_aInputFilter = $inputFilter;
         }
 
         function addOutputFilter( $function, & $params = null )
@@ -32,10 +34,12 @@ if ( ! class_exists('Wizin_Filter') ) {
             if ( is_null($params) ) {
                 $params = array();
             }
-            if ( is_null($this->_aOutputFilter) ) {
-                $this->_aOutputFilter = array();
+            $outputFilter = $this->_aOutputFilter;
+            if ( is_null($outputFilter) ) {
+                $outputFilter = array();
             }
-            $this->_aOutputFilter[] = array( $function, $params );
+            $outputFilter[] = array( $function, $params );
+            $this->_aOutputFilter = $outputFilter;
         }
 
     }
