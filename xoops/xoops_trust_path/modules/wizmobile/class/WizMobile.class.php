@@ -264,6 +264,15 @@ if ( ! class_exists('WizMobile') ) {
             exit();
         }
 
+        function denyAccessLoginPage()
+        {
+            $user = & Wizin_User::getSingleton();
+            $url = ( ! $user->bCookie ) ? XOOPS_URL. '/' . '?' . SID : XOOPS_URL;
+            $_SESSION['redirect_message'] = Wizin_Util::constant( 'WIZMOBILE_MSG_DENY_LOGIN_PAGE' );
+            header("Location: " . $url );
+            exit();
+        }
+
         function denyAccessAdminArea()
         {
             $user = & Wizin_User::getSingleton();

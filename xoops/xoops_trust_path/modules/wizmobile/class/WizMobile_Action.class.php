@@ -53,9 +53,14 @@ if ( ! class_exists('WizMobile_Action') ) {
             return $instance;
         }
 
-        function simpleLogin( &$xoopsUser )
+        function simpleLogin()
         {
             $xcRoot = XCube_Root::getSingleton();
+            // include language file of legacy module
+            $language = empty( $GLOBALS['xoopsConfig']['language'] ) ? 'english' : $GLOBALS['xoopsConfig']['language'];
+            if( file_exists( XOOPS_ROOT_PATH . '/modules/legacy/language/' . $language . '/main.php' ) ) {
+                require_once XOOPS_ROOT_PATH . '/modules/legacy/language/' . $language . '/main.php';
+            }
             $wizMobile =& WizMobile::getSingleton();
             $db =& XoopsDatabaseFactory::getDatabaseConnection();
             $configs = $this->getConfigs();
@@ -66,34 +71,38 @@ if ( ! class_exists('WizMobile_Action') ) {
             }
             $user = & Wizin_User::getSingleton();
             $user->checkClient( true );
-            if ( ! $user->bIsMobile ) {
-                $user->checkClient( $lookup );
-                return null;
-            }
-            $loginTable = $db->prefix( $this->_sFrontDirName . '_login' );
-            $uniqId = md5( $user->sUniqId . XOOPS_SALT );
-            // TODO : use ORM
-            $sql = "SELECT `wml_uid` FROM `$loginTable` WHERE CAST(`wml_uniqid` AS BINARY) = '$uniqId' AND `wml_delete_datetime` = '0000-00-00 00:00:00';";
-            if ( $resource = $db->query($sql) ) {
-                $result = $db->fetchArray( $resource );
-                if ( $result !== false && ! empty($result) ) {
-                    /** This code block copied from "User_LegacypageFunctions" >> */
-                    $handler =& xoops_gethandler('user');
-                    $xcUser =& $handler->get( $result['wml_uid'] );
-                    $xoopsUser = $xcUser;
+            if ( $user->bIsMobile ) {
+                $loginTable = $db->prefix( $this->_sFrontDirName . '_login' );
+                $uniqId = md5( $user->sUniqId . XOOPS_SALT );
+                // TODO : use ORM
+                $sql = "SELECT `wml_uid` FROM `$loginTable` WHERE CAST(`wml_uniqid` AS BINARY) = '$uniqId' AND `wml_delete_datetime` = '0000-00-00 00:00:00';";
+                if ( $resource = $db->query($sql) ) {
+                    $result = $db->fetchArray( $resource );
+                    if ( $result !== false && ! empty($result) ) {
+                        /** This code block copied from "User_LegacypageFunctions" >> */
+                        $handler =& xoops_gethandler('user');
+                        $xcUser =& $handler->get( $result['wml_uid'] );
+                        $xcRoot->mContext->mXoopsUser =& $xcUser;
 
-                    //
-                    // Regist to session
-                    //
-                    $xcRoot->mSession->regenerate();
-                    $_SESSION = array();
-                    $_SESSION['xoopsUserId'] = $xoopsUser->get('uid');
-                    $_SESSION['xoopsUserGroups'] = $xoopsUser->getGroups();
-                    /** This code block copied from "User_LegacypageFunctions" << */
+                        //
+                        // Regist to session
+                        //
+                        $xcRoot->mSession->regenerate();
+                        $_SESSION = array();
+                        $_SESSION['xoopsUserId'] = $xcUser->get('uid');
+                        $_SESSION['xoopsUserGroups'] = $xcUser->getGroups();
+                        /** This code block copied from "User_LegacypageFunctions" << */
+                    }
                 }
             }
             $user->checkClient( $lookup );
-            return ;
+            if ( isset($xcUser) && is_object($xcUser) ) {
+                XCube_DelegateUtils::call( 'Site.CheckLogin.Success', new XCube_Ref($xcUser) );
+                $this->executeRedirect( XOOPS_URL, 1, XCube_Utils::formatMessage(_MD_LEGACY_MESSAGE_LOGIN_SUCCESS, $xcUser->get('uname')) );
+            } else {
+                XCube_DelegateUtils::call( 'Site.CheckLogin.Fail', new XCube_Ref($xcUser) );
+                $this->executeRedirect( XOOPS_URL, 1, _MD_LEGACY_ERROR_INCORRECTLOGIN );
+            }
         }
 
         function registerUniqId()

@@ -39,6 +39,7 @@ if ( $scriptFileName === __FILE__ ) {
 
 // init process
 $xcRoot =& XCube_Root::getSingleton();
+$wizMobile =& WizMobile::getSingleton();
 $renderTarget =& $xcRoot->mContext->mModule->getRenderTarget();
 $frontDirname = str_replace( '_wizmobile_action', '', strtolower(get_class($this)) );
 $tplFile = $frontDirname . '_main_login.html';
@@ -47,12 +48,18 @@ $renderTarget->setTemplateName( $tplFile );
 // if login disabled
 $configs = $this->getConfigs();
 if ( empty($configs['login']) || $configs['login']['wmc_value'] !== '1' ) {
-    $xcRoot->mController->executeForward( XOOPS_URL );
+    $wizMobile->denyAccessLoginPage();
+}
+
+// check login and redirect
+$method = getenv( 'REQUEST_METHOD' );
+if ( strtolower($method) === 'post' ) {
+    $this->simpleLogin();
 }
 
 // include language file of user module
 $language = empty( $GLOBALS['xoopsConfig']['language'] ) ? 'english' : $GLOBALS['xoopsConfig']['language'];
-if( file_exists( XOOPS_ROOT_PATH . '/modules/user/language/' . $language . '/main.php' ) ) {
+if( file_exists( XOOPS_ROOT_PATH . '/modules/user/language/' . $language . '/blocks.php' ) ) {
     require_once XOOPS_ROOT_PATH . '/modules/user/language/' . $language . '/blocks.php';
 }
 

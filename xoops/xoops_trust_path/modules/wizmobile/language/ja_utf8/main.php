@@ -42,6 +42,7 @@ Wizin_Util::define( 'WIZMOBILE_MODINFO_DESC', 'XOOPS Cube Legacyで構築した�
 //
 
 // main area / all
+Wizin_Util::define( 'WIZMOBILE_MSG_DENY_LOGIN_PAGE', '申し訳ありませんが、このサイトは携帯からはログイン出来ません<br />PCでの操作をお願い致します' );
 Wizin_Util::define( 'WIZMOBILE_MSG_DENY_ADMIN_AREA', '申し訳ありませんが、携帯から管理画面は操作出来ません<br />PCでの操作をお願い致します' );
 Wizin_Util::define( 'WIZMOBILE_MSG_SESSION_LIMIT_TIME', '携帯端末で有効なセッションの継続時間を過ぎました<br />申し訳ありませんが、もう一度ログインし直して下さい' );
 
