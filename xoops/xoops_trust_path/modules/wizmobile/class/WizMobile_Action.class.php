@@ -79,8 +79,8 @@ if ( ! class_exists('WizMobile_Action') ) {
                 if ( $result !== false && ! empty($result) ) {
                     /** This code block copied from "User_LegacypageFunctions" >> */
                     $handler =& xoops_gethandler('user');
-                    $user =& $handler->get( $result['wml_uid'] );
-                    $xoopsUser = $user;
+                    $xcUser =& $handler->get( $result['wml_uid'] );
+                    $xoopsUser = $xcUser;
 
                     //
                     // Regist to session
