@@ -1,5 +1,5 @@
 <div style="margin-left: 0.5em; padding: 1em;">
-    <form action="" method="post">
+    <form action="admin.php" method="post">
         <table class="outer" style="margin-bottom: 1em;">
             <tr class="head">
                 <th style="width: 24em;"><{"WIZMOBILE_LANG_ITEM"|wiz_constant}></th>
@@ -84,6 +84,7 @@
             </tr>
         </table>
         <div style="text-align: center; width: 100%; margin: auto;">
+            <input type="hidden" name="act" value="GeneralSetting" />
             <{wiz_gticket area=$wizmobile_dirname}>
             <input type="submit" value="<{"WIZMOBILE_LANG_UPDATE"|wiz_constant}>" />
         </div>

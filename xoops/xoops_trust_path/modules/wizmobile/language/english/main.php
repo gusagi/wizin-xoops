@@ -46,6 +46,9 @@ Wizin_Util::define( 'WIZMOBILE_MSG_DENY_LOGIN_PAGE', 'Sorry, it cannot login fro
 Wizin_Util::define( 'WIZMOBILE_MSG_DENY_ADMIN_AREA', 'Sorry, it cannot operate Admin Area from the portable telephone,<br /> we request the operation with PC' );
 Wizin_Util::define( 'WIZMOBILE_MSG_SESSION_LIMIT_TIME', 'It passed the existence time of session for portable telephone.<br />There is no excuse, but login please do again to do once more.' );
 
+// main area / simple login
+Wizin_Util::define( 'WIZMOBILE_MSG_SIMPLE_LOGIN_CAUTION', 'When you utilize simple login, it is necessary to do the "Register of terminal specific ID" after the login.' );
+
 // admin area / system status
 Wizin_Util::define( 'WIZMOBILE_MSG_CONTROLLER_IS_NOT_EXCHANGED', 'Controller class is not exchanged.' );
 Wizin_Util::define( 'WIZMOBILE_MSG_CONTROLLER_PATCH', 'Please write this code in ' . XOOPS_ROOT_PATH . '/settings/site_custom.ini.php .' );

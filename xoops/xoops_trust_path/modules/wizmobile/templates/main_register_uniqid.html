@@ -4,7 +4,8 @@
         <{"WIZMOBILE_MSG_REGISTER_UNIQID"|wiz_constant}>
     </div>
     <{if $wizmobile_uniqid !== ''}>
-        <form action="" method="post">
+        <form action="index.php" method="post">
+            <input type="hidden" name="act" value="RegisterUniqId" />
             <{wiz_gticket area=$wizmobile_dirname}>
             <input type="submit" value="<{"WIZMOBILE_LANG_REGISTER"|wiz_constant}>" />
         </form>

@@ -120,12 +120,13 @@ if ( ! class_exists('WizMobile_Action') ) {
             if ( ! $user->bIsMobile ) {
                 $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
                     $this->_sFrontDirName . '/index.php?act=Setting', 1,
-                    sprintf(Wizin_Util::constant('WIZMOBILE_MSG_REGISTER_UNIQID_FAILED'), WIZMOBILE_LANG_REGISTER) );
+                    sprintf(Wizin_Util::constant('WIZMOBILE_MSG_REGISTER_UNIQID_FAILED'),
+                    Wizin_Util::constant('WIZMOBILE_LANG_REGISTER')) );
             }
             if ( $user->sUniqId === '' ) {
                 $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
                     $this->_sFrontDirName . '/index.php?act=Setting', 1,
-                    sprintf(Wizin_Util::constant('WIZMOBILE_MSG_CANNOT_GET_UNIQID'), WIZMOBILE_LANG_REGISTER) );
+                    Wizin_Util::constant('WIZMOBILE_MSG_CANNOT_GET_UNIQID') );
             }
             $loginTable = $db->prefix( $this->_sFrontDirName . '_login' );
             $uid = $xcRoot->mContext->mXoopsUser->get( 'uid' );

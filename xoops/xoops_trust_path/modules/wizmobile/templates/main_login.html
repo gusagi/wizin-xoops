@@ -1,7 +1,9 @@
 <div id="<{$wizmobile_dirname}>Login">
-    <form action="" method="post">
+    <form action="index.php" method="post">
+        <input type="hidden" name="act" value="Login" />
         <input type="submit" value="<{"WIZMOBILE_LANG_SIMPLE_LOGIN"|wiz_constant}>" />
     </form>
+    <span style="margin-top: 1em; color: #ff0000;"><{"WIZMOBILE_MSG_SIMPLE_LOGIN_CAUTION"|wiz_constant}></span>
 </div>
 <br />
 

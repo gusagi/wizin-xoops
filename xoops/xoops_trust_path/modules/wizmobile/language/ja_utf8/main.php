@@ -46,6 +46,9 @@ Wizin_Util::define( 'WIZMOBILE_MSG_DENY_LOGIN_PAGE', '申し訳ありません�
 Wizin_Util::define( 'WIZMOBILE_MSG_DENY_ADMIN_AREA', '申し訳ありませんが、携帯から管理画面は操作出来ません<br />PCでの操作をお願い致します' );
 Wizin_Util::define( 'WIZMOBILE_MSG_SESSION_LIMIT_TIME', '携帯端末で有効なセッションの継続時間を過ぎました<br />申し訳ありませんが、もう一度ログインし直して下さい' );
 
+// main area / simple login
+Wizin_Util::define( 'WIZMOBILE_MSG_SIMPLE_LOGIN_CAUTION', '簡単ログインをご利用になる場合、ログイン後に「機種ID登録」を行っている必要があります。' );
+
 // admin area / system status
 Wizin_Util::define( 'WIZMOBILE_MSG_CONTROLLER_IS_NOT_EXCHANGED', 'コントローラが換装されていません' );
 Wizin_Util::define( 'WIZMOBILE_MSG_CONTROLLER_PATCH', '以下のコードを ' . XOOPS_ROOT_PATH . '/settings/site_custom.ini.php に書き込んで下さい' );
@@ -60,7 +63,7 @@ Wizin_Util::define( 'WIZMOBILE_MSG_TIDY_NOT_EXISTS', 'Tidy拡張が存在しな�
 Wizin_Util::define( 'WIZMOBILE_MSG_REGISTER_UNIQID_SUCCESS', '機種IDの%sが完了しました' );
 Wizin_Util::define( 'WIZMOBILE_MSG_REGISTER_UNIQID_FAILED', '機種IDの%sに失敗しました' );
 Wizin_Util::define( 'WIZMOBILE_MSG_REGISTER_UNIQID', '簡単ログインで利用する携帯の機種IDを登録します。（登録済みの場合は機種IDを更新します）<br />機種IDを登録すると、簡単ログインボタンをクリックするだけで、ログインが出来るようになります。' );
-Wizin_Util::define( 'WIZMOBILE_MSG_CANNOT_GET_UNIQID', '機種IDが取得出来ません。<br />機種IDの送信を禁止していないか、確認して下さい。' );
+Wizin_Util::define( 'WIZMOBILE_MSG_CANNOT_GET_UNIQID', '機種IDが取得出来ません<br />機種IDの送信を禁止していないか、確認して下さい' );
 
 // admin area / block setting
 Wizin_Util::define( 'WIZMOBILE_MSG_UPDATE_BLOCK_SETTING_SUCCESS', '非表示ブロック設定の更新が完了しました' );
@@ -75,7 +78,7 @@ Wizin_Util::define( 'WIZMOBILE_MSG_UPDATE_GENERAL_SETTING_FAILED', '一般設定
 // error message
 //
 Wizin_Util::define( 'WIZMOBILE_ERR_PHP_VERSION', 'このモジュールは、PHP4.4以上でなければインストール出来ません' );
-Wizin_Util::define( 'WIZMOBILE_ERR_TICKET_NOT_FOUND', 'ワンタイムチケットが見つかりません。<br />お手数ですが、もう一度操作をお願いします' );
+Wizin_Util::define( 'WIZMOBILE_ERR_TICKET_NOT_FOUND', 'ワンタイムチケットが見つかりません<br />お手数ですが、もう一度操作をお願いします' );
 
 //
 // language for main area
