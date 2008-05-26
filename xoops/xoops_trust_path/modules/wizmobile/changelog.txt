@@ -1,4 +1,8 @@
 ----------------------------------
+[2008-05-26 Ver 0.21 -> 0.22]
+- Fixed bug about failed simple login with DoCoMo.(thx okamOTO)
+- Adding caution in login form.
+----------------------------------
 [2008-05-22 Ver 0.20 -> 0.21]
 - Fixed bug about wrong code with php4.(thx toshikun)
 - Fixed bug about gticket include.(thx okamOTO)
