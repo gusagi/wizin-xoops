@@ -101,7 +101,9 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                         $match[3] . $match[4] .$href . $match[6], $contents );
                 }
             }
-            // post method
+            //
+            // form
+            //
             // pattern 1 ( "method=, action=" pattern )
             $pattern = '(<form)([^>]*)(method=)([\"\'])(post|get)([\"\'])([^>]*)(action=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
             preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
@@ -112,6 +114,14 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                         $action = $match[10];
                     } else {
                         $url = basename( getenv('SCRIPT_NAME') );
+                        $queryString = getenv( 'QUERY_STRING' );
+                        if ( isset($queryString) && $queryString !== '' ) {
+                            $queryString = str_replace( '&' . SID, '', $queryString );
+                            $queryString = str_replace( SID, '', $queryString );
+                            if ( $queryString !== '' ) {
+                                $url .= '?' . $queryString;
+                            }
+                        }
                         $form = str_replace( $match[8] . $match[9] . $match[10] . $match[11],
                             $match[8] . $match[9] . $url . $match[11], $match[0] );
                         $action = $url;
@@ -155,6 +165,14 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                         $action = $match[5];
                     } else {
                         $url = basename( getenv('SCRIPT_NAME') );
+                        $queryString = getenv( 'QUERY_STRING' );
+                        if ( isset($queryString) && $queryString !== '' ) {
+                            $queryString = str_replace( '&' . SID, '', $queryString );
+                            $queryString = str_replace( SID, '', $queryString );
+                            if ( $queryString !== '' ) {
+                                $url .= '?' . $queryString;
+                            }
+                        }
                         $form = str_replace( $match[3] . $match[4] . $match[5] . $match[6],
                             $match[3] . $match[4] . $url . $match[6], $match[0] );
                         $action = $url;

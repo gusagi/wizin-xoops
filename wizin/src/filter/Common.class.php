@@ -169,7 +169,9 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                     }
                 }
             }
-            // post method
+            //
+            // form
+            //
             // pattern 1 ( "method=, action=" pattern )
             $pattern = '(<form)([^>]*)(method=)([\"\'])(post|get)([\"\'])([^>]*)(action=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
             preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
@@ -189,18 +191,14 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                             }
                         }
                     } else {
-                        $url = $currentUri;
-                        $sessionName = ini_get( 'session.name' );
-                        if ( strpos($url, $sessionName) > 0 ) {
-                            $sessionIdLength = strlen( session_id() );
-                            $delstr = $sessionName . '=';
-                            $delstr = "/(.*)(" . $delstr . ")(\w{" . $sessionIdLength . "})(.*)/i";
-                            $url = preg_replace( $delstr, '${1}${4}', $url );
-                            if ( strstr($url, '?&') ) {
-                                $url = str_replace( '?&', '?', $url );
-                            }
-                            if ( substr($url, -1, 1) === '?' ) {
-                                $url = substr( $url, 0, strlen($url) - 1 );
+                        $url = dirname( $currentUri );
+                        $url .= basename( getenv('SCRIPT_NAME') );
+                        $queryString = getenv( 'QUERY_STRING' );
+                        if ( isset($queryString) && $queryString !== '' ) {
+                            $queryString = str_replace( '&' . SID, '', $queryString );
+                            $queryString = str_replace( SID, '', $queryString );
+                            if ( $queryString !== '' ) {
+                                $url .= '?' . $queryString;
                             }
                         }
                         $form = str_replace( $match[8] . $match[9] . $match[10] . $match[11],
@@ -234,18 +232,14 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                             }
                         }
                     } else {
-                        $url = $currentUri;
-                        $sessionName = ini_get( 'session.name' );
-                        if ( strpos($url, $sessionName) > 0 ) {
-                            $sessionIdLength = strlen( session_id() );
-                            $delstr = $sessionName . '=';
-                            $delstr = "/(.*)(" . $delstr . ")(\w{" . $sessionIdLength . "})(.*)/i";
-                            $url = preg_replace( $delstr, '${1}${4}', $url );
-                            if ( strstr($url, '?&') ) {
-                                $url = str_replace( '?&', '?', $url );
-                            }
-                            if ( substr($url, -1, 1) === '?' ) {
-                                $url = substr( $url, 0, strlen($url) - 1 );
+                        $url = dirname( $currentUri );
+                        $url .= basename( getenv('SCRIPT_NAME') );
+                        $queryString = getenv( 'QUERY_STRING' );
+                        if ( isset($queryString) && $queryString !== '' ) {
+                            $queryString = str_replace( '&' . SID, '', $queryString );
+                            $queryString = str_replace( SID, '', $queryString );
+                            if ( $queryString !== '' ) {
+                                $url .= '?' . $queryString;
                             }
                         }
                         $form = str_replace( $match[3] . $match[4] . $match[5] . $match[6],
