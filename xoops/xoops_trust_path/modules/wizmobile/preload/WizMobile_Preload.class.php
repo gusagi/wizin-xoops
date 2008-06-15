@@ -60,11 +60,9 @@ if ( ! class_exists('WizMobile_Preload') ) {
                 $xcRoot =& XCube_Root::getSingleton();
                 $wizMobileAction =& $wizMobile->getActionClass();
                 $configs = $wizMobileAction->getConfigs();
-                // exchange theme
-                $wizMobile->exchangeTheme();
                 // add delegate
                 if ( (empty($configs['login']) || $configs['login']['wmc_value'] !== '1') &&
-                    ! is_object($xcRoot->mContext->mXoopsUser) ) {
+                        ! is_object($xcRoot->mContext->mXoopsUser) ) {
                     $xcRoot->mDelegateManager->add( 'Legacypage.User.Access',
                         array($wizMobile, 'denyAccessLoginPage'), XCUBE_DELEGATE_PRIORITY_FIRST);
                 }

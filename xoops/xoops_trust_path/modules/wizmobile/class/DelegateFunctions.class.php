@@ -63,7 +63,7 @@ class LegacyWizMobileRender_DelegateFunctions
 						}
 					}
 					else {
-						if (file_exists($themeDir . "/theme.html")) {
+						if ( file_exists($themeDir . "/theme.html") ) {
 							$theme->mName = $dirname;
 							$theme->mRenderSystemName = 'Legacy_WizMobileRenderSystem';
 							$theme->mFormat = "XOOPS2 Legacy Style";
