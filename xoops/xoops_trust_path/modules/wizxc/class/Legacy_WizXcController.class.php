@@ -63,10 +63,12 @@ if( ! class_exists( 'Legacy_WizXcController' ) ) {
         {
             ob_start();
             $sessionName = ini_get( 'session.name' );
-            if ( ! empty($_REQUEST[$sessionName]) ) {
+            if ( ! empty($_GET[$sessionName]) || ! empty($_POST[$sessionName]) ) {
                 if ( ! strpos($url, $sessionName) ) {
-                    if ( strpos($url, XOOPS_URL) === 0 || substr($url, 0, 1) === '.' || substr($url, 0, 1) === '/' ) {
-                        if ( !strstr($url, '?') ) {
+                    $urlFirstChar = substr( $url, 0, 1 );
+                    if ( strpos($url, XOOPS_URL) === 0 || $urlFirstChar === '.' ||
+                            $urlFirstChar === '/' || $urlFirstChar === '#' ) {
+                        if ( ! strstr($url, '?') ) {
                             $connector = '?';
                         } else {
                             $connector = '&';

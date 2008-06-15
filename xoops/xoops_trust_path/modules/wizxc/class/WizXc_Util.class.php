@@ -67,13 +67,11 @@ if ( ! class_exists('WizXc_Util') ) {
                         $tplfile->setVar( 'tpl_refid', $mid );
                         $tplfile->setVar( 'tpl_lastimported', 0 );
                         $tplfile->setVar( 'tpl_lastmodified', time() );
-
                         if ( preg_match("/\.css$/i", $fileName) ) {
                             $tplfile->setVar( 'tpl_type', 'css' );
                         } else {
                             $tplfile->setVar( 'tpl_type', 'module' );
                         }
-
                         $source = file( $filePath );
                         $source = implode( '', $source );
                         $tplfile->setVar( 'tpl_source', $source, true );
