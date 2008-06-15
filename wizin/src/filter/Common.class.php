@@ -137,8 +137,11 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                     $hrefArray = array();
                     $url = $match[5];
                     if ( substr($url, 0, 4) !== 'http' ) {
-                        if ( substr($url, 0, 1) === '#' ) {
+                        if ( strpos($url, ':') !== false ) {
                             continue;
+                        } else if ( substr($url, 0, 1) === '#' ) {
+                            $urlArray = explode( '#', $currentUri );
+                            $url = $urlArray[0] . $url;
                         } else if ( substr($url, 0, 1) === '/' ) {
                             $parseUrl = parse_url( $baseUri );
                             $url = str_replace( $parseUrl['path'], '', $baseUri ) . $url;
@@ -181,8 +184,11 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                         $form = $match[0];
                         $action = $match[10];
                         if ( substr($action, 0, 4) !== 'http' ) {
-                            if ( substr($action, 0, 1) === '#' ) {
+                            if ( strpos($action, ':') !== false ) {
                                 continue;
+                            } else if ( substr($action, 0, 1) === '#' ) {
+                                $urlArray = explode( '#', $currentUri );
+                                $action = $urlArray[0] . $action;
                             } else if ( substr($action, 0, 1) === '/' ) {
                                 $parseUrl = parse_url( $baseUri );
                                 $action = str_replace( $parseUrl['path'], '', $baseUri ) . $action;
@@ -222,8 +228,11 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                         $form = $match[0];
                         $action = $match[5];
                         if ( substr($action, 0, 4) !== 'http' ) {
-                            if ( substr($action, 0, 1) === '#' ) {
+                            if ( strpos($action, ':') !== false ) {
                                 continue;
+                            } else if ( substr($action, 0, 1) === '#' ) {
+                                $urlArray = explode( '#', $currentUri );
+                                $action = $urlArray[0] . $action;
                             } else if ( substr($action, 0, 1) === '/' ) {
                                 $parseUrl = parse_url( $baseUri );
                                 $action = str_replace( $parseUrl['path'], '', $baseUri ) . $action;

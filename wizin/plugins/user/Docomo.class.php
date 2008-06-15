@@ -80,8 +80,10 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                     $url = $match[5];
                     if ( preg_match('/' . $insertString . '/i', $url) ) {
                         continue;
-                    } else if ( substr($url, 0, 1) === '#' ) {
+                    } else if ( substr($url, 0, 4) !== 'http' && strpos($url, ':') !== false ) {
                         continue;
+                    } else if ( substr($url, 0, 1) === '#' ) {
+                        $url = basename( getenv('SCRIPT_NAME') ) . $url;
                     }
                     if ( ! strstr($url, '?') ) {
                         $connector = '?';
@@ -110,8 +112,15 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
             if ( ! empty($matches) ) {
                 foreach ( $matches as $key => $match) {
                     if ( ! empty($match[10]) ) {
-                        $form = $match[0];
-                        $action = $match[10];
+                        if ( substr($match[10], 0, 4) !== 'http' && strpos($match[10], ':') !== false ) {
+                            continue;
+                        } else if ( substr($match[10], 0, 1) === '#' ) {
+                            $action = basename( getenv('SCRIPT_NAME') ) . $match[10];
+                            $form = str_replace( $match[10], $action, $match[0] );
+                        } else {
+                            $action = $match[10];
+                            $form = $match[0];
+                        }
                     } else {
                         $url = basename( getenv('SCRIPT_NAME') );
                         $queryString = getenv( 'QUERY_STRING' );
@@ -161,8 +170,15 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
             if ( ! empty($matches) ) {
                 foreach ( $matches as $key => $match) {
                     if ( ! empty($match[5]) ) {
-                        $form = $match[0];
-                        $action = $match[5];
+                        if ( substr($match[5], 0, 4) !== 'http' && strpos($match[5], ':') !== false ) {
+                            continue;
+                        } else if ( substr($match[5], 0, 1) === '#' ) {
+                            $action = basename( getenv('SCRIPT_NAME') ) . $match[5];
+                            $form = str_replace( $match[5], $action, $match[0] );
+                        } else {
+                            $action = $match[5];
+                            $form = $match[0];
+                        }
                     } else {
                         $url = basename( getenv('SCRIPT_NAME') );
                         $queryString = getenv( 'QUERY_STRING' );
