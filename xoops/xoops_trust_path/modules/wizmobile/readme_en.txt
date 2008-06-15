@@ -1,6 +1,6 @@
 /**************************************************
  * < Module name > WizMobile
- * < Version >     0.22
+ * < Version >     0.23
  * < Proprietor >  Makoto Hashiguchi a.k.a. gusagi
  * < Developer >   Makoto Hashiguchi a.k.a. gusagi
  * < License >     GNU General Public License Version2 with the special exception

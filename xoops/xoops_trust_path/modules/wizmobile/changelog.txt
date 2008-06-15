@@ -1,4 +1,12 @@
 ----------------------------------
+[2008-06-16 Ver 0.22 -> 0.23]
+- Added dummy file for old preload script.
+- Fixed bug about 'a' tag replace logic.(thx nico)
+- Modified redirect logic.(thx toorisugari * spelled in Japanese)
+- Fixed bug about exchange theme logic.(thx toshikun, nico2)
+- Modified footer in theme file.
+- Modified anchor in theme file.
+----------------------------------
 [2008-05-26 Ver 0.21 -> 0.22]
 - Fixed bug about failed simple login with DoCoMo.(thx okamOTO)
 - Adding caution in login form.

@@ -1,6 +1,6 @@
 /**************************************************
  * 【 モジュール名 】WizMobile
- * 【  バージョン  】0.22
+ * 【  バージョン  】0.23
  * 【   権 利 者   】Makoto Hashiguchi a.k.a. gusagi
  * 【   作 成 者   】Makoto Hashiguchi a.k.a. gusagi
  * 【  ライセンス  】GNU General Public License Version2 with the special exception

@@ -48,7 +48,7 @@ if( file_exists( dirname(__FILE__) . '/language/' . $language . '/main.php' ) ) 
 // module infomation
 $modversion = array();
 $modversion['name']        = Wizin_Util::constant( 'WIZMOBILE_MODINFO_NAME' );
-$modversion['version']     = '0.22';
+$modversion['version']     = '0.23';
 $modversion['description'] = Wizin_Util::constant( 'WIZMOBILE_MODINFO_DESC' );
 $modversion['credits']     = 'Makoto Hashiguchi a.k.a. gusagi';
 $modversion['author']      = 'Makoto Hashiguchi a.k.a. gusagi &lt;gusagi&#64;gusagi.com&gt;<br />url : http://www.gusagi.com';
