@@ -249,11 +249,13 @@ if ( ! class_exists('WizMobile_Action') ) {
             }
             foreach ( $sqlArray as $sql ) {
                 if ( ! $db->query($sql) ) {
-                    $xcRoot->mController->executeRedirect( WIZXC_CURRENT_URI, 3,
+                    $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
+                        $this->_sFrontDirName . '/admin/admin.php?act=BlockSetting', 3,
                         sprintf(Wizin_Util::constant('WIZMOBILE_MSG_UPDATE_BLOCK_SETTING_FAILED')) );
                 }
             }
-            $xcRoot->mController->executeRedirect( WIZXC_CURRENT_URI, 3,
+            $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
+                $this->_sFrontDirName . '/admin/admin.php?act=BlockSetting', 3,
                 sprintf(Wizin_Util::constant('WIZMOBILE_MSG_UPDATE_BLOCK_SETTING_SUCCESS')) );
         }
 
@@ -312,11 +314,13 @@ if ( ! class_exists('WizMobile_Action') ) {
             }
             foreach ( $sqlArray as $sql ) {
                 if ( ! $db->query($sql) ) {
-                    $xcRoot->mController->executeRedirect( WIZXC_CURRENT_URI, 3,
+                    $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
+                        $this->_sFrontDirName . '/admin/admin.php?act=GeneralSetting', 3,
                         sprintf(Wizin_Util::constant('WIZMOBILE_MSG_UPDATE_GENERAL_SETTING_FAILED')) );
                 }
             }
-            $xcRoot->mController->executeRedirect( WIZXC_CURRENT_URI, 3,
+            $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
+                $this->_sFrontDirName . '/admin/admin.php?act=GeneralSetting', 3,
                 sprintf(Wizin_Util::constant('WIZMOBILE_MSG_UPDATE_GENERAL_SETTING_SUCCESS')) );
         }
 
