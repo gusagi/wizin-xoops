@@ -63,9 +63,19 @@ if( file_exists( XOOPS_ROOT_PATH . '/modules/user/language/' . $language . '/blo
     require_once XOOPS_ROOT_PATH . '/modules/user/language/' . $language . '/blocks.php';
 }
 
+// login check and get "user" module config
+if ( isset($GLOBALS['xoopsUser']) && is_object($GLOBALS['xoopsUser']) ) {
+    $xcRoot->mController->executeForward( XOOPS_URL );
+} else {
+    $config_handler =& xoops_gethandler( 'config' );
+    $userModuleConfig =& $config_handler->getConfigsByDirname('user');
+}
+
 // call header
 require_once XOOPS_ROOT_PATH . '/header.php';
 
+// display main templates
+$renderTarget->setAttribute( 'block', $userModuleConfig );
 
 // call footer
 require_once XOOPS_ROOT_PATH . '/footer.php';
