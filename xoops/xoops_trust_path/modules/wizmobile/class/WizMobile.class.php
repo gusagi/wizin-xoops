@@ -227,8 +227,12 @@ if ( ! class_exists('WizMobile') ) {
             if ( file_exists(XOOPS_THEME_PATH . '/' . $theme) && is_dir(XOOPS_THEME_PATH . '/' . $theme) &&
                     file_exists(XOOPS_THEME_PATH . '/' . $theme . '/theme.html') ) {
                 $xcRoot->mContext->setThemeName( $theme );
-                $GLOBALS['xoopsConfig']['theme_set'] = $theme;
             }
+        }
+
+        function resetUserTheme()
+        {
+            unset( $_SESSION['xoopsUserTheme'] );
         }
 
         function directLoginSuccess()

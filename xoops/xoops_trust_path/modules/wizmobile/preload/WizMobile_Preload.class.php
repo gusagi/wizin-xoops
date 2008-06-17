@@ -67,12 +67,14 @@ if ( ! class_exists('WizMobile_Preload') ) {
                         array($wizMobile, 'denyAccessLoginPage'), XCUBE_DELEGATE_PRIORITY_FIRST);
                 }
                 $xcRoot->mDelegateManager->add( 'Site.CheckLogin.Success', array($wizMobile, 'directLoginSuccess'),
-                    XCUBE_DELEGATE_PRIORITY_FINAL );
+                    XCUBE_DELEGATE_PRIORITY_FINAL + 1 );
+                $xcRoot->mDelegateManager->add( 'Site.CheckLogin.Success', array($wizMobile, 'resetUserTheme'),
+                    XCUBE_DELEGATE_PRIORITY_FINAL - 1 );
                 $xcRoot->mDelegateManager->add( 'Site.CheckLogin.Fail', array($wizMobile, 'directLoginFail') );
                 $xcRoot->mDelegateManager->add( 'Site.Logout.Success', array($wizMobile, 'directLogout'),
-                    XCUBE_DELEGATE_PRIORITY_FINAL+1 );
+                    XCUBE_DELEGATE_PRIORITY_FINAL + 1 );
                 $xcRoot->mDelegateManager->add( 'Site.Logout.Fail', array($wizMobile, 'directLogout'),
-                    XCUBE_DELEGATE_PRIORITY_FINAL+1 );
+                    XCUBE_DELEGATE_PRIORITY_FINAL + 1 );
                 $xcRoot->mDelegateManager->add( 'Legacy_AdminControllerStrategy.SetupBlock',
                     array($wizMobile, 'denyAccessAdminArea'), XCUBE_DELEGATE_PRIORITY_FIRST );
                 if ( ! $user->bIsBot ) {
