@@ -106,7 +106,6 @@ if ( ! class_exists('WizMobile') ) {
             ob_start();
             $xcRoot =& XCube_Root::getSingleton();
             $xcRoot->mDelegateManager->add( 'XoopsTpl.New' , array( $this , 'assignVars' ) ) ;
-            $xcRoot->mDelegateManager->add( 'XoopsTpl.New' , array( $this , 'registerFilter' ) ) ;
         }
 
         function & getActionClass()
@@ -143,6 +142,7 @@ if ( ! class_exists('WizMobile') ) {
                     $user->bIsMobile = $otherMobile;
                 }
                 if ( $user->bIsMobile ) {
+                    $xcRoot->mDelegateManager->add( 'XoopsTpl.New' , array( $this , 'registerFilter' ) ) ;
                     if ( ! $user->bCookie ) {
                         Wizin_Session::overrideSessionIni( false );
                     }
