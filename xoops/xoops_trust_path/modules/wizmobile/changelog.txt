@@ -1,4 +1,7 @@
 ----------------------------------
+[2008-06-16 Ver 0.23 -> 0.24]
+- Fixed bug about 'mobile' theme is not have effect, when user theme was registered.
+----------------------------------
 [2008-06-16 Ver 0.22 -> 0.23]
 - Added dummy file for old preload script.
 - Fixed bug about 'a' tag replace logic.(thx nico)

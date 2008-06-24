@@ -228,10 +228,12 @@ if ( ! class_exists('WizMobile_Action') ) {
                 }
             }
             $nonDisplayBlocks = $this->getNondisplayBlocks();
-            $insertBlocks = array_diff( $_REQUEST['wmb_bid'], $nonDisplayBlocks );
-            $updateBlocks = array_intersect( $_REQUEST['wmb_bid'], $nonDisplayBlocks );
+            $requestBlocks = ( ! empty($_REQUEST['wmb_bid']) && is_array($_REQUEST['wmb_bid']) ) ?
+                $_REQUEST['wmb_bid']: array();
+            $insertBlocks = array_diff( $requestBlocks, $nonDisplayBlocks );
+            $updateBlocks = array_intersect( $requestBlocks, $nonDisplayBlocks );
             $deleteBlocks = array_merge( array_diff($nonDisplayBlocks, $existsBlocks),
-                array_diff($nonDisplayBlocks, $_REQUEST['wmb_bid']) );
+                array_diff($nonDisplayBlocks, $requestBlocks) );
             $insertBlocks = array_map( 'intval', $insertBlocks );
             $updateBlocks = array_map( 'intval', $updateBlocks );
             $deleteBlocks = array_map( 'intval', $deleteBlocks );
@@ -295,7 +297,9 @@ if ( ! class_exists('WizMobile_Action') ) {
             $now = date( 'Y-m-d H:i:s' );
             $allowItems = array( 'login', 'theme', 'lookup', 'othermobile' );
             $sqlArray = array();
-            foreach ( $_REQUEST['wmc_item'] as $wmc_item => $wmc_value ) {
+            $requestItems = ( ! empty($_REQUEST['wmc_item']) && is_array($_REQUEST['wmc_item']) ) ?
+                $_REQUEST['wmc_item']: array();
+            foreach ( $requestItems as $wmc_item => $wmc_value ) {
                 if ( ! in_array($wmc_item, $allowItems) ) {
                     continue;
                 }
