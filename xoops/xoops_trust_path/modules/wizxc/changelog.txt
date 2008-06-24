@@ -1,4 +1,7 @@
 ----------------------------------
+[2008-06-24 Ver 0.23]
+- Added clear compile cache logic.
+----------------------------------
 [2008-06-16 Ver 0.22]
 - Modified session_id check logic with redirect.
 ----------------------------------
@@ -9,7 +12,7 @@
 - Rewrite many codes.
 ----------------------------------
 [2008-04-06 Ver 0.1.1]
-- Adding the preamble of the license.
+- Added the preamble of the license.
 ----------------------------------
 [2008-03-03 Ver 0.1.0]
 - First release.

@@ -46,7 +46,7 @@ if ( ! class_exists('WizXc_Updater') ) {
                     if ( $file === '.' || $file === '..' ) {
                         continue;
                     }
-                    if ( substr($file, -14) === 'theme.html.php' ) {
+                    if ( substr($file, -4) === '.php' ) {
                         unlink( XOOPS_COMPILE_PATH . '/' . $file );
                     }
                 }
