@@ -101,29 +101,42 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
 
         function filterOptimizeMobile( & $contents, $baseUri, $currentUri, $basePath, $createDir = WIZIN_CACHE_DIR )
         {
-            $maxImageWidth = 220;
-            Wizin_Util_Web::resizeImage( $contents, $baseUri, $currentUri, $basePath, $createDir, $maxImageWidth );
+            $maxWidth = 220;
+            Wizin_Filter::filterResizeImage( $contents, $baseUri, $currentUri, $basePath, $createDir, $maxWidth );
             // replace input type "password" => "text"
             $pattern = '(<input)([^>]*)(type=)([\"\'])(password)([\"\'])([^>]*)(>)';
             $replacement = '${1}${2}${3}${4}text${6} ${7}${8}';
             $contents = preg_replace( "/" .$pattern ."/i", $replacement, $contents );
-            // delete script tags
-            $pattern = '@<script[^>]*?>.*?<\/script>@si';
-            $replacement = '';
-            $contents = preg_replace( $pattern, $replacement, $contents );
-            // delete del tags
-            $pattern = '@<del[^>]*?>.*?<\/del>@si';
-            $replacement = '';
-            $contents = preg_replace( $pattern, $replacement, $contents );
-            // delete comment
-            $pattern = '<!--[\s\S]*?-->';
-            $replacement = '';
-            $contents = preg_replace( "/" .$pattern ."/", $replacement, $contents );
+            Wizin_Filter::filterDeleteTags( $contents );
             // convert from zenkaku to hankaku
             if ( extension_loaded('mbstring') ) {
                 $contents = mb_convert_kana( $contents, 'knr' );
             }
             return $contents;
+        }
+
+        function filterDeleteTags( & $contents )
+        {
+            static $callFlag;
+            if ( ! isset($callFlag) ) {
+                $callFlag = true;
+                // delete script tags
+                $pattern = '@<script[^>]*?>.*?<\/script>@si';
+                $replacement = '';
+                $contents = preg_replace( $pattern, $replacement, $contents );
+                // delete del tags
+                $pattern = '@<del[^>]*?>.*?<\/del>@si';
+                $replacement = '';
+                $contents = preg_replace( $pattern, $replacement, $contents );
+                // delete comment
+                $pattern = '<!--[\s\S]*?-->';
+                $replacement = '';
+                $contents = preg_replace( "/" .$pattern ."/", $replacement, $contents );
+                // delete "nobr" tag
+                $pattern = '<\/?nobr>';
+                $replacement = '';
+                $contents = preg_replace( "/" .$pattern ."/", $replacement, $contents );
+            }
         }
 
         function filterTransSid( & $contents, $baseUri, $currentUri )
@@ -267,6 +280,98 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
             $contents = str_replace( '?&', '?', $contents );
             $contents = str_replace( '&&', '&', $contents );
             return $contents;
+        }
+
+        function filterResizeImage ( & $contents, $baseUri, $currentUri, $basePath, $createDir = null, $maxWidth = 0 )
+        {
+            if ( is_null($createDir) ) {
+                if ( defined('WIZIN_CACHE_DIR') ) {
+                    $createDir = WIZIN_CACHE_DIR;
+                } else {
+                    $createDir = dirname( dirname(dirname(__FILE__)) ) . '/work/cache';
+                }
+            }
+            // image resize
+            if ( extension_loaded('gd') ) {
+                clearstatcache();
+                $allowImageFormat = array( IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG );
+                $pattern = '(<img)([^>]*)(src=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
+                preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
+                if ( ! empty($matches) ) {
+                    foreach ( $matches as $key => $match) {
+                        $maxImageWidth = $maxWidth;
+                        $getFileFlag = false;
+                        $imageUrl = $match[5];
+                        if ( substr($imageUrl, 0, 4) !== 'http' ) {
+                            if ( substr($imageUrl, 0, 1) === '/' ) {
+                                $parseUrl = parse_url( $baseUri );
+                                $imageUrl = str_replace( $parseUrl['path'], '', $baseUri ) . $imageUrl;
+                            } else {
+                                $imageUrl = dirname( $currentUri ) . '/' . $imageUrl;
+                            }
+                        }
+                        if ( strpos($imageUrl, $baseUri) === 0 ) {
+                            $imagePath = str_replace( $baseUri, $basePath, $imageUrl );
+                            if ( ! file_exists($imagePath) ) {
+                                $imagePath = Wizin_Util_Web::getFileByHttp( $imageUrl );
+                                if ( $imagePath === '' ) {
+                                    continue;
+                                }
+                                $getFileFlag = true;
+                            }
+                            $ext = array_pop( explode('.', basename($imagePath)) );
+                            $newImagePath = $createDir . '/' . basename( $imagePath, $ext );
+                            if ( function_exists('imagegif') ) {
+                                $newExt = 'gif';
+                            } else {
+                                $newExt = 'jpg';
+                            }
+                            $newImagePath .= $newExt;
+                            $newImageUrl = str_replace( $basePath, $baseUri, $newImagePath );
+                            $imageSizeInfo = getimagesize( $imagePath );
+                            $width = $imageSizeInfo[0];
+                            $height = $imageSizeInfo[1];
+                            $format = $imageSizeInfo[2];
+                            if ( $width == 0 || $height == 0 ) {
+                                // Maybe the file is the script which send image, get file by http.
+                                $imagePath = Wizin_Util_Web::getFileByHttp( $imageUrl );
+                                if ( $imagePath === '' ) {
+                                    continue;
+                                }
+                                $getFileFlag = true;
+                                $imageSizeInfo = getimagesize( $imagePath );
+                                $width = $imageSizeInfo[0];
+                                $height = $imageSizeInfo[1];
+                                $format = $imageSizeInfo[2];
+                            }
+                            if ( $getFileFlag && $width <= $maxImageWidth ) {
+                                $maxImageWidth = $width - 1;
+                            }
+                            if ( $width !== 0 && $height !== 0 ) {
+                                if ( $width > $maxImageWidth && in_array($format, $allowImageFormat) ) {
+                                    if ( ! file_exists($newImagePath) ||
+                                            (filemtime($newImagePath) <= filemtime($imagePath)) ) {
+                                        Wizin_Util_Web::createThumbnail( $imagePath, $width, $height,
+                                            $format, $newImagePath, $maxImageWidth );
+                                    }
+                                    $imageTag = str_replace( $match[3] . $match[4] .$match[5] . $match[6],
+                                        $match[3] . $match[4] . $newImageUrl . $match[6], $match[0] );
+                                    $replaceArray = array( "'" => "\'", '"' => '\"', '\\' => '\\\\',
+                                        '/' => '\/', '(' => '\(', ')' => '\)', '.' => '\.', '?' => '\?' );
+                                    $linkCheckPattern = '(<a)([^>]*)(href=)([^>]*)(>)((?:(?!<\/a>).)*)('
+                                        . strtr($match[0], $replaceArray) . ')';
+                                    if ( preg_match("/" .$linkCheckPattern ."/is", $contents) ) {
+                                        $contents = str_replace( $match[0], $imageTag, $contents );
+                                    } else {
+                                        $imageLink = '<a href="' . $imageUrl . '">' . $imageTag . '</a>';
+                                        $contents = str_replace( $match[0], $imageLink, $contents );
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
     }

@@ -142,7 +142,7 @@ if ( ! class_exists('WizMobile') ) {
                     $user->bIsMobile = $otherMobile;
                 }
                 if ( $user->bIsMobile ) {
-                    $xcRoot->mDelegateManager->add( 'XoopsTpl.New' , array( $this , 'registerFilter' ) ) ;
+                    $xcRoot->mDelegateManager->add( 'XoopsTpl.New' , array( $this , 'mobileTpl' ) ) ;
                     if ( ! $user->bCookie ) {
                         Wizin_Session::overrideSessionIni( false );
                     }
@@ -383,10 +383,12 @@ if ( ! class_exists('WizMobile') ) {
             $xoopsTpl->assign( 'wizmobile_configs', $configs );
         }
 
-        function registerFilter( & $xoopsTpl )
+        function mobileTpl( & $xoopsTpl )
         {
             $wizMobile = & WizMobile::getSingleton();
+            $user = & Wizin_User::getSingleton();
             $xoopsTpl->register_postfilter( array($wizMobile, 'directRedirect') );
+            $xoopsTpl->compile_id .= '_' . $user->sCarrier;
         }
 
     }

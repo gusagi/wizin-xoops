@@ -13,6 +13,7 @@
 
 if ( ! class_exists('Wizin_Util_Web') ) {
     require dirname( dirname(__FILE__) ) . '/Wizin_Util.class.php';
+    require dirname( dirname(__FILE__) ) . '/Wizin_Filter.php';
 
     /**
      * @access public
@@ -20,88 +21,6 @@ if ( ! class_exists('Wizin_Util_Web') ) {
      */
     class Wizin_Util_Web extends Wizin_Util
     {
-        function resizeImage ( & $contents, $baseUri, $currentUri, $basePath, $createDir = null, $maxImageWidth = 0 )
-        {
-            if ( is_null($createDir) ) {
-                if ( defined('WIZIN_CACHE_DIR') ) {
-                    $createDir = WIZIN_CACHE_DIR;
-                } else {
-                    $createDir = dirname( dirname(dirname(__FILE__)) ) . '/work/cache';
-                }
-            }
-            // image resize
-            if ( extension_loaded('gd') ) {
-                clearstatcache();
-                $allowImageFormat = array( IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG );
-                $pattern = '(<img)([^>]*)(src=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
-                preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
-                if ( ! empty($matches) ) {
-                    foreach ( $matches as $key => $match) {
-                        $imageUrl = $match[5];
-                        if ( substr($imageUrl, 0, 4) !== 'http' ) {
-                            if ( substr($imageUrl, 0, 1) === '/' ) {
-                                $parseUrl = parse_url( $baseUri );
-                                $imageUrl = str_replace( $parseUrl['path'], '', $baseUri ) . $imageUrl;
-                            } else {
-                                $imageUrl = dirname( $currentUri ) . '/' . $imageUrl;
-                            }
-                        }
-                        if ( strpos($imageUrl, $baseUri) === 0 ) {
-                            $imagePath = str_replace( $baseUri, $basePath, $imageUrl );
-                            if ( ! file_exists($imagePath) ) {
-                                continue;
-                            }
-                            $ext = array_pop( explode('.', basename($imagePath)) );
-                            $newImagePath = $createDir . '/' . basename( $imagePath, $ext );
-                            if ( function_exists('imagegif') ) {
-                                $newExt = 'gif';
-                            } else {
-                                $newExt = 'jpg';
-                            }
-                            $newImagePath .= $newExt;
-                            $newImageUrl = str_replace( $basePath, $baseUri, $newImagePath );
-                            $imageSizeInfo = getimagesize( $imagePath );
-                            $width = $imageSizeInfo[0];
-                            $height = $imageSizeInfo[1];
-                            $format = $imageSizeInfo[2];
-                            if ( $width == 0 || $height == 0 ) {
-                                // Maybe the file is the script which send image, get file by http.
-                                $imagePath = Wizin_Util_Web::getFileByHttp( $imageUrl );
-                                if ( $imagePath === '' ) {
-                                    continue;
-                                }
-                                $imageSizeInfo = getimagesize( $imagePath );
-                                $width = $imageSizeInfo[0];
-                                $height = $imageSizeInfo[1];
-                                $format = $imageSizeInfo[2];
-                            }
-                            if ( $width !== 0 && $height !== 0 ) {
-                                if ( $width > $maxImageWidth && in_array($format, $allowImageFormat) ) {
-                                    if ( ! file_exists($newImagePath) ||
-                                            (filemtime($newImagePath) <= filemtime($imagePath)) ) {
-                                        Wizin_Util_Web::createThumbnail( $imagePath, $width, $height,
-                                            $format, $newImagePath, $maxImageWidth );
-                                    }
-                                    $imageTag = str_replace( $match[3] . $match[4] .$match[5] . $match[6],
-                                        $match[3] . $match[4] . $newImageUrl . $match[6], $match[0] );
-                                    $replaceArray = array( "'" => "\'", '"' => '\"', '\\' => '\\\\',
-                                        '/' => '\/', '(' => '\(', ')' => '\)', '.' => '\.' );
-                                    $linkCheckPattern = '(<a)([^>]*)(href=)([^>]*)(>)((?:(?!<\/a>).)*)('
-                                        . strtr($match[0], $replaceArray) . ')';
-                                    if ( preg_match("/" .$linkCheckPattern ."/is", $contents) ) {
-                                        $contents = str_replace( $match[0], $imageTag, $contents );
-                                    } else {
-                                        $imageLink = '<a href="' . $imageUrl . '">' . $imageTag . '</a>';
-                                        $contents = str_replace( $match[0], $imageLink, $contents );
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         function createThumbnail ( $imagePath, $width, $height, $format, $newImagePath, $maxImageWidth )
         {
             $resizeRate = $maxImageWidth / $width;
@@ -143,8 +62,8 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                 }
             }
             $replaceArray = array( '/' => '%', '.' => '%%' );
-            $fileName = array_pop( explode('://', $url) ) ;
-            $filePath = $createDir . '/' . strtr( $fileName, $replaceArray );
+            $fileName = array_pop( explode('://', $url) );
+            $filePath = $createDir . '/' . substr( md5($url), 0, 16 ) . '.tmp';
 
             // check file exists
             if ( file_exists($filePath) && is_readable($filePath) ) {
@@ -160,7 +79,7 @@ if ( ! class_exists('Wizin_Util_Web') ) {
             $port = ( ! empty($urlArray['port']) && $urlArray['port'] != '80' ) ?
                 $urlArray['port'] : '80';
             $path = $urlArray['path'];
-            $path .= ( ! empty($urlArray['query']) ) ? '?' . $urlArray['query']: '';
+            $path .= ( ! empty($urlArray['query']) ) ? '?' . str_replace( '&amp;', '&', $urlArray['query'] ): '';
             $path .= ( ! empty($urlArray['fragment']) ) ? '#' . $urlArray['fragment'] : '';
             $referer = '';
             $https = getenv( 'HTTPS' );
@@ -219,6 +138,7 @@ if ( ! class_exists('Wizin_Util_Web') ) {
 
         function pager( $string, $maxKbyte = 0 )
         {
+            Wizin_Filter::filterDeleteTags( $string );
             if ( class_exists('DOMDocument') && class_exists('SimpleXMLElement') ) {
                 // get encode
                 if ( extension_loaded('mbstring') ) {
