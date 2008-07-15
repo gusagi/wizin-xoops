@@ -139,7 +139,8 @@ if ( ! class_exists('Wizin_Util_Web') ) {
         function pager( $string, $maxKbyte = 0 )
         {
             Wizin_Filter::filterDeleteTags( $string );
-            if ( class_exists('DOMDocument') && class_exists('SimpleXMLElement') ) {
+            if ( class_exists('DOMDocument') && class_exists('SimpleXMLElement') &&
+                    method_exists('SimpleXMLElement','getName') ) {
                 // get encode
                 if ( extension_loaded('mbstring') ) {
                     $encode = strtolower( mb_detect_encoding($string, 'auto') );
@@ -166,10 +167,12 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                     $string = tidy_repair_string( $string );
                 }
                 // convert to xml format
+                $string = strtr( $string, array('&' => '&amp;',
+                    '</textarea>' => Wizin_Util::getPrefix() . '</textarea>',
+                    '</TEXTAREA>' => Wizin_Util::getPrefix() . '</TEXTAREA>') );
                 $domDoc = new DOMDocument();
                 $domDoc->loadHTML( $string );
                 $string = $domDoc->saveXML();
-                $string = strtr( $string, array('&' => '&amp;') );
                 $xml = simplexml_load_string( $string );
                 $string = $xml->body;
                 unset( $domDoc );
@@ -184,8 +187,10 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                 }
                 array_unshift( $array, '' );
                 $string = '';
-                $index = (! empty( $_REQUEST['mobilepage']) ) ? intval( $_REQUEST['mobilepage'] ) : 1;
+                $index = (! empty( $_REQUEST['wiz_page']) ) ? intval( $_REQUEST['wiz_page'] ) : 1;
                 if ( count($array) >= $index ) {
+                    $page = strtr( $array[$index], array(Wizin_Util::getPrefix() . '</textarea>' => '</textarea>',
+                        Wizin_Util::getPrefix() . '</TEXTAREA>' => '</TEXTAREA>') );
                     // PEAR_Pager
                     $includePath = get_include_path();
                     set_include_path( $includePath . PATH_SEPARATOR . WIZIN_ROOT_PATH . '/lib/PEAR' );
@@ -196,7 +201,7 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                         'perPage' => 1,
                         'prevImg' => '&laquo; Prev',
                         'nextImg' => 'Next &raquo;',
-                        'urlVar' => 'mobilepage',
+                        'urlVar' => 'wiz_page',
                         'spacesBeforeSeparator' => 1,
                         'spacesAfterSeparator' => 1,
                         'totalItems' => count($array) - 1
@@ -204,7 +209,7 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                     $pager =& Pager::factory($params);
                     $pageNavi = $pager->links;
                     $string .= $pageNavi . '<br />';
-                    $string .= $array[$index] . '<br />';
+                    $string .= $page . '<br />';
                     $string .= $pageNavi;
                     set_include_path( $includePath );
                 }
