@@ -37,7 +37,7 @@ if ( ! class_exists('WizMobile_Updater') ) {
 
     class WizMobile_Updater extends WizXc_Updater
     {
-        var $_mMilestone = array( '020' => 'updateTo020' );
+        var $_mMilestone = array( '020' => 'updateTo020', '025' => 'updateTo025' );
 
         function updateTo020()
         {
@@ -103,6 +103,33 @@ if ( ! class_exists('WizMobile_Updater') ) {
             }
 
             $this->_mTargetXoopsModule->set('version', '20');
+            return $this->executeAutomaticUpgrade();
+        }
+
+        function updateTo025()
+        {
+            //
+            // insert default value into {wizmobile}_config table
+            //
+            $db =& XoopsDatabaseFactory::getDatabaseConnection();
+            $configTable = $db->prefix( $this->_mTargetXoopsModule->getVar('dirname') . '_config' );
+            $now = date( 'Y-m-d H:i:s' );
+
+            // pager
+            $sql = "INSERT INTO `$configTable` (`wmc_item`, `wmc_value`, `wmc_init_datetime`, `wmc_update_datetime`) " .
+                " VALUES ( 'pager', '0', '$now', '$now' );";
+            if ( ! $db->query($sql) ) {
+                $this->mLog->addError( $this->_mTargetXoopsModule->getVar('dirname') . ' : module config "pager" insert error!' );
+            }
+
+            // content-type
+            $sql = "INSERT INTO `$configTable` (`wmc_item`, `wmc_value`, `wmc_init_datetime`, `wmc_update_datetime`) " .
+                " VALUES ( 'content_type', '0', '$now', '$now' );";
+            if ( ! $db->query($sql) ) {
+                $this->mLog->addError( $this->_mTargetXoopsModule->getVar('dirname') . ' : module config "content-type" insert error!' );
+            }
+
+            $this->_mTargetXoopsModule->set('version', '25');
             return $this->executeAutomaticUpgrade();
         }
     }

@@ -303,7 +303,15 @@ if ( ! class_exists('WizMobile') ) {
             $params = array( $user->sEncoding, $user->sCharset );
             $filter->addOutputFilter( array($filter, 'filterOutputEncoding'), $params );
             $filter->executeOutputFilter( $contents );
-            header( 'Content-Type:application/xhtml+xml; charset=' . $user->sCharset );
+
+            $actionClass =& $this->getActionClass();
+            $configs = $actionClass->getConfigs();
+            if ( ! empty($configs['content_type']) && $configs['content_type']['wmc_value'] === '1' ) {
+                $contentType = 'application/xhtml+xml';
+            } else {
+                $contentType = 'text/html';
+            }
+            header( 'Content-Type:' . $contentType . '; charset=' . $user->sCharset );
             echo $contents;
         }
 
@@ -389,7 +397,23 @@ if ( ! class_exists('WizMobile') ) {
             $user = & Wizin_User::getSingleton();
             $xoopsTpl->register_postfilter( array($wizMobile, 'directRedirect') );
             $xoopsTpl->compile_id .= '_' . $user->sCarrier;
+            $actionClass =& $wizMobile->getActionClass();
+            $configs = $actionClass->getConfigs();
+            if ( ! empty($configs['pager']) && $configs['pager']['wmc_value'] === '1' ) {
+                $pager = true;
+            } else {
+                $pager = false;
+            }
+            if ( $pager ) {
+                $xoopsTpl->register_modifier( 'wiz_pager', array('Wizin_Util_Web', 'pager') );
+            } else {
+                $xoopsTpl->register_modifier( 'wiz_pager', array('WizMobile', 'dummyModifier') );
+            }
         }
 
+        function dummyModifier( $string, $maxKbyte = 0 )
+        {
+            return $string;
+        }
     }
 }

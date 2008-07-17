@@ -104,7 +104,7 @@ Wizin_Util::define( 'WIZMOBILE_LANG_MODULE_NAME', 'モジュール名' );
 Wizin_Util::define( 'WIZMOBILE_LANG_DIRNAME', 'ディレクトリ' );
 Wizin_Util::define( 'WIZMOBILE_LANG_NON_DISPLAY', '非表示' );
 
-// non general setting
+// general setting
 Wizin_Util::define( 'WIZMOBILE_LANG_ITEM', '項目' );
 Wizin_Util::define( 'WIZMOBILE_LANG_VALUE', '設定値' );
 Wizin_Util::define( 'WIZMOBILE_LANG_LOGIN', 'ログイン' );
@@ -115,6 +115,10 @@ Wizin_Util::define( 'WIZMOBILE_LANG_LOOKUP', 'ホスト名の逆引き' );
 Wizin_Util::define( 'WIZMOBILE_LANG_LOOKUP_DESC', '携帯からのアクセスかどうか、ホスト名を逆引きして確認<br />ユーザエージェントの偽装を防ぐことが出来る代わり、パフォーマンスは低下します' );
 Wizin_Util::define( 'WIZMOBILE_LANG_OTHERMOBILE', 'その他端末の携帯対応' );
 Wizin_Util::define( 'WIZMOBILE_LANG_OTHERMOBILE_DESC', 'スマートフォンなど一部の端末に対して携帯対応を行う場合は、有効を選択して下さい' );
+Wizin_Util::define( 'WIZMOBILE_LANG_PAGER', 'ページ分割' );
+Wizin_Util::define( 'WIZMOBILE_LANG_PAGER_DESC', '携帯からのアクセスで、コンテンツ部分のページ分割を行う場合は、有効を選択して下さい' );
+Wizin_Util::define( 'WIZMOBILE_LANG_CONTENT_TYPE', 'コンテンツタイプ' );
+Wizin_Util::define( 'WIZMOBILE_LANG_CONTENT_TYPE_DESC', '携帯からのアクセスに対して、コンテンツを送出するタイプを選択して下さい' );
 
 
 //

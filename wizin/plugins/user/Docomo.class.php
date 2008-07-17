@@ -83,7 +83,18 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                     } else if ( substr($url, 0, 4) !== 'http' && strpos($url, ':') !== false ) {
                         continue;
                     } else if ( substr($url, 0, 1) === '#' ) {
-                        $url = basename( getenv('SCRIPT_NAME') ) . $url;
+                        continue;
+                        /*
+                        $queryString = getenv( 'QUERY_STRING' );
+                        if ( preg_match('/' . $insertString . '/i', $queryString) ) {
+                            continue;
+                        }
+                        if ( isset($queryString) && $queryString !== '' ) {
+                            $url = basename( getenv('SCRIPT_NAME') ) . '?' . $queryString . $url;
+                        } else {
+                            $url = basename( getenv('SCRIPT_NAME') ) . $url;
+                        }
+                        */
                     }
                     if ( ! strstr($url, '?') ) {
                         $connector = '?';

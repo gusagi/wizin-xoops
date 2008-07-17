@@ -114,6 +114,24 @@ if ( ! class_exists('WizXc_Util') ) {
             }
         }
 
+        function clearCompiledCache()
+        {
+            //
+            // clear compiled cache
+            //
+            if ( $handler = opendir(XOOPS_COMPILE_PATH) ) {
+                while ( ($file = readdir($handler)) !== false ) {
+                    if ( $file === '.' || $file === '..' ) {
+                        continue;
+                    }
+                    if ( substr($file, -4) === '.php' ) {
+                        unlink( XOOPS_COMPILE_PATH . '/' . $file );
+                    }
+                }
+                closedir($handler);
+            }
+        }
+
         function getXoopsTpl()
         {
             $xoopsTpl = new XoopsTpl();

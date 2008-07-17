@@ -104,7 +104,7 @@ Wizin_Util::define( 'WIZMOBILE_LANG_MODULE_NAME', 'Module name' );
 Wizin_Util::define( 'WIZMOBILE_LANG_DIRNAME', 'Directory' );
 Wizin_Util::define( 'WIZMOBILE_LANG_NON_DISPLAY', 'Non display' );
 
-// non general setting
+// general setting
 Wizin_Util::define( 'WIZMOBILE_LANG_ITEM', 'Item' );
 Wizin_Util::define( 'WIZMOBILE_LANG_VALUE', 'Value' );
 Wizin_Util::define( 'WIZMOBILE_LANG_LOGIN', 'Login' );
@@ -115,6 +115,10 @@ Wizin_Util::define( 'WIZMOBILE_LANG_LOOKUP', 'Lookup host name' );
 Wizin_Util::define( 'WIZMOBILE_LANG_LOOKUP_DESC', 'Lookup host name, you verify whether access from mobile.<br />Instead of being able prevent the disguise of the user agent, performance decreases.' );
 Wizin_Util::define( 'WIZMOBILE_LANG_OTHERMOBILE', 'Correspondence of other mobile terminals' );
 Wizin_Util::define( 'WIZMOBILE_LANG_OTHERMOBILE_DESC', 'When it corresponds portably vis-a-vis the terminal of part such as smart phone, please select enable' );
+Wizin_Util::define( 'WIZMOBILE_LANG_PAGER', 'Page division' );
+Wizin_Util::define( 'WIZMOBILE_LANG_PAGER_DESC', 'If page division is done, please select enable' );
+Wizin_Util::define( 'WIZMOBILE_LANG_CONTENT_TYPE', 'Content-type' );
+Wizin_Util::define( 'WIZMOBILE_LANG_CONTENT_TYPE_DESC', 'Whether access from mobile, please select the type which forwards the contents' );
 
 
 //

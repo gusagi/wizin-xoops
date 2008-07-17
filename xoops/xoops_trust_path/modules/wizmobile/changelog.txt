@@ -1,4 +1,10 @@
 ----------------------------------
+[2008-07-15 Ver 0.24 -> 0.25]
+- Fixed bug about 'textarea' tag replace logic in wiz_pager.(thx ramu)
+- Added 'SimpleXMLElement::getName()' exists check.(thx masa)
+- Added 'Pager' setting in admin.php?act=GeneralSetting.(thx anna)
+- Added 'Content-type' setting in admin.php?act=GeneralSetting.(thx jidaikobo)
+----------------------------------
 [2008-07-07 Ver 0.23 -> 0.24]
 - Fixed bug about 'mobile' theme is not have effect, when user theme was registered.
 - Added image file exists check and get logic.(thx anna)

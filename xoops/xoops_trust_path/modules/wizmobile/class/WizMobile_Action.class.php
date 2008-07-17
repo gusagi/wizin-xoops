@@ -295,7 +295,7 @@ if ( ! class_exists('WizMobile_Action') ) {
             $db =& XoopsDatabaseFactory::getDatabaseConnection();
             $configTable = $db->prefix( $this->_sFrontDirName . '_config' );
             $now = date( 'Y-m-d H:i:s' );
-            $allowItems = array( 'login', 'theme', 'lookup', 'othermobile' );
+            $allowItems = array( 'login', 'theme', 'lookup', 'othermobile', 'pager', 'content_type' );
             $sqlArray = array();
             $requestItems = ( ! empty($_REQUEST['wmc_item']) && is_array($_REQUEST['wmc_item']) ) ?
                 $_REQUEST['wmc_item']: array();
@@ -323,6 +323,7 @@ if ( ! class_exists('WizMobile_Action') ) {
                         sprintf(Wizin_Util::constant('WIZMOBILE_MSG_UPDATE_GENERAL_SETTING_FAILED')) );
                 }
             }
+            WizXc_Util::clearCompiledCache();
             $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
                 $this->_sFrontDirName . '/admin/admin.php?act=GeneralSetting', 3,
                 sprintf(Wizin_Util::constant('WIZMOBILE_MSG_UPDATE_GENERAL_SETTING_SUCCESS')) );
@@ -347,6 +348,75 @@ if ( ! class_exists('WizMobile_Action') ) {
                 closedir($handler);
             }
             return $themes;
+        }
+
+        function getSystemStatus()
+        {
+            $xcRoot = XCube_Root::getSingleton();
+            $systemStatus = array();
+
+            // exchange controller
+            $supportControllers = array( 'legacy_wizxccontroller', 'hdlegacy_controller' );
+            $controllerClass = strtolower( get_class($xcRoot->mController) );
+            if ( in_array($controllerClass, $supportControllers) ) {
+                $systemStatus['controller']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_ENABLE' );
+            } else {
+                $systemStatus['controller']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_DISABLE' );
+                $systemStatus['controller']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_CONTROLLER_IS_NOT_EXCHANGED' );
+                $systemStatus['controller']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_CONTROLLER_PATCH' );
+                $systemStatus['controller']['code'] = '[RenderSystems]
+                    Legacy_WizMobileRenderSystem=Legacy_WizMobileRenderSystem
+
+                    [Legacy]
+                    AllowDBProxy=false
+
+                    [Legacy_Controller]
+                    root=XOOPS_TRUST_PATH
+                    path=/modules/wizxc/class
+                    class=Legacy_WizXcController
+
+                    [Legacy_WizMobileRenderSystem]
+                    root=XOOPS_TRUST_PATH
+                    path=/modules/wizmobile/class
+                    class=Legacy_WizMobileRenderSystem';
+            }
+
+            // image resize
+            $createDir = XOOPS_ROOT_PATH . '/uploads/wizmobile';
+            if ( extension_loaded('gd') && file_exists($createDir) && is_dir($createDir) &&
+                    is_writable($createDir) ) {
+                $systemStatus['imageResize']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_ENABLE' );
+            } else {
+                $systemStatus['imageResize']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_DISABLE' );
+                if ( ! extension_loaded('gd') ) {
+                    $systemStatus['imageResize']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_GD_NOT_EXISTS' );
+                }
+                if ( ! file_exists($createDir) || ! is_dir($createDir) ) {
+                    $systemStatus['imageResize']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_RESIZED_IMAGE_DIR_NOT_EXISTS' );
+                }
+                if ( ! is_writable($createDir) ) {
+                    $systemStatus['imageResize']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_RESIZED_IMAGE_DIR_NOT_WRITABLE' );
+                }
+            }
+
+            // partition page
+            if ( class_exists('DOMDocument') && class_exists('SimpleXMLElement') &&
+                    method_exists('SimpleXMLElement','getName')) {
+                $systemStatus['partitionPage']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_ENABLE' );
+                if ( ! function_exists('tidy_repair_string') ) {
+                    $systemStatus['partitionPage']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_TIDY_NOT_EXISTS' );
+                }
+            } else {
+                $systemStatus['partitionPage']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_DISABLE' );
+                if ( ! class_exists('DOMDocument') ) {
+                    $systemStatus['partitionPage']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_DOM_NOT_EXISTS' );
+                }
+                if ( ! class_exists('SimpleXMLElement') ) {
+                    $systemStatus['partitionPage']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_SIMPLEXML_NOT_EXISTS' );
+                }
+            }
+
+            return $systemStatus;
         }
 
     }

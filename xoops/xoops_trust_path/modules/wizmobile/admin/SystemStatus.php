@@ -48,66 +48,7 @@ $tplFile = 'db:' . $frontDirname . '_admin_system_status.html';
 //
 // system status
 //
-$systemStatus = array();
-
-// exchange controller
-$supportControllers = array( 'legacy_wizxccontroller', 'hdlegacy_controller' );
-$controllerClass = strtolower( get_class($xcRoot->mController) );
-if ( in_array($controllerClass, $supportControllers) ) {
-    $systemStatus['controller']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_ENABLE' );
-} else {
-    $systemStatus['controller']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_DISABLE' );
-    $systemStatus['controller']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_CONTROLLER_IS_NOT_EXCHANGED' );
-    $systemStatus['controller']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_CONTROLLER_PATCH' );
-    $systemStatus['controller']['code'] = '[RenderSystems]
-        Legacy_WizMobileRenderSystem=Legacy_WizMobileRenderSystem
-
-        [Legacy]
-        AllowDBProxy=false
-
-        [Legacy_Controller]
-        root=XOOPS_TRUST_PATH
-        path=/modules/wizxc/class
-        class=Legacy_WizXcController
-
-        [Legacy_WizMobileRenderSystem]
-        root=XOOPS_TRUST_PATH
-        path=/modules/wizmobile/class
-        class=Legacy_WizMobileRenderSystem';
-}
-
-// image resize
-$createDir = XOOPS_ROOT_PATH . '/uploads/wizmobile';
-if ( extension_loaded('gd') && file_exists($createDir) && is_dir($createDir) && is_writable($createDir) ) {
-    $systemStatus['imageResize']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_ENABLE' );
-} else {
-    $systemStatus['imageResize']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_DISABLE' );
-    if ( ! extension_loaded('gd') ) {
-        $systemStatus['imageResize']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_GD_NOT_EXISTS' );
-    }
-    if ( ! file_exists($createDir) || ! is_dir($createDir) ) {
-        $systemStatus['imageResize']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_RESIZED_IMAGE_DIR_NOT_EXISTS' );
-    }
-    if ( ! is_writable($createDir) ) {
-        $systemStatus['imageResize']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_RESIZED_IMAGE_DIR_NOT_WRITABLE' );
-    }
-}
-
-// partition page
-if ( class_exists('DOMDocument') && class_exists('SimpleXMLElement') ) {
-    $systemStatus['partitionPage']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_ENABLE' );
-    if ( ! function_exists('tidy_repair_string') ) {
-        $systemStatus['partitionPage']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_TIDY_NOT_EXISTS' );
-    }
-} else {
-    $systemStatus['partitionPage']['result'] = Wizin_Util::constant( 'WIZMOBILE_LANG_DISABLE' );
-    if ( ! class_exists('DOMDocument') ) {
-        $systemStatus['partitionPage']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_DOM_NOT_EXISTS' );
-    }
-    if ( ! class_exists('SimpleXMLElement') ) {
-        $systemStatus['partitionPage']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_SIMPLEXML_NOT_EXISTS' );
-    }
-}
+$systemStatus = $this->getSystemStatus();
 
 //
 // render admin view

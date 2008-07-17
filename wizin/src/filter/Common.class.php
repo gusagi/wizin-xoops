@@ -108,6 +108,7 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
             $replacement = '${1}${2}${3}${4}text${6} ${7}${8}';
             $contents = preg_replace( "/" .$pattern ."/i", $replacement, $contents );
             Wizin_Filter::filterDeleteTags( $contents );
+            Wizin_Filter::filterInsertAnchor( $contents, $baseUri, $currentUri );
             // convert from zenkaku to hankaku
             if ( extension_loaded('mbstring') ) {
                 $contents = mb_convert_kana( $contents, 'knr' );
@@ -139,6 +140,55 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
             }
         }
 
+        function filterInsertAnchor( & $contents, $baseUri, $currentUri )
+        {
+            static $callFlag;
+            if ( ! isset($callFlag) ) {
+                $callFlag = true;
+                $pattern = '(<a)([^>]*)(href=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
+                preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
+                if ( ! empty($matches) ) {
+                    foreach ( $matches as $key => $match) {
+                        $href = '';
+                        $hrefArray = array();
+                        $url = $match[5];
+                        if ( substr($url, 0, 4) !== 'http' ) {
+                            if ( strpos($url, ':') !== false ) {
+                                continue;
+                            } else if ( substr($url, 0, 1) === '#' ) {
+                                continue;
+                                /*
+                                $urlArray = explode( '#', $currentUri );
+                                $url = $urlArray[0] . $url;
+                                */
+                            } else if ( substr($url, 0, 1) === '/' ) {
+                                $parseUrl = parse_url( $baseUri );
+                                if ( ! empty($parseUrl['path']) ) {
+                                    $url = str_replace( $parseUrl['path'], '', $baseUri ) . $url;
+                                } else {
+                                    $url = $baseUri . $url;
+                                }
+                            } else {
+                                $url = dirname( $currentUri ) . '/' . $url;
+                            }
+                        }
+                        if ( strstr($url, '#') === false ) {
+                            continue;
+                        }
+                        $urlArray = explode( '#', $url );
+                        $parseUrl = parse_url( $url );
+                        if ( ! empty($parseUrl['query']) ) {
+                            $url = $urlArray[0] . '&amp;wiz_anchor=' . $parseUrl['fragment'] . '#' . $urlArray[1];
+                        } else {
+                            $url = $urlArray[0] . '?wiz_anchor=' . $parseUrl['fragment'] . '#' . $urlArray[1];
+                        }
+                        $contents = str_replace( $match[3] . $match[4] .$match[5] . $match[6],
+                            $match[3] . $match[4] . $url . $match[6], $contents );
+                    }
+                }
+            }
+        }
+
         function filterTransSid( & $contents, $baseUri, $currentUri )
         {
             // get method
@@ -153,8 +203,11 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                         if ( strpos($url, ':') !== false ) {
                             continue;
                         } else if ( substr($url, 0, 1) === '#' ) {
+                            continue;
+                            /*
                             $urlArray = explode( '#', $currentUri );
                             $url = $urlArray[0] . $url;
+                            */
                         } else if ( substr($url, 0, 1) === '/' ) {
                             $parseUrl = parse_url( $baseUri );
                             $url = str_replace( $parseUrl['path'], '', $baseUri ) . $url;

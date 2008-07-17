@@ -82,6 +82,48 @@
                     <div style="font-size: 90%; font-weight: lighter; margin: 0.5em 0 0 2em;"><{"WIZMOBILE_LANG_OTHERMOBILE_DESC"|wiz_constant}></div>
                 </td>
             </tr>
+            <{* Pager *}>
+            <tr class="<{cycle values="odd, even"}>">
+                <td>
+                    <div style="font-size: 110%; font-weight: bolder;"><{"WIZMOBILE_LANG_PAGER"|wiz_constant}></div>
+                </td>
+                <td>
+                    <span style="margin: 0 0.5em 0 0.5em;">
+                        <label>
+                            <input type="radio" name="wmc_item[pager]" value="1" <{if $configs.pager.wmc_value == 1}>checked="checked"<{/if}> />
+                            <{"WIZMOBILE_LANG_ENABLE"|wiz_constant}>
+                        </label>
+                    </span>
+                    <span style="margin: 0 0.5em 0 0.5em;">
+                        <label>
+                            <input type="radio" name="wmc_item[pager]" value="0" <{if $configs.pager.wmc_value == 0}>checked="checked"<{/if}>/>
+                            <{"WIZMOBILE_LANG_DISABLE"|wiz_constant}>
+                        </label>
+                    </span>
+                    <div style="font-size: 90%; font-weight: lighter; margin: 0.5em 0 0 2em;"><{"WIZMOBILE_LANG_PAGER_DESC"|wiz_constant}></div>
+                </td>
+            </tr>
+            <{* Content-Type *}>
+            <tr class="<{cycle values="odd, even"}>">
+                <td>
+                    <div style="font-size: 110%; font-weight: bolder;"><{"WIZMOBILE_LANG_CONTENT_TYPE"|wiz_constant}></div>
+                </td>
+                <td>
+                    <span style="margin: 0 0.5em 0 0.5em;">
+                        <label>
+                            <input type="radio" name="wmc_item[content_type]" value="1" <{if $configs.content_type.wmc_value == 1}>checked="checked"<{/if}> />
+                            xhtml
+                        </label>
+                    </span>
+                    <span style="margin: 0 0.5em 0 0.5em;">
+                        <label>
+                            <input type="radio" name="wmc_item[content_type]" value="0" <{if $configs.content_type.wmc_value == 0}>checked="checked"<{/if}>/>
+                            html
+                        </label>
+                    </span>
+                    <div style="font-size: 90%; font-weight: lighter; margin: 0.5em 0 0 2em;"><{"WIZMOBILE_LANG_CONTENT_TYPE_DESC"|wiz_constant}></div>
+                </td>
+            </tr>
         </table>
         <div style="text-align: center; width: 100%; margin: auto;">
             <input type="hidden" name="act" value="GeneralSetting" />

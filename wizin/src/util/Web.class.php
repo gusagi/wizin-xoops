@@ -152,34 +152,40 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                             $encode = 'sjis-win';
                             break;
                         default:
+                            $encode = 'ascii';
                             break;
                     }
+                    $string = mb_convert_encoding( $string, 'utf-8', $encode );
                 } else {
                     $encode = 'ascii';
-                }
-                // convert to html-entities
-                $string = trim( $string );
-                if ( extension_loaded('mbstring') ) {
-                    $string = mb_convert_encoding( $string, 'html-entities', $encode );
                 }
                 // repair
                 if ( function_exists('tidy_repair_string') ) {
                     $string = tidy_repair_string( $string );
                 }
-                // convert to xml format
+                // replace for DOMDocument convert
                 $string = strtr( $string, array('&' => '&amp;',
                     '</textarea>' => Wizin_Util::getPrefix() . '</textarea>',
                     '</TEXTAREA>' => Wizin_Util::getPrefix() . '</TEXTAREA>') );
-                $domDoc = new DOMDocument();
-                $domDoc->loadHTML( $string );
-                $string = $domDoc->saveXML();
+                // convert XML(step1)
+                $string = '<html><meta http-equiv="content-type" content="text/html; charset=utf-8"><body>' .
+                    $string . '</body></html>';
+                $domDoc = new DOMDocument( '1.0', 'utf-8' );
+                @ $domDoc->loadHTML( $string );
+                $xml = simplexml_import_dom( $domDoc );
+                // add XML header
+                $string = $xml->asXML();
+                $pattern = '^<\\?xml version=[\"\']1.0[\"\']';
+                if ( preg_match('/' . $pattern . '/i', $string) !== true ) {
+                    $string = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $string;
+                }
                 $xml = simplexml_load_string( $string );
-                $string = $xml->body;
-                unset( $domDoc );
-                unset( $xml );
+                $body = $xml->body;
                 // partition string
                 $array = array();
-                $array = Wizin_Util_Web::_partitionPage( $string, $encode, $maxKbyte );
+                $array = Wizin_Util_Web::_partitionPage( $body, $encode, $maxKbyte );
+                unset( $domDoc );
+                unset( $xml );
                 // set return value
                 $count = count( $array ) - 1;
                 if ( ! isset($array[$count]) || $array[$count] === '' ) {
@@ -187,10 +193,26 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                 }
                 array_unshift( $array, '' );
                 $string = '';
-                $index = (! empty( $_REQUEST['wiz_page']) ) ? intval( $_REQUEST['wiz_page'] ) : 1;
+                $index = (! empty( $_GET['wiz_page']) ) ? intval( $_GET['wiz_page'] ) : 1;
                 if ( count($array) >= $index ) {
-                    $page = strtr( $array[$index], array(Wizin_Util::getPrefix() . '</textarea>' => '</textarea>',
-                        Wizin_Util::getPrefix() . '</TEXTAREA>' => '</TEXTAREA>') );
+                    $page = '';
+                    if ( empty($_GET['wiz_page']) && ! empty($_GET['wiz_anchor']) ) {
+                        $pattern = '(<a)([^>]*)(name|id)=([\"\'])' . $_GET['wiz_anchor'] . '([\"\'])';
+                        $pages = preg_grep( "/" . $pattern . "/is", $array );
+                        if ( ! empty($pages) ) {
+                            $page = array_shift( $pages );
+                            $_GET['wiz_page'] = array_search( $page, $array );
+                            $_REQUEST['wiz_page'] =& $_GET['wiz_page'];
+                            $page = strtr( $page, array('&amp;' => '&',
+                                Wizin_Util::getPrefix() . '</textarea>' => '</textarea>',
+                                Wizin_Util::getPrefix() . '</TEXTAREA>' => '</TEXTAREA>') );
+                        }
+                    }
+                    if ( empty($page) ) {
+                        $page = strtr( $array[$index], array('&amp;' => '&',
+                            Wizin_Util::getPrefix() . '</textarea>' => '</textarea>',
+                            Wizin_Util::getPrefix() . '</TEXTAREA>' => '</TEXTAREA>') );
+                    }
                     // PEAR_Pager
                     $includePath = get_include_path();
                     set_include_path( $includePath . PATH_SEPARATOR . WIZIN_ROOT_PATH . '/lib/PEAR' );
@@ -213,11 +235,14 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                     $string .= $pageNavi;
                     set_include_path( $includePath );
                 }
+                if ( extension_loaded('mbstring') ) {
+                    $string = mb_convert_encoding( $string, $encode, 'utf-8' );
+                }
             }
             return $string;
         }
 
-        function _partitionPage(  & $xml, $encode, $maxKbyte = 0  )
+        function _partitionPage(  & $xml, $encode = 'ascii', $maxKbyte = 0  )
         {
             // set valiable
             if ( empty($maxKbyte) ) {
@@ -225,23 +250,11 @@ if ( ! class_exists('Wizin_Util_Web') ) {
             }
             $maxByte = $maxKbyte * 1024;
             $buffer = '';
-            $noPartitionTag = array( 'form', 'tr' );
-            $array = array();
-            $convertMap = array(
-                0x0, 0x20, 0, 0xfffff,
-                0x2666, 0x10000, 0, 0xfffff);
+            $pattern = '^<\\?xml version=[\"\']1.0[\"\']';
+            $noPartitionTag = array( 'form', 'tr', 'th', 'td', 'tbody', 'fieldset', 'pre' );
             // get html from SimpleXMLElement
             $allAttribute = $xml->asXML();
             $allAttribute = strtr( $allAttribute, array('<body>' => '', '</body>' => '') );
-            $allAttribute = strtr( $allAttribute, array('&amp;' => '&') );
-            if ( extension_loaded('mbstring') ) {
-                $excludedHex = $allAttribute;
-                if ( preg_match("/&#[xX][0-9a-zA-Z]{1,8};/", $allAttribute) ) {
-                    $excludedHex = preg_replace( "/&#[xX]([0-9a-zA-Z]{1,8});/e",
-                        "'&#'.hexdec('$1').';'", $allAttribute );
-                }
-                $allAttribute = mb_decode_numericentity( $excludedHex, $convertMap, $encode );
-            }
             if ( strlen($allAttribute) <= $maxByte ) {
                 $array[] = $allAttribute;
             } else {
@@ -250,36 +263,26 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                     $nodeName = $child->getName();
                     $attribute = $child->asXML();
                     $attribute = strtr( $attribute, array('<body>' => '', '</body>' => '') );
-                    $attribute = strtr( $attribute, array('&amp;' => '&') );
-                    if ( extension_loaded('mbstring') ) {
-                        $excludedHex = $attribute;
-                        if ( preg_match("/&#[xX][0-9a-zA-Z]{1,8};/", $attribute) ) {
-                            $excludedHex = preg_replace( "/&#[xX]([0-9a-zA-Z]{1,8});/e",
-                                "'&#'.hexdec('$1').';'", $attribute );
-                        }
-                        $attribute = mb_decode_numericentity( $excludedHex, $convertMap, $encode );
-                    }
                     if ( strlen($attribute) > $maxByte && ! in_array( strtolower($nodeName), $noPartitionTag) ) {
                         $array[] = $buffer;
                         $buffer = '';
-                        if ( extension_loaded('mbstring') ) {
-                            $html = mb_convert_encoding( $attribute, 'html-entities', $encode );
-                        } else {
-                            $html = $attribute;
-                        }
-                        $domDoc = new DOMDocument();
-                        $domDoc->loadHTML( $html );
-                        $string = $domDoc->saveXML();
+                        $html = '<html><meta http-equiv="content-type" content="text/html; charset=utf-8">' .
+                            '<body>' . $attribute . '</body></html>';
+                        $domDoc = new DOMDocument( '1.0', 'utf-8' );
+                        @ $domDoc->loadHTML( $html );
+                        $childXml = simplexml_import_dom( $domDoc );
                         unset( $html );
                         unset( $domDoc );
-                        $string = strtr( $string, array('&' => '&amp;') );
+                        // add XML header
+                        $string = $childXml->asXML();
+                        if ( preg_match('/' . $pattern . '/i', $string) !== true ) {
+                            $string = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $string;
+                        }
                         $childXml = simplexml_load_string( $string );
                         $body =& $childXml->body;
-                        unset( $childXml );
-
                         if ( serialize($body) !== serialize($body->children()) ) {
                             // bottom layer
-                            $pages = Wizin_Util_Web::_partitionPage( $body, $encode );
+                            $pages = Wizin_Util_Web::_partitionPage( $body, $encode, $maxKbyte );
                             foreach ( $pages as $page ) {
                                 $array[] = $page;
                             }
@@ -290,41 +293,33 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                             $buffer .= $attribute;
                             while ( strlen($buffer) > $maxByte ) {
                                 if ( extension_loaded('mbstring') ) {
-                                	$cutString = mb_substr( $buffer, 0, $maxByte );
+                                	$cutString = mb_substr( $buffer, 0, $maxByte, 'utf-8' );
                                 } else {
                                 	$cutString = substr( $buffer, 0, $maxByte );
                                 }
                             	$cutStringArray = explode( '<', $cutString );
                             	array_pop( $cutStringArray );
                             	$cutString = implode( '<', $cutStringArray );
-                                if ( extension_loaded('mbstring') ) {
-                                    $html = mb_convert_encoding( $cutString, 'html-entities', $encode );
-                                } else {
-                                    $html = $cutString;
-                                }
-                                $domDoc = new DOMDocument();
-                                $domDoc->loadHTML( $html );
-                                $string = $domDoc->saveXML();
-                                unset( $html );
+                                $html = '<html><meta http-equiv="content-type" content="text/html; charset=utf-8">' .
+                                    '<body>' . $cutString . '</body></html>';
+                                $domDoc = new DOMDocument( '1.0', 'utf-8' );
+                                @ $domDoc->loadHTML( $html );
+                                $cutXml = simplexml_import_dom( $domDoc );
                                 unset( $domDoc );
-                                $string = strtr( $string, array('&' => '&amp;') );
+                                // add XML header
+                                $string = $cutXml->asXML();
+                                if ( preg_match('/' . $pattern . '/i', $string) !== true ) {
+                                    $string = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $string;
+                                }
                                 $cutXml = simplexml_load_string( $string );
                                 $string = $cutXml->body->asXML();
                                 $string = strtr( $string, array('<body>' => '', '</body>' => '') );
-                                $string = strtr( $string, array('&amp;' => '&') );
-                                if ( extension_loaded('mbstring') ) {
-                                    $excludedHex = $string;
-                                    if ( preg_match("/&#[xX][0-9a-zA-Z]{1,8};/", $string) ) {
-                                        $excludedHex = preg_replace( "/&#[xX]([0-9a-zA-Z]{1,8});/e",
-                                            "'&#'.hexdec('$1').';'", $string );
-                                    }
-                                    $string = mb_decode_numericentity( $excludedHex, $convertMap, $encode );
-                                }
                             	$array[] = $string;
                             	$buffer = str_replace( $cutString, '', $buffer );
                             }
                             $attribute = '';
                         }
+                        unset( $childXml );
                     } else if ( (strlen($buffer) + strlen($attribute)) > $maxByte ) {
                         $array[] = $buffer;
                         $buffer = '';

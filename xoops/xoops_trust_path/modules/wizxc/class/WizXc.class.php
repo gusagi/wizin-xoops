@@ -92,7 +92,6 @@ if ( ! class_exists('WizXc') ) {
         function registerModifier( &$xoopsTpl )
         {
             $xoopsTpl->register_modifier( 'wiz_constant', array('Wizin_Util', 'constant') );
-            $xoopsTpl->register_modifier( 'wiz_pager', array('Wizin_Util_Web', 'pager') );
         }
 
         function registerFunction( &$xoopsTpl )
