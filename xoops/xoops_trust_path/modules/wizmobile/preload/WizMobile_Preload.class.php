@@ -77,6 +77,13 @@ if ( ! class_exists('WizMobile_Preload') ) {
                     XCUBE_DELEGATE_PRIORITY_FINAL + 1 );
                 $xcRoot->mDelegateManager->add( 'Legacy_AdminControllerStrategy.SetupBlock',
                     array($wizMobile, 'denyAccessAdminArea'), XCUBE_DELEGATE_PRIORITY_FIRST );
+                    // overwrite comment mode
+                if ( isset($xcRoot->mContext->mXoopsUser) && is_object($xcRoot->mContext->mXoopsUser) ) {
+                    $xcRoot->mContext->mXoopsUser->setVar( 'umode', 'flat' );
+                } else {
+                    $GLOBALS['xoopsConfig']['com_mode'] = 'flat';
+                }
+                // check session security
                 if ( ! $user->bIsBot ) {
                     // check session
                     $wizMobile->checkMobileSession();

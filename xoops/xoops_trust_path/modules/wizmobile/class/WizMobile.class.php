@@ -142,11 +142,15 @@ if ( ! class_exists('WizMobile') ) {
                     $user->bIsMobile = $otherMobile;
                 }
                 if ( $user->bIsMobile ) {
+                    // add delegate
                     $xcRoot->mDelegateManager->add( 'XoopsTpl.New' , array( $this , 'mobileTpl' ) ) ;
+                    // set session ini
                     if ( ! $user->bCookie ) {
                         Wizin_Session::overrideSessionIni( false );
                     }
+                    // call input filter
                     $this->_inputFilter();
+                    // exchange view
                     $this->_exchangeRenderSystem();
                     $this->_exchangeTheme();
                 } else {
