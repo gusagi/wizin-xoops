@@ -38,6 +38,29 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                     break;
             }
             $newImage = imagecreatetruecolor( $resizeWidth, $resizeHeight );
+            // If original image is transparent gif/png >>
+            /**
+             * This code is something which refers "smart_resize_image".
+             * Thanks a lot for "Medium eXposure" !
+             * Ref : http://www.mediumexposure.com/techblog/smart-image-resizing-while-preserving-transparency-php-and-gd-library
+             */
+            if ( $format === IMAGETYPE_GIF || $format === IMAGETYPE_PNG ) {
+                $transparentIndex = imagecolortransparent( $image );
+                if ( $transparentIndex >= 0 ) {
+                    $transparentColor = imagecolorsforindex( $image, $transparentIndex );
+                    $transparentIndex = imagecolorallocate( $newImage, $transparentColor['red'],
+                        $transparentColor['green'], $transparentColor['blue'] );
+                    imagefill( $newImage, 0, 0, $transparentIndex );
+                    imagecolortransparent( $newImage, $transparentIndex );
+                } else if ( $format === IMAGETYPE_PNG ) {
+                    imagealphablending( $newImage, false );
+                    $color = imagecolorallocatealpha( $newImage, 0, 0, 0, 127 );
+                    imagefill( $newImage, 0, 0, $color );
+                    imagesavealpha( $newImage, true );
+                }
+            }
+            // If original image is transparent gif/png <<
+            // image data copy
             imagecopyresampled( $newImage, $image , 0, 0, 0, 0,
                 $resizeWidth, $resizeHeight, $width, $height );
             if ( $newExt === 'gif' ) {
