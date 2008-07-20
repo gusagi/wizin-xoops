@@ -5,6 +5,7 @@
 - Added 'Pager' setting in admin.php?act=GeneralSetting.(thx anna)
 - Added 'Content-type' setting in admin.php?act=GeneralSetting.(thx jidaikobo)
 - Added resize logic when original image was transparent gif/png.(thx "Medium eXposure")
+- Added "Au" filter plugin.(thx mbxoops)
 ----------------------------------
 [2008-07-07 Ver 0.23 -> 0.24]
 - Fixed bug about 'mobile' theme is not have effect, when user theme was registered.

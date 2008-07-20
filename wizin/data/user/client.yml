@@ -54,8 +54,8 @@ au:
     charset:"shift_jis"
     function:""
     plugin:
-        path:""
-        class:""
+        path:"plugins/user/Au.class.php"
+        class:"Wizin_Plugin_User_Au"
 
 softbank:
     mobile:true

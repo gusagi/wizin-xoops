@@ -84,17 +84,6 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                         continue;
                     } else if ( substr($url, 0, 1) === '#' ) {
                         continue;
-                        /*
-                        $queryString = getenv( 'QUERY_STRING' );
-                        if ( preg_match('/' . $insertString . '/i', $queryString) ) {
-                            continue;
-                        }
-                        if ( isset($queryString) && $queryString !== '' ) {
-                            $url = basename( getenv('SCRIPT_NAME') ) . '?' . $queryString . $url;
-                        } else {
-                            $url = basename( getenv('SCRIPT_NAME') ) . $url;
-                        }
-                        */
                     }
                     if ( ! strstr($url, '?') ) {
                         $connector = '?';
@@ -121,12 +110,19 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
             $pattern = '(<form)([^>]*)(method=)([\"\'])(post|get)([\"\'])([^>]*)(action=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
             preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
             if ( ! empty($matches) ) {
+                $queryString = getenv( 'QUERY_STRING' );
+                $queryString = str_replace( '&' . SID, '', $queryString );
+                $queryString = str_replace( SID, '', $queryString );
                 foreach ( $matches as $key => $match) {
                     if ( ! empty($match[10]) ) {
                         if ( substr($match[10], 0, 4) !== 'http' && strpos($match[10], ':') !== false ) {
                             continue;
                         } else if ( substr($match[10], 0, 1) === '#' ) {
-                            $action = basename( getenv('SCRIPT_NAME') ) . $match[10];
+                            if ( ! empty($queryString) ) {
+                                $action = basename( getenv('SCRIPT_NAME') ) . '?' . $queryString . $match[10];
+                            } else {
+                                $action = basename( getenv('SCRIPT_NAME') ) . $match[10];
+                            }
                             $form = str_replace( $match[10], $action, $match[0] );
                         } else {
                             $action = $match[10];
@@ -134,10 +130,7 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                         }
                     } else {
                         $url = basename( getenv('SCRIPT_NAME') );
-                        $queryString = getenv( 'QUERY_STRING' );
                         if ( isset($queryString) && $queryString !== '' ) {
-                            $queryString = str_replace( '&' . SID, '', $queryString );
-                            $queryString = str_replace( SID, '', $queryString );
                             if ( $queryString !== '' ) {
                                 $url .= '?' . $queryString;
                             }
@@ -179,12 +172,19 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
             $pattern = '(<form)([^>]*)(action=)([\"\'])(\S*)([\"\'])([^>]*)(method=)([\"\'])(post|get)([\"\'])([^>]*)(>)';
             preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
             if ( ! empty($matches) ) {
+                $queryString = getenv( 'QUERY_STRING' );
+                $queryString = str_replace( '&' . SID, '', $queryString );
+                $queryString = str_replace( SID, '', $queryString );
                 foreach ( $matches as $key => $match) {
                     if ( ! empty($match[5]) ) {
                         if ( substr($match[5], 0, 4) !== 'http' && strpos($match[5], ':') !== false ) {
                             continue;
                         } else if ( substr($match[5], 0, 1) === '#' ) {
-                            $action = basename( getenv('SCRIPT_NAME') ) . $match[5];
+                            if ( ! empty($queryString) ) {
+                                $action = basename( getenv('SCRIPT_NAME') ) . '?' . $queryString . $match[5];
+                            } else {
+                                $action = basename( getenv('SCRIPT_NAME') ) . $match[5];
+                            }
                             $form = str_replace( $match[5], $action, $match[0] );
                         } else {
                             $action = $match[5];
@@ -192,10 +192,7 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                         }
                     } else {
                         $url = basename( getenv('SCRIPT_NAME') );
-                        $queryString = getenv( 'QUERY_STRING' );
                         if ( isset($queryString) && $queryString !== '' ) {
-                            $queryString = str_replace( '&' . SID, '', $queryString );
-                            $queryString = str_replace( SID, '', $queryString );
                             if ( $queryString !== '' ) {
                                 $url .= '?' . $queryString;
                             }
