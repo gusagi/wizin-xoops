@@ -113,9 +113,13 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                 $queryString = getenv( 'QUERY_STRING' );
                 $queryString = str_replace( '&' . SID, '', $queryString );
                 $queryString = str_replace( SID, '', $queryString );
+                $queryString = str_replace( '&guid=on', '', $queryString );
+                $queryString = str_replace( 'guid=on', '', $queryString );
                 foreach ( $matches as $key => $match) {
                     if ( ! empty($match[10]) ) {
-                        if ( substr($match[10], 0, 4) !== 'http' && strpos($match[10], ':') !== false ) {
+                        if ( preg_match('/' . $insertString . '/i', $match[10]) ) {
+                            continue;
+                        } else if ( substr($match[10], 0, 4) !== 'http' && strpos($match[10], ':') !== false ) {
                             continue;
                         } else if ( substr($match[10], 0, 1) === '#' ) {
                             if ( ! empty($queryString) ) {
@@ -139,9 +143,6 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                             $match[8] . $match[9] . $url . $match[11], $match[0] );
                         $action = $url;
                     }
-                    if ( preg_match('/' . $insertString . '/i', $action) ) {
-                        continue;
-                    }
                     $method = strtolower( $match[5] );
                     if ( $method === 'post' ) {
                         $baseAction = $action;
@@ -152,9 +153,9 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                         }
                         if ( strstr($action, '#') ) {
                             $actionArray = explode( '#', $action );
-                            $action = $actionArray[0] . $connector . $insertString;
+                            $action = $actionArray[0] . $connector . $insertString . '#';
                             if ( ! empty($actionArray[1]) ) {
-                                $action .= '#' . $actionArray[1];
+                                $action .= $actionArray[1];
                             }
                         } else {
                             $action = $action . $connector . $insertString;
@@ -175,9 +176,13 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                 $queryString = getenv( 'QUERY_STRING' );
                 $queryString = str_replace( '&' . SID, '', $queryString );
                 $queryString = str_replace( SID, '', $queryString );
+                $queryString = str_replace( '&guid=on', '', $queryString );
+                $queryString = str_replace( 'guid=on', '', $queryString );
                 foreach ( $matches as $key => $match) {
                     if ( ! empty($match[5]) ) {
-                        if ( substr($match[5], 0, 4) !== 'http' && strpos($match[5], ':') !== false ) {
+                        if ( preg_match('/' . $insertString . '/i', $match[5]) ) {
+                            continue;
+                        } else if ( substr($match[5], 0, 4) !== 'http' && strpos($match[5], ':') !== false ) {
                             continue;
                         } else if ( substr($match[5], 0, 1) === '#' ) {
                             if ( ! empty($queryString) ) {
@@ -201,9 +206,6 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                             $match[3] . $match[4] . $url . $match[6], $match[0] );
                         $action = $url;
                     }
-                    if ( preg_match('/' . $insertString . '/i', $action) ) {
-                        continue;
-                    }
                     $method = strtolower( $match[10] );
                     if ( $method === 'post' ) {
                         $baseAction = $action;
@@ -214,9 +216,9 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                         }
                         if ( strstr($action, '#') ) {
                             $actionArray = explode( '#', $action );
-                            $action = $actionArray[0] . $connector . $insertString;
+                            $action = $actionArray[0] . $connector . $insertString . '#';
                             if ( ! empty($actionArray[1]) ) {
-                                $action .= '#' . $actionArray[1];
+                                $action .= $actionArray[1];
                             }
                         } else {
                             $action = $action . $connector . $insertString;
