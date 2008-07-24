@@ -92,7 +92,15 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                     $pattern = '(=)([\"\'])(' . _CHARSET . ')([\"\'])';
                     $replacement = '${1}${2}' . $outputCharset . '${4}';
                     $contents = preg_replace( "/" .$pattern ."/", $replacement, $contents );
-                    $contents = mb_convert_encoding( $contents, $outputEncoding, mb_internal_encoding() );
+                    $internalEncoding = mb_internal_encoding();
+                    if ( in_array(strtolower($internalEncoding), array('sjis', 'shift_jis', 'ms_kanji',
+                            'csshift_jis')) ) {
+                        $internalEncoding = 'sjis-win';
+                    } else if ( in_array(strtolower($internalEncoding), array('euc-jp',
+                            'extended_unix_code_packed_format_for_japanese', 'cseucpkdfmtjapanese')) ) {
+                        $internalEncoding = 'eucjp-win';
+                    }
+                    mb_convert_variables( $outputEncoding, $internalEncoding, $contents );
                     ini_set( 'default_charset', $outputCharset );
                 }
             }
