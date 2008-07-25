@@ -77,6 +77,13 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                     $inputEncoding = mb_detect_encoding( serialize($_REQUEST), 'auto' );
                 }
                 $internalEncoding = mb_internal_encoding();
+                if ( in_array(strtolower($internalEncoding), array('sjis', 'shift_jis', 'ms_kanji',
+                        'csshift_jis')) ) {
+                    $internalEncoding = 'sjis-win';
+                } else if ( in_array(strtolower($internalEncoding), array('euc-jp',
+                        'extended_unix_code_packed_format_for_japanese', 'cseucpkdfmtjapanese')) ) {
+                    $internalEncoding = 'eucjp-win';
+                }
                 mb_convert_variables( $internalEncoding, $inputEncoding, $_GET );
                 mb_convert_variables( $internalEncoding, $inputEncoding, $_POST );
                 mb_convert_variables( $internalEncoding, $inputEncoding, $_REQUEST );
