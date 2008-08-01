@@ -15,18 +15,30 @@ if ( ! class_exists('Wizin_Ref') ) {
     require dirname( dirname(__FILE__) ) . '/Wizin.class.php';
 
     /**
-     * @access public
+     * Wizin framework reference class for PHP5.x
      *
+     * @access public
      */
     class Wizin_Ref
     {
         private $_mReference;
 
-        public function Wizin_Ref( & $value )
+        /**
+         * constructor
+         *
+         * @param mixed $value
+         * @return Wizin_Ref
+         */
+        public function __construct( & $value )
         {
             $this->_mReference =& $value;
         }
 
+        /**
+         * return reference
+         *
+         * @return string mixed
+         */
         public function & get()
         {
             if ( isset($this->_mReference) ) {

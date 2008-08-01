@@ -14,8 +14,19 @@
 if ( ! class_exists('Wizin_Filter') ) {
     require dirname( __FILE__ ) . '/Common.class.php';
 
+    /**
+     * Wizin framework default filter class for PHP4.x
+     *
+     * @access public
+     */
     class Wizin_Filter extends Wizin_Filter_Common
     {
+        /**
+         * add input filter array
+         *
+         * @param mixed $function
+         * @param array $params
+         */
         function addInputFilter( $function, & $params )
         {
             if ( is_null($params) ) {
@@ -29,6 +40,12 @@ if ( ! class_exists('Wizin_Filter') ) {
             $this->_aInputFilter = $inputFilter;
         }
 
+        /**
+         * add output filter array
+         *
+         * @param mixed $function
+         * @param array $params
+         */
         function addOutputFilter( $function, & $params )
         {
             if ( is_null($params) ) {

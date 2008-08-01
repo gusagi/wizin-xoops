@@ -12,14 +12,22 @@
  */
 
 if ( ! class_exists('Wizin_Util') ) {
-    require 'Wizin.class.php';
+    require dirname( __FILE__ ) . '/Wizin.class.php';
 
     /**
+     * Wizin framework utility class
+     *
      * @access public
      *
      */
     class Wizin_Util
     {
+        /**
+         * return string for something prefix
+         *
+         * @param string $salt
+         * @return string $prefix
+         */
         function getPrefix( $salt = '' )
         {
             static $prefix;
@@ -34,6 +42,12 @@ if ( ! class_exists('Wizin_Util') ) {
     	    return $prefix;
         }
 
+        /**
+         * call user function with reference args
+         *
+         * @param string $function
+         * @param array $args
+         */
         function callUserFuncArrayReference( $function, $args = array() )
         {
             $result = null;
@@ -47,6 +61,13 @@ if ( ! class_exists('Wizin_Util') ) {
             call_user_func_array( $function, $param );
         }
 
+        /**
+         * define constant
+         *
+         * @param string $name
+         * @param string $value
+         * @param string $prefix
+         */
         function define( $name, $value = '', $prefix = '' )
         {
             if ( ! defined(strtoupper($prefix . '_' . $name)) ) {
@@ -54,6 +75,13 @@ if ( ! class_exists('Wizin_Util') ) {
             }
         }
 
+        /**
+         * return constant
+         *
+         * @param string $name
+         * @param string $prefix
+         * @return string
+         */
         function constant( $name, $prefix = '' )
         {
             if ( defined(strtoupper($prefix . '_' . $name)) ) {

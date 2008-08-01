@@ -21,7 +21,7 @@ if ( ! class_exists('Wizin_Plugin_User_Au') ) {
 
         function _require()
         {
-            require_once 'src/Wizin_Filter.php';
+            require_once WIZIN_ROOT_PATH . '/src/Wizin_Filter.php';
         }
 
         function _setup()

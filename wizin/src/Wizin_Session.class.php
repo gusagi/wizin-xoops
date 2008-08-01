@@ -12,11 +12,22 @@
  */
 
 if ( ! class_exists('Wizin_Session') ) {
-    require 'Wizin.class.php';
+    require dirname( __FILE__ ) . '/Wizin.class.php';
 
+    /**
+     * Wizin framework session class
+     *
+     * @access public
+     *
+     */
     class Wizin_Session extends Wizin_StdClass
     {
 
+        /**
+         *
+         * @access public
+         * @return object $instance
+         */
         function &getSingleton()
         {
             static $instance;
@@ -26,6 +37,12 @@ if ( ! class_exists('Wizin_Session') ) {
             return $instance;
         }
 
+        /**
+         * override setting about session
+         *
+         * @access public
+         * @param boolean $useCookie
+         */
         function overrideSessionIni( $useCookie = true )
         {
             if ( $useCookie ) {
@@ -38,6 +55,11 @@ if ( ! class_exists('Wizin_Session') ) {
             ini_set( 'session.use_trans_sid', "0" );
         }
 
+        /**
+         * regenerate session id
+         *
+         * @access public
+         */
         function regenerateId()
         {
             $saveHandler = ini_get( 'session.save_handler' );

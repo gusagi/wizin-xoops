@@ -21,7 +21,7 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
 
         function _require()
         {
-            require_once 'src/Wizin_Filter.php';
+            require_once WIZIN_ROOT_PATH . '/src/Wizin_Filter.php';
         }
 
         function _setup()
@@ -88,7 +88,7 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                     if ( ! strstr($url, '?') ) {
                         $connector = '?';
                     } else {
-                        $connector = '&';
+                        $connector = '&amp;';
                     }
                     if ( strstr($url, '#') ) {
                         $hrefArray = explode( '#', $url );

@@ -15,9 +15,9 @@ $phpVersion = floatval( PHP_VERSION );
 if ( $phpVersion < 4.4 ) {
     echo 'Sorry, this framework over PHP4.4.X';
 } else if ( $phpVersion < 5.0 ) {
-    require_once 'src/stdclass/Php4x.class.php';
+    require_once dirname( __FILE__ ) . '/stdclass/Php4x.class.php';
 } else if ( $phpVersion < 5.2 ) {
-    require_once 'src/stdclass/Php50x.class.php';
+    require_once dirname( __FILE__ ) . '/stdclass/Php50x.class.php';
 } else {
-    require_once 'src/stdclass/Php52x.class.php';
+    require_once dirname( __FILE__ ) . '/stdclass/Php52x.class.php';
 }

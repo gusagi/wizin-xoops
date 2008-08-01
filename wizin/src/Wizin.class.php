@@ -14,13 +14,15 @@
 if ( ! defined('WIZIN_LOADED') ) {
     define( 'WIZIN_LOADED', true );
     define( 'WIZIN_ROOT_PATH', dirname(dirname(__FILE__)) );
-    set_include_path( get_include_path() . PATH_SEPARATOR . dirname(dirname(__FILE__)) );
-    require_once 'src/Wizin_StdClass.php';
-    require_once 'src/Wizin_Ref.php';
-    require_once 'src/Wizin_Util.class.php';
+    //set_include_path( get_include_path() . PATH_SEPARATOR . dirname(dirname(__FILE__)) );
+    require_once WIZIN_ROOT_PATH . '/src/Wizin_StdClass.php';
+    require_once WIZIN_ROOT_PATH . '/src/Wizin_Ref.php';
+    require_once WIZIN_ROOT_PATH . '/src/Wizin_Util.class.php';
 
     if ( class_exists('Wizin_StdClass') ) {
         /**
+         * Wizin framework root object class
+         *
          * @access public
          *
          */
@@ -28,8 +30,9 @@ if ( ! defined('WIZIN_LOADED') ) {
         {
 
             /**
+             *
              * @access public
-             * @return Wizin
+             * @return object $instance
              */
             function &getSingleton()
             {

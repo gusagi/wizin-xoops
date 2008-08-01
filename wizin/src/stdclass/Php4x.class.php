@@ -14,15 +14,16 @@
 if ( ! class_exists('Wizin_StdClass') ) {
 
     /**
-     * @access public
+     * Wizin framework standard class for PHP4.x
      *
+     * @access public
      */
     class Wizin_StdClass
     {
         var $_aVars = array();  // protected
 
         /**
-         * @access public
+         * constructor
          *
          */
         function Wizin_StdClass()
@@ -36,7 +37,7 @@ if ( ! class_exists('Wizin_StdClass') ) {
         }
 
         /**
-         * @access public
+         * magic method "__construct" fallback function for PHP4.x
          *
          */
         function __construct()
@@ -44,7 +45,7 @@ if ( ! class_exists('Wizin_StdClass') ) {
         }
 
         /**
-         * @access public
+         * magic method "__destruct" fallback function for PHP4.x
          *
          */
         function __destruct()
@@ -52,7 +53,7 @@ if ( ! class_exists('Wizin_StdClass') ) {
         }
 
         /**
-         * @access public
+         * set value to this object vars(magic method "__set" fallback function for PHP4.x)
          *
          * @param string $key
          * @param mixed $value
@@ -69,7 +70,7 @@ if ( ! class_exists('Wizin_StdClass') ) {
         }
 
         /**
-         * @access public
+         * get value from this object vars(magic method "__get" fallback function for PHP4.x)
          *
          * @param string $key
          * @return mixed

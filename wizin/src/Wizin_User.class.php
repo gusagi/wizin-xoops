@@ -12,12 +12,22 @@
  */
 
 if ( ! class_exists('Wizin_User') ) {
-    require 'Wizin.class.php';
-    require 'src/parser/Yaml.class.php';
+    require dirname( __FILE__ ) . '/Wizin.class.php';
+    require WIZIN_ROOT_PATH . '/src/parser/Yaml.class.php';
 
+    /**
+     * Wizin framework user class
+     *
+     * @access public
+     *
+     */
     class Wizin_User extends Wizin_StdClass
     {
 
+        /**
+         *
+         * @return object $instance
+         */
         function &getSingleton()
         {
             static $instance;
@@ -27,6 +37,11 @@ if ( ! class_exists('Wizin_User') ) {
             return $instance;
         }
 
+        /**
+         * check access client
+         *
+         * @param boolean $lookup
+         */
         function checkClient( $lookup = false )
         {
             $ip = getenv( 'REMOTE_ADDR' );
@@ -83,6 +98,12 @@ if ( ! class_exists('Wizin_User') ) {
             }
         }
 
+        /**
+         * basic check method
+         *
+         * @param array $mobileData
+         * @return unknown
+         */
         function _basicCheck( $mobileData )
         {
             $agent = getenv( 'HTTP_USER_AGENT' );
@@ -99,6 +120,12 @@ if ( ! class_exists('Wizin_User') ) {
             return null;
         }
 
+        /**
+         * advanced check method
+         *
+         * @param array $mobileData
+         * @return unknown
+         */
         function _advancedCheck( $mobileData )
         {
             $ip = getenv( 'REMOTE_ADDR' );

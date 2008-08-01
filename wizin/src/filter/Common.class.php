@@ -13,10 +13,20 @@
 
 if ( ! class_exists('Wizin_Filter_Common') ) {
     require dirname( dirname(__FILE__) ) . '/Wizin.class.php';
-    require_once 'src/util/Web.class.php';
+    require_once WIZIN_ROOT_PATH . '/src/util/Web.class.php';
 
+    /**
+     * Wizin framework common filter class
+     *
+     */
     class Wizin_Filter_Common extends Wizin_StdClass
     {
+        /**
+         * constructor
+         *
+         * @access public
+         *
+         */
         function __construct()
         {
             if ( extension_loaded('mbstring') ) {
@@ -27,6 +37,10 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
             }
         }
 
+        /**
+         *
+         * @return object $instance
+         */
         function &getSingleton()
         {
             static $instance;
@@ -36,6 +50,12 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
             return $instance;
         }
 
+        /**
+         * execute input filter
+         *
+         * @access public
+         *
+         */
         function executeInputFilter()
         {
             $inputFilter = $this->_aInputFilter;
@@ -51,6 +71,13 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
             $this->_aInputFilter = array();
         }
 
+        /**
+         * execute output filter
+         *
+         * @access public
+         *
+         * @param string $contents
+         */
         function executeOutputFilter( & $contents )
         {
             $outputFilter = $this->_aOutputFilter;
@@ -70,6 +97,11 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
             $this->_aOutputFilter = array();
         }
 
+        /**
+         * input encoding filter
+         *
+         * @param string $inputEncoding
+         */
         function filterInputEncoding( $inputEncoding = '' )
         {
             if ( extension_loaded('mbstring') ) {
@@ -91,6 +123,14 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
             }
         }
 
+        /**
+         * output encoding filter
+         *
+         * @param string $contents
+         * @param string $outputEncoding
+         * @param string $outputCharset
+         * @return string $contents
+         */
         function filterOutputEncoding( & $contents, $outputEncoding, $outputCharset )
         {
             if ( extension_loaded('mbstring') ) {
@@ -114,96 +154,14 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
             return $contents;
         }
 
-        function filterOptimizeMobile( & $contents, $baseUri, $currentUri, $basePath, $createDir = WIZIN_CACHE_DIR )
-        {
-            $maxWidth = 220;
-            Wizin_Filter::filterResizeImage( $contents, $baseUri, $currentUri, $basePath, $createDir, $maxWidth );
-            // replace input type "password" => "text"
-            $pattern = '(<input)([^>]*)(type=)([\"\'])(password)([\"\'])([^>]*)(>)';
-            $replacement = '${1}${2}${3}${4}text${6} ${7}${8}';
-            $contents = preg_replace( "/" .$pattern ."/i", $replacement, $contents );
-            Wizin_Filter::filterDeleteTags( $contents );
-            Wizin_Filter::filterInsertAnchor( $contents, $baseUri, $currentUri );
-            // convert from zenkaku to hankaku
-            if ( extension_loaded('mbstring') ) {
-                $contents = mb_convert_kana( $contents, 'knr' );
-            }
-            return $contents;
-        }
-
-        function filterDeleteTags( & $contents )
-        {
-            static $callFlag;
-            if ( ! isset($callFlag) ) {
-                $callFlag = true;
-                // delete script tags
-                $pattern = '@<script[^>]*?>.*?<\/script>@si';
-                $replacement = '';
-                $contents = preg_replace( $pattern, $replacement, $contents );
-                // delete del tags
-                $pattern = '@<del[^>]*?>.*?<\/del>@si';
-                $replacement = '';
-                $contents = preg_replace( $pattern, $replacement, $contents );
-                // delete comment
-                $pattern = '<!--[\s\S]*?-->';
-                $replacement = '';
-                $contents = preg_replace( "/" .$pattern ."/", $replacement, $contents );
-                // delete "nobr" tag
-                $pattern = '<\/?nobr>';
-                $replacement = '';
-                $contents = preg_replace( "/" .$pattern ."/", $replacement, $contents );
-            }
-        }
-
-        function filterInsertAnchor( & $contents, $baseUri, $currentUri )
-        {
-            static $callFlag;
-            if ( ! isset($callFlag) ) {
-                $callFlag = true;
-                $pattern = '(<a)([^>]*)(href=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
-                preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
-                if ( ! empty($matches) ) {
-                    foreach ( $matches as $key => $match) {
-                        $href = '';
-                        $hrefArray = array();
-                        $url = $match[5];
-                        if ( substr($url, 0, 4) !== 'http' ) {
-                            if ( strpos($url, ':') !== false ) {
-                                continue;
-                            } else if ( substr($url, 0, 1) === '#' ) {
-                                continue;
-                                /*
-                                $urlArray = explode( '#', $currentUri );
-                                $url = $urlArray[0] . $url;
-                                */
-                            } else if ( substr($url, 0, 1) === '/' ) {
-                                $parseUrl = parse_url( $baseUri );
-                                if ( ! empty($parseUrl['path']) ) {
-                                    $url = str_replace( $parseUrl['path'], '', $baseUri ) . $url;
-                                } else {
-                                    $url = $baseUri . $url;
-                                }
-                            } else {
-                                $url = dirname( $currentUri ) . '/' . $url;
-                            }
-                        }
-                        if ( strstr($url, '#') === false ) {
-                            continue;
-                        }
-                        $urlArray = explode( '#', $url );
-                        $parseUrl = parse_url( $url );
-                        if ( ! empty($parseUrl['query']) ) {
-                            $url = $urlArray[0] . '&amp;wiz_anchor=' . $parseUrl['fragment'] . '#' . $urlArray[1];
-                        } else {
-                            $url = $urlArray[0] . '?wiz_anchor=' . $parseUrl['fragment'] . '#' . $urlArray[1];
-                        }
-                        $contents = str_replace( $match[3] . $match[4] .$match[5] . $match[6],
-                            $match[3] . $match[4] . $url . $match[6], $contents );
-                    }
-                }
-            }
-        }
-
+        /**
+         * insert SID(similar TransSID) filter
+         *
+         * @param string $contents
+         * @param string $baseUri
+         * @param string $currentUri
+         * @return string $contents
+         */
         function filterTransSid( & $contents, $baseUri, $currentUri )
         {
             // get method
@@ -232,13 +190,13 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                     }
                     $check = strstr( $url, $baseUri );
                     if ( $check !== false ) {
-                        if ( ! strpos($url, session_name()) ) {
-                            if ( ! strstr($url, '?') ) {
+                        if ( strpos($url, session_name()) === false ) {
+                            if ( strpos($url, '?') === false ) {
                                 $connector = '?';
                             } else {
-                                $connector = '&';
+                                $connector = '&amp;';
                             }
-                            if ( strstr($url, '#') ) {
+                            if ( strpos($url, '#') !== false ) {
                                 $hrefArray = explode( '#', $url );
                                 $href .= $hrefArray[0] . $connector . SID;
                                 if ( ! empty($hrefArray[1]) ) {
@@ -350,6 +308,16 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
             return $contents;
         }
 
+        /**
+         * image resize filter
+         *
+         * @param string $contents
+         * @param string $baseUri
+         * @param string $currentUri
+         * @param string $basePath
+         * @param string $createDir
+         * @param integer $maxWidth
+         */
         function filterResizeImage ( & $contents, $baseUri, $currentUri, $basePath, $createDir = null, $maxWidth = 0 )
         {
             if ( is_null($createDir) ) {

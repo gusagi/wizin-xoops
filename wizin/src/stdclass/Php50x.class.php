@@ -14,15 +14,16 @@
 if ( ! class_exists('Wizin_StdClass') ) {
 
     /**
-     * @access public
+     * Wizin framework standard class for PHP5.0.x or PHP5.1.x
      *
+     * @access public
      */
     class Wizin_StdClass
     {
         protected $_aVars = array();
 
         /**
-         * @access public
+         * set value to this object vars
          *
          * @param string $key
          * @param mixed $value
@@ -38,7 +39,7 @@ if ( ! class_exists('Wizin_StdClass') ) {
         }
 
         /**
-         * @access public
+         * get value from this object vars
          *
          * @param string $key
          * @return mixed
