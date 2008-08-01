@@ -1,5 +1,5 @@
 /**************************************************
- * 【 モジュール名 】WizXC
+ * 【 モジュール名 】WizXc
  * 【  バージョン  】0.23
  * 【   権 利 者   】Makoto Hashiguchi a.k.a. gusagi
  * 【   作 成 者   】Makoto Hashiguchi a.k.a. gusagi

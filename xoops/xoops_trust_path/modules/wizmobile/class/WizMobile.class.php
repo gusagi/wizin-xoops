@@ -55,7 +55,7 @@ if ( ! class_exists('WizMobile') ) {
         {
             require_once XOOPS_TRUST_PATH . '/wizin/src/Wizin_User.class.php';
             require_once XOOPS_TRUST_PATH . '/wizin/src/Wizin_Session.class.php';
-            require_once XOOPS_TRUST_PATH . '/wizin/src/Wizin_Filter.php';
+            require_once XOOPS_TRUST_PATH . '/wizin/src/filter/Mobile.class.php';
             require_once XOOPS_TRUST_PATH . '/wizin/src/util/Web.class.php';
         }
 
@@ -124,7 +124,7 @@ if ( ! class_exists('WizMobile') ) {
                 $callFlag = true;
                 $xcRoot =& XCube_Root::getSingleton();
                 $user = & Wizin_User::getSingleton();
-                $filter = & Wizin_Filter::getSingleton();
+                $filter = & Wizin_Filter_Mobile::getSingleton();
                 $actionClass =& $this->getActionClass();
                 $configs = $actionClass->getConfigs();
                 if ( ! empty($configs['lookup']) && $configs['lookup']['wmc_value'] === '1' ) {
@@ -163,7 +163,7 @@ if ( ! class_exists('WizMobile') ) {
         function _inputFilter()
         {
             $user = & Wizin_User::getSingleton();
-            $filter =& Wizin_Filter::getSingleton();
+            $filter =& Wizin_Filter_Mobile::getSingleton();
             $params = array( $user->sEncoding );
             $filter->addInputFilter( array( $filter, 'filterInputEncoding' ), $params );
             $filter->executeInputFilter();
@@ -296,7 +296,7 @@ if ( ! class_exists('WizMobile') ) {
         function renderContents()
         {
             $user = & Wizin_User::getSingleton();
-            $filter =& Wizin_Filter::getSingleton();
+            $filter =& Wizin_Filter_Mobile::getSingleton();
             $contents = ob_get_clean();
             if ( ! $user->bCookie ) {
                 $params = array( XOOPS_URL, WIZMOBILE_CURRENT_URI );
@@ -409,7 +409,7 @@ if ( ! class_exists('WizMobile') ) {
                 $pager = false;
             }
             if ( $pager ) {
-                $xoopsTpl->register_modifier( 'wiz_pager', array('Wizin_Util_Web', 'pager') );
+                $xoopsTpl->register_modifier( 'wiz_pager', array('Wizin_Filter_Mobile', 'filterMobilePager') );
             } else {
                 $xoopsTpl->register_modifier( 'wiz_pager', array('WizMobile', 'dummyModifier') );
             }

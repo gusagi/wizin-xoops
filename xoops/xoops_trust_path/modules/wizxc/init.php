@@ -1,10 +1,10 @@
 <?php
 /**
- * WizXC module init script for XOOPS Cube Legacy2.1
+ * WizXc module init script for XOOPS Cube Legacy2.1
  *
  * PHP Versions 4
  *
- * @package  WizXC
+ * @package  WizXc
  * @author  Makoto Hashiguchi a.k.a. gusagi<gusagi@gusagi.com>
  * @copyright 2008 Makoto Hashiguchi
  * @license GNU General Public License Version2

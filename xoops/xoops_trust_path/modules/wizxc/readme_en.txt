@@ -1,5 +1,5 @@
 /**************************************************
- * < Module name > WizXC
+ * < Module name > WizXc
  * < Version >     0.23
  * < Proprietor >  Makoto Hashiguchi a.k.a. gusagi
  * < Developer >   Makoto Hashiguchi a.k.a. gusagi

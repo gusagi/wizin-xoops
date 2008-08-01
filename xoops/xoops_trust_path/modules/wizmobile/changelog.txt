@@ -1,11 +1,15 @@
 ----------------------------------
+[2008-07-31 Ver 0.25 -> 0.26]
+- Modified 'require' line, in order not to use 'include_path', it corrected.(thx okishiro)
+- Fixed bug about notice in 'createThumbnail' function.
+----------------------------------
 [2008-07-15 Ver 0.24 -> 0.25]
 - Fixed bug about 'textarea' tag replace logic in wiz_pager.(thx ramu)
 - Added 'SimpleXMLElement::getName()' exists check.(thx masa)
 - Added 'Pager' setting in admin.php?act=GeneralSetting.(thx anna)
 - Added 'Content-type' setting in admin.php?act=GeneralSetting.(thx jidaikobo)
-- Added resize logic when original image was transparent gif/png.(thx "Medium eXposure")
-- Added "Au" filter plugin.(thx mbxoops)
+- Added resize logic when original image was transparent gif/png.(thx 'Medium eXposure')
+- Added 'Au' filter plugin.(thx mbxoops)
 ----------------------------------
 [2008-07-07 Ver 0.23 -> 0.24]
 - Fixed bug about 'mobile' theme is not have effect, when user theme was registered.
@@ -40,7 +44,7 @@
 - Adding .htaccess file for pico.
 ----------------------------------
 [2008-04-19 Ver 0.1.4 -> 0.1.5]
-- Fixed bug about failed mb_detect_encoding, when "mbstring.detect_order" not exists in php.ini.(thx mitsunobu)
+- Fixed bug about failed mb_detect_encoding, when 'mbstring.detect_order' not exists in php.ini.(thx mitsunobu)
 - Exchange resource.db.php.
 ----------------------------------
 [2008-04-06 Ver 0.1.3 -> 0.1.4]
