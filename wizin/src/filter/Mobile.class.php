@@ -169,9 +169,6 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                         case 'sjis':
                             $encode = 'sjis-win';
                             break;
-                        default:
-                            $encode = 'ascii';
-                            break;
                     }
                     $string = mb_convert_encoding( $string, 'utf-8', $encode );
                 } else {
