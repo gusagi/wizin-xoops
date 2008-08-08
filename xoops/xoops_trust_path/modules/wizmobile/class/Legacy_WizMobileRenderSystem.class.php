@@ -78,6 +78,7 @@ if( ! class_exists( 'Legacy_WizMobileRenderSystem' ) ) {
                         $blockId = intval( $block['id'] );
                         if ( ! in_array($blockId, $nondisplayBlocks) ) {
                             if ( ! empty($_REQUEST['mobilebid']) && intval($_REQUEST['mobilebid']) === $blockId ) {
+                                $this->mXoopsTpl->assign( 'wizMobileBlockTitle', $block['title'] );
                                 $this->mXoopsTpl->assign( 'wizMobileBlockContents', $block['content'] );
                             }
                         } else {

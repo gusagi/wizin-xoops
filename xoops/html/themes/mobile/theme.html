@@ -3,6 +3,10 @@
 <title><{$xoops_sitename}> - <{if $xoops_pagetitle}><{$xoops_pagetitle}><{else}><{$xoops_slogan}><{/if}></title>
 <meta http-equiv="content-type" content="text/html; charset=<{$xoops_charset}>" />
 <meta http-equiv="content-language" content="<{$xoops_langcode}>" />
+<link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_url}>/xoops.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_themecss}>" />
+<!-- RMV: added module header -->
+<{$xoops_module_header}>
 </head>
 
 <body>
@@ -116,10 +120,13 @@
 
 <{* block contents area(from) *}>
 <{if $wizMobileBlockContents != ''}>
-<div style="font-size: 0.7em; text-align: left;">
-    <{$wizMobileBlockContents}>
-    <hr />
+<div style="font-size: 0.8em; text-align: left;">
+    <{$wizMobileBlockTitle}>
 </div>
+<div style="font-size: 0.7em; text-align: left; padding-left: 1em;">
+    <{$wizMobileBlockContents}>
+</div>
+<hr />
 <{/if}>
 <{* block contents area(to) *}>
 
