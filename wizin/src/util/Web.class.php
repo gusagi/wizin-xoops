@@ -13,7 +13,6 @@
 
 if ( ! class_exists('Wizin_Util_Web') ) {
     require dirname( dirname(__FILE__) ) . '/Wizin_Util.class.php';
-    require dirname( dirname(__FILE__) ) . '/Wizin_Filter.php';
 
     /**
      * Wizin framework web utility class

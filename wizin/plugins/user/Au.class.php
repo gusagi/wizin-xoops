@@ -21,7 +21,7 @@ if ( ! class_exists('Wizin_Plugin_User_Au') ) {
 
         function _require()
         {
-            require_once WIZIN_ROOT_PATH . '/src/Wizin_Filter.php';
+            require_once WIZIN_ROOT_PATH . '/src/filter/Mobile.class.php';
         }
 
         function _setup()
@@ -29,7 +29,7 @@ if ( ! class_exists('Wizin_Plugin_User_Au') ) {
             static $calledFlag;
             if ( ! isset($calledFlag) ) {
                 $calledFlag = true;
-                $filter =& Wizin_Filter::getSingleton();
+                $filter =& Wizin_Filter_Mobile::getSingleton();
                 $params = array();
                 $filter->addOutputFilter( array( $this, 'filterAu' ), $params );
             }

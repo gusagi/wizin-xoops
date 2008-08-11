@@ -183,7 +183,11 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                             */
                         } else if ( substr($url, 0, 1) === '/' ) {
                             $parseUrl = parse_url( $baseUri );
-                            $url = str_replace( $parseUrl['path'], '', $baseUri ) . $url;
+                            $path = '';
+                            if ( isset($parseUrl['path']) ) {
+                                $path = $parseUrl['path'];
+                            }
+                            $url = str_replace( $path, '', $baseUri ) . $url;
                         } else {
                             $url = dirname( $currentUri ) . '/' . $url;
                         }
