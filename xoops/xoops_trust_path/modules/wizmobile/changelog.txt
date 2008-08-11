@@ -1,4 +1,7 @@
 ----------------------------------
+[2008-08-11 Ver 0.26 -> 0.27]
+- Fixed bug about plugin use another filter class object.
+----------------------------------
 [2008-07-31 Ver 0.25 -> 0.26]
 - Modified 'require' line, in order not to use 'include_path', it corrected.(thx okishiro)
 - Fixed bug about notice in 'createThumbnail' function.
