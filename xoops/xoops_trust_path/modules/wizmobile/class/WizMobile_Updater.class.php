@@ -117,14 +117,14 @@ if ( ! class_exists('WizMobile_Updater') ) {
 
             // pager
             $sql = "INSERT INTO `$configTable` (`wmc_item`, `wmc_value`, `wmc_init_datetime`, `wmc_update_datetime`) " .
-                " VALUES ( 'pager', '0', '$now', '$now' );";
+                " VALUES ( 'pager', '1', '$now', '$now' );";
             if ( ! $db->query($sql) ) {
                 $this->mLog->addError( $this->_mTargetXoopsModule->getVar('dirname') . ' : module config "pager" insert error!' );
             }
 
             // content-type
             $sql = "INSERT INTO `$configTable` (`wmc_item`, `wmc_value`, `wmc_init_datetime`, `wmc_update_datetime`) " .
-                " VALUES ( 'content_type', '0', '$now', '$now' );";
+                " VALUES ( 'content_type', '1', '$now', '$now' );";
             if ( ! $db->query($sql) ) {
                 $this->mLog->addError( $this->_mTargetXoopsModule->getVar('dirname') . ' : module config "content-type" insert error!' );
             }
@@ -132,6 +132,7 @@ if ( ! class_exists('WizMobile_Updater') ) {
             $this->_mTargetXoopsModule->set('version', '25');
             return $this->executeAutomaticUpgrade();
         }
+
     }
 }
 
