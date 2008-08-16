@@ -135,10 +135,9 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
         {
             if ( extension_loaded('mbstring') ) {
                 if ( ! empty($outputEncoding) && ! empty($outputEncoding) ) {
-                    $contents = str_replace( 'charset=' ._CHARSET, 'charset=' . $outputCharset, $contents );
-                    $pattern = '(=)([\"\'])(' . _CHARSET . ')([\"\'])';
-                    $replacement = '${1}${2}' . $outputCharset . '${4}';
-                    $contents = preg_replace( "/" .$pattern ."/", $replacement, $contents );
+                    $pattern = '(<meta)([^>]*)(http-equiv=)([^>]*)(charset=)(\S*)([\"\'])([^>]*)(>)';
+                    $replacement = '${1}${2}${3}${4}${5}' . $outputCharset . '${7}${8}${9}';
+                    $contents = preg_replace( "/" .$pattern ."/i", $replacement, $contents );
                     $internalEncoding = mb_internal_encoding();
                     if ( in_array(strtolower($internalEncoding), array('sjis', 'shift_jis', 'ms_kanji',
                             'csshift_jis')) ) {
@@ -148,6 +147,24 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                         $internalEncoding = 'eucjp-win';
                     }
                     mb_convert_variables( $outputEncoding, $internalEncoding, $contents );
+                    // convert url encoded string
+                    $pattern = '(<a)([^>]*)(href=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
+                    preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
+                    if ( ! empty($matches) ) {
+                        foreach ( $matches as $key => $match) {
+                            if ( strpos($match[5], '?') === false ) {
+                            	$urlArray = explode( '?', $match[5] );
+                            	if ( ! empty($urlArray[1]) ) {
+	                                $query = urldecode( $urlArray[1] );
+	                                mb_convert_variables( $outputEncoding, $internalEncoding, $query );
+	                                $query = urlencode( $query );
+	                                $contents = str_replace( $match[3] . $match[4] .$match[5] . $match[6],
+	                                    $match[3] . $match[4] . str_replace($urlArray[1], $query, $match[5]) . $match[6], 
+	                                    $contents );
+                            	}
+                            }
+                        }
+                    }
                     ini_set( 'default_charset', $outputCharset );
                 }
             }
@@ -342,7 +359,9 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                         $maxImageWidth = $maxWidth;
                         $getFileFlag = false;
                         $imageUrl = $match[5];
-                        if ( substr($imageUrl, 0, 4) !== 'http' ) {
+                        if ( $imageUrl === '' ) {
+                            continue;
+                        } else if ( substr($imageUrl, 0, 4) !== 'http' ) {
                             if ( substr($imageUrl, 0, 1) === '/' ) {
                                 $parseUrl = parse_url( $baseUri );
                                 $imageUrl = str_replace( $parseUrl['path'], '', $baseUri ) . $imageUrl;
