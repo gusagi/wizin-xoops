@@ -379,7 +379,10 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                                 $getFileFlag = true;
                             }
                             $ext = array_pop( explode('.', basename($imagePath)) );
-                            $newImagePath = $createDir . '/' . basename( $imagePath, $ext );
+                            $urlArray = parse_url( $imageUrl );
+                            $newImageFile = str_replace( '/', '_', $urlArray['path'] );
+                            $newImageFile = str_replace( $ext, '', $newImageFile );
+                            $newImagePath = $createDir . '/' . $newImageFile;
                             if ( function_exists('imagegif') ) {
                                 $newExt = 'gif';
                             } else {
