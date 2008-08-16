@@ -28,6 +28,36 @@ if ( ! defined('WIZIN_LOADED') ) {
          */
         class Wizin extends Wizin_StdClass
         {
+            /**
+             * Wizin class constructor
+             *
+             * @access public
+             */
+            function __construct()
+            {
+                $requestUri = getenv( 'REQUEST_URI' );
+                if ( empty($requestUri) ) {
+                    // set path
+                    $scriptName = getenv( 'SCRIPT_NAME' );
+                    $requestUri = $scriptName;
+                    // add path_info
+                    $pathInfo = getenv( 'PATH_INFO' );
+                    if ( ! empty($pathInfo) ) {
+                        // Some IIS + PHP configurations puts the script-name in the path-info.
+                        // No need to append it twice !
+                        if ( $pathInfo != $scriptName ) {
+                            $requestUri .= $pathInfo;
+                        }
+                    }
+                    // add query_string
+                    $queryString = getenv( 'QUERY_STRING' );
+                    if ( $queryString !== false && $queryString !== '' ) {
+                        $requestUri .= '?' . $queryString;
+                    }
+                    putenv( 'REQUEST_URI=' . $requestUri );
+                    $_SERVER['REQUEST_URI'] = $requestUri;
+                }
+            }
 
             /**
              *
