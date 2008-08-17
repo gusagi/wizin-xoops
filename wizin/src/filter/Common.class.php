@@ -135,9 +135,11 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
         {
             if ( extension_loaded('mbstring') ) {
                 if ( ! empty($outputEncoding) && ! empty($outputEncoding) ) {
+                	// exchange meta header
                     $pattern = '(<meta)([^>]*)(http-equiv=)([^>]*)(charset=)(\S*)([\"\'])([^>]*)(>)';
                     $replacement = '${1}${2}${3}${4}${5}' . $outputCharset . '${7}${8}${9}';
                     $contents = preg_replace( "/" .$pattern ."/i", $replacement, $contents );
+                    // convert all contents
                     $internalEncoding = mb_internal_encoding();
                     if ( in_array(strtolower($internalEncoding), array('sjis', 'shift_jis', 'ms_kanji',
                             'csshift_jis')) ) {
@@ -152,15 +154,28 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                     preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
                     if ( ! empty($matches) ) {
                         foreach ( $matches as $key => $match) {
-                            if ( strpos($match[5], '?') === false ) {
+                            $queryPart = '';
+                            $query = array();
+                            if ( strpos($match[5], '?') !== false ) {
                             	$urlArray = explode( '?', $match[5] );
                             	if ( ! empty($urlArray[1]) ) {
-	                                $query = urldecode( $urlArray[1] );
-	                                mb_convert_variables( $outputEncoding, $internalEncoding, $query );
-	                                $query = urlencode( $query );
+                            		$queryArray = explode( '&', $urlArray[1] );
+									foreach ( $queryArray as $queryPart ) {
+									    if ( empty($queryPart) ) {
+									        continue;
+									    }
+									    $queryKey = '';
+									    $queryValue = '';
+									    list( $queryKey, $queryValue ) = explode( '=', $queryPart );
+    	                                $queryValue = urldecode( $queryValue );
+    	                                mb_convert_variables( $outputEncoding, $internalEncoding, $queryValue );
+    	                                $queryValue = urlencode( $queryValue );
+    	                                $query[] = $queryKey . '=' . $queryValue;
+									}
+									$queryString = implode( '&', $query );
 	                                $contents = str_replace( $match[3] . $match[4] .$match[5] . $match[6],
-	                                    $match[3] . $match[4] . str_replace($urlArray[1], $query, $match[5]) . $match[6], 
-	                                    $contents );
+	                                    $match[3] . $match[4] . str_replace($urlArray[1], $queryString, $match[5]) . 
+	                                    $match[6],  $contents );
                             	}
                             }
                         }
