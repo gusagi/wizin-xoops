@@ -52,6 +52,7 @@ if ( strtolower($method) === 'post' ) {
 // get module config
 $configs = $this->getConfigs();
 $themes = $this->getMobileThemes();
+$templateSets = $this->getTemplateSet();
 
 //
 // render admin view
@@ -62,6 +63,7 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 // display main templates
 $xoopsTpl->assign( 'configs', $configs );
 $xoopsTpl->assign( 'themes', $themes );
+$xoopsTpl->assign( 'tplsets', $templateSets );
 $xoopsTpl->display( $tplFile );
 
 // call footer
