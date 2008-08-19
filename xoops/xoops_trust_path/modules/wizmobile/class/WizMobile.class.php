@@ -153,6 +153,7 @@ if ( ! class_exists('WizMobile') ) {
                     // exchange view
                     $this->_exchangeRenderSystem();
                     $this->_exchangeTheme();
+                    $this->_exchangeTemplateSet();
                 } else {
                     ini_set( 'default_charset', _CHARSET );
                     header( 'Content-Type:text/html; charset=' . _CHARSET );
@@ -220,6 +221,7 @@ if ( ! class_exists('WizMobile') ) {
 
         function _exchangeTheme()
         {
+            // exchange theme
             $xcRoot =& XCube_Root::getSingleton();
             $actionClass =& $this->getActionClass();
             $configs = $actionClass->getConfigs();
@@ -231,6 +233,22 @@ if ( ! class_exists('WizMobile') ) {
             if ( file_exists(XOOPS_THEME_PATH . '/' . $theme) && is_dir(XOOPS_THEME_PATH . '/' . $theme) &&
                     file_exists(XOOPS_THEME_PATH . '/' . $theme . '/theme.html') ) {
                 $xcRoot->mContext->setThemeName( $theme );
+            }
+        }
+
+        function _exchangeTemplateSet()
+        {
+            // exchange template set
+            $xcRoot =& XCube_Root::getSingleton();
+            $actionClass =& $this->getActionClass();
+            $configs = $actionClass->getConfigs();
+            if ( ! empty($configs) && ! empty($configs['template_set']) &&
+                    ! empty($configs['template_set']['wmc_value']) ) {
+                $templateSet = $actionClass->getTemplateSet();
+                $tplsetId = $configs['template_set']['wmc_value'];
+                $templateSetName = $templateSet[$tplsetId]['tplset_name'];
+                $xcRoot->mContext->mXoopsConfig['template_set'] = $templateSetName;
+                $GLOBALS['xoopsConfig']['template_set'] = $templateSetName;
             }
         }
 
@@ -289,6 +307,15 @@ if ( ! class_exists('WizMobile') ) {
             $user = & Wizin_User::getSingleton();
             $url = ( ! $user->bCookie ) ? XOOPS_URL. '/' . '?' . SID : XOOPS_URL;
             $_SESSION['redirect_message'] = Wizin_Util::constant( 'WIZMOBILE_MSG_DENY_ADMIN_AREA' );
+            header("Location: " . $url );
+            exit();
+        }
+
+        function denyAccessModuleArea()
+        {
+            $user = & Wizin_User::getSingleton();
+            $url = ( ! $user->bCookie ) ? XOOPS_URL. '/' . '?' . SID : XOOPS_URL;
+            $_SESSION['redirect_message'] = Wizin_Util::constant( 'WIZMOBILE_MSG_DENY_ACCESS_MODULE_PAGE' );
             header("Location: " . $url );
             exit();
         }
@@ -400,6 +427,7 @@ if ( ! class_exists('WizMobile') ) {
             $wizMobile = & WizMobile::getSingleton();
             $user = & Wizin_User::getSingleton();
             $xoopsTpl->register_postfilter( array($wizMobile, 'directRedirect') );
+            $xoopsTpl->register_postfilter( array($wizMobile, 'filterMainMenu') );
             $xoopsTpl->compile_id .= '_' . $user->sCarrier;
             $actionClass =& $wizMobile->getActionClass();
             $configs = $actionClass->getConfigs();
@@ -418,6 +446,34 @@ if ( ! class_exists('WizMobile') ) {
         function dummyModifier( $string, $maxKbyte = 0 )
         {
             return $string;
+        }
+
+        function filterMainMenu( $tplSource, & $xoopsTpl )
+        {
+            $tplFile = basename( $xoopsTpl->_current_file );
+            $tplFileArray = explode( ':', $tplFile );
+            if ( count($tplFileArray) > 1 ) {
+                $tplFile = array_pop( $tplFileArray );
+            }
+            if ( $tplFile === 'legacy_block_mainmenu.html' || $tplFile === 'system_block_mainmenu' ) {
+                $tplSource = '<?php WizMobile::modifyMainMenu( $this ); ?>' . "\n" . $tplSource;
+            }
+            return $tplSource;
+        }
+
+        function modifyMainMenu( & $xoopsTpl )
+        {
+            $block = $xoopsTpl->get_template_vars( 'block' );
+            $modules =& $block['modules'];
+            $wizMobile = & WizMobile::getSingleton();
+            $actionClass =& $wizMobile->getActionClass();
+            $denyAccessModules = $actionClass->getDenyAccessModules();
+            foreach ( $modules as $mid => $module ) {
+                if ( in_array($mid, $denyAccessModules) ) {
+                    unset( $modules[$mid] );
+                }
+            }
+            $xoopsTpl->assign( 'block', $block );
         }
     }
 }

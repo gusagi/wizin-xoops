@@ -59,6 +59,15 @@ if ( ! class_exists('WizMobile_Preload') ) {
             if ( $user->bIsMobile ) {
                 $xcRoot =& XCube_Root::getSingleton();
                 $wizMobileAction =& $wizMobile->getActionClass();
+                // deny access module check
+                $xoopsModule =& $xcRoot->mContext->mXoopsModule;
+                if ( isset($xoopsModule) && is_object($xoopsModule) ) {
+                    $mid = $xoopsModule->getVar( 'mid' );
+                    $denyAccessModules = $wizMobileAction->getDenyAccessModules();
+                    if ( in_array($mid, $denyAccessModules) ) {
+                        $wizMobile->denyAccessModuleArea();
+                    }
+                }
                 $configs = $wizMobileAction->getConfigs();
                 // add delegate
                 if ( (empty($configs['login']) || $configs['login']['wmc_value'] !== '1') &&
@@ -77,7 +86,7 @@ if ( ! class_exists('WizMobile_Preload') ) {
                     XCUBE_DELEGATE_PRIORITY_FINAL + 1 );
                 $xcRoot->mDelegateManager->add( 'Legacy_AdminControllerStrategy.SetupBlock',
                     array($wizMobile, 'denyAccessAdminArea'), XCUBE_DELEGATE_PRIORITY_FIRST );
-                    // overwrite comment mode
+                // overwrite comment mode
                 if ( isset($xcRoot->mContext->mXoopsUser) && is_object($xcRoot->mContext->mXoopsUser) ) {
                     $xcRoot->mContext->mXoopsUser->setVar( 'umode', 'flat' );
                 } else {

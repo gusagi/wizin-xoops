@@ -295,7 +295,7 @@ if ( ! class_exists('WizMobile_Action') ) {
             $db =& XoopsDatabaseFactory::getDatabaseConnection();
             $configTable = $db->prefix( $this->_sFrontDirName . '_config' );
             $now = date( 'Y-m-d H:i:s' );
-            $allowItems = array( 'login', 'theme', 'lookup', 'othermobile', 'pager', 'content_type' );
+            $allowItems = array( 'login', 'theme', 'template_set', 'lookup', 'othermobile', 'pager', 'content_type' );
             $sqlArray = array();
             $requestItems = ( ! empty($_REQUEST['wmc_item']) && is_array($_REQUEST['wmc_item']) ) ?
                 $_REQUEST['wmc_item']: array();
@@ -348,6 +348,29 @@ if ( ! class_exists('WizMobile_Action') ) {
                 closedir($handler);
             }
             return $themes;
+        }
+
+        function getTemplateSet()
+        {
+            $xcRoot = XCube_Root::getSingleton();
+            $db =& XoopsDatabaseFactory::getDatabaseConnection();
+            $tplsetTable = $db->prefix( 'tplset' );
+            $templateSets = array();
+            // TODO : use ORM
+            $sql = "SELECT ";
+            $sql .= " $tplsetTable.`tplset_id`, $tplsetTable.`tplset_name` ";
+            $sql .= " FROM `$tplsetTable` ";
+            $sql .= " ORDER BY ";
+            $sql .= " $tplsetTable.`tplset_id` ;";
+            if ( $resource = $db->query($sql) ) {
+                while ( $result = $db->fetchArray($resource) ) {
+                    if ( $result !== false && ! empty($result) ) {
+                        $tplsetId = intval( $result['tplset_id'] );
+                        $templateSets[$tplsetId] = $result;
+                    }
+                }
+            }
+            return $templateSets;
         }
 
         function getSystemStatus()
@@ -415,10 +438,108 @@ if ( ! class_exists('WizMobile_Action') ) {
                     $systemStatus['partitionPage']['messages'][] = Wizin_Util::constant( 'WIZMOBILE_MSG_SIMPLEXML_NOT_EXISTS' );
                 }
             }
-
             return $systemStatus;
         }
 
+        function getModules()
+        {
+            $xcRoot = XCube_Root::getSingleton();
+            $db =& XoopsDatabaseFactory::getDatabaseConnection();
+            $modulesTable = $db->prefix( 'modules' );
+            $mobules = array();
+            // TODO : use ORM
+            $sql = "SELECT ";
+            $sql .= " $modulesTable.`mid`, $modulesTable.`name`, ";
+            $sql .= " $modulesTable.`dirname` ";
+            $sql .= " FROM `$modulesTable` ";
+            $sql .= " WHERE ";
+            $sql .= " $modulesTable.`isactive` = 1 ;";
+            if ( $resource = $db->query($sql) ) {
+                while ( $result = $db->fetchArray($resource) ) {
+                    if ( $result !== false && ! empty($result) ) {
+                        $mobules[] = $result;
+                    }
+                }
+            }
+            return $mobules;
+        }
+
+        function getDenyAccessModules()
+        {
+            $denyAccessModules = array();
+            $db =& XoopsDatabaseFactory::getDatabaseConnection();
+            $moduleTable = $db->prefix( $this->_sFrontDirName . '_module' );
+            // TODO : use ORM
+            $sql = "SELECT `wmm_mid` FROM `$moduleTable` WHERE `wmm_delete_datetime` = '0000-00-00 00:00:00';";
+            if ( $resource = $db->query($sql) ) {
+                while ( $result = $db->fetchArray($resource) ) {
+                    if ( $result !== false && ! empty($result) ) {
+                        $denyAccessModules[] = intval( $result['wmm_mid'] );
+                    }
+                }
+            }
+            return $denyAccessModules;
+        }
+
+        function updateDenyAccessModules()
+        {
+            $xcRoot = XCube_Root::getSingleton();
+            $gTicket = new XoopsGTicket();
+            if ( ! $gTicket->check(true, $this->_sFrontDirName, false) ) {
+                $xcRoot->mController->executeRedirect( WIZXC_CURRENT_URI, 3,
+                    sprintf(Wizin_Util::constant('WIZMOBILE_ERR_TICKET_NOT_FOUND')) );
+            }
+            $db =& XoopsDatabaseFactory::getDatabaseConnection();
+            $moduleTable = $db->prefix( $this->_sFrontDirName . '_module' );
+            $modulesTable = $db->prefix( 'modules' );
+            $insertModules = array();
+            $updateModules = array();
+            $deleteModules = array();
+            $existsModules = array();
+            $now = date( 'Y-m-d H:i:s' );
+            // TODO : use ORM
+            $sql = "SELECT `mid` FROM `$modulesTable`";
+            if ( $resource = $db->query($sql) ) {
+                while ( $result = $db->fetchArray($resource) ) {
+                    if ( $result !== false && ! empty($result) ) {
+                        $existsModules[] = $result['mid'];
+                    }
+                }
+            }
+            $denyAccessModules = $this->getDenyAccessModules();
+            $requestModules = ( ! empty($_REQUEST['wmm_mid']) && is_array($_REQUEST['wmm_mid']) ) ?
+                $_REQUEST['wmm_mid']: array();
+            $insertModules = array_diff( $requestModules, $denyAccessModules );
+            $updateModules = array_intersect( $requestModules, $denyAccessModules );
+            $deleteModules = array_merge( array_diff($denyAccessModules, $existsModules),
+                array_diff($denyAccessModules, $requestModules) );
+            $insertModules = array_map( 'intval', $insertModules );
+            $updateModules = array_map( 'intval', $updateModules );
+            $deleteModules = array_map( 'intval', $deleteModules );
+            $sqlArray = array();
+            foreach ( $insertModules as $wmm_mid ) {
+                $sqlArray[] = "INSERT INTO `$moduleTable` (`wmm_mid`, `wmm_init_datetime`, `wmm_update_datetime`) VALUES ($wmm_mid, '$now', '$now');";
+            }
+            if ( ! empty($updateModules) ) {
+                $sqlArray[] = "UPDATE `$moduleTable` SET `wmm_update_datetime` = '$now' WHERE `wmm_mid` IN ( " .
+                    implode( ',', $updateModules ) . " ) AND `wmm_delete_datetime` = '0000-00-00 00:00:00';";
+            }
+            if ( ! empty($deleteModules) ) {
+                $sqlArray[] = "UPDATE `$moduleTable` SET `wmm_delete_datetime` = '$now' WHERE `wmm_mid` IN ( " .
+                    implode( ',', $deleteModules ) . " ) AND `wmm_delete_datetime` = '0000-00-00 00:00:00';";
+            }
+            foreach ( $sqlArray as $sql ) {
+                if ( ! $db->query($sql) ) {
+                    $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
+                        $this->_sFrontDirName . '/admin/admin.php?act=ModuleSetting', 3,
+                        sprintf(Wizin_Util::constant('WIZMOBILE_MSG_UPDATE_MODULE_SETTING_FAILED')) );
+                }
+            }
+            WizXc_Util::clearCompiledCache();
+            $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
+                $this->_sFrontDirName . '/admin/admin.php?act=ModuleSetting', 3,
+                sprintf(Wizin_Util::constant('WIZMOBILE_MSG_UPDATE_MODULE_SETTING_SUCCESS')) );
+        }
     }
 }
 
