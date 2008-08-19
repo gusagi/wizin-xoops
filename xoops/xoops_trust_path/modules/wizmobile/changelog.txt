@@ -1,5 +1,19 @@
 ----------------------------------
+[2008-08-15 Ver 0.27 -> 0.28]
+- WizMobile
+  - Added 'ModuleSetting' action.
+  - Added 'denyAccessModule' logic.
+  - Modified 'pager' and 'content_type' default value on update version 0.25 .(thx mbxoops)
+  - Added page title in admin_xxx.html.
+  - Added overwrite config of template set.(thx mbxoops)
+- Wizin
+  - Modified function name in filter plugins.
+  - Added set 'request_uri' logic for IIS.(thx miniHORI)
+  - Fixed bug about query_string which url encoded will not convert encoding.(mbxoops)
+  - Fixed bug about thumbnail which has same name exists, display wrong thumbnail.(thx neko88)
+----------------------------------
 [2008-08-11 Ver 0.26 -> 0.27]
+- Added smarty variable 'wizMobileBlockTitle' assign logic.(thx mbxoops)
 - Fixed bug about plugin use another filter class object.
 ----------------------------------
 [2008-07-31 Ver 0.25 -> 0.26]
