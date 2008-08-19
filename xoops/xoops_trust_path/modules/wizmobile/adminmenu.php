@@ -47,8 +47,12 @@ $adminmenu[] = array(
     'link' => 'admin/admin.php?act=SystemStatus'
 );
 $adminmenu[] = array(
-    'title' => Wizin_Util::constant('WIZMOBILE_LANG_NON_DISPLAY_BLOCK_SETTING'),
+    'title' => Wizin_Util::constant('WIZMOBILE_LANG_BLOCK_CONTROL'),
     'link' => 'admin/admin.php?act=BlockSetting'
+);
+$adminmenu[] = array(
+    'title' => Wizin_Util::constant('WIZMOBILE_LANG_MODULE_CONTROL'),
+    'link' => 'admin/admin.php?act=ModuleSetting'
 );
 $adminmenu[] = array(
     'title' => Wizin_Util::constant('WIZMOBILE_LANG_GENERAL_SETTING'),
