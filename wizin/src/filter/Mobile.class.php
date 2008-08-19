@@ -36,6 +36,47 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
         }
 
         /**
+         * execute input filter
+         *
+         * @access public
+         *
+         */
+        function executeInputFilter()
+        {
+            $parent =& parent::getSingleton();
+            $inputFilter = $this->_aInputFilter;
+            $parentInputFilter = $parent->_aInputFilter;
+            $count = count( $parentInputFilter );
+            for ( $index = 0; $index < $count; $index ++ ) {
+                $inputFilter[] = $parentInputFilter[$index];
+            }
+            $this->_aInputFilter = $inputFilter;
+            parent::executeInputFilter();
+            $parent->_aInputFilter = array();
+        }
+
+        /**
+         * execute output filter
+         *
+         * @access public
+         *
+         * @param string $contents
+         */
+        function executeOutputFilter( & $contents )
+        {
+            $parent =& parent::getSingleton();
+            $outputFilter = $this->_aOutputFilter;
+            $parentOutputFilter = $parent->_aOutputFilter;
+            $count = count( $parentOutputFilter );
+            for ( $index = 0; $index < $count; $index ++ ) {
+                $outputFilter[] = $parentOutputFilter[$index];
+            }
+            $this->_aOutputFilter = $outputFilter;
+            parent::executeOutputFilter( $contents );
+            $parent->_aOutputFilter = array();
+        }
+
+        /**
          * optimizer filter for mobile
          *
          * @param string $contents
@@ -353,47 +394,6 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
             }
             $array[] = $buffer;
             return $array;
-        }
-
-        /**
-         * execute input filter
-         *
-         * @access public
-         *
-         */
-        function executeInputFilter()
-        {
-            $parent =& parent::getSingleton();
-            $inputFilter = $this->_aInputFilter;
-            $parentInputFilter = $parent->_aInputFilter;
-            $count = count( $parentInputFilter );
-            for ( $index = 0; $index < $count; $index ++ ) {
-                $inputFilter[] = $parentInputFilter[$index];
-            }
-            $this->_aInputFilter = $inputFilter;
-            parent::executeInputFilter();
-            $parent->_aInputFilter = array();
-        }
-
-        /**
-         * execute output filter
-         *
-         * @access public
-         *
-         * @param string $contents
-         */
-        function executeOutputFilter( & $contents )
-        {
-            $parent =& parent::getSingleton();
-            $outputFilter = $this->_aOutputFilter;
-            $parentOutputFilter = $parent->_aOutputFilter;
-            $count = count( $parentOutputFilter );
-            for ( $index = 0; $index < $count; $index ++ ) {
-                $outputFilter[] = $parentOutputFilter[$index];
-            }
-            $this->_aOutputFilter = $outputFilter;
-            parent::executeOutputFilter( $contents );
-            $parent->_aOutputFilter = array();
         }
 
     }

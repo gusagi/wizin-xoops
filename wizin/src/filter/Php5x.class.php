@@ -27,7 +27,7 @@ if ( ! class_exists('Wizin_Filter') ) {
          * @param mixed $function
          * @param array $params
          */
-        function addInputFilter( $function, & $params = null )
+        public function addInputFilter( $function, & $params = null )
         {
             if ( is_null($params) ) {
                 $params = array();
@@ -46,7 +46,7 @@ if ( ! class_exists('Wizin_Filter') ) {
          * @param mixed $function
          * @param array $params
          */
-        function addOutputFilter( $function, & $params = null )
+        public function addOutputFilter( $function, & $params = null )
         {
             if ( is_null($params) ) {
                 $params = array();
