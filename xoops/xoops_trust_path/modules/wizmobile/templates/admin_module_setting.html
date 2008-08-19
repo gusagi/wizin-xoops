@@ -1,0 +1,30 @@
+<h3><{"WIZMOBILE_LANG_DENY_ACCESS_MODULE_SETTING"|wiz_constant}></h3>
+<div style="margin-left: 0.5em; padding: 1em;">
+    <form action="admin.php" method="post">
+        <table class="outer" style="margin-bottom: 1em;">
+            <tr class="head">
+                <th style="width: 4em; text-align: center;"><{"WIZMOBILE_LANG_DENY_ACCESS"|wiz_constant}></th>
+                <th><{"WIZMOBILE_LANG_MODULE_NAME"|wiz_constant}></th>
+                <th><{"WIZMOBILE_LANG_DIRNAME"|wiz_constant}></th>
+            </tr>
+            <{foreach name=fe_modules item=itm_modules key=key_modules from=$modules}>
+            <tr class="<{cycle values="odd, even"}>">
+                <td style="text-align: center;">
+                    <input type="checkbox" name="wmm_mid[]" value="<{$itm_modules.mid}>" <{if $itm_modules.mid|@in_array:$denyAccessModules}>checked="checked"<{/if}> />
+                </td>
+                <td>
+                    <{$itm_modules.name|default:"--"}>
+                </td>
+                <td>
+                    <{$itm_modules.dirname|default:"--"}>
+                </td>
+            </tr>
+            <{/foreach}>
+        </table>
+        <div style="text-align: center; width: 100%; margin: auto;">
+            <input type="hidden" name="act" value="ModuleSetting" />
+            <{wiz_gticket area=$wizmobile_dirname}>
+            <input type="submit" value="<{"WIZMOBILE_LANG_UPDATE"|wiz_constant}>" />
+        </div>
+    </form>
+</div>

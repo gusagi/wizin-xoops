@@ -45,6 +45,7 @@ Wizin_Util::define( 'WIZMOBILE_MODINFO_DESC', 'Web site which with XOOPS Cube Le
 Wizin_Util::define( 'WIZMOBILE_MSG_DENY_LOGIN_PAGE', 'Sorry, it cannot login from the portable telephone,<br /> we request the operation with PC' );
 Wizin_Util::define( 'WIZMOBILE_MSG_DENY_ADMIN_AREA', 'Sorry, it cannot operate Admin Area from the portable telephone,<br /> we request the operation with PC' );
 Wizin_Util::define( 'WIZMOBILE_MSG_SESSION_LIMIT_TIME', 'It passed the existence time of session for portable telephone.<br />There is no excuse, but login please do again to do once more.' );
+Wizin_Util::define( 'WIZMOBILE_MSG_DENY_ACCESS_MODULE_PAGE', 'Sorry, it cannot access this module from the portable telephone,<br /> we request the operation with PC' );
 
 // main area / simple login
 Wizin_Util::define( 'WIZMOBILE_MSG_SIMPLE_LOGIN_CAUTION', 'When you utilize simple login, it is necessary to do the "Register of terminal specific ID" after the login.' );
@@ -69,6 +70,10 @@ Wizin_Util::define( 'WIZMOBILE_MSG_CANNOT_GET_UNIQID', 'It cannot get The termin
 Wizin_Util::define( 'WIZMOBILE_MSG_UPDATE_BLOCK_SETTING_SUCCESS', 'Update of non display block setting completed.' );
 Wizin_Util::define( 'WIZMOBILE_MSG_UPDATE_BLOCK_SETTING_FAILED', 'It failed in update of non display block setting.' );
 
+// admin area / module setting
+Wizin_Util::define( 'WIZMOBILE_MSG_UPDATE_MODULE_SETTING_SUCCESS', 'Update of deny access module setting completed.' );
+Wizin_Util::define( 'WIZMOBILE_MSG_UPDATE_MODULE_SETTING_FAILED', 'It failed in update of deny access module setting.' );
+
 // admin area / general setting
 Wizin_Util::define( 'WIZMOBILE_MSG_UPDATE_GENERAL_SETTING_SUCCESS', 'Update of generality setting completed.' );
 Wizin_Util::define( 'WIZMOBILE_MSG_UPDATE_GENERAL_SETTING_FAILED', 'It failed in update of generality setting.' );
@@ -90,7 +95,8 @@ Wizin_Util::define( 'WIZMOBILE_LANG_REGISTER_UNIQID', 'Register terminal specifi
 // language for admin area
 //
 Wizin_Util::define( 'WIZMOBILE_LANG_SYSTEM_STATUS', 'System status' );
-Wizin_Util::define( 'WIZMOBILE_LANG_NON_DISPLAY_BLOCK_SETTING', 'Non display block setting' );
+Wizin_Util::define( 'WIZMOBILE_LANG_BLOCK_CONTROL', 'Block control' );
+Wizin_Util::define( 'WIZMOBILE_LANG_MODULE_CONTROL', 'Module control' );
 Wizin_Util::define( 'WIZMOBILE_LANG_GENERAL_SETTING', 'Generality setting' );
 
 // system status
@@ -99,10 +105,16 @@ Wizin_Util::define( 'WIZMOBILE_LANG_IMAGE_RESIZE', 'Resize of image' );
 Wizin_Util::define( 'WIZMOBILE_LANG_PARTITION_PAGE', 'Page division' );
 
 // non display block setting
+Wizin_Util::define( 'WIZMOBILE_LANG_NON_DISPLAY_BLOCK_SETTING', 'Non display block setting' );
 Wizin_Util::define( 'WIZMOBILE_LANG_BLOCK_TITLE', 'Block title' );
 Wizin_Util::define( 'WIZMOBILE_LANG_MODULE_NAME', 'Module name' );
 Wizin_Util::define( 'WIZMOBILE_LANG_DIRNAME', 'Directory' );
 Wizin_Util::define( 'WIZMOBILE_LANG_NON_DISPLAY', 'Non display' );
+
+// deny access module setting
+Wizin_Util::define( 'WIZMOBILE_LANG_DENY_ACCESS_MODULE_SETTING', 'Deny access module setting' );
+Wizin_Util::define( 'WIZMOBILE_LANG_DENY_ACCESS', 'Deny access' );
+
 
 // general setting
 Wizin_Util::define( 'WIZMOBILE_LANG_ITEM', 'Item' );
@@ -111,6 +123,8 @@ Wizin_Util::define( 'WIZMOBILE_LANG_LOGIN', 'Login' );
 Wizin_Util::define( 'WIZMOBILE_LANG_LOGIN_DESC', 'Login functional setting for mobile.<br />When it makes enable, also simple login becomes available.' );
 Wizin_Util::define( 'WIZMOBILE_LANG_THEME', 'Theme' );
 Wizin_Util::define( 'WIZMOBILE_LANG_THEME_DESC', 'Theme setting for mobile.' );
+Wizin_Util::define( 'WIZMOBILE_LANG_TPLSET', 'Template set' );
+Wizin_Util::define( 'WIZMOBILE_LANG_TPLSET_DESC', 'Template set setting for mobile.' );
 Wizin_Util::define( 'WIZMOBILE_LANG_LOOKUP', 'Lookup host name' );
 Wizin_Util::define( 'WIZMOBILE_LANG_LOOKUP_DESC', 'Lookup host name, you verify whether access from mobile.<br />Instead of being able prevent the disguise of the user agent, performance decreases.' );
 Wizin_Util::define( 'WIZMOBILE_LANG_OTHERMOBILE', 'Correspondence of other mobile terminals' );
@@ -130,6 +144,7 @@ Wizin_Util::define( 'WIZMOBILE_LANG_UPDATE', 'Update' );
 Wizin_Util::define( 'WIZMOBILE_LANG_DELETE', 'Delete' );
 Wizin_Util::define( 'WIZMOBILE_LANG_ENABLE', 'Enable' );
 Wizin_Util::define( 'WIZMOBILE_LANG_DISABLE', 'Disable' );
+Wizin_Util::define( 'WIZMOBILE_LANG_NONE_SETTING', 'None' );
 
 //
 // language for theme
