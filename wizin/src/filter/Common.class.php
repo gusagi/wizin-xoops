@@ -154,10 +154,17 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                     preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
                     if ( ! empty($matches) ) {
                         foreach ( $matches as $key => $match) {
+                            $urlString = '';
                             $queryPart = '';
                             $query = array();
                             if ( strpos($match[5], '?') !== false ) {
-                            	$urlArray = explode( '?', $match[5] );
+                                $urlString = $match[5];
+                                $flagmentArray = array();
+                                if ( strpos($urlString, '#') !== false ) {
+                                    $flagmentArray = explode( '#', $urlString );
+                                    $urlString = $flagmentArray[0];
+                                }
+                            	$urlArray = explode( '?', $urlString );
                             	if ( ! empty($urlArray[1]) ) {
                             		$queryArray = explode( '&', $urlArray[1] );
 									foreach ( $queryArray as $queryPart ) {
