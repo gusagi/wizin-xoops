@@ -61,6 +61,7 @@ if ( ! class_exists('WizXc') ) {
 
         function _define()
         {
+            $wizin =& Wizin::getSingleton();
             define( 'WIZIN_CACHE_DIR', XOOPS_TRUST_PATH . '/cache' );
             $parseUrl = parse_url( XOOPS_URL );
             if ( ! empty($parseUrl['path']) ) {
@@ -79,6 +80,7 @@ if ( ! class_exists('WizXc') ) {
 
         function _setup()
         {
+        	Wizin::getSingleton();
             Wizin_Util::getPrefix( XOOPS_SALT );
         }
 
