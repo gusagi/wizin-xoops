@@ -15,9 +15,22 @@ if ( ! class_exists('Wizin_Plugin_User_Softbank') ) {
     {
         function __construct()
         {
-            $calledFlag = true;
-            $this->_check3GC();
-            $this->_updateUniqId();
+            $this->_require();
+            $this->_setup();
+        }
+
+        function _require()
+        {
+        }
+
+        function _setup()
+        {
+            static $calledFlag;
+            if ( ! isset($calledFlag) ) {
+                $calledFlag = true;
+				$this->_check3GC();
+				$this->_updateUniqId();
+            }
         }
 
         function _check3GC()

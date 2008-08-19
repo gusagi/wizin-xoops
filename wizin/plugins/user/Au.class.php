@@ -37,6 +37,12 @@ if ( ! class_exists('Wizin_Plugin_User_Au') ) {
 
         function filterAu( & $contents )
         {
+            $this->_replaceBlankAction( $contents );
+            return $contents;
+        }
+
+        function _replaceBlankAction( & $contents )
+        {
             // pattern 1 ( "method=, action=" pattern )
             $pattern = '(<form)([^>]*)(method=)([\"\'])(post|get)([\"\'])([^>]*)(action=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
             preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
@@ -108,6 +114,5 @@ if ( ! class_exists('Wizin_Plugin_User_Au') ) {
             $contents = str_replace( '&&', '&', $contents );
             return $contents;
         }
-
     }
 }

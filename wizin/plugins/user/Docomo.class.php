@@ -69,6 +69,12 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
 
         function filterDocomo( & $contents )
         {
+            $this->_filterInsertGuid( $contents );
+            return $contents;
+        }
+
+        function _filterInsertGuid( & $contents )
+        {
             $insertString = 'guid=on';
             // get method
             $pattern = '(<a)([^>]*)(href=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
