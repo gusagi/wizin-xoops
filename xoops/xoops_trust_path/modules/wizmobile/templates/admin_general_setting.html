@@ -1,3 +1,4 @@
+<h3><{"WIZMOBILE_LANG_GENERAL_SETTING"|wiz_constant}></h3>
 <div style="margin-left: 0.5em; padding: 1em;">
     <form action="admin.php" method="post">
         <table class="outer" style="margin-bottom: 1em;">
@@ -38,6 +39,21 @@
                         <{/foreach}>
                     </select>
                     <div style="font-size: 90%; font-weight: lighter; margin: 0.5em 0 0 2em;"><{"WIZMOBILE_LANG_THEME_DESC"|wiz_constant}></div>
+                </td>
+            </tr>
+            <{* Template set *}>
+            <tr class="<{cycle values="odd, even"}>">
+                <td>
+                    <div style="font-size: 110%; font-weight: bolder;"><{"WIZMOBILE_LANG_TPLSET"|wiz_constant}></div>
+                </td>
+                <td>
+                    <select name="wmc_item[template_set]">
+                        <option value="" style="min-width: 120px;"><{"WIZMOBILE_LANG_NONE_SETTING"|wiz_constant}></option>
+                        <{foreach name=fe_tplsets item=itm_tplsets key=key_tplsets from=$tplsets}>
+                            <option value="<{$itm_tplsets.tplset_id}>" style="min-width: 120px;" <{if $configs.template_set.wmc_value == $itm_tplsets.tplset_id}>selected="selected"<{/if}> ><{$itm_tplsets.tplset_name}></option>
+                        <{/foreach}>
+                    </select>
+                    <div style="font-size: 90%; font-weight: lighter; margin: 0.5em 0 0 2em;"><{"WIZMOBILE_LANG_TPLSET_DESC"|wiz_constant}></div>
                 </td>
             </tr>
             <{* Lookup *}>
