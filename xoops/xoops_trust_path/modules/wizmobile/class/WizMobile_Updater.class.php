@@ -37,7 +37,7 @@ if ( ! class_exists('WizMobile_Updater') ) {
 
     class WizMobile_Updater extends WizXc_Updater
     {
-        var $_mMilestone = array( '020' => 'updateTo020', '025' => 'updateTo025', '028' => 'updateTo028' );
+        var $_mMilestone = array( '020' => 'updateTo020', '025' => 'updateTo025', '030' => 'updateTo030' );
 
         function updateTo020()
         {
@@ -133,17 +133,17 @@ if ( ! class_exists('WizMobile_Updater') ) {
             return $this->executeAutomaticUpgrade();
         }
 
-        function updateTo028()
+        function updateTo030()
         {
             //
             // Create tables
             //
-            $sqlFilePath = dirname( dirname(__FILE__) ) . '/sql/mysql.028.sql';
+            $sqlFilePath = dirname( dirname(__FILE__) ) . '/sql/mysql.030.sql';
             if ( file_exists($sqlFilePath) && is_readable($sqlFilePath) ) {
                 WizXc_Util::createTableByFile( $this->_mTargetXoopsModule, $this->mLog, $sqlFilePath );
             }
 
-            $this->_mTargetXoopsModule->set('version', '28');
+            $this->_mTargetXoopsModule->set('version', '30');
             return $this->executeAutomaticUpgrade();
         }
 

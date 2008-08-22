@@ -468,9 +468,11 @@ if ( ! class_exists('WizMobile') ) {
             $wizMobile = & WizMobile::getSingleton();
             $actionClass =& $wizMobile->getActionClass();
             $denyAccessModules = $actionClass->getDenyAccessModules();
-            foreach ( $modules as $mid => $module ) {
-                if ( in_array($mid, $denyAccessModules) ) {
-                    unset( $modules[$mid] );
+            if ( ! empty($modules) && is_array($modules) ) {
+                foreach ( $modules as $mid => $module ) {
+                    if ( in_array($mid, $denyAccessModules) ) {
+                        unset( $modules[$mid] );
+                    }
                 }
             }
             $xoopsTpl->assign( 'block', $block );

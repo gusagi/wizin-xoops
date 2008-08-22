@@ -1,5 +1,5 @@
 ----------------------------------
-[2008-08-15 Ver 0.27 -> 0.28]
+[2008-08-20 Ver 0.28 -> 0.30]
 - WizMobile
   - Added 'ModuleSetting' action.
   - Added 'denyAccessModule' logic.
@@ -9,6 +9,9 @@
 - Wizin
   - Modified function name in filter plugins.
   - Added set 'request_uri' logic for IIS.(thx miniHORI)
+----------------------------------
+[2008-08-20 Ver 0.27 -> 0.28]
+- Wizin
   - Fixed bug about query_string which url encoded will not convert encoding.(mbxoops)
   - Fixed bug about thumbnail which has same name exists, display wrong thumbnail.(thx neko88)
 ----------------------------------
