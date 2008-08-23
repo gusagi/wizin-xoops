@@ -89,7 +89,8 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
         function filterOptimizeMobile( & $contents, $baseUri, $currentUri, $basePath, $createDir = WIZIN_CACHE_DIR )
         {
             $maxWidth = 220;
-            Wizin_Filter::filterResizeImage( $contents, $baseUri, $currentUri, $basePath, $createDir, $maxWidth );
+            Wizin_Filter::filterResizeImage( $contents, $baseUri, $currentUri, $basePath, $createDir,
+                $maxWidth, array(IMAGETYPE_PNG) );
             // replace input type "password" => "text"
             $pattern = '(<input)([^>]*)(type=)([\"\'])(password)([\"\'])([^>]*)(>)';
             $replacement = '${1}${2}${3}${4}text${6} ${7}${8}';
