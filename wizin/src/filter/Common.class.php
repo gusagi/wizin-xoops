@@ -181,7 +181,7 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
 									}
 									$queryString = implode( '&', $query );
 	                                $contents = str_replace( $match[3] . $match[4] .$match[5] . $match[6],
-	                                    $match[3] . $match[4] . str_replace($urlArray[1], $queryString, $match[5]) . 
+	                                    $match[3] . $match[4] . str_replace($urlArray[1], $queryString, $match[5]) .
 	                                    $match[6],  $contents );
                             	}
                             }
@@ -361,7 +361,7 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
          * @param string $createDir
          * @param integer $maxWidth
          */
-        function filterResizeImage ( & $contents, $baseUri, $currentUri, $basePath, $createDir = null, $maxWidth = 0 )
+        function filterResizeImage ( & $contents, $baseUri, $currentUri, $basePath, $createDir = null, $maxWidth = 0, $forceResizeType = '' )
         {
             if ( is_null($createDir) ) {
                 if ( defined('WIZIN_CACHE_DIR') ) {
@@ -369,6 +369,9 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                 } else {
                     $createDir = dirname( dirname(dirname(__FILE__)) ) . '/work/cache';
                 }
+            }
+            if ( $forceResizeType === '' ) {
+                $forceResizeType = array();
             }
             // image resize
             if ( extension_loaded('gd') ) {
@@ -429,10 +432,11 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                                 $format = $imageSizeInfo[2];
                             }
                             if ( $getFileFlag && $width <= $maxImageWidth ) {
-                                $maxImageWidth = $width - 1;
+                                $maxImageWidth = $width;
                             }
                             if ( $width !== 0 && $height !== 0 ) {
-                                if ( $width > $maxImageWidth && in_array($format, $allowImageFormat) ) {
+                                if ( ($width >= $maxImageWidth && in_array($format, $allowImageFormat)) ||
+                                        in_array($format, $forceResizeType) ) {
                                     if ( ! file_exists($newImagePath) ||
                                             (filemtime($newImagePath) <= filemtime($imagePath)) ) {
                                         Wizin_Util_Web::createThumbnail( $imagePath, $width, $height,
