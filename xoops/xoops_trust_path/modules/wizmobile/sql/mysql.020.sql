@@ -7,7 +7,7 @@ CREATE TABLE `{prefix}_{dirname}_login` (
     `wml_update_datetime` datetime NOT NULL default '0000-00-00 00:00:00',
     `wml_delete_datetime` datetime NOT NULL default '0000-00-00 00:00:00',
     PRIMARY KEY  (`wml_login_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 ;
+) Type=MyISAM;
 ALTER TABLE `{prefix}_{dirname}_login` ADD INDEX `wml_idx` ( `wml_uid` , `wml_uniqid` , `wml_delete_datetime` ) ;
 
 
@@ -20,7 +20,7 @@ CREATE TABLE `{prefix}_{dirname}_config` (
     `wmc_update_datetime` datetime NOT NULL default '0000-00-00 00:00:00',
     `wmc_delete_datetime` datetime NOT NULL default '0000-00-00 00:00:00',
     PRIMARY KEY  (`wmc_config_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 ;
+) Type=MyISAM;
 ALTER TABLE `{prefix}_{dirname}_config` ADD INDEX `wmc_idx` ( `wmc_item`, `wmc_delete_datetime` ) ;
 
 
@@ -32,6 +32,6 @@ CREATE TABLE `{prefix}_{dirname}_block` (
     `wmb_update_datetime` datetime NOT NULL default '0000-00-00 00:00:00',
     `wmb_delete_datetime` datetime NOT NULL default '0000-00-00 00:00:00',
     PRIMARY KEY  (`wmb_block_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 ;
+) Type=MyISAM;
 ALTER TABLE `{prefix}_{dirname}_block` ADD INDEX `wmb_idx` ( `wmb_bid`, `wmb_delete_datetime` ) ;
 

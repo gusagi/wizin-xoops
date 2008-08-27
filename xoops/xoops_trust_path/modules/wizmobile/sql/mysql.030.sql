@@ -6,5 +6,5 @@ CREATE TABLE `{prefix}_{dirname}_module` (
     `wmm_update_datetime` datetime NOT NULL default '0000-00-00 00:00:00',
     `wmm_delete_datetime` datetime NOT NULL default '0000-00-00 00:00:00',
     PRIMARY KEY  (`wmm_module_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 ;
+) Type=MyISAM;
 ALTER TABLE `{prefix}_{dirname}_module` ADD INDEX `wmm_idx` ( `wmm_mid`, `wmm_delete_datetime` ) ;
