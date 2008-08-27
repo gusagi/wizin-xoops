@@ -1,6 +1,6 @@
 /**************************************************
  * < Module name > WizMobile
- * < Version >     0.30
+ * < Version >     0.31
  * < Proprietor >  Makoto Hashiguchi a.k.a. gusagi
  * < Developer >   Makoto Hashiguchi a.k.a. gusagi
  * < License >     GNU General Public License Version2 with the special exception
@@ -16,4 +16,4 @@ The license of this module itself is GPL2, but it depends on the framework
 "Wizin" of new BSD license.
 
 2008 February 26th create.
-2008 August 20th update.
+2008 August 26th update.

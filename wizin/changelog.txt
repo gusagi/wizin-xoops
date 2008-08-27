@@ -1,4 +1,8 @@
 ----------------------------------
+[2008-08-26 Ver 0.26 -> 0.27]
+- Added image resize logic for PNG-24.
+- Fixed bug about resized image becomes larger than original image.
+----------------------------------
 [2008-08-20 Ver 0.25 -> 0.26]
 - Modified function name in filter plugins.
 - Added set 'request_uri' logic for IIS.(thx miniHORI)

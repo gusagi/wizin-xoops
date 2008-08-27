@@ -1,4 +1,12 @@
 ----------------------------------
+[2008-08-26 Ver 0.30 -> 0.31]
+- WizMobile
+  - Fixed bug about SQL syntax error with MySQL3.23.*.(thx jaspo)
+  - Fixed typo of module install/update failed message.
+- Wizin
+  - Added image resize logic for PNG-24.
+  - Fixed bug about resized image becomes larger than original image.
+----------------------------------
 [2008-08-20 Ver 0.28 -> 0.30]
 - WizMobile
   - Added 'ModuleSetting' action.
