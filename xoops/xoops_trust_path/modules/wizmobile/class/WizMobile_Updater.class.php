@@ -44,21 +44,21 @@ if ( ! class_exists('WizMobile_Updater') ) {
             // thumbnail directory permission check
             $thumbnailDir = XOOPS_ROOT_PATH . '/uploads/wizmobile';
             if ( ! file_exists($thumbnailDir) || ! is_dir($thumbnailDir) ) {
-                $this->mLog->addError( "Failed to update : Prease cleate '" . $thumbnailDir . "' directory.");
+                $this->mLog->addError( "Failed to update : Please create '" . $thumbnailDir . "' directory.");
                 return false;
             }
             if ( ! is_writable($thumbnailDir) ) {
-                $this->mLog->addError( "Failed to update : " . $thumbnailDir . " needs writable permission. Prease check it's permission.");
+                $this->mLog->addError( "Failed to update : " . $thumbnailDir . " needs writable permission. Please check it's permission.");
                 return false;
             }
             // cache directory permission check
             $cacheDir = XOOPS_TRUST_PATH . '/cache';
             if ( ! file_exists($cacheDir) || ! is_dir($cacheDir) ) {
-                $this->mLog->addError( "Failed to update : Prease cleate '" . $cacheDir . "' directory.");
+                $this->mLog->addError( "Failed to update : Please create '" . $cacheDir . "' directory.");
                 return false;
             }
             if ( ! is_writable($cacheDir) ) {
-                $this->mLog->addError( "Failed to update : " . $cacheDir . " needs writable permission. Prease check it's permission.");
+                $this->mLog->addError( "Failed to update : " . $cacheDir . " needs writable permission. Please check it's permission.");
                 return false;
             }
             /** This code block copied from "Legacy_ModuleInstaller" >> */

@@ -48,21 +48,21 @@ if ( ! class_exists('WizMobile_Installer') ) {
             // thumbnail directory permission check
             $thumbnailDir = XOOPS_ROOT_PATH . '/uploads/wizmobile';
             if ( ! file_exists($thumbnailDir) || ! is_dir($thumbnailDir) ) {
-                $this->mLog->addError( "Failed to install : Prease cleate '" . $thumbnailDir . "' directory.");
+                $this->mLog->addError( "Failed to install : Please create '" . $thumbnailDir . "' directory.");
                 return false;
             }
             if ( ! is_writable($thumbnailDir) ) {
-                $this->mLog->addError( "Failed to install : " . $thumbnailDir . " needs writable permission. Prease check it's permission.");
+                $this->mLog->addError( "Failed to install : " . $thumbnailDir . " needs writable permission. Please check it's permission.");
                 return false;
             }
             // cache directory permission check
             $cacheDir = XOOPS_TRUST_PATH . '/cache';
             if ( ! file_exists($cacheDir) || ! is_dir($cacheDir) ) {
-                $this->mLog->addError( "Failed to install : Prease cleate '" . $cacheDir . "' directory.");
+                $this->mLog->addError( "Failed to install : Please create '" . $cacheDir . "' directory.");
                 return false;
             }
             if ( ! is_writable($cacheDir) ) {
-                $this->mLog->addError( "Failed to install : " . $cacheDir . " needs writable permission. Prease check it's permission.");
+                $this->mLog->addError( "Failed to install : " . $cacheDir . " needs writable permission. Please check it's permission.");
                 return false;
             }
             return parent::executeInstall();
