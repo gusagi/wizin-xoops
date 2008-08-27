@@ -35,6 +35,9 @@ if ( ! class_exists('Wizin_Util_Web') ) {
         function createThumbnail ( $imagePath, $width, $height, $format, $newImagePath, $maxImageWidth )
         {
             $resizeRate = $maxImageWidth / $width;
+            if ( $resizeRate > 1 ) {
+                $resizeRate = 1;
+            }
             $resizeWidth = $resizeRate * $width;
             $resizeHeight = $resizeRate * $height;
             switch ( $format ) {
@@ -55,25 +58,32 @@ if ( ! class_exists('Wizin_Util_Web') ) {
              * Thanks a lot for "Medium eXposure" !
              * Ref : http://www.mediumexposure.com/techblog/smart-image-resizing-while-preserving-transparency-php-and-gd-library
              */
+            $copyFunction = 'imagecopyresampled';
             if ( $format === IMAGETYPE_GIF || $format === IMAGETYPE_PNG ) {
                 $transparentIndex = imagecolortransparent( $image );
                 if ( $transparentIndex >= 0 ) {
+                    // GIF / PNG-8
                     $transparentColor = imagecolorsforindex( $image, $transparentIndex );
                     $transparentIndex = imagecolorallocate( $newImage, $transparentColor['red'],
                         $transparentColor['green'], $transparentColor['blue'] );
                     imagefill( $newImage, 0, 0, $transparentIndex );
                     imagecolortransparent( $newImage, $transparentIndex );
                 } else if ( $format === IMAGETYPE_PNG ) {
+                    // PNG-24
                     imagealphablending( $newImage, false );
                     $color = imagecolorallocatealpha( $newImage, 0, 0, 0, 127 );
                     imagefill( $newImage, 0, 0, $color );
                     imagesavealpha( $newImage, true );
+                    $copyFunction = 'imagecopy';
                 }
             }
             // If original image is transparent gif/png <<
             // image data copy
-            imagecopyresampled( $newImage, $image , 0, 0, 0, 0,
-                $resizeWidth, $resizeHeight, $width, $height );
+            if ( $copyFunction === 'imagecopyresampled' ) {
+                imagecopyresampled( $newImage, $image , 0, 0, 0, 0, $resizeWidth, $resizeHeight, $width, $height );
+            } else if ( $copyFunction === 'imagecopy' ) {
+                imagecopy( $newImage, $image , 0, 0, 0, 0, $resizeWidth, $resizeHeight );
+            }
             $tmpArray = explode( '.', $newImagePath );
             $newExt = array_pop( $tmpArray );
             if ( $newExt === 'gif' ) {
