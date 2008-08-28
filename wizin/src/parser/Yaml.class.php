@@ -13,7 +13,9 @@
 
 if( ! class_exists( 'Wizin_Parser_Yaml' ) ) {
     require dirname( dirname(__FILE__) ) . '/Wizin.class.php';
-    require_once WIZIN_ROOT_PATH . '/lib/spyc/spyc.php';
+    if ( ! class_exists('Spyc') ) {
+        require_once WIZIN_ROOT_PATH . '/lib/spyc/spyc.php';
+    }
 
     /**
      * Wizin framework YAML parser class
