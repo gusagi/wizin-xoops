@@ -41,6 +41,7 @@ if ( $scriptFileName === __FILE__ ) {
 // init process
 $xcRoot =& XCube_Root::getSingleton();
 $wizMobile =& WizMobile::getSingleton();
+$configs = $this->getConfigs();
 if ( ! is_object($xcRoot->mContext->mXoopsUser) ) {
     $xcRoot->mController->executeRedirect( XOOPS_URL . '/user.php', 1, _NOPERM );
     exit();
@@ -51,7 +52,6 @@ $tplFile = $frontDirname . '_main_register_uniqid.html';
 $renderTarget->setTemplateName( $tplFile );
 
 // if login disabled
-$configs = $this->getConfigs();
 if ( empty($configs['login']) || $configs['login']['wmc_value'] !== '1' ) {
     $xcRoot->mController->executeForward( XOOPS_URL );
 }
@@ -59,7 +59,53 @@ if ( empty($configs['login']) || $configs['login']['wmc_value'] !== '1' ) {
 // register and redirect
 $method = getenv( 'REQUEST_METHOD' );
 if ( strtolower($method) === 'post' ) {
-    $this->registerUniqId();
+    $db =& XoopsDatabaseFactory::getDatabaseConnection();
+    $gTicket = new XoopsGTicket();
+    if ( ! $gTicket->check(true, $this->_sFrontDirName, false) ) {
+        $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
+            $this->_sFrontDirName . '/index.php?act=Setting', 1,
+            sprintf(Wizin_Util::constant('WIZMOBILE_ERR_TICKET_NOT_FOUND')) );
+    }
+    $user = & Wizin_User::getSingleton();
+    $user->checkClient( true );
+    if ( ! $user->bIsMobile ) {
+        $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
+            $this->_sFrontDirName . '/index.php?act=Setting', 1,
+            sprintf(Wizin_Util::constant('WIZMOBILE_MSG_REGISTER_UNIQID_FAILED'),
+            Wizin_Util::constant('WIZMOBILE_LANG_REGISTER')) );
+    }
+    if ( $user->sUniqId === '' ) {
+        $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
+            $this->_sFrontDirName . '/index.php?act=Setting', 1,
+            Wizin_Util::constant('WIZMOBILE_MSG_CANNOT_GET_UNIQID') );
+    }
+    $loginTable = $db->prefix( $this->_sFrontDirName . '_login' );
+    $uid = $xcRoot->mContext->mXoopsUser->get( 'uid' );
+    $uniqId = md5( $user->sUniqId . XOOPS_SALT );
+    $now = date( 'Y-m-d H:i:s' );
+    // TODO : use ORM
+    $mode = Wizin_Util::constant( 'WIZMOBILE_LANG_REGISTER' );
+    $sql = "SELECT `wml_uniqid` FROM `$loginTable` WHERE `wml_uid` = '$uid'";
+    if ( $resource = $db->query($sql) ) {
+        $result = $db->fetchArray( $resource );
+        if ( $result !== false && ! empty($result) ) {
+            $mode = Wizin_Util::constant( 'WIZMOBILE_LANG_UPDATE' );
+        }
+    }
+    if ( $mode === Wizin_Util::constant('WIZMOBILE_LANG_REGISTER') ) {
+        $sql = "INSERT INTO `$loginTable` ( `wml_uid`, `wml_uniqid`, `wml_init_datetime`, `wml_update_datetime` ) VALUES ( '$uid', '$uniqId', '$now', '$now' );";
+    } else if ( $mode === Wizin_Util::constant('WIZMOBILE_LANG_UPDATE') ) {
+        $sql = "UPDATE `$loginTable` SET `wml_uniqid` = '$uniqId', `wml_update_datetime` = '$now' WHERE `wml_uid` = '$uid';";
+    }
+    if ( $db->query($sql) ) {
+        $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
+            $this->_sFrontDirName . '/index.php?act=Setting', 1,
+            sprintf(Wizin_Util::constant('WIZMOBILE_MSG_REGISTER_UNIQID_SUCCESS'), $mode) );
+    } else {
+        $xcRoot->mController->executeRedirect( XOOPS_URL . '/modules/' .
+            $this->_sFrontDirName . '/index.php?act=Setting', 1,
+            sprintf(Wizin_Util::constant('WIZMOBILE_MSG_REGISTER_UNIQID_FAILED'), $mode) );
+    }
 }
 
 // call header
