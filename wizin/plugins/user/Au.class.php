@@ -43,67 +43,42 @@ if ( ! class_exists('Wizin_Plugin_User_Au') ) {
 
         function _replaceBlankAction( & $contents )
         {
-            // pattern 1 ( "method=, action=" pattern )
-            $pattern = '(<form)([^>]*)(method=)([\"\'])(post|get)([\"\'])([^>]*)(action=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
+            $pattern = '(<form)([^>]*)(action=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
             preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
             if ( ! empty($matches) ) {
+                // get query string
                 $queryString = getenv( 'QUERY_STRING' );
                 $queryString = str_replace( '&' . SID, '', $queryString );
                 $queryString = str_replace( SID, '', $queryString );
-                foreach ( $matches as $key => $match) {
-                    if ( ! empty($match[10]) ) {
-                        if ( ! empty($match[10]) && $match[10] !== '#' ) {
-                            continue;
-                        }
-                        if ( ! empty($queryString) ) {
-                            $action = basename( getenv('SCRIPT_NAME') ) . '?' . $queryString . $match[10];
-                        } else {
-                            $action = basename( getenv('SCRIPT_NAME') ) . $match[10];
-                        }
-                        $form = str_replace( $match[10], $action, $match[0] );
-                    } else {
-                        $url = basename( getenv('SCRIPT_NAME') );
-                        if ( isset($queryString) && $queryString !== '' ) {
-                            if ( $queryString !== '' ) {
-                                $url .= '?' . $queryString;
-                            }
-                        }
-                        $form = str_replace( $match[8] . $match[9] . $match[10] . $match[11],
-                            $match[8] . $match[9] . $url . $match[11], $match[0] );
-                        $action = $url;
-                    }
-                    $contents = str_replace( $match[0], $form . $tag, $contents );
-                    $action = '';
+                // get script name
+                $tmpUrl = 'http://' . getenv( 'SERVER_NAME' ) . getenv( 'REQUEST_URI' );
+                $tmpUrlArray = parse_url( $tmpUrl );
+                $tmpUrl = @ 'http://' . getenv( 'SERVER_NAME' ) . $tmpUrlArray['path'];
+                if ( substr($tmpUrl, -1, 1) === '/' ) {
+                    $script = 'index.php';
+                } else {
+                    $script = basename( $tmpUrl );
                 }
-            }
-            // pattern 2 ( "action=, method=" pattern )
-            $pattern = '(<form)([^>]*)(action=)([\"\'])(\S*)([\"\'])([^>]*)(method=)([\"\'])(post|get)([\"\'])([^>]*)(>)';
-            preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
-            if ( ! empty($matches) ) {
-                $queryString = getenv( 'QUERY_STRING' );
-                $queryString = str_replace( '&' . SID, '', $queryString );
-                $queryString = str_replace( SID, '', $queryString );
                 foreach ( $matches as $key => $match) {
-                    if ( ! empty($match[5]) ) {
-                        if ( ! empty($match[5]) && $match[5] !== '#' ) {
+                    if ( isset($match[5]) && $match[5] !== '' ) {
+                        if ( substr($match[5], 0, 1) === '#' ) {
+                            if ( ! empty($queryString) ) {
+                                $action = $script . '?' . $queryString . $match[5];
+                            } else {
+                                $action = $script . $match[5];
+                            }
+                            $form = str_replace( $match[3] . $match[4] . $match[5] . $match[6],
+                                $match[3] . $match[4] . $action . $match[6], $match[0] );
+                        } else {
                             continue;
                         }
-                        if ( ! empty($queryString) ) {
-                            $action = basename( getenv('SCRIPT_NAME') ) . '?' . $queryString . $match[5];
-                        } else {
-                            $action = basename( getenv('SCRIPT_NAME') ) . $match[5];
-                        }
-                        $form = str_replace( $match[5], $action, $match[0] );
                     } else {
-                        $url = basename( getenv('SCRIPT_NAME') );
+                        $action = $script;
                         if ( isset($queryString) && $queryString !== '' ) {
-                            if ( $queryString !== '' ) {
-                                $url .= '?' . $queryString;
-                            }
+                            $action .= '?' . $queryString;
                         }
                         $form = str_replace( $match[3] . $match[4] . $match[5] . $match[6],
-                            $match[3] . $match[4] . $url . $match[6], $match[0] );
-                        $action = $url;
+                            $match[3] . $match[4] . $action . $match[6], $match[0] );
                     }
                     $contents = str_replace( $match[0], $form, $contents );
                     $action = '';

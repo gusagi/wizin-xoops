@@ -63,6 +63,7 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                         $currentUrl .= '?' . $checkString;
                     }
                     header( 'Location: ' . $currentUrl );
+                    exit();
                 }
             }
         }
@@ -76,7 +77,7 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
         function _filterInsertGuid( & $contents )
         {
             $insertString = 'guid=on';
-            // get method
+            // link
             $pattern = '(<a)([^>]*)(href=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
             preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
             if ( ! empty($matches) ) {
@@ -112,89 +113,39 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
             //
             // form
             //
-            // pattern 1 ( "method=, action=" pattern )
-            $pattern = '(<form)([^>]*)(method=)([\"\'])(post|get)([\"\'])([^>]*)(action=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
+            $pattern = '(<form)([^>]*)(action=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
             preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
             if ( ! empty($matches) ) {
+                // get query string
                 $queryString = getenv( 'QUERY_STRING' );
                 $queryString = str_replace( '&' . SID, '', $queryString );
                 $queryString = str_replace( SID, '', $queryString );
                 $queryString = str_replace( '&guid=on', '', $queryString );
                 $queryString = str_replace( 'guid=on', '', $queryString );
-                foreach ( $matches as $key => $match) {
-                    if ( ! empty($match[10]) ) {
-                        if ( preg_match('/' . $insertString . '/i', $match[10]) ) {
-                            continue;
-                        } else if ( substr($match[10], 0, 4) !== 'http' && strpos($match[10], ':') !== false ) {
-                            continue;
-                        } else if ( substr($match[10], 0, 1) === '#' ) {
-                            if ( ! empty($queryString) ) {
-                                $action = basename( getenv('SCRIPT_NAME') ) . '?' . $queryString . $match[10];
-                            } else {
-                                $action = basename( getenv('SCRIPT_NAME') ) . $match[10];
-                            }
-                            $form = str_replace( $match[10], $action, $match[0] );
-                        } else {
-                            $action = $match[10];
-                            $form = $match[0];
-                        }
-                    } else {
-                        $url = basename( getenv('SCRIPT_NAME') );
-                        if ( isset($queryString) && $queryString !== '' ) {
-                            if ( $queryString !== '' ) {
-                                $url .= '?' . $queryString;
-                            }
-                        }
-                        $form = str_replace( $match[8] . $match[9] . $match[10] . $match[11],
-                            $match[8] . $match[9] . $url . $match[11], $match[0] );
-                        $action = $url;
-                    }
-                    $method = strtolower( $match[5] );
-                    if ( $method === 'post' ) {
-                        $baseAction = $action;
-                        if ( ! strstr($action, '?') ) {
-                            $connector = '?';
-                        } else {
-                            $connector = '&';
-                        }
-                        if ( strstr($action, '#') ) {
-                            $actionArray = explode( '#', $action );
-                            $action = $actionArray[0] . $connector . $insertString . '#';
-                            if ( ! empty($actionArray[1]) ) {
-                                $action .= $actionArray[1];
-                            }
-                        } else {
-                            $action = $action . $connector . $insertString;
-                        }
-                        $form = str_replace( $baseAction, $action, $form );
-                        $contents = str_replace( $match[0], $form, $contents );
-                    } else {
-                        $tag = '<input type="hidden" name="guid" value="on" />';
-                        $contents = str_replace( $match[0], $form . $tag, $contents );
-                    }
-                    $action = '';
+                // get script name
+                $tmpUrl = 'http://' . getenv( 'SERVER_NAME' ) . getenv( 'REQUEST_URI' );
+                $tmpUrlArray = parse_url( $tmpUrl );
+                $tmpUrl = @ 'http://' . getenv( 'SERVER_NAME' ) . $tmpUrlArray['path'];
+                if ( substr($tmpUrl, -1, 1) === '/' ) {
+                    $script = 'index.php';
+                } else {
+                    $script = basename( $tmpUrl );
                 }
-            }
-            // pattern 2 ( "action=, method=" pattern )
-            $pattern = '(<form)([^>]*)(action=)([\"\'])(\S*)([\"\'])([^>]*)(method=)([\"\'])(post|get)([\"\'])([^>]*)(>)';
-            preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
-            if ( ! empty($matches) ) {
-                $queryString = getenv( 'QUERY_STRING' );
-                $queryString = str_replace( '&' . SID, '', $queryString );
-                $queryString = str_replace( SID, '', $queryString );
-                $queryString = str_replace( '&guid=on', '', $queryString );
-                $queryString = str_replace( 'guid=on', '', $queryString );
                 foreach ( $matches as $key => $match) {
-                    if ( ! empty($match[5]) ) {
+                    if ( isset($match[5]) && $match[5] !== '' ) {
                         if ( preg_match('/' . $insertString . '/i', $match[5]) ) {
+                            $tag = '<input type="hidden" name="guid" value="on" />';
+                            $contents = str_replace( $match[0], $match[0] . $tag, $contents );
                             continue;
                         } else if ( substr($match[5], 0, 4) !== 'http' && strpos($match[5], ':') !== false ) {
+                            $tag = '<input type="hidden" name="guid" value="on" />';
+                            $contents = str_replace( $match[0], $match[0] . $tag, $contents );
                             continue;
                         } else if ( substr($match[5], 0, 1) === '#' ) {
                             if ( ! empty($queryString) ) {
-                                $action = basename( getenv('SCRIPT_NAME') ) . '?' . $queryString . $match[5];
+                                $action = $script . '?' . $queryString . $match[5];
                             } else {
-                                $action = basename( getenv('SCRIPT_NAME') ) . $match[5];
+                                $action = $script . $match[5];
                             }
                             $form = str_replace( $match[5], $action, $match[0] );
                         } else {
@@ -202,7 +153,7 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                             $form = $match[0];
                         }
                     } else {
-                        $url = basename( getenv('SCRIPT_NAME') );
+                        $url = $script;
                         if ( isset($queryString) && $queryString !== '' ) {
                             if ( $queryString !== '' ) {
                                 $url .= '?' . $queryString;
@@ -212,29 +163,24 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                             $match[3] . $match[4] . $url . $match[6], $match[0] );
                         $action = $url;
                     }
-                    $method = strtolower( $match[10] );
-                    if ( $method === 'post' ) {
-                        $baseAction = $action;
-                        if ( ! strstr($action, '?') ) {
-                            $connector = '?';
-                        } else {
-                            $connector = '&';
-                        }
-                        if ( strstr($action, '#') ) {
-                            $actionArray = explode( '#', $action );
-                            $action = $actionArray[0] . $connector . $insertString . '#';
-                            if ( ! empty($actionArray[1]) ) {
-                                $action .= $actionArray[1];
-                            }
-                        } else {
-                            $action = $action . $connector . $insertString;
-                        }
-                        $form = str_replace( $baseAction, $action, $form );
-                        $contents = str_replace( $match[0], $form, $contents );
+                    $baseAction = $action;
+                    if ( ! strstr($action, '?') ) {
+                        $connector = '?';
                     } else {
-                        $tag = '<input type="hidden" name="guid" value="on" />';
-                        $contents = str_replace( $match[0], $form . $tag, $contents );
+                        $connector = '&';
                     }
+                    if ( strstr($action, '#') ) {
+                        $actionArray = explode( '#', $action );
+                        $action = $actionArray[0] . $connector . $insertString . '#';
+                        if ( ! empty($actionArray[1]) ) {
+                            $action .= $actionArray[1];
+                        }
+                    } else {
+                        $action = $action . $connector . $insertString;
+                    }
+                    $form = str_replace( $baseAction, $action, $form );
+                    $tag = '<input type="hidden" name="guid" value="on" />';
+                    $contents = str_replace( $match[0], $form . $tag, $contents );
                     $action = '';
                 }
             }

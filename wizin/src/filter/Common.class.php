@@ -203,7 +203,7 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
          */
         function filterTransSid( & $contents, $baseUri, $currentUri )
         {
-            // get method
+            // link
             $pattern = '(<a)([^>]*)(href=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
             preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
             if ( ! empty($matches) ) {
@@ -257,52 +257,7 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
             //
             // form
             //
-            // pattern 1 ( "method=, action=" pattern )
-            $pattern = '(<form)([^>]*)(method=)([\"\'])(post|get)([\"\'])([^>]*)(action=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
-            preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
-            if ( ! empty($matches) ) {
-                foreach ( $matches as $key => $match) {
-                    if ( ! empty($match[10]) ) {
-                        $form = $match[0];
-                        $action = $match[10];
-                        if ( substr($action, 0, 4) !== 'http' ) {
-                            if ( strpos($action, ':') !== false ) {
-                                continue;
-                            } else if ( substr($action, 0, 1) === '#' ) {
-                                $urlArray = explode( '#', $currentUri );
-                                $action = $urlArray[0] . $action;
-                            } else if ( substr($action, 0, 1) === '/' ) {
-                                $parseUrl = parse_url( $baseUri );
-                                $action = str_replace( $parseUrl['path'], '', $baseUri ) . $action;
-                            } else {
-                                $action = dirname( $currentUri ) . '/' . $action;
-                            }
-                        }
-                    } else {
-                        $url = dirname( $currentUri );
-                        $url .= basename( getenv('SCRIPT_NAME') );
-                        $queryString = getenv( 'QUERY_STRING' );
-                        if ( isset($queryString) && $queryString !== '' ) {
-                            $queryString = str_replace( '&' . SID, '', $queryString );
-                            $queryString = str_replace( SID, '', $queryString );
-                            if ( $queryString !== '' ) {
-                                $url .= '?' . $queryString;
-                            }
-                        }
-                        $form = str_replace( $match[8] . $match[9] . $match[10] . $match[11],
-                            $match[8] . $match[9] . $url . $match[11], $match[0] );
-                        $action = $url;
-                    }
-                    $check = strstr( $action, $baseUri );
-                    if ( $check !== false ) {
-                        $tag = '<input type="hidden" name="' . session_name() . '" value="' . session_id() . '" />';
-                        $contents = str_replace( $match[0], $form . $tag, $contents );
-                    }
-                    $action = '';
-                }
-            }
-            // pattern 2 ( "action=, method=" pattern )
-            $pattern = '(<form)([^>]*)(action=)([\"\'])(\S*)([\"\'])([^>]*)(method=)([\"\'])(post|get)([\"\'])([^>]*)(>)';
+            $pattern = '(<form)([^>]*)(action=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
             preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
             if ( ! empty($matches) ) {
                 foreach ( $matches as $key => $match) {
@@ -324,6 +279,9 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                         }
                     } else {
                         $url = dirname( $currentUri );
+                        if ( substr($url, -1, 1) !== '/' ) {
+                            $url .= '/';
+                        }
                         $url .= basename( getenv('SCRIPT_NAME') );
                         $queryString = getenv( 'QUERY_STRING' );
                         if ( isset($queryString) && $queryString !== '' ) {
