@@ -35,6 +35,8 @@ if ( ! defined('WIZIN_LOADED') ) {
              */
             function __construct()
             {
+                //
+                // REQUEST_URI
                 $requestUri = getenv( 'REQUEST_URI' );
                 if ( empty($requestUri) ) {
                     // set path
@@ -56,6 +58,17 @@ if ( ! defined('WIZIN_LOADED') ) {
                     }
                     putenv( 'REQUEST_URI=' . $requestUri );
                     $_SERVER['REQUEST_URI'] = $requestUri;
+                }
+                //
+                // WIZIN_CACHE_DIR
+                if ( ! defined('WIZIN_CACHE_DIR') ) {
+                    define( 'WIZIN_CACHE_DIR', dirname(dirname(__FILE__)) . '/work/cache' );
+                }
+
+                //
+                // WIZIN_PEAR_DIR
+                if ( ! defined('WIZIN_PEAR_DIR') ) {
+                    define( 'WIZIN_PEAR_DIR', dirname(dirname(__FILE__)) . '/lib/PEAR' );
                 }
             }
 

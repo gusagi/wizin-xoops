@@ -272,7 +272,7 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                     }
                     // PEAR_Pager
                     $includePath = get_include_path();
-                    set_include_path( $includePath . PATH_SEPARATOR . WIZIN_ROOT_PATH . '/lib/PEAR' );
+                    set_include_path( $includePath . PATH_SEPARATOR . WIZIN_PEAR_DIR );
                     require_once 'Pager/Pager.php';
                     $params = array(
                         'mode' => 'sliding',
