@@ -173,11 +173,15 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
 									    }
 									    $queryKey = '';
 									    $queryValue = '';
-									    list( $queryKey, $queryValue ) = explode( '=', $queryPart );
-    	                                $queryValue = urldecode( $queryValue );
-    	                                mb_convert_variables( $outputEncoding, $internalEncoding, $queryValue );
-    	                                $queryValue = urlencode( $queryValue );
-    	                                $query[] = $queryKey . '=' . $queryValue;
+                                        if ( strpos($queryPart, '=') !== false ) {
+                                            list( $queryKey, $queryValue ) = explode( '=', $queryPart );
+                                            $queryValue = urldecode( $queryValue );
+                                            mb_convert_variables( $outputEncoding, $internalEncoding, $queryValue );
+                                            $queryValue = urlencode( $queryValue );
+                                            $query[] = $queryKey . '=' . $queryValue;
+                                        } else {
+                                            $query[] = $queryPart;
+                                        }
 									}
 									$queryString = implode( '&', $query );
 	                                $contents = str_replace( $match[3] . $match[4] .$match[5] . $match[6],
@@ -272,7 +276,11 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                                 $action = $urlArray[0] . $action;
                             } else if ( substr($action, 0, 1) === '/' ) {
                                 $parseUrl = parse_url( $baseUri );
-                                $action = str_replace( $parseUrl['path'], '', $baseUri ) . $action;
+                                $path = '';
+                                if ( isset($parseUrl['path']) ) {
+                                    $path = $parseUrl['path'];
+                                }
+                                $action = str_replace( $path, '', $baseUri ) . $action;
                             } else {
                                 $action = dirname( $currentUri ) . '/' . $action;
                             }
@@ -347,7 +355,11 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                         } else if ( substr($imageUrl, 0, 4) !== 'http' ) {
                             if ( substr($imageUrl, 0, 1) === '/' ) {
                                 $parseUrl = parse_url( $baseUri );
-                                $imageUrl = str_replace( $parseUrl['path'], '', $baseUri ) . $imageUrl;
+                                $path = '';
+                                if ( isset($parseUrl['path']) ) {
+                                    $path = $parseUrl['path'];
+                                }
+                                $imageUrl = str_replace( $path, '', $baseUri ) . $imageUrl;
                             } else {
                                 $imageUrl = dirname( $currentUri ) . '/' . $imageUrl;
                             }
