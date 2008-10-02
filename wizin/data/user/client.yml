@@ -9,8 +9,8 @@ googlebot-mobile:
     encoding:"sjis-win"
     charset:"shift_jis"
     plugin:
-        path:""
-        class:""
+        path:"plugins/user/Googlebot.class.php"
+        class:"Wizin_Plugin_User_Googlebot"
 
 yahoo-mobile:
     mobile:true
