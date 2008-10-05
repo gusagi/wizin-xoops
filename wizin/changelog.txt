@@ -1,4 +1,11 @@
 ----------------------------------
+[2008-10-02 Ver 0.27 -> 0.28]
+- Fixed bug about include 'spyc' twice.
+- Define 'WIZIN_CACHE_DIR' and 'WIZIN_PEAR_DIR', modified code about these constants.
+- Modified some filter which rewrites the form tag.
+- Added googlebot plugin.
+- Fixed bugs about some wrong logic.
+----------------------------------
 [2008-08-26 Ver 0.26 -> 0.27]
 - Added image resize logic for PNG-24.
 - Fixed bug about resized image becomes larger than original image.

@@ -4,7 +4,7 @@
  *
  * PHP Versions 4
  *
- * @package  Wizin
+ * @package  giftbox.in
  * @author  Makoto Hashiguchi a.k.a. gusagi<gusagi@gusagi.com>
  * @copyright 2008 Makoto Hashiguchi
  * @license http://www.opensource.org/licenses/bsd-license.php The BSD License
