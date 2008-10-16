@@ -5,6 +5,7 @@
 - Modified some filter which rewrites the form tag.
 - Added googlebot plugin.
 - Fixed bugs about some wrong logic.
+- Fixed bug about 'tidy_repair_string' args.
 ----------------------------------
 [2008-08-26 Ver 0.26 -> 0.27]
 - Added image resize logic for PNG-24.
