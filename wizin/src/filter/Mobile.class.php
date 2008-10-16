@@ -218,7 +218,7 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                 }
                 // repair
                 if ( function_exists('tidy_repair_string') ) {
-                    $string = tidy_repair_string( $string );
+                    $string = tidy_repair_string( $string, array(), 'utf8' );
                 }
                 // replace for DOMDocument convert
                 $string = strtr( $string, array('&' => '&amp;',
