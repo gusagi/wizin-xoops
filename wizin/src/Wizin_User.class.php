@@ -23,7 +23,6 @@ if ( ! class_exists('Wizin_User') ) {
      */
     class Wizin_User extends Wizin_StdClass
     {
-
         /**
          *
          * @return object $instance
@@ -55,6 +54,7 @@ if ( ! class_exists('Wizin_User') ) {
                 $data = $this->_basicCheck( $mobileData );
             }
             if ( ! empty($data) ) {
+                $this->iCarrierId = intval( $data['carrierid'] );
                 $this->bIsMobile = $data['mobile'];
                 $this->bIsBot = $data['bot'];
                 $this->bCookie = $data['cookie'];
@@ -69,13 +69,19 @@ if ( ! class_exists('Wizin_User') ) {
                 if ( ! empty($encoding) ) {
                     $this->sEncoding = $encoding;
                 } else {
-                    $this->sEncoding = '';
+                    $this->sEncoding = 'utf-8';
                 }
                 $charset = $data['charset'];
                 if ( ! empty($charset) ) {
                     $this->sCharset = $charset;
                 } else {
-                    $this->sCharset = '';
+                    $this->sCharset = 'utf-8';
+                }
+                $doctype = $data['doctype'];
+                if ( ! empty($doctype) ) {
+                    $this->sDoctype = $doctype;
+                } else {
+                    $this->sDoctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
                 }
                 $plugin = $data['plugin'];
                 if ( ! empty($plugin) ) {
@@ -88,13 +94,15 @@ if ( ! class_exists('Wizin_User') ) {
                     }
                 }
             } else {
+                $this->iCarrierId = 99;
                 $this->bIsMobile = false;
                 $this->bIsBot = false;
                 $this->bCookie = true;
                 $this->sCarrier = 'unknown';
                 $this->sUniqId = '';
-                $this->sEncoding = '';
-                $this->sCharset = '';
+                $this->sEncoding = 'utf-8';
+                $this->sCharset = 'utf-8';
+                $this->sDoctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
             }
         }
 

@@ -92,5 +92,59 @@ if ( ! class_exists('Wizin_Util') ) {
             }
         }
 
+        /**
+         * return ciphered string
+         *
+         * @param string $string
+         * @return string $code
+         */
+        function cipher( $string = '' )
+        {
+            $string = md5( $string );
+            $number = hexdec( $string );
+            $code =base_convert( floatval($number), 10, 36 );
+            return $code;
+        }
+
+        /**
+         * get file list under directory
+         *
+         * @param string $directory
+         * @return array
+         */
+        function getFilesUnderDir( $directory = '' )
+        {
+            static $files;
+            if ( ! isset($files) ) {
+                $files = array();
+            }
+            // if $directory is empty, return empty array
+            if ( empty($directory) ) {
+                return $files;
+            }
+            // directory check
+            if ( substr($directory, -1, 1) === '/' ) {
+                $directory = substr( $directory, 0, strlen($directory) - 1 );
+            }
+            if ( file_exists($directory) && is_dir($directory) ) {
+                if ( $handler = opendir($directory) ) {
+                    while ( ($file = readdir($handler)) !== false ) {
+                        if ( $file === '.' || $file === '..' ) {
+                            continue;
+                        }
+                        $filePath = $directory . DIRECTORY_SEPARATOR . $file;
+                        if ( is_dir($filePath) ) {
+                            Wizin_Util::getFilesUnderDir( $filePath );
+                        } else {
+                            if ( ! in_array($filePath, $files) ) {
+                                $files[] = $filePath;
+                            }
+                        }
+                    }
+                    closedir($handler);
+                }
+            }
+            return $files;
+        }
     }
 }

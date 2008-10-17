@@ -11,8 +11,7 @@
  *
  */
 
-if ( ! defined('WIZIN_LOADED') ) {
-    define( 'WIZIN_LOADED', true );
+if ( ! defined('WIZIN_ROOT_PATH') ) {
     define( 'WIZIN_ROOT_PATH', dirname(dirname(__FILE__)) );
     //set_include_path( get_include_path() . PATH_SEPARATOR . dirname(dirname(__FILE__)) );
     require_once WIZIN_ROOT_PATH . '/src/Wizin_StdClass.php';
@@ -62,13 +61,19 @@ if ( ! defined('WIZIN_LOADED') ) {
                 //
                 // WIZIN_CACHE_DIR
                 if ( ! defined('WIZIN_CACHE_DIR') ) {
-                    define( 'WIZIN_CACHE_DIR', dirname(dirname(__FILE__)) . '/work/cache' );
+                    define( 'WIZIN_CACHE_DIR', WIZIN_ROOT_PATH . '/work/cache' );
                 }
 
                 //
                 // WIZIN_PEAR_DIR
                 if ( ! defined('WIZIN_PEAR_DIR') ) {
-                    define( 'WIZIN_PEAR_DIR', dirname(dirname(__FILE__)) . '/lib/PEAR' );
+                    define( 'WIZIN_PEAR_DIR', WIZIN_ROOT_PATH . '/lib/PEAR' );
+                }
+
+                //
+                // WIZIN_UPLOAD_DIR
+                if ( ! defined('WIZIN_UPLOAD_DIR') ) {
+                    define( 'WIZIN_UPLOAD_DIR', WIZIN_ROOT_PATH . '/work/uploads' );
                 }
             }
 

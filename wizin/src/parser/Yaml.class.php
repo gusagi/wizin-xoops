@@ -16,7 +16,6 @@ if( ! class_exists( 'Wizin_Parser_Yaml' ) ) {
     if ( ! class_exists('Spyc') ) {
         require_once WIZIN_ROOT_PATH . '/lib/spyc/spyc.php';
     }
-    Wizin::getSingleton();
 
     /**
      * Wizin framework YAML parser class
@@ -25,6 +24,15 @@ if( ! class_exists( 'Wizin_Parser_Yaml' ) ) {
      */
     class Wizin_Parser_Yaml extends Wizin_StdClass
     {
+        /**
+         * constructor
+         *
+         */
+        function __construct()
+        {
+            Wizin::getSingleton();
+        }
+
         /**
          *
          * @return object $instance
@@ -47,7 +55,7 @@ if( ! class_exists( 'Wizin_Parser_Yaml' ) ) {
         function parse( $file )
         {
             if ( file_exists($file) && is_readable($file) ) {
-                $prefix = Wizin_Util::getPrefix();
+                $prefix = Wizin_Util::cipher( $file );
                 $this->_sYamlFile = $file;
                 $this->_sCacheFile = WIZIN_CACHE_DIR . '/' . $prefix . md5( $file );
                 if ( $this->_isCached() ) {

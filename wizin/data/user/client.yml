@@ -1,4 +1,5 @@
 googlebot-mobile:
+    carrierid:7
     mobile:true
     bot:true
     cookie:true
@@ -8,11 +9,13 @@ googlebot-mobile:
     uniqid:""
     encoding:"sjis-win"
     charset:"shift_jis"
+    doctype:""
     plugin:
         path:"plugins/user/Googlebot.class.php"
         class:"Wizin_Plugin_User_Googlebot"
 
 yahoo-mobile:
+    carrierid:8
     mobile:true
     bot:true
     cookie:true
@@ -23,11 +26,13 @@ yahoo-mobile:
     uniqid:""
     encoding:"sjis-win"
     charset:"shift_jis"
+    doctype:""
     plugin:
         path:""
         class:""
 
 docomo:
+    carrierid:1
     mobile:true
     bot:false
     cookie:false
@@ -37,11 +42,13 @@ docomo:
     uniqid:"HTTP_X_DCMGUID"
     encoding:"sjis-win"
     charset:"shift_jis"
+    doctype:"<!DOCTYPE html PUBLIC \"-//i-mode group (ja)//DTD XHTML i-XHTML(Locale/Ver.=ja/2.3) 1.0//EN\" \"i-xhtml_4ja_10.dtd\">"
     plugin:
         path:"plugins/user/Docomo.class.php"
         class:"Wizin_Plugin_User_Docomo"
 
 au:
+    carrierid:2
     mobile:true
     bot:false
     cookie:true
@@ -52,12 +59,13 @@ au:
     uniqid:"HTTP_X_UP_SUBNO"
     encoding:"sjis-win"
     charset:"shift_jis"
-    function:""
+    doctype:"<!DOCTYPE html PUBLIC \"-//OPENWAVE//DTD XHTML 1.0//EN\" \"http://www.openwave.com/DTD/xhtml-basic.dtd\">"
     plugin:
         path:"plugins/user/Au.class.php"
         class:"Wizin_Plugin_User_Au"
 
 softbank:
+    carrierid:3
     mobile:true
     bot:false
     cookie:true
@@ -71,11 +79,13 @@ softbank:
     uniqid:"HTTP_X_JPHONE_UID"
     encoding:"utf-8"
     charset:"utf-8"
+    doctype:"<!DOCTYPE html PUBLIC \"-//J-PHONE//DTD XHTML Basic 1.0 Plus//EN\" \"xhtml-basic10-plus.dtd\">"
     plugin:
         path:"plugins/user/Softbank.class.php"
         class:"Wizin_Plugin_User_Softbank"
 
 willcom:
+    carrierid:4
     mobile:true
     bot:false
     cookie:true
@@ -85,12 +95,14 @@ willcom:
     uniqid:""
     encoding:"sjis-win"
     charset:"shift_jis"
+    doctype:""
     plugin:
         path:"plugins/user/Willcom.class.php"
         class:"Wizin_Plugin_User_Willcom"
 
 
 emobile:
+    carrierid:5
     mobile:true
     bot:false
     cookie:true
@@ -101,12 +113,14 @@ emobile:
     uniqid:"HTTP_X_EM_UID"
     encoding:"sjis-win"
     charset:"shift_jis"
+    doctype:""
     plugin:
         path:""
         class:""
 
 
 othermobile:
+    carrierid:6
     mobile:true
     bot:false
     cookie:true
@@ -119,6 +133,7 @@ othermobile:
     uniqid:""
     encoding:"sjis-win"
     charset:"shift_jis"
+    doctype:""
     plugin:
         path:""
         class:""
