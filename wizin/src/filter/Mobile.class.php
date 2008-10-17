@@ -222,8 +222,8 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                 }
                 // replace for DOMDocument convert
                 $string = strtr( $string, array('&' => '&amp;',
-                    '</textarea>' => Wizin_Util::getPrefix() . '</textarea>',
-                    '</TEXTAREA>' => Wizin_Util::getPrefix() . '</TEXTAREA>') );
+                    '</textarea>' => Wizin_Util::cipher( __FILE__ ) . '</textarea>',
+                    '</TEXTAREA>' => Wizin_Util::cipher( __FILE__ ) . '</TEXTAREA>') );
                 // convert XML(step1)
                 $string = '<html><meta http-equiv="content-type" content="text/html; charset=utf-8"><body>' .
                     $string . '</body></html>';
@@ -261,14 +261,14 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                             $_GET['wiz_page'] = array_search( $page, $array );
                             $_REQUEST['wiz_page'] =& $_GET['wiz_page'];
                             $page = strtr( $page, array('&amp;' => '&',
-                                Wizin_Util::getPrefix() . '</textarea>' => '</textarea>',
-                                Wizin_Util::getPrefix() . '</TEXTAREA>' => '</TEXTAREA>') );
+                                Wizin_Util::cipher( __FILE__ ) . '</textarea>' => '</textarea>',
+                                Wizin_Util::cipher( __FILE__ ) . '</TEXTAREA>' => '</TEXTAREA>') );
                         }
                     }
                     if ( empty($page) ) {
                         $page = strtr( $array[$index], array('&amp;' => '&',
-                            Wizin_Util::getPrefix() . '</textarea>' => '</textarea>',
-                            Wizin_Util::getPrefix() . '</TEXTAREA>' => '</TEXTAREA>') );
+                            Wizin_Util::cipher( __FILE__ ) . '</textarea>' => '</textarea>',
+                            Wizin_Util::cipher( __FILE__ ) . '</TEXTAREA>' => '</TEXTAREA>') );
                     }
                     // PEAR_Pager
                     $includePath = get_include_path();
