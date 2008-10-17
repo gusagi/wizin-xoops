@@ -8,6 +8,7 @@
 - Fixed bug about 'tidy_repair_string' args.
 - Added xml header replace logic.
 - Modified blank textarea logic.
+- Modifiled yaml cache file name.
 ----------------------------------
 [2008-08-26 Ver 0.26 -> 0.27]
 - Added image resize logic for PNG-24.
