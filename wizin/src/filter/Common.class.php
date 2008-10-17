@@ -135,6 +135,10 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
         {
             if ( extension_loaded('mbstring') ) {
                 if ( ! empty($outputEncoding) && ! empty($outputEncoding) ) {
+                    // exchange doctype
+                    $pattern = '(<\?xml)([^>]*)(encoding=)([\"\'])(\S*)([\"\'])([^>]*)(\?>)';
+                    $replacement = '${1}${2}${3}${4}' . $outputCharset . '${6}${7}${8}';
+                    $contents = preg_replace( "/" .$pattern ."/i", $replacement, $contents );
                 	// exchange meta header
                     $pattern = '(<meta)([^>]*)(http-equiv=)([^>]*)(charset=)(\S*)([\"\'])([^>]*)(>)';
                     $replacement = '${1}${2}${3}${4}${5}' . $outputCharset . '${7}${8}${9}';
