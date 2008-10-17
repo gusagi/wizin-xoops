@@ -57,7 +57,7 @@ if( ! class_exists( 'Wizin_Parser_Yaml' ) ) {
             if ( file_exists($file) && is_readable($file) ) {
                 $prefix = Wizin_Util::cipher( $file );
                 $this->_sYamlFile = $file;
-                $this->_sCacheFile = WIZIN_CACHE_DIR . '/' . $prefix . md5( $file );
+                $this->_sCacheFile = WIZIN_CACHE_DIR . '/wizin_yaml_' . $prefix;
                 if ( $this->_isCached() ) {
                     $return = $this->_loadCache();
                 } else {
