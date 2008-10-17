@@ -55,9 +55,9 @@ if( ! class_exists( 'Wizin_Parser_Yaml' ) ) {
         function parse( $file )
         {
             if ( file_exists($file) && is_readable($file) ) {
-                $prefix = Wizin_Util::cipher( $file );
+                $suffix = Wizin_Util::cipher( $file );
                 $this->_sYamlFile = $file;
-                $this->_sCacheFile = WIZIN_CACHE_DIR . '/wizin_yaml_' . $prefix;
+                $this->_sCacheFile = WIZIN_CACHE_DIR . '/wizin_yaml_' . $suffix;
                 if ( $this->_isCached() ) {
                     $return = $this->_loadCache();
                 } else {
