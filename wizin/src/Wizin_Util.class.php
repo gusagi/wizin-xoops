@@ -37,7 +37,7 @@ if ( ! class_exists('Wizin_Util') ) {
                 }
                 $hostSalt = getenv( 'SERVER_NAME' );
         	    $replaceArray = array( '/' => '%', '.' => '%%' );
-        	    $prefix = strtr( $hostSalt, $replaceArray ) . '_' . substr( md5($salt), 0, 8 ) . '_';
+        	    $prefix = strtr( $hostSalt, $replaceArray ) . '_' . Wizin_Util::cipher( $salt );
             }
     	    return $prefix;
         }
@@ -102,7 +102,7 @@ if ( ! class_exists('Wizin_Util') ) {
         {
             $string = md5( $string );
             $number = hexdec( $string );
-            $code =base_convert( floatval($number), 10, 36 );
+            $code = base_convert( floatval($number), 10, 36 );
             return $code;
         }
 
