@@ -36,13 +36,10 @@ if ( ! class_exists('Wizin_Core_Renderer') ) {
             }
             $this->left_delimiter = '<!--{';
             $this->right_delimiter = '}-->';
-            $this->cache_dir = WIZIN_ROOT_PATH . '/work/cache/';
-            $this->compile_dir = WIZIN_ROOT_PATH . '/work/compile/';
+            $this->cache_dir = WIZIN_ROOT_PATH . '/work/cache';
+            $this->compile_dir = WIZIN_ROOT_PATH . '/work/compile';
             $this->template_dir = WIZIN_ROOT_PATH . '/templates/';
             array_unshift( $this->plugins_dir , WIZIN_ROOT_PATH . '/plugins/smarty/' ) ;
-            if ( defined(WIZ_SYSTEM_DEBUG) && WIZ_SYSTEM_DEBUG == true ) {
-                $this->force_compile = true;
-            }
             $this->register_prefilter( array($this, 'skipFilter') );
             // As for this filter necessity?
             //$this->register_prefilter( array($this, 'shortDelimFilter') );
@@ -77,8 +74,11 @@ if ( ! class_exists('Wizin_Core_Renderer') ) {
          */
         protected function _getMstTemplate( $templateName )
         {
-            static $mstTemplate;
-            if ( ! isset($mstTemplate) ) {
+            static $mstTemplateArray;
+            if ( ! isset($mstTemplateArray) ) {
+                $mstTemplateArray = array();
+            }
+            if ( ! isset($mstTemplateArray[$templateName]) ) {
                 // get MstTemplate class object
                 $criteria = new Criteria();
                 $criteria->add( MstTemplatePeer::TEMPLATE_NAME, $templateName );
@@ -87,15 +87,18 @@ if ( ! class_exists('Wizin_Core_Renderer') ) {
                 $criteria->addAscendingOrderByColumn( Crio_Orm::strpos(MstTemplatePeer::SUPPORT_CARRIER,
                     '|' . $this->user->iCarrierId . '|') );
                 $mstTemplate = MstTemplatePeer::doSelectOne( $criteria );
+                if ( ! empty($mstTemplate) && is_object($mstTemplate) ) {
+                    $mstTemplateArray[$templateName] = $mstTemplate;
+                }
             }
-            return $mstTemplate;
+            return $mstTemplateArray[$templateName];
         }
 
         /**
          * get template source
          *
          */
-        function getSource( $templateName, &$source, &$smarty )
+        public function getSource( $templateName, &$source, &$smarty )
         {
             // get MstTemplate object in this instance
             $mstTemplate = $this->_getMstTemplate( $templateName );
@@ -112,13 +115,14 @@ if ( ! class_exists('Wizin_Core_Renderer') ) {
          * get template update timestamp
          *
          */
-        function getTimestamp( $templateName, &$timestamp, &$smarty )
+        public function getTimestamp( $templateName, &$timestamp, &$smarty )
         {
             // get MstTemplate object in this instance
             $mstTemplate = $this->_getMstTemplate( $templateName );
             if ( ! empty($mstTemplate) && is_object($mstTemplate) ) {
                 $updateAt = $mstTemplate->getUpdatedAt();
-                return $updateAt;
+                $timestamp = strtotime( $updateAt );
+                return $timestamp;
             } else {
                 return false;
             }
@@ -128,7 +132,7 @@ if ( ! class_exists('Wizin_Core_Renderer') ) {
          * It checks whether template source is secure
          *
          */
-        function getSecure( $file, &$smarty )
+        public function getSecure( $file, &$smarty )
         {
             return true;
         }
@@ -137,7 +141,7 @@ if ( ! class_exists('Wizin_Core_Renderer') ) {
          * It checks whether template source is trusted
          *
          */
-        function getTrusted( $file, &$smarty )
+        public function getTrusted( $file, &$smarty )
         {
         }
 

@@ -38,20 +38,21 @@ if ( ! class_exists('Wizin_Core_Loader') ) {
          */
         protected function _include()
         {
+            $srcRootPath = dirname( dirname(__FILE__) );
             // wizin framework root class
-            require WIZ_TRUST_PATH . '/wizin/src/Wizin.class.php';
+            require $srcRootPath . '/Wizin.class.php';
             // user class
-            require WIZ_TRUST_PATH . '/wizin/src/Wizin_User.class.php';
+            require $srcRootPath . '/Wizin_User.class.php';
             // controller class
-            require WIZ_TRUST_PATH . '/wizin/src/core/Controller.class.php';
+            require $srcRootPath . '/core/Controller.class.php';
             // session class
-            require WIZ_TRUST_PATH . '/wizin/src/core/Session.class.php';
+            require $srcRootPath . '/core/Session.class.php';
             // renderer class
-            require WIZ_TRUST_PATH . '/wizin/src/core/Renderer.class.php';
+            require $srcRootPath . '/core/Renderer.class.php';
             // page class
-            require WIZ_TRUST_PATH . '/wizin/src/core/Page.class.php';
+            require $srcRootPath . '/core/Page.class.php';
             // filter class
-            require WIZ_TRUST_PATH . '/wizin/src/Wizin_Filter.php';
+            require $srcRootPath . '/Wizin_Filter.php';
         }
 
         /**
@@ -65,7 +66,7 @@ if ( ! class_exists('Wizin_Core_Loader') ) {
             // get 'Wizin' singleton object
             $wizin =& Wizin::getSingleton();
             // set mb_internal_encoding
-            mb_internal_encoding( WIZ_SYSTEM_ENCODING );
+            mb_internal_encoding( WIZ_SYS_ENCODING );
             // set mbstring.http_input
             ini_set( 'mbstring.http_input', 'pass' );
             // set mbstring.http_output

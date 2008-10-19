@@ -114,6 +114,7 @@ if ( ! class_exists('Wizin_Core_Controller') ) {
         protected function _executeOutputFilter()
         {
             $pageContents = ob_get_clean();
+            $this->siteRenderer->assign( 'siteUrl', 'http://' . getenv('SERVER_NAME') );
             $this->siteRenderer->assign( 'siteTitle', 'Wizin initial template.' );
             $this->siteRenderer->assign( 'doctype', $this->user->sDoctype );
             $this->siteRenderer->assign( 'pageContents', $pageContents );
@@ -195,7 +196,7 @@ if ( ! class_exists('Wizin_Core_Controller') ) {
                         require $script;
                         $pathArray = explode( '/', $this->sPathTranslated );
                         $pathArray = array_map( 'ucfirst', $pathArray );
-                        $class = WIZ_SYSTEM_PREFIX . '_Page' . implode( '_', $pathArray );
+                        $class = WIZ_SYS_PREFIX . '_Page' . implode( '_', $pathArray );
                         if ( class_exists($class) ) {
                             $page = new $class( $pageRenderer );
                         }
