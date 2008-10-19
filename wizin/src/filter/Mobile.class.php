@@ -397,5 +397,36 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
             return $array;
         }
 
+        /**
+         * The filter which apply style of CSS by inline style
+         *
+         * @param string $contents
+         * @param array $cssBaseDirs
+         * @return string $contents
+         */
+        function filterCssMobile( & $contents, $cssBaseDirs = '' )
+        {
+            if ( floatval(PHP_VERSION) < 5.1 ) {
+                return $contents;
+            }
+            if ( ! empty($cssBaseDirs) && is_array($cssBaseDirs) ) {
+                // include HTML_CSS_Mobile
+                if ( file_exists(WIZIN_PEAR_DIR . '/HTML/CSS/Mobile.php') &&
+                        file_exists(WIZIN_PEAR_DIR . '/HTML/CSS.php') &&
+                        file_exists(WIZIN_PEAR_DIR . '/HTML/Common.php') ) {
+                    require WIZIN_PEAR_DIR . '/HTML/CSS/Mobile.php';
+                    // apply style
+                    foreach ( $cssBaseDirs as $cssDir ) {
+                        // directory check
+                    	if ( ! file_exists($cssDir) || ! is_dir($cssDir) || ! is_readable($cssDir) ) {
+                    	    continue;
+                    	}
+                    	$contents = HTML_CSS_Mobile::getInstance()->setBaseDir( $cssDir )->setMode( 'strict' )->apply( $contents );
+                    }
+                }
+            }
+            return $contents;
+        }
+
     }
 }
