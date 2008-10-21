@@ -258,12 +258,9 @@
 			<xsl:if test='not(boolean(@lazyLoad))'>
 				<xsl:attribute name='lazyLoad'>false</xsl:attribute>
 			</xsl:if>
-            <!--
-            "VARCHAR" with none size setting
 			<xsl:if test='@type = "VARCHAR" and not(boolean(@sqlType)) and not(boolean(@size))'>
 				<xsl:attribute name='size'>255</xsl:attribute>
 			</xsl:if>
-			-->
 			<xsl:apply-templates select='@*'/>
 			<xsl:apply-templates select='inheritance'/>
 			<xsl:apply-templates select='vendor'/>
