@@ -46,6 +46,10 @@ docomo:
     plugin:
         path:"plugins/user/Docomo.class.php"
         class:"Wizin_Plugin_User_Docomo"
+    inputmode:
+        kanji:' style="-wap-input-format:&quot;*&lt;ja:h&gt;&quot;;-wap-input-format:*M;" '
+        alpha:' style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;;-wap-input-format:*m;" '
+        number:' style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;-wap-input-format:*N;" '
 
 au:
     carrierid:2
@@ -63,6 +67,10 @@ au:
     plugin:
         path:"plugins/user/Au.class.php"
         class:"Wizin_Plugin_User_Au"
+    inputmode:
+        kanji:' istyle="1" format="*M" mode="hiragana" '
+        alpha:' istyle="3" format="*m" mode="alphabet" '
+        number:' istyle="4" format="*N" mode="numeric" '
 
 softbank:
     carrierid:3
@@ -83,6 +91,10 @@ softbank:
     plugin:
         path:"plugins/user/Softbank.class.php"
         class:"Wizin_Plugin_User_Softbank"
+    inputmode:
+        kanji:' istyle="1" format="*M" mode="hiragana" '
+        alpha:' istyle="3" format="*m" mode="alphabet" '
+        number:' istyle="4" format="*N" mode="numeric" '
 
 willcom:
     carrierid:4
