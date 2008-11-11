@@ -1,0 +1,30 @@
+#!/bin/sh
+#-------------------------------------------------------------------------------
+# wizin-propel-gen
+#-------------------------------------------------------------------------------
+#   set "PHING_COMMAND" environment variable, and call propel-gen
+#
+#   * @license http://www.opensource.org/licenses/bsd-license.php The BSD License
+#   * @link http://www.gusagi.com/
+#   * @author  Makoto Hashiguchi a.k.a. gusagi<gusagi@gusagi.com>
+#   * @copyright 2008 Makoto Hashiguchi
+#-------------------------------------------------------------------------------
+
+# check generate path exists
+if [ -z ${1} ] ; then
+    echo "Usage:$0 [propel_output_path]"
+    exit 0
+fi
+
+# change directory
+cd `dirname ${0}`
+
+# check ${PHING_COMMAND} environment variable
+if (test -z "${PHING_COMMAND}") ; then
+    export PHING_COMMAND="`pwd`/phing/bin/phing"
+fi
+
+# call propel-gen
+GEN_COMMANT="`pwd`/propel/generator/bin/propel-gen"
+echo "Execute propel-gen : [${GEN_COMMANT} ${1}]"
+${GEN_COMMANT} ${1}
