@@ -12,41 +12,40 @@
  */
 
 if ( ! class_exists('Wizin_Ref') ) {
-    require dirname( dirname(__FILE__) ) . '/Wizin.class.php';
+	require dirname( dirname(__FILE__) ) . '/Wizin.class.php';
 
-    /**
-     * Wizin framework reference class for PHP5.x
-     *
-     * @access public
-     */
-    class Wizin_Ref
-    {
-        private $_mReference;
+	/**
+	 * Wizin framework reference class for PHP5.x
+	 *
+	 * @access public
+	 */
+	class Wizin_Ref
+	{
+		private $_mReference;
 
-        /**
-         * constructor
-         *
-         * @param mixed $value
-         * @return Wizin_Ref
-         */
-        public function __construct( & $value )
-        {
-            $this->_mReference =& $value;
-        }
+		/**
+		 * constructor
+		 *
+		 * @param mixed $value
+		 * @return Wizin_Ref
+		 */
+		public function __construct( & $value )
+		{
+			$this->_mReference =& $value;
+		}
 
-        /**
-         * return reference
-         *
-         * @return string mixed
-         */
-        public function & get()
-        {
-            if ( isset($this->_mReference) ) {
-                $return = & $this->_mReference;
-                return $return;
-            } else {
-                return null;
-            }
-        }
-    }
+		/**
+		 * return reference
+		 *
+		 * @return string mixed
+		 */
+		public function & get()
+		{
+			$return = null;
+			if ( isset($this->_mReference) ) {
+				$return = & $this->_mReference;
+			}
+			return $return;
+		}
+	}
 }
