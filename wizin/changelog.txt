@@ -1,4 +1,7 @@
 ----------------------------------
+[2008-11-14 Ver 0.29 -> 0.30]
+- Deleted 'tidy_repair_string' in filterMobilePager.
+----------------------------------
 [2008-11-13 Ver 0.28 -> 0.29]
 - Exchange prefix logic.
 - Added css mobile filter.
