@@ -27,6 +27,10 @@ if ( ! class_exists('Wizin_Core_View') ) {
 			$this->_defaultFilter();
 			// set contents strings
 			$this->sContents = '';
+			// set params
+			$array = array();
+			$this->_pageParams = $array;
+			$this->_appParams = $array;
 		}
 
 		protected function _defaultFilter()
@@ -35,6 +39,15 @@ if ( ! class_exists('Wizin_Core_View') ) {
             $params = array( $app->oUser->sEncoding, $app->oUser->sCharset );
             $app->oFilter->addOutputFilter(
             	array($app->oFilter, 'filterOutputEncoding'), $params );
+		}
+
+		public function setVar( $tplVar, $value = null, $escape = true, $target = 'page' )
+		{
+			if ( $target === 'app' ) {
+				$this->_appParams[$tplVar] = $value;
+			} else {
+				$this->_pageParams[$tplVar] = $value;
+			}
 		}
 
 		public function execute()
@@ -57,6 +70,9 @@ if ( ! class_exists('Wizin_Core_View') ) {
 			$templateExists = $renderer->template_exists( $templateName );
 			$this->sContents = ob_get_clean();
 			if ( $templateExists ) {
+				foreach ( $this->_pageParams as $tplVar => $value ) {
+					$renderer->assign( $tplVar, $value );
+				}
 				$this->sContents = $renderer->fetch( $templateName );
 			}
 			unset( $renderer );
@@ -66,7 +82,11 @@ if ( ! class_exists('Wizin_Core_View') ) {
 		{
 			$renderer = new $this->_renderer();
 			$this->_defaultAssign( $renderer );
-			$this->sContents = $renderer->fetch( 'file:' . $renderer->template_dir . 'Layout.html' );
+			$layout = $renderer->template_dir . 'Layout.html';
+			if ( $renderer instanceof Smarty ) {
+				$layout = 'file:' . $layout;
+			}
+			$this->sContents = $renderer->fetch( $layout );
 			unset( $renderer );
 		}
 
@@ -75,7 +95,7 @@ if ( ! class_exists('Wizin_Core_View') ) {
 			$app =& call_user_func( array(WIZIN_DEFAULT_APP, 'getSingleton') );
 			$renderer->assign( 'siteTitle', 'Wizin initial template.' );
 			$renderer->assign( 'doctype', $app->oUser->sDoctype, false );
-			$renderer->assign( 'extraHeader', $this->sExtraHeader, false );
+			$renderer->assign( 'extraHeader', $app->sExtraHeader, false );
 			$renderer->assign( 'pageContents', $this->sContents, false );
 		}
 

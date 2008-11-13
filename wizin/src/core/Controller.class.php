@@ -28,6 +28,11 @@ if ( ! class_exists('Wizin_Core_Controller') ) {
 			$this->_oView = new Wizin_Ref( $viewObject );
 		}
 
+		protected function _setVar( $tplVar, $value = null, $escape = true )
+		{
+			$this->_oView->setVar( $tplVar, $value, $escape );
+		}
+
 		public function execute()
 		{
 			// execute main process

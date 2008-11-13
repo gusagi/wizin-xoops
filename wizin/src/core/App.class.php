@@ -134,7 +134,8 @@ if ( ! class_exists('Wizin_Core_App') ) {
 			if ( substr($pathTranslated, -1, 1) === '/' ) {
 				$pathTranslated .= 'index';
 			}
-			$pathTranslated = dirname( $pathTranslated ) . '/' . ucfirst( basename($pathTranslated) );
+			$pathTranslated = substr( dirname($pathTranslated), 1 ) . '/' .
+				ucfirst( basename($pathTranslated) );
 			if ( substr($pathTranslated, 0, 1) === '/' ) {
 				$pathTranslated = substr( $pathTranslated, 1 );
 			}
@@ -170,51 +171,6 @@ if ( ! class_exists('Wizin_Core_App') ) {
 			$view = new $viewClass();
 			$this->oController->setView( $view );
 		}
-
-		/**
-		 * execute page action
-		 */
-		/*
-		protected function _executePage()
-		{
-			$isAccessible = $this->_isAccessible();
-			$renderer = get_class( $this->oSiteRenderer );
-			$pageRenderer = new $renderer();
-			// the user can access this page
-			if ( $isAccessible ) {
-				$templateName = $this->sPathTranslated . '.html';
-				$templateExists = $this->oSiteRenderer->template_exists( $templateName );
-				$scriptFile = WIZ_SITE_ROOT . '/controller/' . $this->sPathTranslated . '.php';
-				$scriptExists = ( file_exists($scriptFile) && is_readable($scriptFile) ) ? true : false;
-				if ( $templateExists || $scriptExists ) {
-					// execute page process
-					if ( $scriptExists ) {
-						require $scriptFile;
-						$pathArray = explode( '/', $this->sPathTranslated );
-						$pathArray = array_map( 'ucfirst', $pathArray );
-						$class = WIZ_SYS_PREFIX . '_' . implode( '_', $pathArray ) . '_Controller';
-						if ( class_exists($class) ) {
-							$_templateName = $templateName;
-							$controller = new $class( $pageRenderer, $templateName );
-							if ( $_templateName !== $templateName ) {
-								$templateExists = $this->oSiteRenderer->template_exists( $templateName );
-							}
-						}
-					}
-					// display template
-					if ( $templateExists ) {
-						$pageRenderer->display( $templateName );
-					}
-				} else {
-					// display error page
-					$pageRenderer->display( 'error.html' );
-				}
-			} else {
-				// display error page
-				$pageRenderer->display( 'error.html' );
-			}
-		}
-		*/
 
 	}
 }
