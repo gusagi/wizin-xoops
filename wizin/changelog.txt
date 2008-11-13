@@ -1,4 +1,24 @@
 ----------------------------------
+[2008-11-13 Ver 0.28 -> 0.29]
+- Exchange prefix logic.
+- Added css mobile filter.
+- Added files for blank directories.
+- Deleted unnecessary comment out.
+- Included HTML_CSS_Mobile.
+- Included Text_Pictogram_Mobile.
+- Added smarty plugin for mobile input mode 'wizin_inputmode'.
+- Added shell : set PHING_COMMAND environment variable, and call propel-gen.
+- Replaced indent(from space to tab).
+- Added 'HTML_CSS_Mobile' filter and 'Text_Pictogram_Mobile' filter.
+- Modified client data yaml.
+- Modified framework core files.
+- Included 'PHPTAL' template engine.
+- Modified Renderer class.(Added logic for PHPTAL)
+- Modified filter for mobile.
+- Added logic about define 'WIZIN_COMPILE_DIR'.
+- Replace 'require_once' to 'require'.
+- Modified framework core logic.
+----------------------------------
 [2008-10-17 Ver 0.27 -> 0.28]
 - Fixed bug about include 'spyc' twice.
 - Define 'WIZIN_CACHE_DIR' and 'WIZIN_PEAR_DIR', modified code about these constants.
