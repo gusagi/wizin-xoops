@@ -216,10 +216,6 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
 				} else {
 					$encode = 'ascii';
 				}
-				// repair
-				if ( function_exists('tidy_repair_string') ) {
-					$string = tidy_repair_string( $string, array(), 'utf8' );
-				}
 				// replace for DOMDocument convert
 				$string = strtr( $string, array('&' => '&amp;',
 					'</textarea>' => Wizin_Util::cipher( __FILE__ ) . '</textarea>',
