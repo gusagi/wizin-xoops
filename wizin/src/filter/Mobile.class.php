@@ -414,18 +414,19 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
 				return $contents;
 			}
 			if ( ! empty($cssBaseDirs) && is_array($cssBaseDirs) ) {
-				// include HTML_CSS_Mobile
-				if ( file_exists(WIZIN_PEAR_DIR . '/HTML/CSS/Mobile.php') &&
-						file_exists(WIZIN_PEAR_DIR . '/HTML/CSS.php') &&
-						file_exists(WIZIN_PEAR_DIR . '/HTML/Common.php') ) {
-					require WIZIN_PEAR_DIR . '/HTML/CSS/Mobile.php';
+				if ( ! class_exists('Wizin_Filter_Css') ) {
+					if ( file_exists(dirname(__FILE__) . '/Css.class.php') ) {
+						require dirname(__FILE__) . '/Css.class.php';
+					}
+				}
+				if ( class_exists('Wizin_Filter_Css') ) {
 					// apply style
 					foreach ( $cssBaseDirs as $cssDir ) {
 						// directory check
 						if ( ! file_exists($cssDir) || ! is_dir($cssDir) || ! is_readable($cssDir) ) {
 							continue;
 						}
-						$contents = HTML_CSS_Mobile::getInstance()->setBaseDir( $cssDir )->setMode( 'strict' )->apply( $contents );
+						$contents = Wizin_Filter_Css::getInstance()->setBaseDir( $cssDir )->apply( $contents );
 					}
 				}
 			}

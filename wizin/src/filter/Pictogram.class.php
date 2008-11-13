@@ -16,14 +16,8 @@
 if ( ! class_exists('Wizin_Filter_Pictogram') ) {
 	if ( floatval(PHP_VERSION) >= 5.2 && function_exists('json_encode') ) {
 		if ( ! class_exists('Text_Pictogram_Mobile') ) {
-			if ( file_exists(WIZIN_PEAR_DIR . '/Text/Pictogram/Mobile.php') ) {
-				// include Text_Pictogram_Mobile
-				$includePath = get_include_path();
-				if ( strpos($includePath, WIZIN_PEAR_DIR) === false ) {
-					set_include_path( WIZIN_PEAR_DIR . PATH_SEPARATOR . $includePath );
-				}
-				require WIZIN_PEAR_DIR . '/Text/Pictogram/Mobile.php';
-			}
+			// include Text_Pictogram_Mobile
+			@ include_once 'Text/Pictogram/Mobile.php';
 		}
 
 		if ( class_exists('Text_Pictogram_Mobile') ) {
@@ -87,7 +81,14 @@ if ( ! class_exists('Wizin_Filter_Pictogram') ) {
 				{
 					static $pictograms;
 					if ( ! isset($pictograms) ) {
-						$dataDir = WIZIN_PEAR_DIR . '/Text/Pictogram/Mobile/data';
+						$includeFiles = get_included_files();
+						$needle = str_replace( '_', DIRECTORY_SEPARATOR, 'Text_Pictogram_Mobile' ) . '.php';
+						foreach ( $includeFiles as $file ) {
+							if (strpos($file, $needle) !== false) {
+								$dataDir = dirname( $file ) . '/Mobile/data';
+								break;
+							}
+						}
 						$suffix = Wizin_Util::cipher( $dataDir );
 						$pictograms = array();
 						$picCarrier = $picObject->getCarrier();
