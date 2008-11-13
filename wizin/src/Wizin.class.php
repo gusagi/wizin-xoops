@@ -65,6 +65,12 @@ if ( ! defined('WIZIN_ROOT_PATH') ) {
 				}
 
 				//
+				// WIZIN_COMPILE_DIR
+				if ( ! defined('WIZIN_COMPILE_DIR') ) {
+					define( 'WIZIN_COMPILE_DIR', WIZIN_ROOT_PATH . '/work/compile' );
+				}
+
+				//
 				// WIZIN_PEAR_DIR
 				if ( ! defined('WIZIN_PEAR_DIR') ) {
 					define( 'WIZIN_PEAR_DIR', WIZIN_ROOT_PATH . '/lib/PEAR' );
