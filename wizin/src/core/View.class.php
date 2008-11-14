@@ -66,7 +66,9 @@ if ( ! class_exists('Wizin_Core_View') ) {
 		{
 			$app =& call_user_func( array(WIZIN_DEFAULT_APP, 'getSingleton') );
 			$renderer = new $this->_renderer();
-			$templateName = $app->sPathTranslated . '.html';
+			$templateName = dirname( $app->sPathTranslated ) . DIRECTORY_SEPARATOR .
+				strtolower( substr(basename($app->sPathTranslated), 0, 1) ) .
+				substr(basename($app->sPathTranslated), 1) . '.html';
 			$templateExists = $renderer->template_exists( $templateName );
 			$this->sContents = ob_get_clean();
 			if ( $templateExists ) {
