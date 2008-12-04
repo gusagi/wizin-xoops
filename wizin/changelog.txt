@@ -1,4 +1,7 @@
 ----------------------------------
+[2008-12-04 Ver 0.30 -> 0.31]
+- Replaced indent(from tab to space).
+----------------------------------
 [2008-11-14 Ver 0.29 -> 0.30]
 - Deleted 'tidy_repair_string' in filterMobilePager.
 - Modified page template name and view logic.
