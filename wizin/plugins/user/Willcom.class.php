@@ -11,29 +11,29 @@
  */
 
 if ( ! class_exists('Wizin_Plugin_User_Willcom') ) {
-	class Wizin_Plugin_User_Willcom extends Wizin_StdClass
-	{
-		function __construct()
-		{
-			$calledFlag = true;
-			$this->_advancedCheck();
-		}
+    class Wizin_Plugin_User_Willcom extends Wizin_StdClass
+    {
+        function __construct()
+        {
+            $calledFlag = true;
+            $this->_advancedCheck();
+        }
 
-		function _advancedCheck()
-		{
-			$user =& Wizin_User::getSingleton();
-			if ( $user->_bLookup ) {
-				$agent = getenv( 'HTTP_USER_AGENT' );
-				if ( ! preg_match("/(willcom|ddipocket)/i", $agent) ) {
-					$user->bIsMobile = false;
-					$user->bIsBot = false;
-					$user->sCarrier = 'othermobile';
-					$user->sUniqId = '';
-					$user->sEncoding = 'sjis-win';
-					$user->sCharset = 'shift_jis';
-				}
-			}
-			return null;
-		}
-	}
+        function _advancedCheck()
+        {
+            $user =& Wizin_User::getSingleton();
+            if ( $user->_bLookup ) {
+                $agent = getenv( 'HTTP_USER_AGENT' );
+                if ( ! preg_match("/(willcom|ddipocket)/i", $agent) ) {
+                    $user->bIsMobile = false;
+                    $user->bIsBot = false;
+                    $user->sCarrier = 'othermobile';
+                    $user->sUniqId = '';
+                    $user->sEncoding = 'sjis-win';
+                    $user->sCharset = 'shift_jis';
+                }
+            }
+            return null;
+        }
+    }
 }

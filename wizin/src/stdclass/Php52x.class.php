@@ -13,50 +13,50 @@
 
 if ( ! class_exists('Wizin_StdClass') ) {
 
-	/**
-	 * Wizin framework standard class for PHP5.2.x or upper version
-	 *
-	 * @access public
-	 */
-	class Wizin_StdClass
-	{
-		protected $_aVars = array();
+    /**
+     * Wizin framework standard class for PHP5.2.x or upper version
+     *
+     * @access public
+     */
+    class Wizin_StdClass
+    {
+        protected $_aVars = array();
 
-		/**
-		 * set value to this object vars
-		 *
-		 * @param string $key
-		 * @param mixed $value
-		 */
-		public function __set( $key, $value )
-		{
-			if ( is_object($value) && get_class($value) === 'Wizin_Ref' ) {
-				$var =& $value->get();
-			} else {
-				$var =& $value;
-			}
-			if ( is_array($var) ) {
-				$this->_aVars[$key] =& new ArrayObject($var, ArrayObject::ARRAY_AS_PROPS);
-			} else {
-				$this->_aVars[$key] =& $var;
-			}
-		}
+        /**
+         * set value to this object vars
+         *
+         * @param string $key
+         * @param mixed $value
+         */
+        public function __set( $key, $value )
+        {
+            if ( is_object($value) && get_class($value) === 'Wizin_Ref' ) {
+                $var =& $value->get();
+            } else {
+                $var =& $value;
+            }
+            if ( is_array($var) ) {
+                $this->_aVars[$key] =& new ArrayObject($var, ArrayObject::ARRAY_AS_PROPS);
+            } else {
+                $this->_aVars[$key] =& $var;
+            }
+        }
 
-		/**
-		 * get value from this object vars
-		 *
-		 * @param string $key
-		 * @return mixed
-		 */
-		public function & __get( $key )
-		{
-			if ( isset($this->_aVars[$key]) ) {
-				$var =& $this->_aVars[$key];
-				return $var;
-			} else {
-				$var = null;
-				return $var;
-			}
-		}
-	}
+        /**
+         * get value from this object vars
+         *
+         * @param string $key
+         * @return mixed
+         */
+        public function & __get( $key )
+        {
+            if ( isset($this->_aVars[$key]) ) {
+                $var =& $this->_aVars[$key];
+                return $var;
+            } else {
+                $var = null;
+                return $var;
+            }
+        }
+    }
 }

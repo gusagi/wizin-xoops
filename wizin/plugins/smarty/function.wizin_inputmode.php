@@ -9,9 +9,9 @@
 /**
  * Smarty {smarty_function_wizin_inputmode} function plugin
  *
- * Type:	 function<br>
- * Name:	 wizin_inputmode<br>
- * Date:	 October 23, 2008<br>
+ * Type:     function<br>
+ * Name:     wizin_inputmode<br>
+ * Date:     October 23, 2008<br>
  * Purpose:  return input mode string
  * @link http://www.gusagi.com
  * @author  Makoto Hashiguchi a.k.a. gusagi<gusagi@gusagi.com>
@@ -23,15 +23,15 @@
  */
 function smarty_function_wizin_inputmode($params, &$smarty)
 {
-	if ( ! isset($params['mode']) || ! class_exists('Wizin_User')) {
-		return '';
-	}
-	$mode = $params['mode'];
-	$user =& Wizin_User::getSingleton();
-	$user->checkClient();
-	$inputMode = '';
-	if ( isset($user->aInputMode[$mode]) ) {
-		$inputMode = $user->aInputMode[$mode];
-	}
-	return $inputMode;
+    if ( ! isset($params['mode']) || ! class_exists('Wizin_User')) {
+        return '';
+    }
+    $mode = $params['mode'];
+    $user =& Wizin_User::getSingleton();
+    $user->checkClient();
+    $inputMode = '';
+    if ( isset($user->aInputMode[$mode]) ) {
+        $inputMode = $user->aInputMode[$mode];
+    }
+    return $inputMode;
 }

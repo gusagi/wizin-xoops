@@ -14,11 +14,11 @@
 $renderer = 'smarty';
 $phpVersion = intval( PHP_VERSION );
 if ( $phpVersion >= 5 && extension_loaded('spl') ) {
-	if ( defined('WIZIN_RENDERER') ) {
-		$rendererPath = dirname( __FILE__ ) . '/renderer/' . ucfirst( WIZIN_RENDERER ) . '.class.php';
-		if ( file_exists($rendererPath) ) {
-			$renderer = WIZIN_RENDERER;
-		}
-	}
+    if ( defined('WIZIN_RENDERER') ) {
+        $rendererPath = dirname( __FILE__ ) . '/renderer/' . ucfirst( WIZIN_RENDERER ) . '.class.php';
+        if ( file_exists($rendererPath) ) {
+            $renderer = WIZIN_RENDERER;
+        }
+    }
 }
 require dirname( __FILE__ ) . '/renderer/' . ucfirst( $renderer ) . '.class.php';

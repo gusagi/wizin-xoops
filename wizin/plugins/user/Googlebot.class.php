@@ -11,33 +11,33 @@
  */
 
 if ( ! class_exists('Wizin_Plugin_User_Googlebot') ) {
-	class Wizin_Plugin_User_Googlebot extends Wizin_StdClass
-	{
-		function __construct()
-		{
-			$this->_require();
-			$this->_setup();
-		}
+    class Wizin_Plugin_User_Googlebot extends Wizin_StdClass
+    {
+        function __construct()
+        {
+            $this->_require();
+            $this->_setup();
+        }
 
-		function _require()
-		{
-		}
+        function _require()
+        {
+        }
 
-		function _setup()
-		{
-			$this->_checkMobile();
-		}
+        function _setup()
+        {
+            $this->_checkMobile();
+        }
 
-		function _checkMobile()
-		{
-			$agent = getenv( 'HTTP_USER_AGENT' );
-			$user =& Wizin_User::getSingleton();
-			$pattern = '/([a-zA-Z_0-9\/.;() -]+)(googlebot-mobile)([a-zA-Z_0-9\/.;() -]+)/i';
-			if ( preg_match($pattern, $agent, $matches) ) {
-				$user->bIsMobile = true;
-			} else {
-				$user->bIsMobile = false;
-			}
-		}
-	}
+        function _checkMobile()
+        {
+            $agent = getenv( 'HTTP_USER_AGENT' );
+            $user =& Wizin_User::getSingleton();
+            $pattern = '/([a-zA-Z_0-9\/.;() -]+)(googlebot-mobile)([a-zA-Z_0-9\/.;() -]+)/i';
+            if ( preg_match($pattern, $agent, $matches) ) {
+                $user->bIsMobile = true;
+            } else {
+                $user->bIsMobile = false;
+            }
+        }
+    }
 }
