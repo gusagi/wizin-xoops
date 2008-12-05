@@ -235,8 +235,15 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                 $xml = simplexml_load_string( $string );
                 $body = $xml->body;
                 // partition string
+                $pageArray = array();
                 $array = array();
-                $array = Wizin_Filter_Mobile::_partitionPage( $body, $encode, $maxKbyte );
+                $pageArray = Wizin_Filter_Mobile::_partitionPage( $body, $encode, $maxKbyte );
+                foreach ($pageArray as $key => $value) {
+                	if (isset($value) && trim($value) !== '') {
+                	    $array[] = $value;
+                	}
+                }
+                unset( $pageArray );
                 unset( $domDoc );
                 unset( $xml );
                 // set return value
