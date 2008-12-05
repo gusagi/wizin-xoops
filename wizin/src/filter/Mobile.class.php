@@ -203,7 +203,8 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                     method_exists('SimpleXMLElement','getName') ) {
                 // get encode
                 if ( extension_loaded('mbstring') ) {
-                    $encode = strtolower( mb_detect_encoding($string, 'auto') );
+                    $encode = strtolower( mb_detect_encoding($string,
+                        'sjis-win,eucjp-win,jis,utf-8,ascii') );
                     switch ( $encode ) {
                         case 'euc-jp':
                             $encode = 'eucjp-win';

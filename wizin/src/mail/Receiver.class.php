@@ -55,7 +55,8 @@ if ( ! class_exists('Wizin_Mail_Receiver') ) {
             // get mail text
             $this->_mailText = file_get_contents( "php://stdin" );
             if ( extension_loaded('mbstring') ) {
-                $this->_encode = mb_detect_encoding( $this->_mailText, 'auto' );
+                $this->_encode = mb_detect_encoding( $this->_mailText,
+                    'sjis-win,eucjp-win,jis,utf-8,ascii' );
                 switch ( strtolower($this->_encode) ) {
                     case 'sjis':
                     case 'shift_jis':

@@ -106,7 +106,8 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
         {
             if ( extension_loaded('mbstring') ) {
                 if ( empty($inputEncoding) ) {
-                    $inputEncoding = mb_detect_encoding( serialize($_REQUEST), 'auto' );
+                    $inputEncoding = mb_detect_encoding( serialize($_REQUEST),
+                        'sjis-win,eucjp-win,jis,utf-8,ascii' );
                 }
                 $internalEncoding = mb_internal_encoding();
                 if ( in_array(strtolower($internalEncoding), array('sjis', 'shift_jis', 'ms_kanji',
