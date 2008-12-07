@@ -1,0 +1,85 @@
+<rt:extends href="../main.html" />
+
+<rt:block name="title">
+	<title>_("Easy Database Admin")</title>
+</rt:block>
+
+<rt:block name="content">
+<Script Language="JavaScript">
+<!--
+	function csvexport(){
+		document.views_search_form.action = "{$rhaco.page('setup')}{$dblink['export']}{$t}";
+		document.views_search_form.submit();
+	}
+	function search(){
+		document.views_search_form.action = "{$rhaco.page('setup')}{$dblink['list']}{$t}";
+	}
+//-->
+</Script>
+
+<h3><a href="{$rhaco.page('setup')}{$dblink['list']}{$t}">{$t}</a></h3>
+
+	<form method="get" action="{$rhaco.page('setup')}{$dblink['create']}{$t}" name="views_form">
+		<input type="submit" value="_('add')" />
+	</form>
+
+	<form method="post" name="views_search_form" rt:reference="true">
+		<input type="hidden" name="page" value="1" rt:reference="false" />
+		<input type="hidden" name="o" />
+		<input type="hidden" name="a" />
+		<input type="text" name="q" />
+		<input type="submit" value="_('search')" onclick="search()" />
+		<input type="button" value="_('export')" onclick="csvexport()" />
+	</form>
+
+	<div class="paging_field">
+		<span class="paging_no">{$pager->output()}</span>
+		<rt:pager param="pager" />
+	</div>
+
+	<table class="datalist" rt:param="object_list" rt:var="obj" rt:counter="counter" rt:null="_('no data')">
+		<thead>
+		<tr>
+			<rt:loop param="{$tableObject.models('admin','list_display')}" var="column">
+			<th align="center" scope="col"><a href="{$rhaco.uri()}?{$sortorder.query($key)}">{$tableObject.label($column)}</a></th>
+			</rt:loop>
+			<th colspan="2">&nbsp;</th>
+		</tr>
+		</thead>
+
+		<tbody>
+		<tr class="even">
+			<rt:loop param="{$obj.models('admin','list_display')}" var="column">
+				<td>{$f.text2html($obj.value($column,true))}&nbsp;</td>
+			</rt:loop>
+			<td>
+				<rt:if param="{$obj.isSerial()}">
+					<form method="get" action="{$rhaco.page('setup')}{$dblink['update']}{$t}/{$f.implode($obj.primaryKeyValue(),'/')}">
+						<input type="submit" value="_('edit')" />
+					</form>
+				</rt:if>
+				&nbsp;
+			</td>
+			<td>
+				<rt:if param="{$obj.isSerial()}">
+					<form method="post" action="{$rhaco.page('setup')}{$dblink['drop']}{$t}/{$f.implode($obj.primaryKeyValue(),'/')}">
+						<input type="submit" value="_('delete')" />
+					</form>
+				</rt:if>
+				&nbsp;
+			</td>
+		</tr>
+		</tbody>
+	</table>
+
+	<div class="paging_field">
+		<span class="paging_no">{$pager->output()}</span>
+		<rt:pager param="pager" />
+	</div>
+
+<form method="post" action="{$rhaco.page('setup')}{$dblink['import']}{$t}">
+<pre>
+	<input type="file" name="importfile" /><input type="submit" value="_('import')" />
+</pre>
+</form>
+</rt:block>

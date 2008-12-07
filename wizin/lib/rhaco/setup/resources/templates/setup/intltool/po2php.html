@@ -1,0 +1,86 @@
+<rt:extends href="../main.html" />
+
+<rt:block name="content">
+<Script Language="JavaScript">
+<!--
+	function onChangeSearchPath(){
+		if(document.searchForm.searchpath.value.substr(document.searchForm.searchpath.value.length-1,1) != "/") document.searchForm.searchpath.value += "/";
+		document.searchForm.outputpot.value = document.searchForm.searchpath.value + "locale/po/message-xx.pot";
+	}
+//-->
+</Script>
+
+<div id="po2php">
+<form method="post" name="searchForm">
+<table>
+<thead>
+<tr>
+	<th colspan="2">_("create base pot")</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<th>_("create base pot")</th>
+	<td><input type="text" name="searchpath" rt:reference="true" onChange="onChangeSearchPath()" /></td>
+</tr>
+<tr>
+	<th>_("output file path")</th>
+	<td><input type="text" name="outputpot" rt:reference="true" /></td>
+</tr>
+<tr>
+	<td colspan="2"><input type="submit" name="create" value="_('create base pot')" /></td>
+</tr>
+</tbody>
+</table>
+</form>
+
+
+<form method="post" enctype="multipart/form-data">
+<table>
+<thead>
+<tr>
+	<th colspan="2">_("create new pot using old pot")</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<th>_("chose pot file")</th>
+	<td><input type="file" name="pofile" /></td>
+</tr>
+<tr>
+	<th>_("directory path of pot path")</th>
+	<td><input type="text" name="outputdir" rt:reference="true" /></td>
+</tr>
+<tr>
+	<td colspan="2"><input type="submit" name="marge" value="_('create new pot using old pot')" /></td>
+</tr>
+</tbody>
+</table>
+</form>
+
+	
+<form method="post" enctype="multipart/form-data">
+<table>
+<thead>
+<tr>
+	<th colspan="2">_("convert pot into php")</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<th>_("chose pot file")</th>
+	<td><input type="file" name="pofile" /></td>
+</tr>
+<tr>
+	<th>_("directory path of pot to php file")</th>
+	<td><input type="text" name="outputphp" rt:reference="true" /></td>
+</tr>
+<tr>
+	<td colspan="2"><input type="submit" name="generate" value="_('convert pot into php')"></td>
+</tr>
+</tbody>
+</table>
+</form>
+
+</div>
+</rt:block>

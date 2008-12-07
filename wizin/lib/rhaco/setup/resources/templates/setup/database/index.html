@@ -1,0 +1,75 @@
+<rt:extends href="../main.html" />
+
+<rt:block name="content">
+<script language="JavaScript">
+<!--
+	function control(path){
+		location.href = "{$rhaco.page('setup')}{$dblink['list']}" + path;
+	}
+	function query(path){
+		location.href = "{$rhaco.page('setup')}{$dblink['query']}" + path;
+	}
+-->
+</script>
+
+
+<rt:loop param="connections" var="con">
+<form method="post">
+<input type="hidden" name="connection" value="{$key}" />
+<table>
+<thead>
+<tr>
+	<th colspan="2">{$key}</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td colspan="2">{$f.text2html({$con["description"]})}</td>
+</tr>
+<tr>
+	<th title="_('create tables')">_("create tables")</th>
+	<td>
+		<input type="submit" name="database_create" value="_('create')" />
+		<input type="submit" name="database_create_sql" value="_('sql download')" />
+	</td>
+</tr>
+<rt:if param="{$con['default']}">
+<tr>
+	<th title="_('initial data is registered')">_("initial data is registered")</th>
+	<td>
+		<input type="submit" name="database_import" value="import" />
+	</td>
+</tr>
+</rt:if>
+
+<tr>
+	<th>_("admin")</th>
+	<td>
+		<select name="table">
+			<rt:loop param="{$con['tables']}" key="name" var="obj">
+				<option value="{$name}">{$name}</option>
+			</rt:loop>
+		</select>
+		<input type="button" name="database_admin" value="_('control')" onclick="control(this.form.table.options[this.form.table.selectedIndex].value)" />
+	</td>
+</tr>
+<tr>
+	<th>_("query")</th>
+	<td>
+		<input type="button" name="database_query" value="_('query')" onclick="query(this.form.table.options[this.form.table.selectedIndex].value)" />
+	</td>
+</tr>
+<tr>
+	<th title="_('drop tables')">_("drop tables")</th>
+	<td>
+		<input type="submit" name="database_drop" value="_('drop')" onclick="return confirm('drop?')" />
+	</td>
+</tr>
+
+</tbody>
+</table>
+</form>
+</rt:loop>
+
+
+</rt:block>

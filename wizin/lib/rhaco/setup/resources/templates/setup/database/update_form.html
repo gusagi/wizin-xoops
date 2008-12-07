@@ -1,0 +1,33 @@
+<rt:extends href="../main.html" />
+
+<rt:block name="title">
+	<title>_("Easy Database Admin")</title>
+</rt:block>
+
+<rt:block name="content">
+<h3><a href="{$rhaco.page('setup')}{$dblink['list']}{$t}">{$t}</a> > _("edit")</h3>
+
+<form method="post" name="views_form">
+<input type="hidden" name="action_type" value="update" />
+
+<table>
+<rt:loop param="{$object.models('admin','form_display')}" var="column">
+	<rt:if param="{$column.isSerial()}">
+		{$viewutil.columnString($object,$column)}
+	<rt:else />
+		<tr>
+			<th>{$tableObject.label($column)}</th>
+			<td>
+				{$viewutil.columnString($object,$column,true,true,'admin')}
+			</td>
+		</tr>
+	</rt:if>
+</rt:loop>
+</table>
+<rt:if param="{$object.isSerial()}">
+	<input type="submit" name="save_update" value="_('save and update')" />
+</rt:if>
+
+<input type="submit" name="save_list" value="_('save')" />
+</form>
+</rt:block>

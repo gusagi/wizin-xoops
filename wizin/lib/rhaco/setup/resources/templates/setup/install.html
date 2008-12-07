@@ -1,0 +1,44 @@
+<rt:extends href="./main.html" />
+
+<rt:block name="content">
+
+<form method="post" rt:reference="true">
+<select name="server" rt:param="server_list">
+</select>
+<input type="text" name="q" />
+<input type="submit" value="search" />
+</form>
+
+<div>{$message}</div>
+<form method="post">
+<input type="hidden" name="server" rt:reference="true" />
+<input type="hidden" name="q" rt:reference="true" />
+
+<rt:has param="item_list">
+<input type="submit" name="install" value="install" />
+</rt:has>
+
+<table rt:param="item_list" rt:var="item">
+<thead>
+<tr>
+	<th></th>
+	<th>title</th>
+	<th>description</th>
+	<th>version</th>
+	<th>type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="even">
+	<td><input type="checkbox" name="urls[]" value="{$item.link}" />
+	<td>{$f.text2html($item.title)}</td>
+	<td>{$f.text2html($item.description)}</td>
+	<td nowrap>
+		{$item.comments}<br />
+		( {$item.formatPubDate()} )</td>
+	<td nowrap>{$item.category}</td>
+</tr>
+</tbody>
+</table>
+</form>
+</rt:block>

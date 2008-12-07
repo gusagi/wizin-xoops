@@ -1,0 +1,58 @@
+<rt:extends href="./main.html" />
+
+<rt:block name="content">
+
+<rt:if param="{$ismsg}">
+_("認証を利用するには下記を宣言する必要があります。")
+<pre class="description">
+Rhaco::import("network.http.RequestLogin");
+RequestLogin::loginRequired();
+</pre>
+</rt:if>
+
+<div id="memberManager">
+<form method="post">
+<table>
+<thead>
+	<tr>
+		<th colspan="2">_("add")</th>
+	</tr>
+</thead>
+<tbody>
+	<tr>
+		<th>_("Login")</th>
+		<td><input type="text" name="_login" /></td>
+	</tr>
+	<tr>
+		<th>_("Password")</th>
+		<td><input type="password" name="_password" /></td>
+	</tr>
+	<tr>
+		<td colspan="2"><input type="submit" name="addmember" value="_('add')"></td>
+	</tr>
+</tbody>
+</table>
+</form>
+
+<table>
+<thead>
+<tr>
+	<th colspan="2">_("member list")</th>
+</tr>
+</thead>
+<tbody>
+<rt:loop param="userList" var="user">
+<tr>
+	<th>{$user.getParameter('login')}</th>
+	<td>
+		<form method="post">
+			<input type="hidden" name="_login" value="{$user.getParameter('login')}" />
+			<input type="submit" name="delete" value="_('delete')" />
+		</form>	
+	</td>
+</tr>
+</rt:loop>
+</tbody>
+</table>
+</div>
+</rt:block>

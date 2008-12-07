@@ -1,0 +1,962 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-06-18 23:58+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <team@exsample.com>\n"
+
+#: database/controller/DbUtilPostgreSQL.php:46
+
+msgid "an encode string is illegal"
+msgstr ""
+
+#: database/DbUtil.php:45
+#: setup/database/DbUtilInitializer.php:25
+
+msgid "database controler [{1}]"
+msgstr ""
+
+#: database/DbUtil.php:53
+
+msgid "database"
+msgstr ""
+
+#: database/DbUtil.php:198
+
+msgid "Invalid Data {1}"
+msgstr ""
+
+#: database/DbUtil.php:249
+
+msgid "Invalid Data({1}){<xmp>\n{2}\n</xmp>}"
+msgstr ""
+
+#: database/DbUtil.php:288
+
+msgid "first argument"
+msgstr ""
+
+#: database/DbUtilBase.php:79
+
+msgid "[{1}({2})] connection start"
+msgstr ""
+
+#: database/DbUtilBase.php:82
+
+msgid "[{1}({2})] connection close"
+msgstr ""
+
+#: database/DbUtilBase.php:112
+#: database/DbUtilBase.php:117
+
+msgid "[{1}({2})] {3}"
+msgstr ""
+
+#: database/DbUtilBase.php:113
+#: database/DbUtilBase.php:114
+
+msgid "#{1} - {2}"
+msgstr ""
+
+#: database/DbUtilBase.php:154
+
+msgid "[{1}({2})] transaction off"
+msgstr ""
+
+#: database/DbUtilBase.php:156
+
+msgid "[{1}({2})] transaction on"
+msgstr ""
+
+#: database/DbUtilBase.php:663
+
+msgid "table is　only [{1}]"
+msgstr ""
+
+#: exception/model/ClassTypeException.php:11
+
+msgid "Class type is mismatched '{1}' expected '{2}' result '{3}'."
+msgstr ""
+
+#: exception/model/DataTypeException.php:11
+
+msgid "Argument data format is mismatched [{1}]."
+msgstr ""
+
+#: exception/model/DuplicateException.php:11
+
+msgid "there are duplicates [{1}]."
+msgstr ""
+
+#: exception/model/HttpPostFilesException.php:12
+
+msgid "It is over the upload_max_filesize value set as php.ini [{1}]."
+msgstr ""
+
+#: exception/model/HttpPostFilesException.php:14
+
+msgid "It is over the MAX_FILE_SIZE value set up in form [{1}]."
+msgstr ""
+
+#: exception/model/HttpPostFilesException.php:16
+
+msgid "Only the part is uploaded [{1}]."
+msgstr ""
+
+#: exception/model/HttpPostFilesException.php:18
+
+msgid "It did not upload [{1}]."
+msgstr ""
+
+#: exception/model/IllegalArgumentException.php:11
+
+msgid "an illegal argument [{1}]."
+msgstr ""
+
+#: exception/model/IllegalStateException.php:11
+
+msgid "an illegal state occurred [{1}]."
+msgstr ""
+
+#: exception/model/MaxLengthException.php:11
+
+msgid "over the length limit [{1}] up to [{2}s]."
+msgstr ""
+
+#: exception/model/MaxSizeException.php:11
+
+msgid "over the size limit [{1}] up to [{2}s]."
+msgstr ""
+
+#: exception/model/MinLengthException.php:11
+
+msgid "lower the length limit [{1}] up to [{2}s]."
+msgstr ""
+
+#: exception/model/MinSizeException.php:11
+
+msgid "lower the size limit [{1}] up to [{2}s]."
+msgstr ""
+
+#: exception/model/NotConnectionException.php:11
+
+msgid "{1} is not connected."
+msgstr ""
+
+#: exception/model/NotFoundException.php:11
+
+msgid "{1} is not found."
+msgstr ""
+
+#: exception/model/NotSupportedException.php:11
+
+msgid "{1} is not supported."
+msgstr ""
+
+#: exception/model/PermissionException.php:11
+
+msgid "You don't have a permission[{1}]."
+msgstr ""
+
+#: exception/model/RequireException.php:11
+
+msgid "{1} is required."
+msgstr ""
+
+#: exception/model/SqlException.php:12
+
+msgid "It failed in execution. => {1}"
+msgstr ""
+
+#: generic/Paginator.php:115
+#: generic/Paginator.php:118
+
+msgid "Results {1} - {2} of about {3}"
+msgstr ""
+
+#: generic/Urls.php:121
+
+msgid "`{1}` in `{2}`"
+msgstr ""
+
+#: generic/Views.php:104
+#: setup/resources/templates/setup/database/list.html:32
+
+msgid "export"
+msgstr ""
+
+#: generic/Views.php:122
+#: setup/resources/templates/setup/database/list.html:82
+
+msgid "import"
+msgstr ""
+
+#: generic/Views.php:164
+#: resources/templates/generic/views/list.html:4
+
+msgid "list"
+msgstr ""
+
+#: generic/Views.php:188
+#: resources/templates/generic/views/detail.html:4
+
+msgid "detail"
+msgstr ""
+
+#: generic/Views.php:215
+#: generic/Views.php:216
+#: generic/Views.php:230
+#: generic/Views.php:255
+#: setup/resources/templates/setup/database/index.html:32
+
+msgid "create"
+msgstr ""
+
+#: generic/Views.php:244
+#: generic/Views.php:324
+
+msgid "confirm"
+msgstr ""
+
+#: generic/Views.php:289
+#: generic/Views.php:290
+#: generic/Views.php:305
+#: generic/Views.php:334
+#: setup/resources/templates/setup/xml.html:8
+
+msgid "update"
+msgstr ""
+
+#: generic/Views.php:368
+#: generic/Views.php:369
+
+msgid "drop"
+msgstr ""
+
+#: io/Cache.php:42
+
+msgid "made cache file [{1}]"
+msgstr ""
+
+#: io/Cache.php:45
+
+msgid "fails in made cache [{1}]"
+msgstr ""
+
+#: io/Cache.php:65
+
+msgid "read cache [{1}]"
+msgstr ""
+
+#: io/Cache.php:68
+
+msgid "fails in read cache [{1}]"
+msgstr ""
+
+#: io/Cache.php:83
+
+msgid "execute cache [{1}]"
+msgstr ""
+
+#: io/Cache.php:88
+
+msgid "fails in execute cache [{1}]"
+msgstr ""
+
+#: io/Cache.php:104
+
+msgid "cache deleted [{1}]"
+msgstr ""
+
+#: io/Cache.php:107
+#: io/Snapshot.php:200
+
+msgid "fails in deletion [{1}]"
+msgstr ""
+
+#: io/Snapshot.php:53
+
+msgid "start snapshot({1})"
+msgstr ""
+
+#: io/Snapshot.php:85
+
+msgid "end snapshot({1})"
+msgstr ""
+
+#: io/Snapshot.php:132
+
+msgid "made snapshot file [{1}]"
+msgstr ""
+
+#: io/Snapshot.php:134
+
+msgid "fails in made snapshot file [{1}]"
+msgstr ""
+
+#: io/Snapshot.php:155
+
+msgid "read snapshot file [{1}]"
+msgstr ""
+
+#: io/Snapshot.php:158
+
+msgid "fails in read snapshot file [{1}]"
+msgstr ""
+
+#: io/Snapshot.php:179
+
+msgid "write snapshot file [{1}]"
+msgstr ""
+
+#: io/Snapshot.php:197
+
+msgid "snapshot file deleted [{1}]"
+msgstr ""
+
+#: network/http/Http.php:49
+
+msgid "URL [{1}] {2} {3}"
+msgstr ""
+
+#: resources/templates/generic/views/confirm.html:22
+
+msgid "back"
+msgstr ""
+
+#: resources/templates/generic/views/list.html:14
+#: setup/resources/templates/setup/database/list.html:31
+
+msgid "search"
+msgstr ""
+
+#: Rhaco.php:22
+
+msgid "Please copy onto the project folder and execute it"
+msgstr ""
+
+#: Rhaco.php:212
+#: Rhaco.php:528
+
+msgid "Not found {1} [{2}:{3}]"
+msgstr ""
+
+#: Rhaco.php:212
+
+msgid "( {1} )"
+msgstr ""
+
+#: Rhaco.php:220
+
+msgid "`{1}` is defined by `{2}`, it was `{3}` to be called"
+msgstr ""
+
+#: setup/database/model/ColumnModel.php:224
+
+msgid "column name"
+msgstr ""
+
+#: setup/database/model/ColumnModel.php:303
+
+msgid "max_digits [{1}]"
+msgstr ""
+
+#: setup/database/model/ColumnModel.php:304
+
+msgid "decimal_places [{1}]"
+msgstr ""
+
+#: setup/database/model/ColumnModel.php:347
+
+msgid "column type [{1}]"
+msgstr ""
+
+#: setup/database/model/ColumnModel.php:355
+
+msgid "require with column '{1}'"
+msgstr ""
+
+#: setup/database/model/ColumnModel.php:358
+
+msgid "unique with column '{1}'"
+msgstr ""
+
+#: setup/database/model/ColumnModel.php:369
+
+msgid "column '{1}' matched to require '{2}'"
+msgstr ""
+
+#: setup/database/model/ColumnModel.php:381
+
+msgid "column '{1}' matched to unique '{2}'"
+msgstr ""
+
+#: setup/database/model/ColumnModel.php:415
+
+msgid "reference table [{1}.{2}]"
+msgstr ""
+
+#: setup/database/model/DatabaseModel.php:57
+
+msgid "database name"
+msgstr ""
+
+#: setup/database/model/DatabaseModel.php:79
+#: setup/database/model/DatabaseModel.php:86
+#: setup/database/model/DatabaseModel.php:93
+
+msgid "{1} [{2}]"
+msgstr ""
+
+#: setup/database/model/DatabaseModel.php:109
+
+msgid "{1} の参照 {2}"
+msgstr ""
+
+#: setup/database/model/DatabaseModel.php:148
+
+msgid "table name `{1}` of the default data"
+msgstr ""
+
+#: setup/database/model/DatabaseModel.php:789
+
+msgid "{1} reserved word '{2}'"
+msgstr ""
+
+#: setup/database/model/ExTableModel.php:19
+
+msgid "ext table class"
+msgstr ""
+
+#: setup/database/model/ExTableModel.php:49
+
+msgid "column {1}"
+msgstr ""
+
+#: setup/database/model/ExTableModel.php:66
+
+msgid "table {1}"
+msgstr ""
+
+#: setup/database/model/TableModel.php:52
+
+msgid "table name"
+msgstr ""
+
+#: setup/model/ProjectInputModel.php:62
+
+msgid "name of {1} tag"
+msgstr ""
+
+#: setup/model/ProjectModel.php:88
+
+msgid "{1} or above version is required."
+msgstr ""
+
+#: setup/model/ProjectModel.php:257
+
+msgid "initializing of project is executed"
+msgstr ""
+
+#: setup/resources/templates/setup/database/create_form.html:4
+#: setup/resources/templates/setup/database/list.html:23
+#: setup/resources/templates/setup/member.html:18
+#: setup/resources/templates/setup/member.html:31
+
+msgid "add"
+msgstr ""
+
+#: setup/resources/templates/setup/database/create_form.html:24
+
+msgid "save and new"
+msgstr ""
+
+#: setup/resources/templates/setup/database/create_form.html:26
+#: setup/resources/templates/setup/database/update_form.html:28
+
+msgid "save and update"
+msgstr ""
+
+#: setup/resources/templates/setup/database/create_form.html:28
+#: setup/resources/templates/setup/database/update_form.html:31
+
+msgid "save"
+msgstr ""
+
+#: setup/resources/templates/setup/database/index.html:30
+
+msgid "a table is created"
+msgstr ""
+
+#: setup/resources/templates/setup/database/index.html:30
+
+msgid "create tables"
+msgstr ""
+
+#: setup/resources/templates/setup/database/index.html:33
+
+msgid "sql download"
+msgstr ""
+
+#: setup/resources/templates/setup/database/index.html:38
+#: setup/resources/templates/setup/database/index.html:38
+
+msgid "initial data is registered"
+msgstr ""
+
+#: setup/resources/templates/setup/database/index.html:47
+
+msgid "scaffold"
+msgstr ""
+
+#: setup/resources/templates/setup/database/index.html:54
+
+msgid "generate"
+msgstr ""
+
+#: setup/resources/templates/setup/database/index.html:60
+
+msgid "admin"
+msgstr ""
+
+#: setup/resources/templates/setup/database/index.html:67
+
+msgid "control"
+msgstr ""
+
+#: setup/resources/templates/setup/database/index.html:71
+#: setup/resources/templates/setup/database/index.html:73
+
+msgid "query"
+msgstr ""
+
+#: setup/resources/templates/setup/database/list.html:4
+#: setup/resources/templates/setup/database/update_form.html:4
+
+msgid "Easy Database Admin"
+msgstr ""
+
+#: setup/resources/templates/setup/database/list.html:40
+
+msgid "no data"
+msgstr ""
+
+#: setup/resources/templates/setup/database/list.html:58
+#: setup/resources/templates/setup/database/update_form.html:8
+
+msgid "edit"
+msgstr ""
+
+#: setup/resources/templates/setup/database/list.html:66
+#: setup/resources/templates/setup/member.html:50
+#: setup/resources/templates/setup/setup.html:147
+
+msgid "delete"
+msgstr ""
+
+#: setup/resources/templates/setup/database/reserved.html:5
+
+msgid "reserved words"
+msgstr ""
+
+#: setup/resources/templates/setup/doctest.html:5
+
+msgid "テスト対象はクラス関数です"
+msgstr ""
+
+#: setup/resources/templates/setup/intltool/po2php.html:18
+#: setup/resources/templates/setup/intltool/po2php.html:23
+#: setup/resources/templates/setup/intltool/po2php.html:31
+
+msgid "create base pot"
+msgstr ""
+
+#: setup/resources/templates/setup/intltool/po2php.html:27
+
+msgid "output file path"
+msgstr ""
+
+#: setup/resources/templates/setup/intltool/po2php.html:42
+#: setup/resources/templates/setup/intltool/po2php.html:55
+
+msgid "create new pot using old pot"
+msgstr ""
+
+#: setup/resources/templates/setup/intltool/po2php.html:47
+#: setup/resources/templates/setup/intltool/po2php.html:71
+
+msgid "chose pot file"
+msgstr ""
+
+#: setup/resources/templates/setup/intltool/po2php.html:51
+
+msgid "directory path of pot path"
+msgstr ""
+
+#: setup/resources/templates/setup/intltool/po2php.html:66
+#: setup/resources/templates/setup/intltool/po2php.html:79
+
+msgid "convert pot into php"
+msgstr ""
+
+#: setup/resources/templates/setup/intltool/po2php.html:75
+
+msgid "directory path of pot to php file"
+msgstr ""
+
+#: setup/resources/templates/setup/member.html:6
+
+msgid "認証を利用するには下記を宣言する必要があります。"
+msgstr ""
+
+#: setup/resources/templates/setup/member.html:23
+#: setup/util/AuthFileManager.php:57
+#: setup/util/AuthFileManager.php:63
+
+msgid "Login"
+msgstr ""
+
+#: setup/resources/templates/setup/member.html:27
+#: setup/util/AuthFileManager.php:58
+
+msgid "Password"
+msgstr ""
+
+#: setup/resources/templates/setup/member.html:40
+
+msgid "member list"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:13
+
+msgid "basic data peculiar to application is defined"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:13
+
+msgid "the setup of the application data"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:18
+
+msgid "アプリケーションの初期処理"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:20
+
+msgid "実行"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:54
+
+msgid "Log"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:58
+
+msgid "Log level(view)"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:71
+
+msgid "output log(view) as HTML format."
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:74
+
+msgid "Yes"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:75
+
+msgid "No"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:80
+
+msgid "Log level(file)"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:93
+
+msgid "the path of a log file"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:104
+
+msgid "Cache"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:108
+#: setup/resources/templates/setup/setup.html:108
+
+msgid "the template is cached"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:111
+#: setup/resources/templates/setup/setup.html:127
+
+msgid "enable"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:112
+#: setup/resources/templates/setup/setup.html:128
+
+msgid "disable"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:117
+#: setup/resources/templates/setup/setup.html:117
+
+msgid "the term of validity of the template"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:117
+#: setup/resources/templates/setup/setup.html:133
+
+msgid "(sec)"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:124
+#: setup/resources/templates/setup/setup.html:124
+
+msgid "the feed is cached"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:133
+#: setup/resources/templates/setup/setup.html:133
+
+msgid "the renewal of the feed is checked"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:139
+
+msgid "input the path of the cache"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:139
+
+msgid "the path of a cache"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:145
+#: setup/resources/templates/setup/setup.html:145
+
+msgid "cashe is deleted"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:157
+
+msgid "database settings"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:162
+
+msgid "which database backend to use"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:162
+
+msgid "database engine"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:172
+
+msgid "database host"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:178
+
+msgid "input name of the database to use"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:178
+
+msgid "name of the database"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:184
+
+msgid "username to use when connecting to the database"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:184
+
+msgid "database username"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:190
+
+msgid "input password to use when connecting to the database"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:190
+
+msgid "database password"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:196
+
+msgid "input port to use when connecting to the database. An empty string means the default port"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:196
+
+msgid "database port no"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:202
+
+msgid "input encode to use when connecting to the database"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:202
+
+msgid "database encode"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:208
+
+msgid "add prefix for database teables"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:208
+
+msgid "table name prefix"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:218
+
+msgid "Path"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:222
+
+msgid "input the route URL of the application"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:222
+
+msgid "the route URL of application"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:226
+
+msgid "input the path of the project"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:226
+
+msgid "the path of a project"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:230
+
+msgid "the path of the folder of templates"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:230
+
+msgid "the path of templates"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:234
+
+msgid "input the route of the URL of the template"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:234
+
+msgid "the URL of the template"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:242
+
+msgid "General"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:246
+
+msgid "the file path of rhaco"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:246
+
+msgid "the path of rhaco"
+msgstr ""
+
+#: setup/resources/templates/setup/setup.html:254
+
+msgid "setting"
+msgstr ""
+
+#: setup/util/PotGenerator.php:171
+#: setup/util/PotGenerator.php:227
+
+msgid "Attached file"
+msgstr ""
+
+#: setup/util/SetupView.php:130
+
+msgid "clear cache"
+msgstr ""
+
+#: setup/util/SetupView.php:164
+#: setup/util/SetupView.php:174
+
+msgid "database {1}"
+msgstr ""
+
+#: tag/feed/FeedParser.php:58
+
+msgid "read feed [{1}]"
+msgstr ""
+
+#: tag/HtmlParser.php:404
+
+msgid "Previous"
+msgstr ""
+
+#: tag/HtmlParser.php:410
+
+msgid "Next"
+msgstr ""
+
+#: tag/TemplateParser.php:75
+
+msgid "fails in read include template file [{1}]"
+msgstr ""
+
+#: tag/TemplateParser.php:78
+
+msgid "read include template file [{1}]"
+msgstr ""
+
+#: tag/TemplateParser.php:122
+
+msgid "fails in read block template file [{1}]"
+msgstr ""
+
+#: tag/TemplateParser.php:130
+
+msgid "read block template file [{1}]"
+msgstr ""
+
+#: util/Automator.php:39
+
+msgid "load module [{1}]"
+msgstr ""
+
+#: util/Logger.php:258
+
+msgid "[{1}:{2} {3}] called [{4}:{5} {6}]"
+msgstr ""
+

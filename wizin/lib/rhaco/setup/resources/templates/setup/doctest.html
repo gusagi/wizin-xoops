@@ -1,0 +1,47 @@
+<rt:extends href="./main.html" />
+
+<rt:block name="content">
+<pre>
+_("テスト対象はクラス関数です")
+</pre>
+
+<form method="post" rt:reference="true">
+<p class="filterSelectForm">
+	<input type="text" class="filterSelect" name="filterstring" />
+	<select name="path" rt:param="paths" rt:null="_('any')" class="filterSelect">
+	</select>
+	<input type="submit" value="execute" />
+</p>
+</form>
+
+<div>
+	<span id='on_success'>success: {$count_success}</span> / 
+	<span id='on_fail'>fail: {$count_fail}</span> /
+	<span id='on_pass'>pass: {$count_pass}</span> /
+	<span id='on_none'>none: {$count_none}</span> /
+	<span id='on_all'>all: {$count_all}</span>
+</div>
+<table rt:param="results" rt:var="assert">
+<thead>
+	<tr>
+		<th>class::method</th>
+		<th>detail</th>
+	</tr>
+</thead>
+<tbody>
+<tr class="{$assert.getTypeString()}">
+	<td>{$assert.getClass()}::{$assert.getMethod()}</td>
+	<td>
+		<table>
+		<tr><td>{$assert.getComment()}</td></tr>
+		<tr><td><xmp>
+{$assert.getResult()}
+		</xmp></td></tr>
+		<tr><td>{$assert.getPath()}:{$assert.getLine()}</td></tr>
+		</table>
+	</td>
+</tr>
+</tbody>
+</table>
+
+</rt:block>

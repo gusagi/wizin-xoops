@@ -1,0 +1,25 @@
+<rt:extends href="./main.html" />
+
+<rt:block name="content">
+<form method="post" name="views_form">
+<table>
+<rt:loop param="{$object.models('views','form_display')}" var="column">
+	<rt:if param="{$column.isSerial()}">
+		{$viewutil.columnString($object,$column)}
+	<rt:else />
+		<tr>
+			<th>{$object.label($column)}</th>
+			<td>
+				{$viewutil.columnString($object,$column,true,true,'views')}
+			</td>
+		</tr>
+	</rt:if>
+</rt:loop>
+</table>
+
+<input type="submit" name="save_create" value="{$generic_button}" />
+</form>
+
+<rt:invalid />
+
+</rt:block>

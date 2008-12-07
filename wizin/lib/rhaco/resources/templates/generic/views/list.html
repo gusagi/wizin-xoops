@@ -1,0 +1,45 @@
+<rt:extends href="./main.html" />
+
+<rt:block name="title">
+	<title>_("list")</title>
+</rt:block>
+
+<rt:block name="content">
+	<fieldset>
+		<form method="get" name="views_search_form" rt:reference="true">
+			<input type="hidden" name="page" value="1"  rt:reference="false" />
+			<input type="hidden" name="o" />
+			<input type="hidden" name="a" />			
+			<input type="text" name="q" />
+			<input type="submit" value="_('search')" />
+		</form>
+		
+		<div class="paging_field">
+			<rt:pager param="pager" />
+		</div>
+		<table border="1" width="80%">
+			<thead>
+			<tr>
+				<rt:loop param="{$tableObject.models('views','list_display')}" var="column">
+				<th align="center" scope="col"><a href="{$rhaco.uri()}?{$sortorder.query($key)}">{$tableObject.label($column)}</a></th>
+				</rt:loop>
+			</tr>
+			</thead>
+			<tbody>
+			<rt:loop param="object_list" var="obj" counter="counter">
+			<tr class="even">
+				<rt:loop param="{$tableObject.models('views','list_display')}" var="column">
+				<td>{$f.text2html($obj.value($column,true))}&nbsp;</td>
+				</rt:loop>
+			</tr>
+			</rt:loop>
+			</tbody>
+		</table>
+		<div class="paging_field">
+			<rt:pager param="pager" />
+		</div>
+		
+		<rt:invalid />
+	</fieldset>
+	<br />
+</rt:block>

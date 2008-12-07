@@ -1,0 +1,13 @@
+<rt:extends href="../main.html" />
+
+<rt:block name="content">
+
+<h3>_("reserved words")</h3>
+<pre>
+array(
+<rt:loop param="words" var="word">
+"{$word}",
+</rt:loop>
+);
+</pre>
+</rt:block>

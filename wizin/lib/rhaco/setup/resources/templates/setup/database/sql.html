@@ -1,0 +1,40 @@
+<rt:extends href="../main.html" />
+
+<rt:block name="content">
+
+<h3>{$connection}</h3>
+
+<form method="post" rt:reference="true">
+<div>
+	<textarea name="sql" cols="70" rows="10"></textarea>
+</div>
+<div>
+	<input type="submit" value="run" />
+</div>
+</form>
+
+<rt:if param="isdata">
+<table>
+
+<thead>
+<tr>
+	<rt:loop param="keys" var="name">
+		<th>{$f.escape($name)}</th>
+	</rt:loop>
+</tr>
+</thead>
+
+<tbody>
+<rt:loop param="results" var="result">
+	<tr>
+	<rt:loop param="result" var="var">
+		<td>{$f.escape($var)}</td>
+	</rt:loop>
+	</tr>
+</rt:loop>
+</tbody>
+</table>
+</rt:if>
+
+
+</rt:block>

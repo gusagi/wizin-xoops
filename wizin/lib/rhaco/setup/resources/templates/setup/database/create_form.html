@@ -1,0 +1,31 @@
+<rt:extends href="../main.html" />
+
+<rt:block name="content">
+<h3><a href="{$rhaco.page('setup')}{$dblink['list']}{$t}">{$t}</a> > _("add")</h3>
+
+<form method="post" name="views_form">
+<input type="hidden" name="action_type" value="create" />
+
+<table>
+<rt:loop param="{$object.models('admin','form_display')}" var="column">
+	<rt:if param="{$column.isSerial()}">
+		{$viewutil.columnString($object,$column)}
+	<rt:else />
+		<tr>
+			<th>{$tableObject.label($column)}</th>
+			<td>
+				{$viewutil.columnString($object,$column,true,true,'admin')}
+			</td>
+		</tr>
+	</rt:if>
+</rt:loop>
+</table>
+
+<input type="submit" name="save_create" value="_('save and new')" />
+<rt:if param="{$object.isSerial()}">
+	<input type="submit" name="save_update" value="_('save and update')" />
+</rt:if>
+<input type="submit" name="save_list" value="_('save')" />
+</form>
+
+</rt:block>

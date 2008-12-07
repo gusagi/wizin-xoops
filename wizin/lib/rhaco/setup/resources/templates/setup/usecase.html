@@ -1,0 +1,78 @@
+<rt:extends href="./main.html" />
+
+<rt:block name="content">
+<table>
+<tr>
+	<td valign="top" nowrap>
+		<h2>アクタ</h2>
+		<ul rt:param="actor_list" rt:var="act">
+			<li>{$act}</li>
+		</ul>
+		
+		<h2>ページ</h2>
+		<ul rt:param="page_list" rt:var="page">
+			<li>{$page}</li>
+		</ul>
+		
+		<h2>case</h2>
+		<ul rt:param="case_list" rt:var="case">
+			<li><a href="{$rhaco.uri()}?case={$case.title}">{$case.title}</a></li>
+		</ul>
+		
+		<h2>疑問</h2>
+		<ul rt:param="question_list" rt:var="q">
+			<li><a href="{$rhaco.uri()}?case={$q[0]}">{$q[1]}...</a></li>
+		</ul>
+	</td>
+	<td>
+		<span style="color: #ff0000">{$message}</span>
+		<form method="post" name="frm" rt:reference="true">
+			<p>
+				<input type="submit" value="登録" />
+			</p>
+			<p>
+				機能:<Br />
+				<input type="text" name="title" size="50" />
+			</p>
+			<p>
+				概要：<Br />
+				<textarea name="summary" cols="100" rows="5" onkeyup="resize_textarea(event)"></textarea>
+			</p>
+			<p>
+				アクタ:<Br />
+				<textarea name="actor" cols="100" rows="4" onkeyup="resize_textarea(event)"></textarea>
+			</p>
+			<p>
+				前条件:<Br />
+				<textarea name="before" cols="100" rows="4" onkeyup="resize_textarea(event)"></textarea>
+			</p>
+			<p>
+				メインフロー：<Br />
+				<textarea name="flow" cols="100" rows="10" onkeyup="resize_textarea(event)"></textarea>
+			</p>
+			<p>
+				後条件:<Br />	
+				<textarea name="after" cols="100" rows="7" onkeyup="resize_textarea(event)"></textarea>
+			</p>
+			<p>
+				例外:<Br />
+				<textarea name="exception" cols="100" rows="3" onkeyup="resize_textarea(event)"></textarea>
+			</p>
+			<p>
+				<input type="submit" value="登録" />
+			</p>
+			<p>
+				<input type="hidden" name="deleteFlag" value="false" rt:reference="false" />
+				<input type="button" value="削除" onClick="d()" />
+			</p>
+		</form>
+		<script language="JavaScript">
+			function d(){
+				document.frm.deleteFlag.value = true;
+				document.frm.submit();
+			}
+		</script>
+	</td>
+</tr>
+</table>
+</rt:block>

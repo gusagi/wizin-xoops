@@ -1,0 +1,60 @@
+<rt:extends href="./main.html" />
+
+<rt:block name="content">
+
+<form method="post" rt:reference="true">
+<p class="filterSelectForm">
+	<input type="text" class="filterSelect" name="filterstring" />
+	<select name="path" rt:param="paths" rt:null="any" class="filterSelect">
+	</select>
+	<input type="submit" value="excute" />
+</p>
+
+</form>
+
+
+
+<div id="documents" class="documents">
+	<rt:loop param="docs" var="doc">
+		<div class="document">
+			<a name="{$doc.name}"></a>
+			<div class="name">
+				{$doc.name}
+			
+				<rt:if param="{$doc.isSubclass()}">
+					&lt;{$doc.extends}&gt;
+				</rt:ifnot>
+			</div>
+			<div class="path">({$doc.path})</div>
+			<div class="description">
+				{$f.text2html($doc.description)}
+			</div>
+
+			<div class="funcs">
+				<rt:loop param="{$doc.function}" var="func">
+					<div class="func">
+						<a name="{$doc.name}::{$func.name}"></a>
+						<div class="name">{$func.name}</div>
+						<div class="description">
+							{$f.text2html($func.description)}
+						</div>
+						
+						<div class="onevars">
+							<rt:loop param="{$func.vars}" var="var">
+								<span class="onevar">{$f.text2html($var)}</span>
+							</rt:loop>
+						</div>
+
+						<rt:loop param="{$func.tests}" var="test">
+						<div class="test">
+							{$f.text2html($test)}
+						</div>
+						</rt:loop>
+					</div>
+				</rt:loop>
+			</div>
+		</div>
+	</rt:loop>
+</div>
+
+</rt:block>
