@@ -58,7 +58,6 @@ if ( ! class_exists('Wizin_Util_Web') ) {
              * Thanks a lot for "Medium eXposure" !
              * Ref : http://www.mediumexposure.com/techblog/smart-image-resizing-while-preserving-transparency-php-and-gd-library
              */
-            $copyFunction = 'imagecopyresampled';
             if ( $format === IMAGETYPE_GIF || $format === IMAGETYPE_PNG ) {
                 $transparentIndex = imagecolortransparent( $image );
                 if ( $transparentIndex >= 0 ) {
@@ -74,16 +73,11 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                     $color = imagecolorallocatealpha( $newImage, 0, 0, 0, 127 );
                     imagefill( $newImage, 0, 0, $color );
                     imagesavealpha( $newImage, true );
-                    $copyFunction = 'imagecopy';
                 }
             }
             // If original image is transparent gif/png <<
             // image data copy
-            if ( $copyFunction === 'imagecopyresampled' ) {
-                imagecopyresampled( $newImage, $image , 0, 0, 0, 0, $resizeWidth, $resizeHeight, $width, $height );
-            } else if ( $copyFunction === 'imagecopy' ) {
-                imagecopy( $newImage, $image , 0, 0, 0, 0, $resizeWidth, $resizeHeight );
-            }
+            imagecopyresampled( $newImage, $image , 0, 0, 0, 0, $resizeWidth, $resizeHeight, $width, $height );
             $tmpArray = explode( '.', $newImagePath );
             $newExt = array_pop( $tmpArray );
             if ( $newExt === 'gif' ) {
