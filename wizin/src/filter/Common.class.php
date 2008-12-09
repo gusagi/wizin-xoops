@@ -370,6 +370,30 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                             }
                         }
                         if ( strpos($imageUrl, $baseUri) === 0 ) {
+                            if ( strpos($imageUrl, './') !== false ) {
+                                $urlArray = parse_url( $imageUrl );
+                                if ( isset($urlArray['path']) ) {
+                                    $pathArray = array();
+                                    $explodedPath = explode( '/', $urlArray['path'] );
+                                    foreach ( $explodedPath as $part ) {
+                                        if ( $part === '' || $part === '.' ) {
+                                            continue;
+                                        } else if ( $part === '..' ) {
+                                            array_pop( $pathArray );
+                                        } else {
+                                            array_push( $pathArray, $part );
+                                        }
+                                    }
+                                    $pathString = implode( '/', $pathArray );
+                                    if ( substr($pathString, 0, 1) !== '/' ) {
+                                        $pathString = '/' . $pathString;
+                                    }
+                                    $imageUrl = str_replace( $urlArray['path'],
+                                        $pathString, $imageUrl );
+                                } else {
+                                    continue;
+                                }
+                            }
                             $imagePath = str_replace( $baseUri, $basePath, $imageUrl );
                             if ( ! file_exists($imagePath) ) {
                                 $imagePath = Wizin_Util_Web::getFileByHttp( $imageUrl );
