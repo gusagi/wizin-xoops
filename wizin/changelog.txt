@@ -2,6 +2,7 @@
 [2008-12-05 Ver 0.31 -> 0.32]
 - Replaced mbstring.detect_order(from 'auto' to 'sjis-win,eucjp-win,jis,utf-8,ascii').
 - Fixed bug about image resize filter with relative path.
+- Fixed bug about image resize logic for PNG-24.
 ----------------------------------
 [2008-12-04 Ver 0.30 -> 0.31]
 - Replaced indent(from tab to space).
