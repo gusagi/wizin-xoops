@@ -147,13 +147,18 @@ if ( ! class_exists('Wizin_User') ) {
         {
             $ip = getenv( 'REMOTE_ADDR' );
             $host = @ gethostbyaddr( $ip );
-            foreach ( $mobileData as $carrier => $data ) {
-                if ( ! empty($data['host']) ) {
-                    $pattern = '/' . $data['host'] . '/i';
-                    preg_match( $pattern, $host, $matches );
-                    if ( ! empty($matches) ) {
-                        $data['carrier'] = $carrier;
-                        return $data;
+            if ( $host !== $ip ) {
+                $ipList = gethostbynamel( $host );
+                if ( $ipList !== false && in_array($ip, $ipList) ) {
+                    foreach ( $mobileData as $carrier => $data ) {
+                        if ( ! empty($data['host']) ) {
+                            $pattern = '/' . $data['host'] . '/i';
+                            preg_match( $pattern, $host, $matches );
+                            if ( ! empty($matches) ) {
+                                $data['carrier'] = $carrier;
+                                return $data;
+                            }
+                        }
                     }
                 }
             }
