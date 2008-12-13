@@ -35,8 +35,10 @@ if ( ! class_exists('Wizin_Util_Web') ) {
         function createThumbnail ( $imagePath, $width, $height, $format, $newImagePath, $maxImageWidth )
         {
             $resizeRate = $maxImageWidth / $width;
+            $copyFunction = 'imagecopyresampled';
             if ( $resizeRate > 1 ) {
                 $resizeRate = 1;
+                $copyFunction = 'imagecopy';
             }
             $resizeWidth = $resizeRate * $width;
             $resizeHeight = $resizeRate * $height;
@@ -77,7 +79,12 @@ if ( ! class_exists('Wizin_Util_Web') ) {
             }
             // If original image is transparent gif/png <<
             // image data copy
-            imagecopyresampled( $newImage, $image , 0, 0, 0, 0, $resizeWidth, $resizeHeight, $width, $height );
+            if ( $copyFunction === 'imagecopyresampled' ) {
+                imagecopyresampled( $newImage, $image , 0, 0, 0, 0,
+                    $resizeWidth, $resizeHeight, $width, $height );
+            } else if ( $copyFunction === 'imagecopy' ) {
+                imagecopy( $newImage, $image , 0, 0, 0, 0, $resizeWidth, $resizeHeight );
+            }
             $tmpArray = explode( '.', $newImagePath );
             $newExt = array_pop( $tmpArray );
             if ( $newExt === 'gif' ) {

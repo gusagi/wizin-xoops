@@ -434,10 +434,33 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                                 $maxImageWidth = $width;
                             }
                             if ( $width !== 0 && $height !== 0 ) {
-                                if ( ($width >= $maxImageWidth && in_array($format, $allowImageFormat)) ||
-                                        in_array($format, $forceResizeType) ) {
+                                if ( in_array($format, $forceResizeType) ) {
                                     if ( ! file_exists($newImagePath) ||
                                             (filemtime($newImagePath) <= filemtime($imagePath)) ) {
+                                        Wizin_Util_Web::createThumbnail( $imagePath, $width, $height,
+                                            $format, $newImagePath, $width );
+                                    }
+                                    if ( file_exists($newImagePath) ) {
+                                        // reset image path and image url
+                                        $imagePath = $newImagePath;
+                                        $imageUrl = $newImageUrl;
+                                        $urlArray = parse_url( $imageUrl );
+                                        $newImageFile = str_replace( '/', '_', $urlArray['path'] );
+                                        $newImagePath = $createDir . '/' . $newImageFile;
+                                        $newImageUrl = str_replace( $basePath, $baseUri, $newImagePath );
+                                        switch ( $newExt ) {
+                                            case 'gif':
+                                                $format = IMAGETYPE_GIF;
+                                                break;
+                                            default:
+                                                $format = IMAGETYPE_JPEG;
+                                                break;
+                                        }
+                                    }
+                                }
+                                if ( $width >= $maxImageWidth && in_array($format, $allowImageFormat) ) {
+                                    if ( ! file_exists($newImagePath) ||
+                                            (filemtime($newImagePath) < filemtime($imagePath)) ) {
                                         Wizin_Util_Web::createThumbnail( $imagePath, $width, $height,
                                             $format, $newImagePath, $maxImageWidth );
                                     }
