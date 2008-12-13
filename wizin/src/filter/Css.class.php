@@ -18,17 +18,14 @@ if ( ! class_exists('Wizin_Filter_Css') ) {
             method_exists('SimpleXMLElement','getName') ) {
         // If class 'HTML_CSS_Mobile' does not exists, include HTML_CSS_Mobile
         if ( ! class_exists('HTML_CSS_Mobile') ) {
-            @ include_once 'HTML/Common.php';
             if ( ! class_exists('HTML_Common') ) {
-                return $contents;
+                @ include_once 'HTML/Common.php';
             }
-            @ include_once 'HTML/CSS.php';
-            if ( ! class_exists('HTML_CSS') ) {
-                return $contents;
+            if ( class_exists('HTML_Common') && ! class_exists('HTML_CSS') ) {
+                @ include_once 'HTML/CSS.php';
             }
-            @ include_once 'HTML/CSS/Mobile.php';
-            if ( ! class_exists('HTML_CSS_Mobile') ) {
-                return $contents;
+            if ( class_exists('HTML_CSS') && ! class_exists('HTML_CSS_Mobile') ) {
+                @ include_once 'HTML/CSS/Mobile.php';
             }
         }
 
