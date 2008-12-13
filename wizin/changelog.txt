@@ -1,4 +1,9 @@
 ----------------------------------
+[2008-12-13 Ver 0.32 -> 0.33]
+- Fixed bug about syntax error with method chain.
+- Modified function '_advancedCheck' in 'Wizin_User' class.
+- Fixed latent bug about include files in 'Wizin_Filter_Css'.
+----------------------------------
 [2008-12-05 Ver 0.31 -> 0.32]
 - Replaced mbstring.detect_order(from 'auto' to 'sjis-win,eucjp-win,jis,utf-8,ascii').
 - Fixed bug about image resize filter with relative path.
