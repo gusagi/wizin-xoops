@@ -430,7 +430,10 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                         if ( ! file_exists($cssDir) || ! is_dir($cssDir) || ! is_readable($cssDir) ) {
                             continue;
                         }
-                        $contents = Wizin_Filter_Css::getInstance()->setBaseDir( $cssDir )->apply( $contents );
+                        $filterCss = Wizin_Filter_Css::getInstance();
+                        $filterCss = $filterCss->setBaseDir( $cssDir );
+                        $contents = $filterCss->apply( $contents );
+                        unset( $filterCss );
                     }
                 }
             }
