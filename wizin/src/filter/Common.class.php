@@ -352,6 +352,7 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                 preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
                 if ( ! empty($matches) ) {
                     foreach ( $matches as $key => $match) {
+                        $linkReplaceFlg = false;
                         $maxImageWidth = $maxWidth;
                         $getFileFlag = false;
                         $imageUrl = $match[5];
@@ -403,17 +404,11 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                                 $getFileFlag = true;
                             }
                             $ext = array_pop( explode('.', basename($imagePath)) );
-                            $urlArray = parse_url( $imageUrl );
-                            $newImageFile = str_replace( '/', '_', $urlArray['path'] );
-                            $newImageFile = str_replace( $ext, '', $newImageFile );
-                            $newImagePath = $createDir . '/' . $newImageFile;
                             if ( function_exists('imagegif') ) {
                                 $newExt = 'gif';
                             } else {
                                 $newExt = 'jpg';
                             }
-                            $newImagePath .= $newExt;
-                            $newImageUrl = str_replace( $basePath, $baseUri, $newImagePath );
                             $imageSizeInfo = getimagesize( $imagePath );
                             $width = $imageSizeInfo[0];
                             $height = $imageSizeInfo[1];
@@ -435,6 +430,12 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                             }
                             if ( $width !== 0 && $height !== 0 ) {
                                 if ( in_array($format, $forceResizeType) ) {
+                                    $urlArray = parse_url( $imageUrl );
+                                    $newImageFile = str_replace( '/', '_', $urlArray['path'] );
+                                    $newImageFile = str_replace( $ext, '', $newImageFile );
+                                    $newImagePath = $createDir . '/' . $newImageFile;
+                                    $newImagePath .= $newExt;
+                                    $newImageUrl = str_replace( $basePath, $baseUri, $newImagePath );
                                     if ( ! file_exists($newImagePath) ||
                                             (filemtime($newImagePath) <= filemtime($imagePath)) ) {
                                         Wizin_Util_Web::createThumbnail( $imagePath, $width, $height,
@@ -444,10 +445,7 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                                         // reset image path and image url
                                         $imagePath = $newImagePath;
                                         $imageUrl = $newImageUrl;
-                                        $urlArray = parse_url( $imageUrl );
-                                        $newImageFile = str_replace( '/', '_', $urlArray['path'] );
-                                        $newImagePath = $createDir . '/' . $newImageFile;
-                                        $newImageUrl = str_replace( $basePath, $baseUri, $newImagePath );
+                                        $ext = $newExt;
                                         switch ( $newExt ) {
                                             case 'gif':
                                                 $format = IMAGETYPE_GIF;
@@ -456,14 +454,26 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                                                 $format = IMAGETYPE_JPEG;
                                                 break;
                                         }
+                                        $linkReplaceFlg = true;
                                     }
                                 }
                                 if ( $width >= $maxImageWidth && in_array($format, $allowImageFormat) ) {
+                                    $urlArray = parse_url( $imageUrl );
+                                    $newImageFile = str_replace( '/', '_', $urlArray['path'] );
+                                    $newImageFile = str_replace( $ext, '', $newImageFile );
+                                    $newImagePath = $createDir . '/' . $newImageFile;
+                                    $newImagePath .= $newExt;
+                                    $newImageUrl = str_replace( $basePath, $baseUri, $newImagePath );
                                     if ( ! file_exists($newImagePath) ||
                                             (filemtime($newImagePath) < filemtime($imagePath)) ) {
                                         Wizin_Util_Web::createThumbnail( $imagePath, $width, $height,
                                             $format, $newImagePath, $maxImageWidth );
                                     }
+                                    if ( file_exists($newImagePath) ) {
+                                        $linkReplaceFlg = true;
+                                    }
+                                }
+                                if ( $linkReplaceFlg ) {
                                     $imageTag = str_replace( $match[3] . $match[4] .$match[5] . $match[6],
                                         $match[3] . $match[4] . $newImageUrl . $match[6], $match[0] );
                                     $replaceArray = array( "'" => "\'", '"' => '\"', '\\' => '\\\\',

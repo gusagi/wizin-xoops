@@ -36,7 +36,7 @@ if ( ! class_exists('Wizin_Util_Web') ) {
         {
             $resizeRate = $maxImageWidth / $width;
             $copyFunction = 'imagecopyresampled';
-            if ( $resizeRate > 1 ) {
+            if ( $resizeRate >= 1 ) {
                 $resizeRate = 1;
                 $copyFunction = 'imagecopy';
             }
@@ -69,7 +69,7 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                         $transparentColor['green'], $transparentColor['blue'] );
                     imagefill( $newImage, 0, 0, $transparentIndex );
                     imagecolortransparent( $newImage, $transparentIndex );
-                } else if ( $format === IMAGETYPE_PNG ) {
+                } else {
                     // PNG-24
                     imagealphablending( $newImage, false );
                     $color = imagecolorallocatealpha( $newImage, 0, 0, 0, 127 );
