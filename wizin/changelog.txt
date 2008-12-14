@@ -1,6 +1,6 @@
 ----------------------------------
 [2008-12-13 Ver 0.32 -> 0.33]
-- Fixed bug about syntax error with method chain.
+- Fixed bug about syntax error with method chain.(thx navi)
 - Modified function '_advancedCheck' in 'Wizin_User' class.
 - Fixed latent bug about include files in 'Wizin_Filter_Css'.
 ----------------------------------
