@@ -22,8 +22,12 @@ if ( ! class_exists('Wizin_Mail_Receiver') ) {
         /**
          * Constructor
          */
-        public function __construct()
+        public function __construct( $mailText = '' )
         {
+            if ( is_null($mailText) || $mailText === '' ) {
+                $mailText = file_get_contents( "php://stdin" );
+            }
+            $this->_mailText = $mailText;
             $this->_init();
             $this->_decode();
         }
@@ -31,11 +35,11 @@ if ( ! class_exists('Wizin_Mail_Receiver') ) {
         /**
          * Return Wizin_Mail_Receiver singleton instance
          */
-        public function &getSingleton()
+        public function &getSingleton( $mailText = '' )
         {
             static $instance;
             if ( ! isset($instance) ) {
-                $instance = new Wizin_Mail_Receiver();
+                $instance = new Wizin_Mail_Receiver( $mailText );
             }
             return $instance;
         }
@@ -53,7 +57,6 @@ if ( ! class_exists('Wizin_Mail_Receiver') ) {
                 require 'Mail/mimeDecode.php';
             }
             // get mail text
-            $this->_mailText = file_get_contents( "php://stdin" );
             if ( extension_loaded('mbstring') ) {
                 $this->_encode = mb_detect_encoding( $this->_mailText,
                     'sjis-win,eucjp-win,jis,utf-8,ascii' );
