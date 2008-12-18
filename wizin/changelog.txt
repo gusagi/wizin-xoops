@@ -3,6 +3,7 @@
 - Fixed bug about syntax error with method chain.(thx navi)
 - Modified function '_advancedCheck' in 'Wizin_User' class.
 - Fixed latent bug about include files in 'Wizin_Filter_Css'.
+- Fixed bug about config file path.
 ----------------------------------
 [2008-12-05 Ver 0.31 -> 0.32]
 - Replaced mbstring.detect_order(from 'auto' to 'sjis-win,eucjp-win,jis,utf-8,ascii').
