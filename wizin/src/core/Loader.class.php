@@ -25,7 +25,7 @@ if ( ! class_exists('Wizin_Core_Loader') ) {
          */
         public function load( $execute = true )
         {
-            $this->_include();
+            $this->_include( $execute );
             $this->_define();
             $this->_init();
             if ( $execute ) {
@@ -37,7 +37,7 @@ if ( ! class_exists('Wizin_Core_Loader') ) {
          * Inculude require files.
          *
          */
-        protected function _include()
+        protected function _include( $execute )
         {
             $srcRootPath = dirname( dirname(__FILE__) );
             // user class
@@ -46,14 +46,18 @@ if ( ! class_exists('Wizin_Core_Loader') ) {
             require $srcRootPath . '/core/App.class.php';
             // session class
             require $srcRootPath . '/core/Session.class.php';
-            // renderer class
-            require $srcRootPath . '/core/Renderer.class.php';
+            if ( $execute ) {
+                // renderer class
+                require $srcRootPath . '/core/Renderer.class.php';
+            }
             // controller class
             require $srcRootPath . '/core/Controller.class.php';
-            // view class
-            require $srcRootPath . '/core/View.class.php';
-            // filter class
-            require $srcRootPath . '/Wizin_Filter.php';
+            if ( $execute ) {
+                // view class
+                require $srcRootPath . '/core/View.class.php';
+                // filter class
+                require $srcRootPath . '/Wizin_Filter.php';
+            }
         }
 
         /**
@@ -73,6 +77,22 @@ if ( ! class_exists('Wizin_Core_Loader') ) {
             // define default view
             if ( ! defined('WIZIN_DEFAULT_VIEW') ) {
                 define( 'WIZIN_DEFAULT_VIEW', 'Wizin_Core_View' );
+            }
+            // define system encoding
+            if ( ! defined('WIZ_SYS_ENCODING') ) {
+                define( 'WIZ_SYS_ENCODING', mb_internal_encoding() );
+            }
+            // define site hostname
+            if ( ! defined('WIZ_SITE_HOST') ) {
+                define( 'WIZ_SITE_HOST', 'wizin.jp' );
+            }
+            // define site root path
+            if ( ! defined('WIZ_SITE_ROOT') ) {
+                define( 'WIZ_SITE_ROOT', WIZ_SYS_ROOT_PATH . '/wizin' );
+            }
+            // define site title
+            if ( ! defined('WIZ_SITE_TITLE') ) {
+                define( 'WIZ_SITE_TITLE', 'Wizin' );
             }
         }
 
