@@ -1,4 +1,7 @@
 ----------------------------------
+[2008-12-24 Ver 0.33 -> 0.34]
+- Fixed bug about undefined constant when script called Wizin_Core_Loader without system.config.php .(thx suin)
+----------------------------------
 [2008-12-13 Ver 0.32 -> 0.33]
 - Fixed bug about syntax error with method chain.(thx navi)
 - Modified function '_advancedCheck' in 'Wizin_User' class.

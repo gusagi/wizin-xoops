@@ -1,35 +1,35 @@
 /**************************************************
- * �ڥ��եȥ�����̾��Wizin
- * ��  �С������  ��0.33
- * ��   �� �� ��   ��Makoto Hashiguchi a.k.a. gusagi
- * ��   �� �� ��   ��Makoto Hashiguchi a.k.a. gusagi
- * ��  �饤����  ��new BSD License
- * �� �ۡ���ڡ��� ��http://www.gusagi.com
- * �ڥ᡼�륢�ɥ쥹��gusagi@gusagi.com
- * ��   ư��Ķ�   ��Apache + PHP4.3�ʾ�(������PHP5�ʾ�)
+ * 【ソフトウェア名】Wizin
+ * 【  バージョン  】0.34
+ * 【   権 利 者   】Makoto Hashiguchi a.k.a. gusagi
+ * 【   作 成 者   】Makoto Hashiguchi a.k.a. gusagi
+ * 【  ライセンス  】new BSD License
+ * 【 ホームページ 】http://www.gusagi.com
+ * 【メールアドレス】gusagi@gusagi.com
+ * 【   動作環境   】Apache + PHP4.3以上(一部、PHP5以上)
 **************************************************/
 
-�ڤϤ���ˡ�
-���Υ��եȥ������ϡ�PHP�ǥ����֥����ƥ���ۤ���ݤ����Ѥ���ե졼�����Ȥ��ƺ����פ��ޤ�����
-�ǽ�Ū�ˤϡ����Υ��եȥ����������Ѥ��뤳�Ȥǡ����̽�����񤯤��Ȥʤ������֥����ƥब���۽�����Τˤ������ȹͤ��Ƥ��ޤ���
+【はじめに】
+このソフトウェアは、PHPでウェブシステムを構築する際に利用するフレームワークとして作成致しました。
+最終的には、このソフトウェアを利用することで、共通処理を書くことなくウェブシステムが構築出来るものにしたいと考えています。
 
-�ʤ������Υ��եȥ���������Ѥ��뤳�Ȥǲ��餫�����꤬ȯ��������硢��ȯ�Ԥ���Ǥ���餤���ͤޤ���
-����������ޤ��󤬡����Ѥ˴ؤ��Ƥϼ�����Ǥ�Ȥ������ȤǤ��ꤤ�פ��ޤ���
+なお、このソフトウェアを使用することで何らかの問題が発生した場合、開発者は責任を負いかねます。
+申し訳ありませんが、使用に関しては自己責任ということでお願い致します。
 
 
-�ڥ饤���󥹡�
+【ライセンス】
 ----
-Wizin���Ρ�data�ǥ��쥯�ȥꡦsrc�ǥ��쥯�ȥ���۲��ˤϡ�����BSD�饤���󥹤Ȥʤ�ޤ���
-lib�ǥ��쥯�ȥ��۲��ϡ��ƥ��եȥ������Υ饤���󥹤Ȥʤ�ޤ���
-    - spyc��MIT License  ( http://www.opensource.org/licenses/mit-license.php )
+Wizin本体（dataディレクトリ・srcディレクトリの配下）は、修正BSDライセンスとなります。
+libディレクトリ配下は、各ソフトウェアのライセンスとなります。
+    - spyc：MIT License  ( http://www.opensource.org/licenses/mit-license.php )
 
 
-�ڼռ���
-���Υ��եȥ������Ǥϡ�YAML�ѡ����Ȥ���spyc�����Ѥ�����ĺ���Ƥ��ޤ���
-���������餷���饤�֥���ȯ���������Ʋ����ä�Chris Wanstrath���Vlad Andersen��˴����פ��ޤ���
+【謝辞】
+このソフトウェアでは、YAMLパーサとしてspycを利用させて頂いています。
+この素晴らしいライブラリを開発・公開して下さったChris Wanstrath氏とVlad Andersen氏に感謝致します。
 
 
 --------------
 
-2008ǯ  2�� 26�� ����
-2008ǯ 12�� 13�� ����
+2008年  2月 26日 作成
+2008年 12月 24日 更新
