@@ -1,4 +1,8 @@
 ----------------------------------
+[2009-01-08 Ver 0.34 -> 0.35]
+- Fixed bug about class 'Wizin_Filter_Pictogram' not exists when 'WIZIN_PEAR_DIR' was not set in include_path.
+- Modified set include path in 'Wizin_Core_Loader'.
+----------------------------------
 [2008-12-24 Ver 0.33 -> 0.34]
 - Fixed bug about undefined constant when script called Wizin_Core_Loader without system.config.php .(thx suin)
 ----------------------------------
