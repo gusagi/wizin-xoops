@@ -458,21 +458,21 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                 }
                 $user = & Wizin_User::getSingleton();
                 $user->checkClient();
-                    if ( ! class_exists('Wizin_Filter_Pictogram') ) {
-                        if ( file_exists(dirname(__FILE__) . '/Pictogram.class.php') ) {
-                            require dirname(__FILE__) . '/Pictogram.class.php';
-                        }
+                if ( ! class_exists('Wizin_Filter_Pictogram') ) {
+                    if ( file_exists(dirname(__FILE__) . '/Pictogram.class.php') ) {
+                        require dirname(__FILE__) . '/Pictogram.class.php';
                     }
-                    if ( is_callable(array('Wizin_Filter_Pictogram', 'factory')) ) {
-                        $encoding = $user->sEncoding;
-                        if ( $encoding === 'sjis-win' ) {
-                            $encoding = 'sjis';
-                        }
-                        // get Wizin_Filter_Pictogram object
-                        $picObject = Wizin_Filter_Pictogram::factory($user->sCarrier, $encoding);
-                        $picObject->setIntercodePrefix( '[emj:' );
-                        $picObject->setIntercodeSuffix( ']' );
+                }
+                if ( is_callable(array('Wizin_Filter_Pictogram', 'factory')) ) {
+                    $encoding = $user->sEncoding;
+                    if ( $encoding === 'sjis-win' ) {
+                        $encoding = 'sjis';
                     }
+                    // get Wizin_Filter_Pictogram object
+                    $picObject = Wizin_Filter_Pictogram::factory($user->sCarrier, $encoding);
+                    $picObject->setIntercodePrefix( '[emj:' );
+                    $picObject->setIntercodeSuffix( ']' );
+                }
             }
             return $picObject;
         }
@@ -488,9 +488,12 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
         function & _getPictograms()
         {
             static $pictograms;
-            if ( ! isset($pictograms) ) {
+            if (! isset($pictograms)) {
+                $pictograms = array();
                 $picObject = $this->_getPicObject();
-                $pictograms = & Wizin_Filter_Pictogram::getPictograms( $picObject );
+                if (isset($picObject) && is_object($picObject)) {
+                    $pictograms = & Wizin_Filter_Pictogram::getPictograms( $picObject );
+                }
             }
             return $pictograms;
         }
@@ -525,24 +528,28 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                 } else if ( is_array($value) ) {
                     $converted[$key] = array_map( array($this, '_convertInputPictogram'), $value );
                 } else {
-                    $converted[$key] = $picObject->convert( $value );
-                    switch ( $picObject->getCarrier() ) {
-                        case 'ezweb':
-                            $carrier = ':ez';
-                            break;
-                        case 'softbank':
-                            $carrier = ':sb';
-                            break;
-                        case 'docomo':
-                        default:
-                            $carrier = ':im';
-                            break;
-                    }
-                    $pattern = '/(\[emj:)( ' . $picObject->getCarrier() .' )(\d+)( )(\])/s';
-                    preg_match_all( $pattern, $converted[$key], $matches, PREG_SET_ORDER );
-                    foreach ( $matches as $match ) {
-                        $converted[$key] = str_replace( $match[0], $match[1] . $match[3] . $carrier .
-                            $match[5], $converted[$key] );
+                    if (isset($picObject) && is_object($picObject)) {
+                        $converted[$key] = $picObject->convert( $value );
+                        switch ( $picObject->getCarrier() ) {
+                            case 'ezweb':
+                                $carrier = ':ez';
+                                break;
+                            case 'softbank':
+                                $carrier = ':sb';
+                                break;
+                            case 'docomo':
+                            default:
+                                $carrier = ':im';
+                                break;
+                        }
+                        $pattern = '/(\[emj:)( ' . $picObject->getCarrier() .' )(\d+)( )(\])/s';
+                        preg_match_all( $pattern, $converted[$key], $matches, PREG_SET_ORDER );
+                        foreach ( $matches as $match ) {
+                            $converted[$key] = str_replace( $match[0], $match[1] . $match[3] . $carrier .
+                                $match[5], $converted[$key] );
+                        }
+                    } else {
+                        $converted[$key] = $value;
                     }
                 }
             }
