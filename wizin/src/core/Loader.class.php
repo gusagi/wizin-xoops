@@ -119,7 +119,7 @@ if ( ! class_exists('Wizin_Core_Loader') ) {
             }
             @ date_default_timezone_set( $timezone );
             // set PEAR path
-            set_include_path( WIZIN_PEAR_DIR . PATH_SEPARATOR . get_include_path() );
+            set_include_path( get_include_path() . PATH_SEPARATOR . WIZIN_PEAR_DIR );
         }
 
         /**
