@@ -4,7 +4,7 @@
 - Modified set include path in 'Wizin_Core_Loader'.
 - Updated pictogram filter.
 - Added pictogram json data for nonmobile.
-- Added 'typecast' emoji images.
+- Added 'typecast' emoji images.(special thanks 'TypeCast' project!)
 ----------------------------------
 [2008-12-24 Ver 0.33 -> 0.34]
 - Fixed bug about undefined constant when script called Wizin_Core_Loader without system.config.php .(thx suin)
