@@ -458,6 +458,9 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                 }
                 $user = & Wizin_User::getSingleton();
                 $user->checkClient();
+                if ( intval(PHP_VERSION) < 5 ) {
+                    return null;
+                }
                 if ( ! class_exists('Wizin_Filter_Pictogram') ) {
                     if ( file_exists(dirname(__FILE__) . '/Pictogram.class.php') ) {
                         require dirname(__FILE__) . '/Pictogram.class.php';
