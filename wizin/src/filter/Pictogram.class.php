@@ -28,7 +28,7 @@ if ( ! class_exists('Wizin_Filter_Pictogram') ) {
              */
             class Wizin_Filter_Pictogram extends Text_Pictogram_Mobile
             {
-                function factory($agent = null, $type = 'sjis')
+                public static function factory($agent = null, $type = 'sjis')
                 {
                     if (isset($agent) && $agent != "") {
                         switch (strtolower($agent)) {
@@ -77,7 +77,7 @@ if ( ! class_exists('Wizin_Filter_Pictogram') ) {
                  * @param object $picObject
                  * @return array
                  */
-                function & getPictograms( & $picObject )
+                public static function & getPictograms( & $picObject )
                 {
                     static $pictograms;
                     if ( ! isset($pictograms) ) {
@@ -114,7 +114,7 @@ if ( ! class_exists('Wizin_Filter_Pictogram') ) {
                  * @param string $jsonFile
                  * @return array
                  */
-                function & getJsonData( $carrier = 'docomo', $jsonFile )
+                public static function & getJsonData( $carrier = 'docomo', $jsonFile )
                 {
                     $jsonData = array();
                     $suffix = Wizin_Util::cipher( $jsonFile );
@@ -139,7 +139,7 @@ if ( ! class_exists('Wizin_Filter_Pictogram') ) {
                  * @param string $jsonFile
                  * @return array
                  */
-                function & getConvertData( $carrier = 'docomo', $jsonFile )
+                public static function & getConvertData( $carrier = 'docomo', $jsonFile )
                 {
                     static $jsonData;
                     if ( ! isset($jsonData) ) {
@@ -168,7 +168,7 @@ if ( ! class_exists('Wizin_Filter_Pictogram') ) {
                  *
                  * @return boolean $return
                  */
-                function isCached( $carrier, $cache )
+                public static function isCached( $carrier, $cache )
                 {
                     clearstatcache();
                     $return = true;
@@ -201,7 +201,7 @@ if ( ! class_exists('Wizin_Filter_Pictogram') ) {
                  *
                  * @return string $_dataDir
                  */
-                function pictogramDataDir()
+                public static function pictogramDataDir()
                 {
                     static $dataDir;
                     if ( is_null($dataDir) ) {
