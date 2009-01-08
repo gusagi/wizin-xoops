@@ -566,7 +566,7 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
          * @param string $contents
          * @return string $contents
          */
-        function filterOutputPictogramMobile( & $contents )
+        function filterOutputPictogramMobile( & $contents, $pictImgDir = '/images/emoticons', $baseType = 'typecast' )
         {
             if ( ! class_exists('Wizin_User') ) {
                 require WIZIN_ROOT_PATH . '/src/Wizin_User.class.php';
@@ -574,35 +574,93 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
             $user = & Wizin_User::getSingleton();
             $user->checkClient();
             $pictograms = & $this->_getPictograms();
-            // check pictogram pattern
-            $pattern = '(\[emj:)(\d+)(:im|:ez|:sb)?(\])';
-            preg_match_all( "/" .$pattern ."/", $contents, $matches, PREG_SET_ORDER );
-            if ( ! empty($matches) ) {
-                foreach ( $matches as $key => $match) {
-                    $id = intval($match[2]);
-                    switch ( $match[3] ) {
-                        case ':ez':
-                            $carrier = 'ezweb';
-                            break;
-                        case ':sb':
-                            $carrier = 'softbank';
-                            break;
-                        case ':im':
-                        default:
-                            $carrier = 'docomo';
-                            break;
+            if ( class_exists('Wizin_Filter_Pictogram') ) {
+                $dataDir = Wizin_Filter_Pictogram::pictogramDataDir();
+                if ( ! $user->bISMobile ) {
+                    // check pictogram pattern in value="***"
+                    $pattern = "/" . '(value=)([\'\"])?([^>]*)(\[emj:)(\d+)(:im|:ez|:sb)?(\])([^>]*)([\'\"])?' . "/is";
+                    preg_match_all( $pattern, $contents, $matches, PREG_SET_ORDER );
+                    if ( ! empty($matches) ) {
+                        foreach ( $matches as $key => $match) {
+                            $string = strtr( $match[0], array('[emj' => '&#091;emj', ']' => '&#093;') );
+                            $contents = str_replace( $match[0], $string, $contents );
+                            unset( $match );
+                        }
                     }
-                    $pictogram = '';
-                    if (isset($pictograms) && ! empty($pictograms[$carrier][$id])) {
-                        $pictogram = $pictograms[$carrier][$id];
-                    } else {
-                        // TODO : output <img> tag
-                        $pictogram = $match[0];
+                    unset( $matches );
+                    // check pictogram pattern in textarea
+                    $pattern = "/" . '(<textarea)([^>]*)(>)([^<]*)?(\[emj:)(\d+)(:im|:ez|:sb)?(\])([^<]*)(<\/textarea>)?' . "/is";
+                    preg_match_all( $pattern, $contents, $matches, PREG_SET_ORDER );
+                    if ( ! empty($matches) ) {
+                        foreach ( $matches as $key => $match) {
+                            $string = strtr( $match[0], array('[emj' => '&#091;emj', ']' => '&#093;') );
+                            $contents = str_replace( $match[0], $string, $contents );
+                            unset( $match );
+                        }
                     }
-                    $contents = str_replace($match[0], $pictogram, $contents );
+                    unset( $matches );
+                    // check pictogram pattern
+                    $pattern = "/" . '(\[|&#091;)(emj:)(\d+)(:im|:ez|:sb)?(\]|&#093;)' . "/";
+                    $idIndex = 3;
+                    $carrierIndex = 4;
+                } else {
+                    // check pictogram pattern
+                    $pattern = "/" . '(\[emj:)(\d+)(:im|:ez|:sb)?(\])' . "/";
+                    $idIndex = 2;
+                    $carrierIndex = 3;
+                }
+                preg_match_all( $pattern, $contents, $matches, PREG_SET_ORDER );
+                if ( ! empty($matches) ) {
+                    $jsonData = array();
+                    foreach ( $matches as $key => $match) {
+                        $id = intval($match[$idIndex]);
+                        switch ( $match[$carrierIndex] ) {
+                            case ':ez':
+                                $carrier = 'ezweb';
+                                break;
+                            case ':sb':
+                                $carrier = 'softbank';
+                                break;
+                            case ':im':
+                            default:
+                                $carrier = 'docomo';
+                                break;
+                        }
+                        $pictogram = '';
+                        if ( isset($pictograms) && ! empty($pictograms[$carrier][$id]) &&
+                                $user->bIsMobile ) {
+                            $pictogram = $pictograms[$carrier][$id];
+                        } else {
+                            if ( ! isset($jsonNonmobileData) ) {
+                                $jsonFile = WIZIN_ROOT_PATH . '/data/pictogram/nonmobile.json';
+                                $jsonNonmobileData = Wizin_Filter_Pictogram::getJsonData( 'nonmobile', $jsonFile );
+                            }
+                            $jsonFile = $dataDir . DIRECTORY_SEPARATOR . $carrier . '_convert.json';
+                            if ( file_exists($jsonFile) && function_exists('json_decode')  ) {
+                                if ( ! isset($jsonData[$carrier]) ) {
+                                    $jsonData[$carrier] =& Wizin_Filter_Pictogram::getJsonData( $carrier, $jsonFile );
+                                }
+                                $pictogram = $match[0];
+                                if ( isset($jsonData[$carrier][$carrier][$id]['docomo']) ) {
+                                    $id = $jsonData[$carrier][$carrier][$id]['docomo'];
+                                    if ( is_numeric($id) ) {
+                                        $pictogram = '<img src="' . $pictImgDir . '/' .
+                                            $jsonNonmobileData[$baseType][$id]['image'] . '" alt="' .
+                                            basename( $jsonNonmobileData[$baseType][$id]['image'], '.gif' ) . '" />';
+                                    } else {
+                                        $pictogram = $id;
+                                    }
+                                }
+                            }
+                        }
+                        $contents = str_replace($match[0], $pictogram, $contents );
+                        unset( $match );
+                    }
+                    unset( $jsonNonmobileData );
+                    unset( $jsonData );
+                    unset( $matches );
                 }
             }
-            $picObject = & $this->_getPicObject();
             return $contents;
         }
     }

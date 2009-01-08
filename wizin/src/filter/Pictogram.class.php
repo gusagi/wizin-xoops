@@ -28,7 +28,7 @@ if ( ! class_exists('Wizin_Filter_Pictogram') ) {
              */
             class Wizin_Filter_Pictogram extends Text_Pictogram_Mobile
             {
-                public static function factory($agent = null, $type = 'sjis')
+                function factory($agent = null, $type = 'sjis')
                 {
                     if (isset($agent) && $agent != "") {
                         switch (strtolower($agent)) {
@@ -77,18 +77,11 @@ if ( ! class_exists('Wizin_Filter_Pictogram') ) {
                  * @param object $picObject
                  * @return array
                  */
-                public static function & getPictograms( & $picObject )
+                function & getPictograms( & $picObject )
                 {
                     static $pictograms;
                     if ( ! isset($pictograms) ) {
-                        $includeFiles = get_included_files();
-                        $needle = str_replace( '_', DIRECTORY_SEPARATOR, 'Text_Pictogram_Mobile' ) . '.php';
-                        foreach ( $includeFiles as $file ) {
-                            if (strpos($file, $needle) !== false) {
-                                $dataDir = dirname( $file ) . '/Mobile/data';
-                                break;
-                            }
-                        }
+                        $dataDir = Wizin_Filter_Pictogram::pictogramDataDir();
                         $suffix = Wizin_Util::cipher( $dataDir );
                         $pictograms = array();
                         $picCarrier = $picObject->getCarrier();
@@ -96,7 +89,7 @@ if ( ! class_exists('Wizin_Filter_Pictogram') ) {
                             foreach ( array('docomo', 'ezweb', 'softbank') as $carrier ) {
                                 $cache = WIZIN_CACHE_DIR . '/wizin_pictogram_' . $picCarrier .
                                     '_' . $carrier . '_'. $suffix;
-                                if ( Wizin_Filter_Pictogram::isCached($dataDir, $carrier, $cache) ) {
+                                if ( Wizin_Filter_Pictogram::isCached($carrier, $cache) ) {
                                     $pictograms[$carrier] = unserialize( file_get_contents($cache) );
                                 } else {
                                     // get pictograms array
@@ -115,17 +108,74 @@ if ( ! class_exists('Wizin_Filter_Pictogram') ) {
                 }
 
                 /**
+                 * return json data array
+                 *
+                 * @param string $carrier
+                 * @param string $jsonFile
+                 * @return array
+                 */
+                function & getJsonData( $carrier = 'docomo', $jsonFile )
+                {
+                    $jsonData = array();
+                    $suffix = Wizin_Util::cipher( $jsonFile );
+                    $cache = WIZIN_CACHE_DIR . '/wizin_pic_json_' . $carrier . '_' . $suffix;
+                    if ( Wizin_Filter_Pictogram::isCached($carrier, $cache) ) {
+                        $jsonData = unserialize( file_get_contents($cache) );
+                    } else {
+                        // get pictograms array
+                        $json = file_get_contents( $jsonFile );
+                        $jsonData = json_decode( $json, true );
+                        $fp = fopen( $cache, 'wb' );
+                        fwrite( $fp, serialize($jsonData) );
+                        fclose( $fp );
+                    }
+                    return $jsonData;
+                }
+
+                /**
+                 * return convert data array
+                 *
+                 * @param string $carrier
+                 * @param string $jsonFile
+                 * @return array
+                 */
+                function & getConvertData( $carrier = 'docomo', $jsonFile )
+                {
+                    static $jsonData;
+                    if ( ! isset($jsonData) ) {
+                        $jsonData = array();
+                    }
+                    if ( ! isset($jsonData[$carrier]) ) {
+                        $suffix = Wizin_Util::cipher( $jsonFile );
+                        $cache = WIZIN_CACHE_DIR . '/wizin_pic_convert_' . $carrier . '_' . $suffix;
+                        if ( Wizin_Filter_Pictogram::isCached($carrier, $cache) ) {
+                            $jsonData[$carrier] = unserialize( file_get_contents($cache) );
+                        } else {
+                            // get pictograms array
+                            $jsonData[$carrier] = array();
+                            $json = file_get_contents( $jsonFile );
+                            $jsonData[$carrier] = json_decode( $json, true );
+                            $fp = fopen( $cache, 'wb' );
+                            fwrite( $fp, serialize($jsonData[$carrier]) );
+                            fclose( $fp );
+                        }
+                    }
+                    return $jsonData;
+                }
+
+                /**
                  * check cached data
                  *
                  * @return boolean $return
                  */
-                function isCached( $dataDir, $carrier, $cache )
+                function isCached( $carrier, $cache )
                 {
                     clearstatcache();
                     $return = true;
                     if ( ! file_exists($cache) ) {
                         $return = false;
                     }
+                    $dataDir = Wizin_Filter_Pictogram::pictogramDataDir();
                     if ( $return && ($handler = opendir($dataDir)) ) {
                         while ( ($file = readdir($handler)) !== false ) {
                             if ( $file === '.' || $file === '..' ) {
@@ -146,8 +196,27 @@ if ( ! class_exists('Wizin_Filter_Pictogram') ) {
                     return $return;
                 }
 
-
-
+                /**
+                 * set/return json data directory path
+                 *
+                 * @return string $_dataDir
+                 */
+                function pictogramDataDir()
+                {
+                    static $dataDir;
+                    if ( is_null($dataDir) ) {
+                        $includeFiles = get_included_files();
+                        $needle = str_replace( '_', DIRECTORY_SEPARATOR, 'Text_Pictogram_Mobile' ) . '.php';
+                        foreach ( $includeFiles as $file ) {
+                            if (strpos($file, $needle) !== false) {
+                                $dataDir = dirname( $file ) . '/Mobile/data';
+                                Wizin_Filter_Pictogram::pictogramDataDir( $dataDir );
+                                break;
+                            }
+                        }
+                    }
+                    return $dataDir;
+                }
             }
         }
     }
