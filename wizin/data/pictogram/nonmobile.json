@@ -1,0 +1,760 @@
+{
+  "typecast" : {
+    "1" : {
+      "image" : "sun.gif"
+    },
+    "2" : {
+      "image" : "cloud.gif"
+    },
+    "3" : {
+      "image" : "rain.gif"
+    },
+    "4" : {
+      "image" : "snow.gif"
+    },
+    "5" : {
+      "image" : "thunder.gif"
+    },
+    "6" : {
+      "image" : "typhoon.gif"
+    },
+    "7" : {
+      "image" : "mist.gif"
+    },
+    "8" : {
+      "image" : "sprinkle.gif"
+    },
+    "9" : {
+      "image" : "aries.gif"
+    },
+    "10" : {
+      "image" : "taurus.gif"
+    },
+    "11" : {
+      "image" : "gemini.gif"
+    },
+    "12" : {
+      "image" : "cancer.gif"
+    },
+    "13" : {
+      "image" : "leo.gif"
+    },
+    "14" : {
+      "image" : "virgo.gif"
+    },
+    "15" : {
+      "image" : "libra.gif"
+    },
+    "16" : {
+      "image" : "scorpius.gif"
+    },
+    "17" : {
+      "image" : "sagittarius.gif"
+    },
+    "18" : {
+      "image" : "capricornus.gif"
+    },
+    "19" : {
+      "image" : "aquarius.gif"
+    },
+    "20" : {
+      "image" : "pisces.gif"
+    },
+    "21" : {
+      "image" : "sports.gif"
+    },
+    "22" : {
+      "image" : "baseball.gif"
+    },
+    "23" : {
+      "image" : "golf.gif"
+    },
+    "24" : {
+      "image" : "tennis.gif"
+    },
+    "25" : {
+      "image" : "soccer.gif"
+    },
+    "26" : {
+      "image" : "ski.gif"
+    },
+    "27" : {
+      "image" : "basketball.gif"
+    },
+    "28" : {
+      "image" : "motorsports.gif"
+    },
+    "29" : {
+      "image" : "pocketbell.gif"
+    },
+    "30" : {
+      "image" : "train.gif"
+    },
+    "31" : {
+      "image" : "subway.gif"
+    },
+    "32" : {
+      "image" : "bullettrain.gif"
+    },
+    "33" : {
+      "image" : "car.gif"
+    },
+    "34" : {
+      "image" : "rvcar.gif"
+    },
+    "35" : {
+      "image" : "bus.gif"
+    },
+    "36" : {
+      "image" : "ship.gif"
+    },
+    "37" : {
+      "image" : "airplane.gif"
+    },
+    "38" : {
+      "image" : "house.gif"
+    },
+    "39" : {
+      "image" : "building.gif"
+    },
+    "40" : {
+      "image" : "postoffice.gif"
+    },
+    "41" : {
+      "image" : "hospital.gif"
+    },
+    "42" : {
+      "image" : "bank.gif"
+    },
+    "43" : {
+      "image" : "atm.gif"
+    },
+    "44" : {
+      "image" : "hotel.gif"
+    },
+    "45" : {
+      "image" : "24hours.gif"
+    },
+    "46" : {
+      "image" : "gasstation.gif"
+    },
+    "47" : {
+      "image" : "parking.gif"
+    },
+    "48" : {
+      "image" : "signaler.gif"
+    },
+    "49" : {
+      "image" : "toilet.gif"
+    },
+    "50" : {
+      "image" : "restaurant.gif"
+    },
+    "51" : {
+      "image" : "cafe.gif"
+    },
+    "52" : {
+      "image" : "bar.gif"
+    },
+    "53" : {
+      "image" : "beer.gif"
+    },
+    "54" : {
+      "image" : "fastfood.gif"
+    },
+    "55" : {
+      "image" : "boutique.gif"
+    },
+    "56" : {
+      "image" : "hairsalon.gif"
+    },
+    "57" : {
+      "image" : "karaoke.gif"
+    },
+    "58" : {
+      "image" : "movie.gif"
+    },
+    "59" : {
+      "image" : "upwardright.gif"
+    },
+    "60" : {
+      "image" : "carouselpony.gif"
+    },
+    "61" : {
+      "image" : "music.gif"
+    },
+    "62" : {
+      "image" : "art.gif"
+    },
+    "63" : {
+      "image" : "drama.gif"
+    },
+    "64" : {
+      "image" : "event.gif"
+    },
+    "65" : {
+      "image" : "ticket.gif"
+    },
+    "66" : {
+      "image" : "smoking.gif"
+    },
+    "67" : {
+      "image" : "nosmoking.gif"
+    },
+    "68" : {
+      "image" : "camera.gif"
+    },
+    "69" : {
+      "image" : "bag.gif"
+    },
+    "70" : {
+      "image" : "book.gif"
+    },
+    "71" : {
+      "image" : "ribbon.gif"
+    },
+    "72" : {
+      "image" : "present.gif"
+    },
+    "73" : {
+      "image" : "birthday.gif"
+    },
+    "74" : {
+      "image" : "telephone.gif"
+    },
+    "75" : {
+      "image" : "mobilephone.gif"
+    },
+    "76" : {
+      "image" : "memo.gif"
+    },
+    "77" : {
+      "image" : "tv.gif"
+    },
+    "78" : {
+      "image" : "game.gif"
+    },
+    "79" : {
+      "image" : "cd.gif"
+    },
+    "80" : {
+      "image" : "heart.gif"
+    },
+    "81" : {
+      "image" : "spade.gif"
+    },
+    "82" : {
+      "image" : "diamond.gif"
+    },
+    "83" : {
+      "image" : "club.gif"
+    },
+    "84" : {
+      "image" : "eye.gif"
+    },
+    "85" : {
+      "image" : "ear.gif"
+    },
+    "86" : {
+      "image" : "rock.gif"
+    },
+    "87" : {
+      "image" : "scissors.gif"
+    },
+    "88" : {
+      "image" : "paper.gif"
+    },
+    "89" : {
+      "image" : "downwardright.gif"
+    },
+    "90" : {
+      "image" : "upwardleft.gif"
+    },
+    "91" : {
+      "image" : "foot.gif"
+    },
+    "92" : {
+      "image" : "shoe.gif"
+    },
+    "93" : {
+      "image" : "eyeglass.gif"
+    },
+    "94" : {
+      "image" : "wheelchair.gif"
+    },
+    "95" : {
+      "image" : "newmoon.gif"
+    },
+    "96" : {
+      "image" : "moon1.gif"
+    },
+    "97" : {
+      "image" : "moon2.gif"
+    },
+    "98" : {
+      "image" : "moon3.gif"
+    },
+    "99" : {
+      "image" : "fullmoon.gif"
+    },
+    "100" : {
+      "image" : "dog.gif"
+    },
+    "101" : {
+      "image" : "cat.gif"
+    },
+    "102" : {
+      "image" : "yacht.gif"
+    },
+    "103" : {
+      "image" : "xmas.gif"
+    },
+    "104" : {
+      "image" : "downwardleft.gif"
+    },
+    "105" : {
+      "image" : "phoneto.gif"
+    },
+    "106" : {
+      "image" : "mailto.gif"
+    },
+    "107" : {
+      "image" : "faxto.gif"
+    },
+    "108" : {
+      "image" : "info01.gif"
+    },
+    "109" : {
+      "image" : "info02.gif"
+    },
+    "110" : {
+      "image" : "mail.gif"
+    },
+    "111" : {
+      "image" : "by-d.gif"
+    },
+    "112" : {
+      "image" : "d-point.gif"
+    },
+    "113" : {
+      "image" : "yen.gif"
+    },
+    "114" : {
+      "image" : "free.gif"
+    },
+    "115" : {
+      "image" : "id.gif"
+    },
+    "116" : {
+      "image" : "key.gif"
+    },
+    "117" : {
+      "image" : "enter.gif"
+    },
+    "118" : {
+      "image" : "clear.gif"
+    },
+    "119" : {
+      "image" : "search.gif"
+    },
+    "120" : {
+      "image" : "new.gif"
+    },
+    "121" : {
+      "image" : "flag.gif"
+    },
+    "122" : {
+      "image" : "freedial.gif"
+    },
+    "123" : {
+      "image" : "sharp.gif"
+    },
+    "124" : {
+      "image" : "mobaq.gif"
+    },
+    "125" : {
+      "image" : "one.gif"
+    },
+    "126" : {
+      "image" : "two.gif"
+    },
+    "127" : {
+      "image" : "three.gif"
+    },
+    "128" : {
+      "image" : "four.gif"
+    },
+    "129" : {
+      "image" : "five.gif"
+    },
+    "130" : {
+      "image" : "six.gif"
+    },
+    "131" : {
+      "image" : "seven.gif"
+    },
+    "132" : {
+      "image" : "eight.gif"
+    },
+    "133" : {
+      "image" : "nine.gif"
+    },
+    "134" : {
+      "image" : "zero.gif"
+    },
+    "135" : {
+      "image" : "ok.gif"
+    },
+    "136" : {
+      "image" : "heart01.gif"
+    },
+    "137" : {
+      "image" : "heart02.gif"
+    },
+    "138" : {
+      "image" : "heart03.gif"
+    },
+    "139" : {
+      "image" : "heart04.gif"
+    },
+    "140" : {
+      "image" : "happy01.gif"
+    },
+    "141" : {
+      "image" : "angry.gif"
+    },
+    "142" : {
+      "image" : "despair.gif"
+    },
+    "143" : {
+      "image" : "sad.gif"
+    },
+    "144" : {
+      "image" : "wobbly.gif"
+    },
+    "145" : {
+      "image" : "up.gif"
+    },
+    "146" : {
+      "image" : "note.gif"
+    },
+    "147" : {
+      "image" : "spa.gif"
+    },
+    "148" : {
+      "image" : "cute.gif"
+    },
+    "149" : {
+      "image" : "kissmark.gif"
+    },
+    "150" : {
+      "image" : "shine.gif"
+    },
+    "151" : {
+      "image" : "flair.gif"
+    },
+    "152" : {
+      "image" : "annoy.gif"
+    },
+    "153" : {
+      "image" : "punch.gif"
+    },
+    "154" : {
+      "image" : "bomb.gif"
+    },
+    "155" : {
+      "image" : "notes.gif"
+    },
+    "156" : {
+      "image" : "down.gif"
+    },
+    "157" : {
+      "image" : "sleepy.gif"
+    },
+    "158" : {
+      "image" : "sign01.gif"
+    },
+    "159" : {
+      "image" : "sign02.gif"
+    },
+    "160" : {
+      "image" : "sign03.gif"
+    },
+    "161" : {
+      "image" : "impact.gif"
+    },
+    "162" : {
+      "image" : "sweat01.gif"
+    },
+    "163" : {
+      "image" : "sweat02.gif"
+    },
+    "164" : {
+      "image" : "dash.gif"
+    },
+    "165" : {
+      "image" : "sign04.gif"
+    },
+    "166" : {
+      "image" : "sign05.gif"
+    },
+    "167" : {
+      "image" : "slate.gif"
+    },
+    "168" : {
+      "image" : "pouch.gif"
+    },
+    "169" : {
+      "image" : "pen.gif"
+    },
+    "170" : {
+      "image" : "shadow.gif"
+    },
+    "171" : {
+      "image" : "chair.gif"
+    },
+    "172" : {
+      "image" : "night.gif"
+    },
+    "173" : {
+      "image" : "soon.gif"
+    },
+    "174" : {
+      "image" : "on.gif"
+    },
+    "175" : {
+      "image" : "end.gif"
+    },
+    "176" : {
+      "image" : "clock.gif"
+    },
+    "1001" : {
+      "image" : "appli01.gif"
+    },
+    "1002" : {
+      "image" : "appli02.gif"
+    },
+    "1003" : {
+      "image" : "t-shirt.gif"
+    },
+    "1004" : {
+      "image" : "moneybag.gif"
+    },
+    "1005" : {
+      "image" : "rouge.gif"
+    },
+    "1006" : {
+      "image" : "denim.gif"
+    },
+    "1007" : {
+      "image" : "snowboard.gif"
+    },
+    "1008" : {
+      "image" : "bell.gif"
+    },
+    "1009" : {
+      "image" : "door.gif"
+    },
+    "1010" : {
+      "image" : "dollar.gif"
+    },
+    "1011" : {
+      "image" : "pc.gif"
+    },
+    "1012" : {
+      "image" : "loveletter.gif"
+    },
+    "1013" : {
+      "image" : "wrench.gif"
+    },
+    "1014" : {
+      "image" : "pencil.gif"
+    },
+    "1015" : {
+      "image" : "crown.gif"
+    },
+    "1016" : {
+      "image" : "ring.gif"
+    },
+    "1017" : {
+      "image" : "sandclock.gif"
+    },
+    "1018" : {
+      "image" : "bicycle.gif"
+    },
+    "1019" : {
+      "image" : "japanesetea.gif"
+    },
+    "1020" : {
+      "image" : "watch.gif"
+    },
+    "1021" : {
+      "image" : "think.gif"
+    },
+    "1022" : {
+      "image" : "confident.gif"
+    },
+    "1023" : {
+      "image" : "coldsweats01.gif"
+    },
+    "1024" : {
+      "image" : "coldsweats02.gif"
+    },
+    "1025" : {
+      "image" : "pout.gif"
+    },
+    "1026" : {
+      "image" : "gawk.gif"
+    },
+    "1027" : {
+      "image" : "lovely.gif"
+    },
+    "1028" : {
+      "image" : "good.gif"
+    },
+    "1029" : {
+      "image" : "bleah.gif"
+    },
+    "1030" : {
+      "image" : "wink.gif"
+    },
+    "1031" : {
+      "image" : "happy02.gif"
+    },
+    "1032" : {
+      "image" : "bearing.gif"
+    },
+    "1033" : {
+      "image" : "catface.gif"
+    },
+    "1034" : {
+      "image" : "crying.gif"
+    },
+    "1035" : {
+      "image" : "weep.gif"
+    },
+    "1036" : {
+      "image" : "ng.gif"
+    },
+    "1037" : {
+      "image" : "clip.gif"
+    },
+    "1038" : {
+      "image" : "copyright.gif"
+    },
+    "1039" : {
+      "image" : "tm.gif"
+    },
+    "1040" : {
+      "image" : "run.gif"
+    },
+    "1041" : {
+      "image" : "secret.gif"
+    },
+    "1042" : {
+      "image" : "recycle.gif"
+    },
+    "1043" : {
+      "image" : "r-mark.gif"
+    },
+    "1044" : {
+      "image" : "danger.gif"
+    },
+    "1045" : {
+      "image" : "ban.gif"
+    },
+    "1046" : {
+      "image" : "empty.gif"
+    },
+    "1047" : {
+      "image" : "pass.gif"
+    },
+    "1048" : {
+      "image" : "full.gif"
+    },
+    "1049" : {
+      "image" : "leftright.gif"
+    },
+    "1050" : {
+      "image" : "updown.gif"
+    },
+    "1051" : {
+      "image" : "school.gif"
+    },
+    "1052" : {
+      "image" : "wave.gif"
+    },
+    "1053" : {
+      "image" : "fuji.gif"
+    },
+    "1054" : {
+      "image" : "clover.gif"
+    },
+    "1055" : {
+      "image" : "cherry.gif"
+    },
+    "1056" : {
+      "image" : "tulip.gif"
+    },
+    "1057" : {
+      "image" : "banana.gif"
+    },
+    "1058" : {
+      "image" : "apple.gif"
+    },
+    "1059" : {
+      "image" : "bud.gif"
+    },
+    "1060" : {
+      "image" : "maple.gif"
+    },
+    "1061" : {
+      "image" : "cherryblossom.gif"
+    },
+    "1062" : {
+      "image" : "riceball.gif"
+    },
+    "1063" : {
+      "image" : "cake.gif"
+    },
+    "1064" : {
+      "image" : "bottle.gif"
+    },
+    "1065" : {
+      "image" : "noodle.gif"
+    },
+    "1066" : {
+      "image" : "bread.gif"
+    },
+    "1067" : {
+      "image" : "snail.gif"
+    },
+    "1068" : {
+      "image" : "chick.gif"
+    },
+    "1069" : {
+      "image" : "penguin.gif"
+    },
+    "1070" : {
+      "image" : "fish.gif"
+    },
+    "1071" : {
+      "image" : "delicious.gif"
+    },
+    "1072" : {
+      "image" : "smile.gif"
+    },
+    "1073" : {
+      "image" : "horse.gif"
+    },
+    "1074" : {
+      "image" : "pig.gif"
+    },
+    "1075" : {
+      "image" : "wine.gif"
+    },
+    "1076" : {
+      "image" : "shock.gif"
+    }
+  }
+}
