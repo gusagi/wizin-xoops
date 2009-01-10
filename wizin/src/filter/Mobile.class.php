@@ -76,6 +76,35 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
             $parent->_aOutputFilter = array();
         }
 
+        function filterInputMobile()
+        {
+            $method = strtolower( getenv('REQUEST_METHOD') );
+            if ( $method === 'get' ) {
+                $_GET = $this->_filterInputMobile( $_GET );
+            } else if ( $method === 'post' ) {
+                $_POST = $this->_filterInputMobile( $_POST );
+            }
+            $_REQUEST = $this->_filterInputMobile( $_REQUEST );
+        }
+
+        function _filterInputMobile( $input )
+        {
+            $_input = array();
+            foreach ( $input as $key => $value ) {
+                if ( empty($value) && $value === '' ) {
+                    $_input[$key] = '';
+                } else if ( is_array($value) ) {
+                    $_input[$key] = array_map( array($this, '_filterInputMobile'), $value );
+                } else {
+                    // convert from zenkaku to hankaku
+                    if ( extension_loaded('mbstring') ) {
+                        $_input[$key] = mb_convert_kana( $value, 'K' );
+                    }
+                }
+            }
+            return $_input;
+        }
+
         /**
          * optimizer filter for mobile
          *
@@ -218,7 +247,7 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                     $encode = 'ascii';
                 }
                 // replace for DOMDocument convert
-                $string = strtr( $string, array('&' => '&amp;',
+                $string = strtr( $string, array('&' => '&amp;', "\r\n" => PHP_EOL, "\r" => PHP_EOL, "\n" => PHP_EOL,
                     '</textarea>' => Wizin_Util::cipher( __FILE__ ) . '</textarea>',
                     '</TEXTAREA>' => Wizin_Util::cipher( __FILE__ ) . '</TEXTAREA>') );
                 // convert XML(step1)
@@ -522,7 +551,6 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
 
         function _convertInputPictogram( $input )
         {
-            static $docomoConvertArray;
             $converted = array();
             $picObject = & $this->_getPicObject();
             foreach ( $input as $key => $value ) {
@@ -533,6 +561,7 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                 } else {
                     if (isset($picObject) && is_object($picObject)) {
                         $converted[$key] = $picObject->convert( $value );
+                        $converted[$key] = $picObject->unescapeString( $converted[$key] );
                         switch ( $picObject->getCarrier() ) {
                             case 'ezweb':
                                 $carrier = ':ez';
@@ -579,7 +608,7 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
             $pictograms = & $this->_getPictograms();
             if ( class_exists('Wizin_Filter_Pictogram') ) {
                 $dataDir = Wizin_Filter_Pictogram::pictogramDataDir();
-                if ( ! $user->bISMobile ) {
+                if ( ! $user->bIsMobile ) {
                     // check pictogram pattern in value="***"
                     $pattern = "/" . '(value=)([\'\"])?([^>]*)(\[emj:)(\d+)(:im|:ez|:sb)?(\])([^>]*)([\'\"])?' . "/is";
                     preg_match_all( $pattern, $contents, $matches, PREG_SET_ORDER );
@@ -603,9 +632,9 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                     }
                     unset( $matches );
                     // check pictogram pattern
-                    $pattern = "/" . '(\[|&#091;)(emj:)(\d+)(:im|:ez|:sb)?(\]|&#093;)' . "/";
-                    $idIndex = 3;
-                    $carrierIndex = 4;
+                    $pattern = "/" . '(\[emj:)(\d+)(:im|:ez|:sb)?(\])' . "/";
+                    $idIndex = 2;
+                    $carrierIndex = 3;
                 } else {
                     // check pictogram pattern
                     $pattern = "/" . '(\[emj:)(\d+)(:im|:ez|:sb)?(\])' . "/";
@@ -630,8 +659,7 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                                 break;
                         }
                         $pictogram = '';
-                        if ( isset($pictograms) && ! empty($pictograms[$carrier][$id]) &&
-                                $user->bIsMobile ) {
+                        if ( isset($pictograms) && ! empty($pictograms[$carrier][$id]) && $user->bIsMobile ) {
                             $pictogram = $pictograms[$carrier][$id];
                         } else {
                             if ( ! isset($jsonNonmobileData) ) {
@@ -645,13 +673,13 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                                 }
                                 $pictogram = $match[0];
                                 if ( isset($jsonData[$carrier][$carrier][$id]['docomo']) ) {
-                                    $id = $jsonData[$carrier][$carrier][$id]['docomo'];
-                                    if ( is_numeric($id) ) {
+                                    $key = $jsonData[$carrier][$carrier][$id]['docomo'];
+                                    if ( is_numeric($key) ) {
                                         $pictogram = '<img src="' . $pictImgDir . '/' .
-                                            $jsonNonmobileData[$baseType][$id]['image'] . '" alt="' .
-                                            basename( $jsonNonmobileData[$baseType][$id]['image'], '.gif' ) . '" />';
+                                            $jsonNonmobileData[$baseType][$key]['image'] . '" alt="' .
+                                            basename( $jsonNonmobileData[$baseType][$key]['image'], '.gif' ) . '" />';
                                     } else {
-                                        $pictogram = $id;
+                                        $pictogram = mb_convert_encoding($key, mb_internal_encoding(), 'utf-8');
                                     }
                                 }
                             }
