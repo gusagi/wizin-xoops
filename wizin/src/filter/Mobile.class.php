@@ -98,7 +98,7 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                 } else {
                     // convert from zenkaku to hankaku
                     if ( extension_loaded('mbstring') ) {
-                        $_input[$key] = mb_convert_kana( $value, 'K' );
+                        $_input[$key] = mb_convert_kana( $value, 'KV' );
                     }
                 }
             }
@@ -453,6 +453,13 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                     }
                 }
                 if ( class_exists('Wizin_Filter_Css') ) {
+                    if (extension_loaded('mbstring')) {
+                        $encodingSalt = mb_convert_kana(mb_internal_encoding(), 'A');
+                        for($count = 0; $count < 10; $count++) {
+                            $encodingSalt .= PHP_EOL . $encodingSalt;
+                        }
+                        $contents .= $encodingSalt;
+                    }
                     // apply style
                     foreach ( $cssBaseDirs as $cssDir ) {
                         // directory check
@@ -463,6 +470,9 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                         $filterCss = $filterCss->setBaseDir( $cssDir );
                         $contents = $filterCss->apply( $contents );
                         unset( $filterCss );
+                    }
+                    if (extension_loaded('mbstring')) {
+                        $contents = str_replace($encodingSalt, '', $contents);
                     }
                 }
             }
