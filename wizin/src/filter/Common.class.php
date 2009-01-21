@@ -409,7 +409,7 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                             } else {
                                 $newExt = 'jpg';
                             }
-                            $imageSizeInfo = getimagesize( $imagePath );
+                            $imageSizeInfo = @ getimagesize( $imagePath );
                             $width = $imageSizeInfo[0];
                             $height = $imageSizeInfo[1];
                             $format = $imageSizeInfo[2];
@@ -420,7 +420,7 @@ if ( ! class_exists('Wizin_Filter_Common') ) {
                                     continue;
                                 }
                                 $getFileFlag = true;
-                                $imageSizeInfo = getimagesize( $imagePath );
+                                $imageSizeInfo = @ getimagesize( $imagePath );
                                 $width = $imageSizeInfo[0];
                                 $height = $imageSizeInfo[1];
                                 $format = $imageSizeInfo[2];
