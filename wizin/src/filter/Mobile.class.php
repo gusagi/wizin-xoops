@@ -76,31 +76,42 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
             $parent->_aOutputFilter = array();
         }
 
+        /**
+         * call input filter for mobile
+         *
+         */
         function filterInputMobile()
         {
             $method = strtolower( getenv('REQUEST_METHOD') );
             if ( $method === 'get' ) {
-                $_GET = $this->_filterInputMobile( $_GET );
+                $_GET = $this->_filterInputKanaConvert( $_GET );
             } else if ( $method === 'post' ) {
-                $_POST = $this->_filterInputMobile( $_POST );
+                $_POST = $this->_filterInputKanaConvert( $_POST );
             }
-            $_REQUEST = $this->_filterInputMobile( $_REQUEST );
+            $_REQUEST = $this->_filterInputKanaConvert( $_REQUEST );
         }
 
-        function _filterInputMobile( $input )
+        /**
+         * convert kana filter for input value with mobile
+         *
+         * @param array $input
+         * @return array $_input
+         */
+        function _filterInputKanaConvert( $input )
         {
-            $_input = array();
-            foreach ( $input as $key => $value ) {
-                if ( empty($value) && $value === '' ) {
-                    $_input[$key] = '';
-                } else if ( is_array($value) ) {
-                    $_input[$key] = array_map( array($this, '_filterInputMobile'), $value );
-                } else {
-                    // convert from zenkaku to hankaku
-                    if ( extension_loaded('mbstring') ) {
+            if ( extension_loaded('mbstring') ) {
+                $_input = array();
+                foreach ( $input as $key => $value ) {
+                    if ( empty($value) && $value === '' ) {
+                        $_input[$key] = '';
+                    } else if ( is_array($value) ) {
+                        $_input[$key] = array_map( array($this, '_filterInputKanaConvert'), $value );
+                    } else {
                         $_input[$key] = mb_convert_kana( $value, 'KV' );
                     }
                 }
+            } else {
+                $_input = $input;
             }
             return $_input;
         }
