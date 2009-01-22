@@ -1,4 +1,7 @@
 ----------------------------------
+[2009-01-22 Ver 0.35 -> 0.36]
+- Added input filter for mobile.
+----------------------------------
 [2009-01-08 Ver 0.34 -> 0.35]
 - Fixed bug about class 'Wizin_Filter_Pictogram' not exists when 'WIZIN_PEAR_DIR' was not set in include_path.
 - Modified set include path in 'Wizin_Core_Loader'.
