@@ -1,4 +1,10 @@
 ----------------------------------
+[2009-01-28 Ver 0.36 -> 0.37]
+- Added class 'Wizin_Cache'.
+- Added function 'getContentsByHttp' in 'Wizin_Util_Web'.
+- Changed function name from 'getPrefix' to 'salt'.
+- Modified mobile optimize filter.
+----------------------------------
 [2009-01-22 Ver 0.35 -> 0.36]
 - Added input filter for mobile.
 ----------------------------------
