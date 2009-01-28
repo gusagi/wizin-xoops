@@ -135,6 +135,11 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
             $pattern = '(<input)([^>]*)(type=)([\"\'])(password)([\"\'])([^>]*)(>)';
             $replacement = '${1}${2}${3}${4}text${6} ${7}${8}';
             $contents = preg_replace( "/" .$pattern ."/i", $replacement, $contents );
+            $pattern = '(enctype=)([\"\'])(multipart\/form-data)([\"\'])';
+            $replacement = '';
+            $pattern = '(<input)([^>]*)(type=)([\"\'])(file)([\"\'])([^>]*)(>)';
+            $replacement = '${1}${2}${3}${4}hidden${6} ${7}${8}';
+            $contents = preg_replace( "/" .$pattern ."/i", $replacement, $contents );
             Wizin_Filter_Mobile::filterDeleteTags( $contents );
             Wizin_Filter_Mobile::filterInsertAnchor( $contents, $baseUri, $currentUri );
             // convert from zenkaku to hankaku
