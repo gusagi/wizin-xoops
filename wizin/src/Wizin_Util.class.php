@@ -23,23 +23,23 @@ if ( ! class_exists('Wizin_Util') ) {
     class Wizin_Util
     {
         /**
-         * return string for something prefix
+         * return string for something salt
          *
          * @param string $salt
          * @return string $prefix
          */
-        function getPrefix( $salt = '' )
+        function salt( $seed = '' )
         {
-            static $prefix;
-            if ( ! isset($prefix) ) {
-                if ( empty($salt) ) {
+            static $salt;
+            if ( ! isset($salt) ) {
+                if ( empty($seed) ) {
                     $salt = getenv( 'SERVER_NAME' );
                 }
-                $hostSalt = getenv( 'SERVER_NAME' );
+                $hostSeed = getenv( 'SERVER_NAME' );
                 $replaceArray = array( '/' => '%', '.' => '%%' );
-                $prefix = strtr( $hostSalt, $replaceArray ) . '_' . Wizin_Util::cipher( $salt );
+                $salt = strtr( $hostSeed, $replaceArray ) . '_' . Wizin_Util::cipher( $seed );
             }
-            return $prefix;
+            return $salt;
         }
 
         /**
