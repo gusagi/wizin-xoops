@@ -177,7 +177,7 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                 while ( ! feof($fp) ) {
                     $data .= fread( $fp, 8192 );
                 }
-                stream_set_timeout( $fp, 0, 2 );
+                stream_set_timeout( $fp, 1, 0 );
                 fclose( $fp );
 
                 // save file
@@ -190,5 +190,72 @@ if ( ! class_exists('Wizin_Util_Web') ) {
             return '';
         }
 
+        /**
+         * get contents by http request
+         *
+         * @param string $url
+         * @return string $contents
+         */
+        function getContentsByHttp( $url = null, $agent = '', $referer = '' )
+        {
+            if ( empty($url) ) {
+                return null;
+            }
+            //
+            // get contents by http ( fsockopen )
+            //
+            $urlArray = parse_url( $url );
+            $host = $urlArray['host'];
+            $port = ( ! empty($urlArray['port']) && $urlArray['port'] != '80' ) ?
+                $urlArray['port'] : '80';
+            $path = $urlArray['path'];
+            $path .= ( ! empty($urlArray['query']) ) ? '?' . str_replace( '&amp;', '&', $urlArray['query'] ): '';
+            $path .= ( ! empty($urlArray['fragment']) ) ? '#' . $urlArray['fragment'] : '';
+            $referer = '';
+            $https = getenv( 'HTTPS' );
+            if ( empty($https) || strtolower($https) !== 'on' ) {
+                $referer = 'http://';
+                $referer .= getenv( 'SERVER_NAME' );
+                $port = getenv( 'SERVER_PORT' );
+            }
+            $replaceArray = array( "\r" => '', "\n" => '' );
+
+            // socket connect
+            $fp = fsockopen( $host, $port, $errNumber, $errString, 1 );
+            if ( $fp ) {
+                // send request
+                $request  = "GET $path HTTP/1.0 \r\n";
+                $request .= "Host: $host \r\n";
+                if ( $referer !== '' ) {
+                    $request .= "Referer: $referer \r\n";
+                }
+                if ( $agent !== '' ) {
+                    $request .= "User-Agent: $agent \r\n";
+                }
+                $request .= "Connection: Close \r\n\r\n";
+                stream_set_timeout( $fp, 1, 0 );
+                fwrite( $fp, $request );
+
+                // get data
+                while ( ! feof($fp) ) {
+                    $buffer = fgets( $fp, 256 );
+                    if ( empty($buffer) ) {
+                        continue;
+                    }
+                    $buffer = strtr( $buffer, $replaceArray );
+                    if ( empty($buffer) ) {
+                        break;
+                    }
+                }
+                $contents = '';
+                while ( ! feof($fp) ) {
+                    $contents .= fread( $fp, 8192 );
+                }
+                stream_set_timeout( $fp, 1, 0 );
+                fclose( $fp );
+                return $contents;
+            }
+            return '';
+        }
     }
 }
