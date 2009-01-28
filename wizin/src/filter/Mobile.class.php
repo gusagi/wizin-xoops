@@ -574,7 +574,6 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
             $_REQUEST = $this->_convertInputPictogram( $_REQUEST );
         }
 
-
         function _convertInputPictogram( $input )
         {
             $converted = array();
