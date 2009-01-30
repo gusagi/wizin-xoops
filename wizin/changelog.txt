@@ -4,6 +4,7 @@
 - Added function 'getContentsByHttp' in 'Wizin_Util_Web'.
 - Changed function name from 'getPrefix' to 'salt'.
 - Modified mobile optimize filter.
+- Fixed bug about use 'foreach' to string variable.
 ----------------------------------
 [2009-01-22 Ver 0.35 -> 0.36]
 - Added input filter for mobile.
