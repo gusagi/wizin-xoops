@@ -105,7 +105,7 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                     if ( empty($value) && $value === '' ) {
                         $_input[$key] = '';
                     } else if ( is_array($value) ) {
-                        $_input[$key] = array_map( array($this, '_filterInputKanaConvert'), $value );
+                        $_input[$key] = $this->_filterInputKanaConvert($value);
                     } else {
                         $_input[$key] = mb_convert_kana( $value, 'KV' );
                     }
@@ -582,7 +582,7 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                 if ( empty($value) && $value === '' ) {
                     $converted[$key] = '';
                 } else if ( is_array($value) ) {
-                    $converted[$key] = array_map( array($this, '_convertInputPictogram'), $value );
+                    $converted[$key] = $this->_convertInputPictogram($value);
                 } else {
                     if (isset($picObject) && is_object($picObject)) {
                         $converted[$key] = $picObject->convert( $value );
