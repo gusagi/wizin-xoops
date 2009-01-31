@@ -137,6 +137,7 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
             $contents = preg_replace( "/" .$pattern ."/i", $replacement, $contents );
             $pattern = '(enctype=)([\"\'])(multipart\/form-data)([\"\'])';
             $replacement = '';
+            $contents = preg_replace( "/" .$pattern ."/i", $replacement, $contents );
             $pattern = '(<input)([^>]*)(type=)([\"\'])(file)([\"\'])([^>]*)(>)';
             $replacement = '${1}${2}${3}${4}hidden${6} ${7}${8}';
             $contents = preg_replace( "/" .$pattern ."/i", $replacement, $contents );
