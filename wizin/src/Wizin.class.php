@@ -83,9 +83,9 @@ if ( ! defined('WIZIN_ROOT_PATH') ) {
                 }
 
                 //
-                // WIZ_SITE_ROOT
-                if ( ! defined('WIZ_SITE_ROOT') ) {
-                    define( 'WIZ_SITE_ROOT', WIZIN_ROOT_PATH );
+                // WIZIN_URL
+                if ( ! defined('WIZIN_URL') ) {
+                    define('WIZIN_URL', 'http://' . getenv('SERVER_NAME') . '/');
                 }
 
             }

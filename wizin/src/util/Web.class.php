@@ -159,7 +159,7 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                 }
                 $request .= "User-Agent: $agent \r\n";
                 $request .= "Connection: Close \r\n\r\n";
-                stream_set_timeout( $fp, 1, 0 );
+                stream_set_timeout( $fp, 3, 0 );
                 fwrite( $fp, $request );
 
                 // get data
@@ -177,7 +177,7 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                 while ( ! feof($fp) ) {
                     $data .= fread( $fp, 8192 );
                 }
-                stream_set_timeout( $fp, 1, 0 );
+                stream_set_timeout( $fp, 3, 0 );
                 fclose( $fp );
 
                 // save file
@@ -233,7 +233,7 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                     $request .= "User-Agent: $agent \r\n";
                 }
                 $request .= "Connection: Close \r\n\r\n";
-                stream_set_timeout( $fp, 1, 0 );
+                stream_set_timeout( $fp, 3, 0 );
                 fwrite( $fp, $request );
 
                 // get data
@@ -251,11 +251,76 @@ if ( ! class_exists('Wizin_Util_Web') ) {
                 while ( ! feof($fp) ) {
                     $contents .= fread( $fp, 8192 );
                 }
-                stream_set_timeout( $fp, 1, 0 );
+                stream_set_timeout( $fp, 3, 0 );
                 fclose( $fp );
                 return $contents;
             }
             return '';
+        }
+
+        function setCheckLocationHeader()
+        {
+            if (intval(PHP_VERSION) < 5) {
+                ob_start(array('Wizin_Util_Web', 'checkLocationHeader'));
+            } else {
+                register_shutdown_function(array('Wizin_Util_Web', 'checkLocationHeader'));
+            }
+        }
+
+        function checkLocationHeader($buf = '')
+        {
+            $sessionId = session_id();
+            $sessionName = session_name();
+            if (empty($sessionId) || empty($sessionName)) {
+                return $buf;
+            }
+            $headers = array();
+            if (function_exists('apache_response_headers')) {
+                $headers = apache_response_headers();
+            } else {
+                if (function_exists('headers_list')) {
+                    $headersList = headers_list();
+                    foreach ($headersList as $header) {
+                        $parseHeader = explode(':', $header);
+                        $key = array_shift($parseHeader);
+                        $value = implode(':', $parseHeader);
+                        $headers[$key] = $value;
+                    }
+                    unset($headersList);
+                }
+            }
+            foreach ($headers as $key => $value) {
+                if (strtolower(trim($key)) === 'location') {
+                    $url = trim($value);
+                    $urlFirstChar = substr( $url, 0, 1 );
+                    if ( strpos($url, WIZIN_URL) === 0 || $urlFirstChar === '.' ||
+                            $urlFirstChar === '/' || $urlFirstChar === '#' ) {
+                        if (strpos($url, $sessionName) === false) {
+                            if ( ! strstr($url, '?') ) {
+                                $connector = '?';
+                            } else {
+                                $connector = '&';
+                            }
+                            if ( strstr($url, '#') ) {
+                                $urlArray = explode( '#', $url );
+                                $url = $urlArray[0] . $connector . $sessionName .
+                                    '=' . session_id();
+                                if ( ! empty($urlArray[1]) ) {
+                                    $url .= '#' . $urlArray[1];
+                                }
+                            } else {
+                                $url .= $connector . $sessionName . '=' . session_id();
+                            }
+                            // TODO : use param >>
+                            $url .= '&guid=on';
+                            // TODO : use param <<
+                            header('Location: ' . $url);
+                            exit();
+                        }
+                    }
+                }
+            }
+            return $buf;
         }
     }
 }
