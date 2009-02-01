@@ -1,4 +1,7 @@
 ----------------------------------
+[2009-02-01 Ver 0.37 -> 0.38]
+- Added logic for the problem which session will be closed the case of redirect with location header.(thx nazo and naoto_is)
+----------------------------------
 [2009-01-28 Ver 0.36 -> 0.37]
 - Added class 'Wizin_Cache'.
 - Added function 'getContentsByHttp' in 'Wizin_Util_Web'.
