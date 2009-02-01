@@ -34,7 +34,7 @@ if ( ! class_exists('Wizin_Plugin_User_Docomo') ) {
                 $filter =& Wizin_Filter_Mobile::getSingleton();
                 $params = array();
                 $filter->addOutputFilter( array( $this, 'filterDocomo' ), $params );
-                $this->_checkGuid();
+                //$this->_checkGuid();
             }
         }
 
