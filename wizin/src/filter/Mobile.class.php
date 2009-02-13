@@ -141,7 +141,7 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
             $pattern = '(<input)([^>]*)(type=)([\"\'])(file)([\"\'])([^>]*)(>)';
             $replacement = '${1}${2}${3}${4}hidden${6} ${7}${8}';
             $contents = preg_replace( "/" .$pattern ."/i", $replacement, $contents );
-            Wizin_Filter_Mobile::filterDeleteTags( $contents );
+            Wizin_Filter_Mobile::filterDeleteTags( $contents, $final = true );
             Wizin_Filter_Mobile::filterInsertAnchor( $contents, $baseUri, $currentUri );
             // convert from zenkaku to hankaku
             if ( extension_loaded('mbstring') ) {
@@ -155,7 +155,7 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
          *
          * @param string $contents
          */
-        function filterDeleteTags( & $contents )
+        function filterDeleteTags( & $contents, $final = false )
         {
             static $callFlag;
             if ( ! isset($callFlag) ) {
@@ -176,6 +176,18 @@ if ( ! class_exists('Wizin_Filter_Mobile') ) {
                 $pattern = '<\/?nobr>';
                 $replacement = '';
                 $contents = preg_replace( "/" .$pattern ."/", $replacement, $contents );
+            }
+            if ( $final ) {
+                // delete first/last '@' string in link
+                $pattern = '(<a)([^>]*)(href=)([\"\'])(@)(\S*)(@)([\"\'])([^>]*)(>)';
+                preg_match_all( "/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER );
+                if ( ! empty($matches) ) {
+                    foreach ( $matches as $key => $match) {
+                        $contents = str_replace(
+                            $match[3] . $match[4] .$match[5] . $match[6] . $match[7] . $match[8] ,
+                            $match[3] . $match[4] . $match[6] . $match[8], $contents );
+                    }
+                }
             }
         }
 
