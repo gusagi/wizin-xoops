@@ -10,7 +10,7 @@
  *
  */
 
-if ( ! class_exists('Wizin_Plugin_User_Googlebot') ) {
+if (! class_exists('Wizin_Plugin_User_Googlebot')) {
     class Wizin_Plugin_User_Googlebot extends Wizin_StdClass
     {
         function __construct()
@@ -30,10 +30,10 @@ if ( ! class_exists('Wizin_Plugin_User_Googlebot') ) {
 
         function _checkMobile()
         {
-            $agent = getenv( 'HTTP_USER_AGENT' );
+            $agent = getenv('HTTP_USER_AGENT');
             $user =& Wizin_User::getSingleton();
             $pattern = '/([a-zA-Z_0-9\/.;() -]+)(googlebot-mobile)([a-zA-Z_0-9\/.;() -]+)/i';
-            if ( preg_match($pattern, $agent, $matches) ) {
+            if (preg_match($pattern, $agent, $matches)) {
                 $user->bIsMobile = true;
             } else {
                 $user->bIsMobile = false;

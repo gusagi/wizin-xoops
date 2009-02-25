@@ -11,8 +11,8 @@
  *
  */
 
-if( ! class_exists( 'Wizin_Parser_Yaml' ) ) {
-    require dirname( dirname(__FILE__) ) . '/Wizin_Cache.php';
+if(! class_exists('Wizin_Parser_Yaml')) {
+    require dirname(dirname(__FILE__)) . '/Wizin_Cache.php';
 
     /**
      * Wizin framework YAML parser class
@@ -28,7 +28,7 @@ if( ! class_exists( 'Wizin_Parser_Yaml' ) ) {
         function &getSingleton()
         {
             static $instance;
-            if ( ! isset($instance) ) {
+            if (! isset($instance)) {
                 $instance = new Wizin_Parser_Yaml();
             }
             return $instance;
@@ -40,12 +40,12 @@ if( ! class_exists( 'Wizin_Parser_Yaml' ) ) {
          * @param string $file
          * @return array $data
          */
-        function parse( $file )
+        function parse($file)
         {
-            if ( file_exists($file) && is_readable($file) ) {
+            if (file_exists($file) && is_readable($file)) {
                 $cacheObject = new Wizin_Cache('wizin_yaml_', Wizin_Util::cipher($file));
                 if (! $cacheObject->isCached($file)) {
-                    if ( ! class_exists('Spyc') ) {
+                    if (! class_exists('Spyc')) {
                         require_once WIZIN_ROOT_PATH . '/lib/spyc/spyc.php';
                     }
                     $data = Spyc::YAMLLoad($file);

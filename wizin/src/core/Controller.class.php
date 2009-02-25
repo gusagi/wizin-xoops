@@ -11,8 +11,8 @@
  *
  */
 
-if ( ! class_exists('Wizin_Core_Controller') ) {
-    require dirname( dirname(__FILE__) ) . '/Wizin.class.php';
+if (! class_exists('Wizin_Core_Controller')) {
+    require dirname(dirname(__FILE__)) . '/Wizin.class.php';
     /**
      * Wizin framework core controller class
      *
@@ -23,14 +23,14 @@ if ( ! class_exists('Wizin_Core_Controller') ) {
         {
         }
 
-        public function setView( & $viewObject )
+        public function setView(& $viewObject)
         {
-            $this->_oView = new Wizin_Ref( $viewObject );
+            $this->_oView = new Wizin_Ref($viewObject);
         }
 
-        protected function _setVar( $tplVar, $value = null, $escape = true )
+        protected function _setVar($tplVar, $value = null, $escape = true)
         {
-            $this->_oView->setVar( $tplVar, $value, $escape );
+            $this->_oView->setVar($tplVar, $value, $escape);
         }
 
         public function execute()

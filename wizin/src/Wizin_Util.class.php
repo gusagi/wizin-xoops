@@ -11,8 +11,8 @@
  *
  */
 
-if ( ! class_exists('Wizin_Util') ) {
-    require dirname( __FILE__ ) . '/Wizin.class.php';
+if (! class_exists('Wizin_Util')) {
+    require dirname(__FILE__) . '/Wizin.class.php';
 
     /**
      * Wizin framework utility class
@@ -28,16 +28,16 @@ if ( ! class_exists('Wizin_Util') ) {
          * @param string $salt
          * @return string $prefix
          */
-        function salt( $seed = '' )
+        function salt($seed = '')
         {
             static $salt;
-            if ( ! isset($salt) ) {
-                if ( empty($seed) ) {
-                    $salt = getenv( 'SERVER_NAME' );
+            if (! isset($salt)) {
+                if (empty($seed)) {
+                    $salt = getenv('SERVER_NAME');
                 }
-                $hostSeed = getenv( 'SERVER_NAME' );
-                $replaceArray = array( '/' => '%', '.' => '%%' );
-                $salt = strtr( $hostSeed, $replaceArray ) . '_' . Wizin_Util::cipher( $seed );
+                $hostSeed = getenv('SERVER_NAME');
+                $replaceArray = array('/' => '%', '.' => '%%');
+                $salt = strtr($hostSeed, $replaceArray) . '_' . Wizin_Util::cipher($seed);
             }
             return $salt;
         }
@@ -48,17 +48,17 @@ if ( ! class_exists('Wizin_Util') ) {
          * @param string $function
          * @param array $args
          */
-        function callUserFuncArrayReference( $function, $args = array() )
+        function callUserFuncArrayReference($function, $args = array())
         {
             $result = null;
             $process = null;
             $param = array();
-            if ( is_array($args) ) {
-                for ( $index = 0; $index < count($args); $index ++ ) {
+            if (is_array($args)) {
+                for ($index = 0; $index < count($args); $index ++) {
                     $param[] =& $args[$index];
                 }
             }
-            call_user_func_array( $function, $param );
+            call_user_func_array($function, $param);
         }
 
         /**
@@ -68,10 +68,10 @@ if ( ! class_exists('Wizin_Util') ) {
          * @param string $value
          * @param string $prefix
          */
-        function define( $name, $value = '', $prefix = '' )
+        function define($name, $value = '', $prefix = '')
         {
-            if ( ! defined(strtoupper($prefix . '_' . $name)) ) {
-                define( strtoupper($prefix . '_' . $name), $value );
+            if (! defined(strtoupper($prefix . '_' . $name))) {
+                define(strtoupper($prefix . '_' . $name), $value);
             }
         }
 
@@ -82,10 +82,10 @@ if ( ! class_exists('Wizin_Util') ) {
          * @param string $prefix
          * @return string
          */
-        function constant( $name, $prefix = '' )
+        function constant($name, $prefix = '')
         {
-            if ( defined(strtoupper($prefix . '_' . $name)) ) {
-                return constant( strtoupper($prefix . '_' . $name) );
+            if (defined(strtoupper($prefix . '_' . $name))) {
+                return constant(strtoupper($prefix . '_' . $name));
             } else {
                 $null = null;
                 return $null;
@@ -98,11 +98,11 @@ if ( ! class_exists('Wizin_Util') ) {
          * @param string $string
          * @return string $code
          */
-        function cipher( $string = '' )
+        function cipher($string = '')
         {
-            $string = md5( $string );
-            $number = hexdec( $string );
-            $code = base_convert( floatval($number), 10, 36 );
+            $string = md5($string);
+            $number = hexdec($string);
+            $code = base_convert(floatval($number), 10, 36);
             return $code;
         }
 
@@ -112,31 +112,31 @@ if ( ! class_exists('Wizin_Util') ) {
          * @param string $directory
          * @return array
          */
-        function getFilesUnderDir( $directory = '' )
+        function getFilesUnderDir($directory = '')
         {
             static $files;
-            if ( ! isset($files) ) {
+            if (! isset($files)) {
                 $files = array();
             }
             // if $directory is empty, return empty array
-            if ( empty($directory) ) {
+            if (empty($directory)) {
                 return $files;
             }
             // directory check
-            if ( substr($directory, -1, 1) === '/' ) {
-                $directory = substr( $directory, 0, strlen($directory) - 1 );
+            if (substr($directory, -1, 1) === '/') {
+                $directory = substr($directory, 0, strlen($directory) - 1);
             }
-            if ( file_exists($directory) && is_dir($directory) ) {
-                if ( $handler = opendir($directory) ) {
-                    while ( ($file = readdir($handler)) !== false ) {
-                        if ( $file === '.' || $file === '..' ) {
+            if (file_exists($directory) && is_dir($directory)) {
+                if ($handler = opendir($directory)) {
+                    while (($file = readdir($handler)) !== false) {
+                        if ($file === '.' || $file === '..') {
                             continue;
                         }
                         $filePath = $directory . DIRECTORY_SEPARATOR . $file;
-                        if ( is_dir($filePath) ) {
-                            Wizin_Util::getFilesUnderDir( $filePath );
+                        if (is_dir($filePath)) {
+                            Wizin_Util::getFilesUnderDir($filePath);
                         } else {
-                            if ( ! in_array($filePath, $files) ) {
+                            if (! in_array($filePath, $files)) {
                                 $files[] = $filePath;
                             }
                         }
@@ -152,27 +152,27 @@ if ( ! class_exists('Wizin_Util') ) {
          *
          * @param string $url
          */
-        function redirect( $url = '' )
+        function redirect($url = '')
         {
-            if ( empty($url) ) {
+            if (empty($url)) {
                 return false;
             }
-            $sessionName = ini_get( 'session.name' );
+            $sessionName = ini_get('session.name');
             $sessionId = session_id();
-            if ( ! empty($sessionId) && (isset($_GET[$sessionName]) || isset($_POST[$sessionName])) ) {
+            if (! empty($sessionId) && (isset($_GET[$sessionName]) || isset($_POST[$sessionName]))) {
                 $sid = session_name() . '=' . session_id();
                 $pattern = '(' . $sid . ')(&|&amp;)?';
-                $url = preg_replace( '/' . $pattern . '/', '', $url );
-                if ( substr($url, -1, 1) === '?' || substr($url, -1, 1) === '&' ) {
-                    $url = substr( $url, 0, strlen($url) - 1 );
+                $url = preg_replace('/' . $pattern . '/', '', $url);
+                if (substr($url, -1, 1) === '?' || substr($url, -1, 1) === '&') {
+                    $url = substr($url, 0, strlen($url) - 1);
                 }
-                if ( strpos($url, '?') !== false ) {
+                if (strpos($url, '?') !== false) {
                     $url .= '&' . $sid;
                 } else {
                     $url .= '?' . $sid;
                 }
             }
-            header( 'Location: ' . $url );
+            header('Location: ' . $url);
             exit();
         }
     }

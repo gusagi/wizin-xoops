@@ -11,8 +11,8 @@
  *
  */
 
-if ( ! class_exists('Wizin_Filter') ) {
-    require dirname( __FILE__ ) . '/Common.class.php';
+if (! class_exists('Wizin_Filter')) {
+    require dirname(__FILE__) . '/Common.class.php';
 
     /**
      * Wizin framework default filter class for PHP5.x
@@ -27,16 +27,16 @@ if ( ! class_exists('Wizin_Filter') ) {
          * @param mixed $function
          * @param array $params
          */
-        public function addInputFilter( $function, & $params = null )
+        public function addInputFilter($function, & $params = null)
         {
-            if ( is_null($params) ) {
+            if (is_null($params)) {
                 $params = array();
             }
             $inputFilter = $this->_aInputFilter;
-            if ( empty($inputFilter) ) {
+            if (empty($inputFilter)) {
                 $inputFilter = array();
             }
-            $inputFilter[] = array( $function, $params );
+            $inputFilter[] = array($function, $params);
             $this->_aInputFilter = $inputFilter;
         }
 
@@ -46,16 +46,16 @@ if ( ! class_exists('Wizin_Filter') ) {
          * @param mixed $function
          * @param array $params
          */
-        public function addOutputFilter( $function, & $params = null )
+        public function addOutputFilter($function, & $params = null)
         {
-            if ( is_null($params) ) {
+            if (is_null($params)) {
                 $params = array();
             }
             $outputFilter = $this->_aOutputFilter;
-            if ( is_null($outputFilter) ) {
+            if (is_null($outputFilter)) {
                 $outputFilter = array();
             }
-            $outputFilter[] = array( $function, $params );
+            $outputFilter[] = array($function, $params);
             $this->_aOutputFilter = $outputFilter;
         }
 

@@ -23,14 +23,14 @@
  */
 function smarty_function_wizin_inputmode($params, &$smarty)
 {
-    if ( ! isset($params['mode']) || ! class_exists('Wizin_User')) {
+    if (! isset($params['mode']) || ! class_exists('Wizin_User')) {
         return '';
     }
     $mode = $params['mode'];
     $user =& Wizin_User::getSingleton();
     $user->checkClient();
     $inputMode = '';
-    if ( isset($user->aInputMode[$mode]) ) {
+    if (isset($user->aInputMode[$mode])) {
         $inputMode = $user->aInputMode[$mode];
     }
     return $inputMode;

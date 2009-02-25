@@ -13,23 +13,23 @@
  * Special thanks : Daichi Kamemoto <daikame@gmail.com>
  */
 
-if ( ! class_exists('Wizin_Filter_Css') ) {
-    if ( class_exists('DOMDocument') && class_exists('SimpleXMLElement') &&
-            method_exists('SimpleXMLElement','getName') ) {
+if (! class_exists('Wizin_Filter_Css')) {
+    if (class_exists('DOMDocument') && class_exists('SimpleXMLElement') &&
+            method_exists('SimpleXMLElement','getName')) {
         // If class 'HTML_CSS_Mobile' does not exists, include HTML_CSS_Mobile
-        if ( ! class_exists('HTML_CSS_Mobile') ) {
-            if ( ! class_exists('HTML_Common') ) {
+        if (! class_exists('HTML_CSS_Mobile')) {
+            if (! class_exists('HTML_Common')) {
                 @ include_once 'HTML/Common.php';
             }
-            if ( class_exists('HTML_Common') && ! class_exists('HTML_CSS') ) {
+            if (class_exists('HTML_Common') && ! class_exists('HTML_CSS')) {
                 @ include_once 'HTML/CSS.php';
             }
-            if ( class_exists('HTML_CSS') && ! class_exists('HTML_CSS_Mobile') ) {
+            if (class_exists('HTML_CSS') && ! class_exists('HTML_CSS_Mobile')) {
                 @ include_once 'HTML/CSS/Mobile.php';
             }
         }
 
-        if ( class_exists('HTML_CSS_Mobile') ) {
+        if (class_exists('HTML_CSS_Mobile')) {
             /**
              * Wizin framework "HTML_CSS_Mobile" wrapper class
              *

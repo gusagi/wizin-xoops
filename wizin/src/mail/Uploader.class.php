@@ -11,10 +11,10 @@
  *
  */
 
-if ( ! class_exists('Wizin_Mail_Uploader') ) {
-    require dirname( dirname(__FILE__) ) . '/Wizin.class.php';
-    if ( ! class_exists('Wizin_Mail_Receiver') ) {
-        require dirname( __FILE__ ) . '/Receiver.class.php';
+if (! class_exists('Wizin_Mail_Uploader')) {
+    require dirname(dirname(__FILE__)) . '/Wizin.class.php';
+    if (! class_exists('Wizin_Mail_Receiver')) {
+        require dirname(__FILE__) . '/Receiver.class.php';
     }
     /**
      * Wizin framework mail receiver class
@@ -36,7 +36,7 @@ if ( ! class_exists('Wizin_Mail_Uploader') ) {
         public function &getSingleton()
         {
             static $instance;
-            if ( ! isset($instance) ) {
+            if (! isset($instance)) {
                 $instance = new Wizin_Mail_Uploader();
             }
             return $instance;
@@ -50,21 +50,21 @@ if ( ! class_exists('Wizin_Mail_Uploader') ) {
             $this->_files = array();
             $mailReceiver =& Wizin_Mail_Receiver::getSingleton();
             $headers = $mailReceiver->getMailHeaders();
-            $timestamp = date( 'Ymd_His' );
-            $uniqueKey = Wizin_Util::cipher( $headers['message-id'] );
+            $timestamp = date('Ymd_His');
+            $uniqueKey = Wizin_Util::cipher($headers['message-id']);
             $attachments = $mailReceiver->getMailAttachments();
-            foreach ( $attachments as $key => $attachment ) {
+            foreach ($attachments as $key => $attachment) {
                 $attach = $attachment['attach'];
                 $file = $attach->body;
                 $filePath = WIZIN_UPLOAD_DIR . '/' . $uniqueKey . '_' . $timestamp . '_' .
                     sprintf('%03d', $key) . '.' . $attachment['ext'];
-                $fp = fopen( $filePath, 'w' );
-                fputs( $fp, $file );
-                fclose( $fp );
-                chmod( $filePath, 0666 );
+                $fp = fopen($filePath, 'w');
+                fputs($fp, $file);
+                fclose($fp);
+                chmod($filePath, 0666);
                 // if upload file was danger, remove this file.
-                if ( $this->_checkFile($filePath, $attachment['type']) === false ) {
-                    unlink( $filePath );
+                if ($this->_checkFile($filePath, $attachment['type']) === false) {
+                    unlink($filePath);
                     continue;
                 }
                 $this->_files[] = $filePath;
@@ -75,19 +75,19 @@ if ( ! class_exists('Wizin_Mail_Uploader') ) {
         /**
          * Check uploaded file.
          */
-        protected function _checkFile( $filePath, $type )
+        protected function _checkFile($filePath, $type)
         {
             // if file will be danger, return false.
             clearstatcache();
-            $allowImageFormat = array( IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG );
-            switch ( $type ) {
+            $allowImageFormat = array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG);
+            switch ($type) {
                 case 'image':
-                    $imageSizeInfo = getimagesize( $filePath );
+                    $imageSizeInfo = getimagesize($filePath);
                     $width = $imageSizeInfo[0];
                     $height = $imageSizeInfo[1];
                     $format = $imageSizeInfo[2];
                     // not image file
-                    if ( $width == 0 || $height == 0 || ! in_array($format, $allowImageFormat) ) {
+                    if ($width == 0 || $height == 0 || ! in_array($format, $allowImageFormat)) {
                         return false;
                     }
                     break;

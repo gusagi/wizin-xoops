@@ -13,14 +13,14 @@
  * Special thanks : yudoufu
  */
 
-if ( ! class_exists('Wizin_Filter_Pictogram') ) {
-    if ( floatval(PHP_VERSION) >= 5.2 && function_exists('json_encode') ) {
-        if ( ! class_exists('Text_Pictogram_Mobile') ) {
+if (! class_exists('Wizin_Filter_Pictogram')) {
+    if (floatval(PHP_VERSION) >= 5.2 && function_exists('json_encode')) {
+        if (! class_exists('Text_Pictogram_Mobile')) {
             // include Text_Pictogram_Mobile
             @ include_once 'Text/Pictogram/Mobile.php';
         }
 
-        if ( class_exists('Text_Pictogram_Mobile') ) {
+        if (class_exists('Text_Pictogram_Mobile')) {
             /**
              * Wizin framework "Text_Pictogram_Mobile" wrapper class
              *
@@ -77,29 +77,29 @@ if ( ! class_exists('Wizin_Filter_Pictogram') ) {
                  * @param object $picObject
                  * @return array
                  */
-                public static function & getPictograms( & $picObject )
+                public static function & getPictograms(& $picObject)
                 {
                     static $pictograms;
-                    if ( ! isset($pictograms) ) {
+                    if (! isset($pictograms)) {
                         $dataDir = Wizin_Filter_Pictogram::pictogramDataDir();
-                        $suffix = Wizin_Util::cipher( $dataDir );
+                        $suffix = Wizin_Util::cipher($dataDir);
                         $pictograms = array();
                         $picCarrier = $picObject->getCarrier();
-                        if ( ! empty($picCarrier) ) {
-                            foreach ( array('docomo', 'ezweb', 'softbank') as $carrier ) {
+                        if (! empty($picCarrier)) {
+                            foreach (array('docomo', 'ezweb', 'softbank') as $carrier) {
                                 $cache = WIZIN_CACHE_DIR . '/wizin_pictogram_' . $picCarrier .
                                     '_' . $carrier . '_'. $suffix;
-                                if ( Wizin_Filter_Pictogram::isCached($carrier, $cache) ) {
-                                    $pictograms[$carrier] = unserialize( file_get_contents($cache) );
+                                if (Wizin_Filter_Pictogram::isCached($carrier, $cache)) {
+                                    $pictograms[$carrier] = unserialize(file_get_contents($cache));
                                 } else {
                                     // get pictograms array
                                     $pictograms[$carrier] = array();
-                                    if ( isset($picObject) && is_object($picObject) ) {
-                                        $pictograms[$carrier] = $picObject->getFormattedPictogramsArray( $carrier );
+                                    if (isset($picObject) && is_object($picObject)) {
+                                        $pictograms[$carrier] = $picObject->getFormattedPictogramsArray($carrier);
                                     }
-                                    $fp = fopen( $cache, 'wb' );
-                                    fwrite( $fp, serialize($pictograms[$carrier]) );
-                                    fclose( $fp );
+                                    $fp = fopen($cache, 'wb');
+                                    fwrite($fp, serialize($pictograms[$carrier]));
+                                    fclose($fp);
                                 }
                             }
                         }
@@ -114,20 +114,20 @@ if ( ! class_exists('Wizin_Filter_Pictogram') ) {
                  * @param string $jsonFile
                  * @return array
                  */
-                public static function & getJsonData( $carrier = 'docomo', $jsonFile )
+                public static function & getJsonData($carrier = 'docomo', $jsonFile)
                 {
                     $jsonData = array();
-                    $suffix = Wizin_Util::cipher( $jsonFile );
+                    $suffix = Wizin_Util::cipher($jsonFile);
                     $cache = WIZIN_CACHE_DIR . '/wizin_pic_json_' . $carrier . '_' . $suffix;
-                    if ( Wizin_Filter_Pictogram::isCached($carrier, $cache) ) {
-                        $jsonData = unserialize( file_get_contents($cache) );
+                    if (Wizin_Filter_Pictogram::isCached($carrier, $cache)) {
+                        $jsonData = unserialize(file_get_contents($cache));
                     } else {
                         // get pictograms array
-                        $json = file_get_contents( $jsonFile );
-                        $jsonData = json_decode( $json, true );
-                        $fp = fopen( $cache, 'wb' );
-                        fwrite( $fp, serialize($jsonData) );
-                        fclose( $fp );
+                        $json = file_get_contents($jsonFile);
+                        $jsonData = json_decode($json, true);
+                        $fp = fopen($cache, 'wb');
+                        fwrite($fp, serialize($jsonData));
+                        fclose($fp);
                     }
                     return $jsonData;
                 }
@@ -139,25 +139,25 @@ if ( ! class_exists('Wizin_Filter_Pictogram') ) {
                  * @param string $jsonFile
                  * @return array
                  */
-                public static function & getConvertData( $carrier = 'docomo', $jsonFile )
+                public static function & getConvertData($carrier = 'docomo', $jsonFile)
                 {
                     static $jsonData;
-                    if ( ! isset($jsonData) ) {
+                    if (! isset($jsonData)) {
                         $jsonData = array();
                     }
-                    if ( ! isset($jsonData[$carrier]) ) {
-                        $suffix = Wizin_Util::cipher( $jsonFile );
+                    if (! isset($jsonData[$carrier])) {
+                        $suffix = Wizin_Util::cipher($jsonFile);
                         $cache = WIZIN_CACHE_DIR . '/wizin_pic_convert_' . $carrier . '_' . $suffix;
-                        if ( Wizin_Filter_Pictogram::isCached($carrier, $cache) ) {
-                            $jsonData[$carrier] = unserialize( file_get_contents($cache) );
+                        if (Wizin_Filter_Pictogram::isCached($carrier, $cache)) {
+                            $jsonData[$carrier] = unserialize(file_get_contents($cache));
                         } else {
                             // get pictograms array
                             $jsonData[$carrier] = array();
-                            $json = file_get_contents( $jsonFile );
-                            $jsonData[$carrier] = json_decode( $json, true );
-                            $fp = fopen( $cache, 'wb' );
-                            fwrite( $fp, serialize($jsonData[$carrier]) );
-                            fclose( $fp );
+                            $json = file_get_contents($jsonFile);
+                            $jsonData[$carrier] = json_decode($json, true);
+                            $fp = fopen($cache, 'wb');
+                            fwrite($fp, serialize($jsonData[$carrier]));
+                            fclose($fp);
                         }
                     }
                     return $jsonData;
@@ -168,24 +168,24 @@ if ( ! class_exists('Wizin_Filter_Pictogram') ) {
                  *
                  * @return boolean $return
                  */
-                public static function isCached( $carrier, $cache )
+                public static function isCached($carrier, $cache)
                 {
                     clearstatcache();
                     $return = true;
-                    if ( ! file_exists($cache) ) {
+                    if (! file_exists($cache)) {
                         $return = false;
                     }
                     $dataDir = Wizin_Filter_Pictogram::pictogramDataDir();
-                    if ( $return && ($handler = opendir($dataDir)) ) {
-                        while ( ($file = readdir($handler)) !== false ) {
-                            if ( $file === '.' || $file === '..' ) {
+                    if ($return && ($handler = opendir($dataDir))) {
+                        while (($file = readdir($handler)) !== false) {
+                            if ($file === '.' || $file === '..') {
                                 continue;
                             }
-                            if ( strpos($file, $carrier) === false ) {
+                            if (strpos($file, $carrier) === false) {
                                 continue;
                             }
-                            if ( substr($file, -5) === '.json' ) {
-                                if ( filemtime($dataDir . '/' . $file) > filemtime($cache) ) {
+                            if (substr($file, -5) === '.json') {
+                                if (filemtime($dataDir . '/' . $file) > filemtime($cache)) {
                                     $return = false;
                                     break;
                                 }
@@ -204,13 +204,13 @@ if ( ! class_exists('Wizin_Filter_Pictogram') ) {
                 public static function pictogramDataDir()
                 {
                     static $dataDir;
-                    if ( is_null($dataDir) ) {
+                    if (is_null($dataDir)) {
                         $includeFiles = get_included_files();
-                        $needle = str_replace( '_', DIRECTORY_SEPARATOR, 'Text_Pictogram_Mobile' ) . '.php';
-                        foreach ( $includeFiles as $file ) {
+                        $needle = str_replace('_', DIRECTORY_SEPARATOR, 'Text_Pictogram_Mobile') . '.php';
+                        foreach ($includeFiles as $file) {
                             if (strpos($file, $needle) !== false) {
-                                $dataDir = dirname( $file ) . '/Mobile/data';
-                                Wizin_Filter_Pictogram::pictogramDataDir( $dataDir );
+                                $dataDir = dirname($file) . '/Mobile/data';
+                                Wizin_Filter_Pictogram::pictogramDataDir($dataDir);
                                 break;
                             }
                         }

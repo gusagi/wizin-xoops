@@ -10,7 +10,7 @@
  *
  */
 
-if ( ! class_exists('Wizin_Plugin_User_Softbank') ) {
+if (! class_exists('Wizin_Plugin_User_Softbank')) {
     class Wizin_Plugin_User_Softbank extends Wizin_StdClass
     {
         function __construct()
@@ -31,10 +31,10 @@ if ( ! class_exists('Wizin_Plugin_User_Softbank') ) {
 
         function _check3GC()
         {
-            $agent = getenv( 'HTTP_USER_AGENT' );
+            $agent = getenv('HTTP_USER_AGENT');
             $user =& Wizin_User::getSingleton();
             $pattern = '/^j\-phone\//i';
-            if ( preg_match($pattern, $agent, $matches) ) {
+            if (preg_match($pattern, $agent, $matches)) {
                 $user->sEncoding = 'sjis-win';
                 $user->sCharset = 'shift_jis';
             }
@@ -43,8 +43,8 @@ if ( ! class_exists('Wizin_Plugin_User_Softbank') ) {
         function _updateUniqId()
         {
             $user =& Wizin_User::getSingleton();
-            if ( strlen($user->sUniqId) === 16 ) {
-                $user->sUniqId = substr( $user->sUniqId, 1 );
+            if (strlen($user->sUniqId) === 16) {
+                $user->sUniqId = substr($user->sUniqId, 1);
             }
         }
     }

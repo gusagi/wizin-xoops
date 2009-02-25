@@ -11,8 +11,8 @@
  *
  */
 
-if ( ! class_exists('Wizin_Cache') ) {
-    require dirname( dirname(__FILE__) ) . '/Wizin.class.php';
+if (! class_exists('Wizin_Cache')) {
+    require dirname(dirname(__FILE__)) . '/Wizin.class.php';
 
     /**
      * Wizin framework file cache class
@@ -48,14 +48,14 @@ if ( ! class_exists('Wizin_Cache') ) {
                     if (! file_exists($file) || ! is_file($file)) {
                         continue;
                     }
-                    if ( filemtime($file) > filemtime($this->_sCacheFile) ) {
+                    if (filemtime($file) > filemtime($this->_sCacheFile)) {
                         $return = false;
                         unlink($this->_sCacheFile);
                         break;
                     }
                 }
             } else if (is_string($file)) {
-                if ( filemtime($file) > filemtime($this->_sCacheFile) ) {
+                if (filemtime($file) > filemtime($this->_sCacheFile)) {
                     $return = false;
                 }
             }

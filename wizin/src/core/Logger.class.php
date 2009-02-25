@@ -11,8 +11,8 @@
  *
  */
 
-if ( ! class_exists('Wizin_Core_Logger') ) {
-    require dirname( dirname(__FILE__) ) . '/Wizin.class.php';
+if (! class_exists('Wizin_Core_Logger')) {
+    require dirname(dirname(__FILE__)) . '/Wizin.class.php';
     /**
      * Wizin framework core O/R Mapper class
      *

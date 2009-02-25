@@ -11,8 +11,8 @@
  *
  */
 
-if ( ! class_exists('Wizin_Core_View') ) {
-    require dirname( dirname(__FILE__) ) . '/Wizin.class.php';
+if (! class_exists('Wizin_Core_View')) {
+    require dirname(dirname(__FILE__)) . '/Wizin.class.php';
     /**
      * Wizin framework core view class
      *
@@ -35,15 +35,15 @@ if ( ! class_exists('Wizin_Core_View') ) {
 
         protected function _defaultFilter()
         {
-            $app =& call_user_func( array(WIZIN_DEFAULT_APP, 'getSingleton') );
-            $params = array( $app->oUser->sEncoding, $app->oUser->sCharset );
+            $app =& call_user_func(array(WIZIN_DEFAULT_APP, 'getSingleton'));
+            $params = array($app->oUser->sEncoding, $app->oUser->sCharset);
             $app->oFilter->addOutputFilter(
-                array($app->oFilter, 'filterOutputEncoding'), $params );
+                array($app->oFilter, 'filterOutputEncoding'), $params);
         }
 
-        public function setVar( $tplVar, $value = null, $escape = true, $target = 'page' )
+        public function setVar($tplVar, $value = null, $escape = true, $target = 'page')
         {
-            if ( $target === 'app' ) {
+            if ($target === 'app') {
                 $this->_appParams[$tplVar] = $value;
             } else {
                 $this->_pageParams[$tplVar] = $value;
@@ -64,61 +64,61 @@ if ( ! class_exists('Wizin_Core_View') ) {
 
         protected function _getPageContents()
         {
-            $app =& call_user_func( array(WIZIN_DEFAULT_APP, 'getSingleton') );
+            $app =& call_user_func(array(WIZIN_DEFAULT_APP, 'getSingleton'));
             $renderer = new $this->_renderer();
-            $templateName = dirname( $app->sPathTranslated ) . DIRECTORY_SEPARATOR .
-                strtolower( substr(basename($app->sPathTranslated), 0, 1) ) .
+            $templateName = dirname($app->sPathTranslated) . DIRECTORY_SEPARATOR .
+                strtolower(substr(basename($app->sPathTranslated), 0, 1)) .
                 substr(basename($app->sPathTranslated), 1) . '.html';
-            $templateExists = $renderer->template_exists( $templateName );
+            $templateExists = $renderer->template_exists($templateName);
             $this->sContents = ob_get_clean();
-            if ( $templateExists ) {
-                foreach ( $this->_pageParams as $tplVar => $value ) {
-                    $renderer->assign( $tplVar, $value );
+            if ($templateExists) {
+                foreach ($this->_pageParams as $tplVar => $value) {
+                    $renderer->assign($tplVar, $value);
                 }
-                $this->sContents = $renderer->fetch( $templateName );
+                $this->sContents = $renderer->fetch($templateName);
             }
-            unset( $renderer );
+            unset($renderer);
         }
 
         protected function _getAppContents()
         {
             $renderer = new $this->_renderer();
-            $this->_defaultAssign( $renderer );
+            $this->_defaultAssign($renderer);
             $layout = $renderer->template_dir . 'Layout.html';
-            if ( $renderer instanceof Smarty ) {
+            if ($renderer instanceof Smarty) {
                 $layout = 'file:' . $layout;
             }
-            $this->sContents = $renderer->fetch( $layout );
-            unset( $renderer );
+            $this->sContents = $renderer->fetch($layout);
+            unset($renderer);
         }
 
-        protected function _defaultAssign( & $renderer )
+        protected function _defaultAssign(& $renderer)
         {
-            $app =& call_user_func( array(WIZIN_DEFAULT_APP, 'getSingleton') );
-            $renderer->assign( 'siteTitle', 'Wizin initial template.' );
-            $renderer->assign( 'doctype', $app->oUser->sDoctype, false );
-            $renderer->assign( 'extraHeader', $app->sExtraHeader, false );
-            $renderer->assign( 'pageContents', $this->sContents, false );
+            $app =& call_user_func(array(WIZIN_DEFAULT_APP, 'getSingleton'));
+            $renderer->assign('siteTitle', 'Wizin initial template.');
+            $renderer->assign('doctype', $app->oUser->sDoctype, false);
+            $renderer->assign('extraHeader', $app->sExtraHeader, false);
+            $renderer->assign('pageContents', $this->sContents, false);
         }
 
         protected function _executeFilter()
         {
-            $app =& call_user_func( array(WIZIN_DEFAULT_APP, 'getSingleton') );
-            $app->oFilter->executeOutputFilter( $this->sContents );
+            $app =& call_user_func(array(WIZIN_DEFAULT_APP, 'getSingleton'));
+            $app->oFilter->executeOutputFilter($this->sContents);
         }
 
         protected function _display()
         {
-            $app =& call_user_func( array(WIZIN_DEFAULT_APP, 'getSingleton') );
-            if ( $app->oUser->bIsMobile ) {
+            $app =& call_user_func(array(WIZIN_DEFAULT_APP, 'getSingleton'));
+            if ($app->oUser->bIsMobile) {
                 $contentType = 'application/xhtml+xml';
             } else {
                 $contentType = 'text/html';
             }
-            header( 'Content-Type:' . $contentType . '; charset=' . $app->oUser->sCharset );
-            header( 'Content-Length: ' . strlen($this->sContents) );
+            header('Content-Type:' . $contentType . '; charset=' . $app->oUser->sCharset);
+            header('Content-Length: ' . strlen($this->sContents));
             echo $this->sContents;
-            unset( $this->sContents );
+            unset($this->sContents);
         }
 
     }

@@ -11,7 +11,7 @@
  *
  */
 
-if ( ! class_exists('Wizin_StdClass') ) {
+if (! class_exists('Wizin_StdClass')) {
 
     /**
      * Wizin framework standard class for PHP4.x
@@ -28,12 +28,12 @@ if ( ! class_exists('Wizin_StdClass') ) {
          */
         function Wizin_StdClass()
         {
-            overload( get_class($this) );
-            if ( method_exists($this, '__destruct') ) {
-                register_shutdown_function( array(&$this, '__destruct') );
+            overload(get_class($this));
+            if (method_exists($this, '__destruct')) {
+                register_shutdown_function(array(&$this, '__destruct'));
             }
             $args = func_get_args();
-            call_user_func_array( array(&$this, '__construct'), $args );
+            call_user_func_array(array(&$this, '__construct'), $args);
         }
 
         /**
@@ -58,9 +58,9 @@ if ( ! class_exists('Wizin_StdClass') ) {
          * @param string $key
          * @param mixed $value
          */
-        function __set( $key, $value )
+        function __set($key, $value)
         {
-            if ( is_object($value) && get_class($value) === 'wizin_ref' ) {
+            if (is_object($value) && get_class($value) === 'wizin_ref') {
                 $var =& $value->get();
             } else {
                 $var =& $value;
@@ -75,9 +75,9 @@ if ( ! class_exists('Wizin_StdClass') ) {
          * @param string $key
          * @return mixed
          */
-        function __get( $key, &$return )
+        function __get($key, &$return)
         {
-            if ( isset($this->_aVars[$key]) ) {
+            if (isset($this->_aVars[$key])) {
                 $var =& $this->_aVars[$key];
                 $return = $var;
             } else {

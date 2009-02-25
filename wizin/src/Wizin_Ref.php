@@ -11,9 +11,9 @@
  *
  */
 
-$phpVersion = intval( PHP_VERSION );
-if ( $phpVersion < 5 ) {
-    require dirname( __FILE__ ) . '/ref/Php4x.class.php';
+$phpVersion = intval(PHP_VERSION);
+if ($phpVersion < 5) {
+    require dirname(__FILE__) . '/ref/Php4x.class.php';
 } else {
-    require dirname( __FILE__ ) . '/ref/Php5x.class.php';
+    require dirname(__FILE__) . '/ref/Php5x.class.php';
 }

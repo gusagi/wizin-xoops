@@ -10,7 +10,7 @@
  *
  */
 
-if ( ! class_exists('Wizin_Plugin_User_Willcom') ) {
+if (! class_exists('Wizin_Plugin_User_Willcom')) {
     class Wizin_Plugin_User_Willcom extends Wizin_StdClass
     {
         function __construct()
@@ -22,9 +22,9 @@ if ( ! class_exists('Wizin_Plugin_User_Willcom') ) {
         function _advancedCheck()
         {
             $user =& Wizin_User::getSingleton();
-            if ( $user->_bLookup ) {
-                $agent = getenv( 'HTTP_USER_AGENT' );
-                if ( ! preg_match("/(willcom|ddipocket)/i", $agent) ) {
+            if ($user->_bLookup) {
+                $agent = getenv('HTTP_USER_AGENT');
+                if (! preg_match("/(willcom|ddipocket)/i", $agent)) {
                     $user->bIsMobile = false;
                     $user->bIsBot = false;
                     $user->sCarrier = 'othermobile';

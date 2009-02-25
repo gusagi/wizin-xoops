@@ -12,4 +12,4 @@
  */
 
 // TODO : use some storage(example: memcache, db, etc...)
-require_once dirname( __FILE__ ) . '/cache/File.class.php';
+require_once dirname(__FILE__) . '/cache/File.class.php';

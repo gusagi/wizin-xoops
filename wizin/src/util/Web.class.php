@@ -11,8 +11,8 @@
  *
  */
 
-if ( ! class_exists('Wizin_Util_Web') ) {
-    require dirname( dirname(__FILE__) ) . '/Wizin_Util.class.php';
+if (! class_exists('Wizin_Util_Web')) {
+    require dirname(dirname(__FILE__)) . '/Wizin_Util.class.php';
 
     /**
      * Wizin framework web utility class
@@ -32,68 +32,68 @@ if ( ! class_exists('Wizin_Util_Web') ) {
          * @param string $newImagePath
          * @param integer $maxImageWidth
          */
-        function createThumbnail ( $imagePath, $width, $height, $format, $newImagePath, $maxImageWidth )
+        function createThumbnail ($imagePath, $width, $height, $format, $newImagePath, $maxImageWidth)
         {
             $resizeRate = $maxImageWidth / $width;
             $copyFunction = 'imagecopyresampled';
-            if ( $resizeRate >= 1 ) {
+            if ($resizeRate >= 1) {
                 $resizeRate = 1;
                 $copyFunction = 'imagecopy';
             }
             $resizeWidth = $resizeRate * $width;
             $resizeHeight = $resizeRate * $height;
-            switch ( $format ) {
+            switch ($format) {
                 case IMAGETYPE_GIF:
-                    $image = imagecreatefromgif( $imagePath );
+                    $image = imagecreatefromgif($imagePath);
                     break;
                 case IMAGETYPE_JPEG:
-                    $image = imagecreatefromjpeg( $imagePath );
+                    $image = imagecreatefromjpeg($imagePath);
                     break;
                 case IMAGETYPE_PNG:
-                    $image = imagecreatefrompng( $imagePath );
+                    $image = imagecreatefrompng($imagePath);
                     break;
             }
-            $newImage = imagecreatetruecolor( $resizeWidth, $resizeHeight );
+            $newImage = imagecreatetruecolor($resizeWidth, $resizeHeight);
             // If original image is transparent gif/png >>
             /**
              * This code is something which refers "smart_resize_image".
              * Thanks a lot for "Medium eXposure" !
              * Ref : http://www.mediumexposure.com/techblog/smart-image-resizing-while-preserving-transparency-php-and-gd-library
              */
-            if ( $format === IMAGETYPE_GIF || $format === IMAGETYPE_PNG ) {
-                $transparentIndex = imagecolortransparent( $image );
-                if ( $transparentIndex >= 0 ) {
+            if ($format === IMAGETYPE_GIF || $format === IMAGETYPE_PNG) {
+                $transparentIndex = imagecolortransparent($image);
+                if ($transparentIndex >= 0) {
                     // GIF / PNG-8
-                    $transparentColor = imagecolorsforindex( $image, $transparentIndex );
-                    $transparentIndex = imagecolorallocate( $newImage, $transparentColor['red'],
-                        $transparentColor['green'], $transparentColor['blue'] );
-                    imagefill( $newImage, 0, 0, $transparentIndex );
-                    imagecolortransparent( $newImage, $transparentIndex );
+                    $transparentColor = imagecolorsforindex($image, $transparentIndex);
+                    $transparentIndex = imagecolorallocate($newImage, $transparentColor['red'],
+                        $transparentColor['green'], $transparentColor['blue']);
+                    imagefill($newImage, 0, 0, $transparentIndex);
+                    imagecolortransparent($newImage, $transparentIndex);
                 } else {
                     // PNG-24
-                    imagealphablending( $newImage, false );
-                    $color = imagecolorallocatealpha( $newImage, 0, 0, 0, 127 );
-                    imagefill( $newImage, 0, 0, $color );
-                    imagesavealpha( $newImage, true );
+                    imagealphablending($newImage, false);
+                    $color = imagecolorallocatealpha($newImage, 0, 0, 0, 127);
+                    imagefill($newImage, 0, 0, $color);
+                    imagesavealpha($newImage, true);
                 }
             }
             // If original image is transparent gif/png <<
             // image data copy
-            if ( $copyFunction === 'imagecopyresampled' ) {
-                imagecopyresampled( $newImage, $image , 0, 0, 0, 0,
-                    $resizeWidth, $resizeHeight, $width, $height );
-            } else if ( $copyFunction === 'imagecopy' ) {
-                imagecopy( $newImage, $image , 0, 0, 0, 0, $resizeWidth, $resizeHeight );
+            if ($copyFunction === 'imagecopyresampled') {
+                imagecopyresampled($newImage, $image , 0, 0, 0, 0,
+                    $resizeWidth, $resizeHeight, $width, $height);
+            } else if ($copyFunction === 'imagecopy') {
+                imagecopy($newImage, $image , 0, 0, 0, 0, $resizeWidth, $resizeHeight);
             }
-            $tmpArray = explode( '.', $newImagePath );
-            $newExt = array_pop( $tmpArray );
-            if ( $newExt === 'gif' ) {
-                imagegif( $newImage, $newImagePath );
+            $tmpArray = explode('.', $newImagePath);
+            $newExt = array_pop($tmpArray);
+            if ($newExt === 'gif') {
+                imagegif($newImage, $newImagePath);
             } else {
-                imagejpeg( $newImage, $newImagePath );
+                imagejpeg($newImage, $newImagePath);
             }
-            imagedestroy( $image );
-            imagedestroy( $newImage );
+            imagedestroy($image);
+            imagedestroy($newImage);
         }
 
         /**
@@ -103,88 +103,88 @@ if ( ! class_exists('Wizin_Util_Web') ) {
          * @param string $createDir
          * @return string $filePath
          */
-        function getFileByHttp( $url = null, $createDir = null )
+        function getFileByHttp($url = null, $createDir = null)
         {
-            if ( empty($url) ) {
+            if (empty($url)) {
                 return null;
             }
-            if ( is_null($createDir) ) {
-                if ( defined('WIZIN_CACHE_DIR') ) {
+            if (is_null($createDir)) {
+                if (defined('WIZIN_CACHE_DIR')) {
                     $createDir = WIZIN_CACHE_DIR;
                 } else {
-                    $createDir = dirname( dirname(dirname(__FILE__)) ) . '/work/cache';
+                    $createDir = dirname(dirname(dirname(__FILE__))) . '/work/cache';
                 }
             }
-            $replaceArray = array( '/' => '%', '.' => '%%' );
-            $fileName = array_pop( explode('://', $url) );
-            $filePath = $createDir . '/' . substr( md5($url), 0, 16 ) . '.tmp';
+            $replaceArray = array('/' => '%', '.' => '%%');
+            $fileName = array_pop(explode('://', $url));
+            $filePath = $createDir . '/' . substr(md5($url), 0, 16) . '.tmp';
 
             // check file exists
-            if ( file_exists($filePath) && is_readable($filePath) ) {
+            if (file_exists($filePath) && is_readable($filePath)) {
                 return $filePath;
             }
 
             //
-            // get file by http ( fsockopen )
+            // get file by http (fsockopen)
             //
-            $agent = getenv( 'HTTP_USER_AGENT' );
-            $urlArray = parse_url( $url );
+            $agent = getenv('HTTP_USER_AGENT');
+            $urlArray = parse_url($url);
             $host = $urlArray['host'];
-            $port = ( ! empty($urlArray['port']) && $urlArray['port'] != '80' ) ?
+            $port = (! empty($urlArray['port']) && $urlArray['port'] != '80') ?
                 $urlArray['port'] : '80';
             $path = $urlArray['path'];
-            $path .= ( ! empty($urlArray['query']) ) ? '?' . str_replace( '&amp;', '&', $urlArray['query'] ): '';
-            $path .= ( ! empty($urlArray['fragment']) ) ? '#' . $urlArray['fragment'] : '';
+            $path .= (! empty($urlArray['query'])) ? '?' . str_replace('&amp;', '&', $urlArray['query']): '';
+            $path .= (! empty($urlArray['fragment'])) ? '#' . $urlArray['fragment'] : '';
             $referer = '';
-            $https = getenv( 'HTTPS' );
-            if ( empty($https) || strtolower($https) !== 'on' ) {
+            $https = getenv('HTTPS');
+            if (empty($https) || strtolower($https) !== 'on') {
                 $referer = 'http://';
-                $referer .= getenv( 'SERVER_NAME' );
-                $port = getenv( 'SERVER_PORT' );
-                if ( ! empty($port) && $port != '80' ) {
-                    $referer .= ':' . getenv( 'SERVER_PORT' );
+                $referer .= getenv('SERVER_NAME');
+                $port = getenv('SERVER_PORT');
+                if (! empty($port) && $port != '80') {
+                    $referer .= ':' . getenv('SERVER_PORT');
                 }
-                $referer .= getenv( 'REQUEST_URI' );
+                $referer .= getenv('REQUEST_URI');
             }
-            $replaceArray = array( "\r" => '', "\n" => '' );
+            $replaceArray = array("\r" => '', "\n" => '');
 
             // socket connect
-            $fp = fsockopen( $host, $port, $errNumber, $errString, 1 );
-            if ( $fp ) {
+            $fp = fsockopen($host, $port, $errNumber, $errString, 1);
+            if ($fp) {
                 // send request
                 $request  = "GET $path HTTP/1.1 \r\n";
                 $request .= "Host: $host \r\n";
-                if ( $referer !== '' ) {
+                if ($referer !== '') {
                     $request .= "Referer: $referer \r\n";
                 }
                 $request .= "User-Agent: $agent \r\n";
                 $request .= "Connection: Close \r\n\r\n";
-                stream_set_timeout( $fp, 3, 0 );
-                fwrite( $fp, $request );
+                stream_set_timeout($fp, 3, 0);
+                fwrite($fp, $request);
 
                 // get data
-                while ( ! feof($fp) ) {
-                    $buffer = fgets( $fp, 256 );
-                    if ( empty($buffer) ) {
+                while (! feof($fp)) {
+                    $buffer = fgets($fp, 256);
+                    if (empty($buffer)) {
                         continue;
                     }
-                    $buffer = strtr( $buffer, $replaceArray );
-                    if ( empty($buffer) ) {
+                    $buffer = strtr($buffer, $replaceArray);
+                    if (empty($buffer)) {
                         break;
                     }
                 }
                 $data = '';
-                while ( ! feof($fp) ) {
-                    $data .= fread( $fp, 8192 );
+                while (! feof($fp)) {
+                    $data .= fread($fp, 8192);
                 }
-                stream_set_timeout( $fp, 3, 0 );
-                fclose( $fp );
+                stream_set_timeout($fp, 3, 0);
+                fclose($fp);
 
                 // save file
-                $saveHandler = fopen( $filePath, 'wb' );
-                fwrite( $saveHandler, $data );
-                fclose( $saveHandler );
-                chmod( $filePath, 0666 );
+                $saveHandler = fopen($filePath, 'wb');
+                fwrite($saveHandler, $data);
+                fclose($saveHandler);
+                chmod($filePath, 0666);
                 return $filePath;
             }
             return '';
@@ -196,63 +196,63 @@ if ( ! class_exists('Wizin_Util_Web') ) {
          * @param string $url
          * @return string $contents
          */
-        function getContentsByHttp( $url = null, $agent = '', $referer = '' )
+        function getContentsByHttp($url = null, $agent = '', $referer = '')
         {
-            if ( empty($url) ) {
+            if (empty($url)) {
                 return null;
             }
             //
-            // get contents by http ( fsockopen )
+            // get contents by http (fsockopen)
             //
-            $urlArray = parse_url( $url );
+            $urlArray = parse_url($url);
             $host = $urlArray['host'];
-            $port = ( ! empty($urlArray['port']) && $urlArray['port'] != '80' ) ?
+            $port = (! empty($urlArray['port']) && $urlArray['port'] != '80') ?
                 $urlArray['port'] : '80';
             $path = $urlArray['path'];
-            $path .= ( ! empty($urlArray['query']) ) ? '?' . str_replace( '&amp;', '&', $urlArray['query'] ): '';
-            $path .= ( ! empty($urlArray['fragment']) ) ? '#' . $urlArray['fragment'] : '';
+            $path .= (! empty($urlArray['query'])) ? '?' . str_replace('&amp;', '&', $urlArray['query']): '';
+            $path .= (! empty($urlArray['fragment'])) ? '#' . $urlArray['fragment'] : '';
             $referer = '';
-            $https = getenv( 'HTTPS' );
-            if ( empty($https) || strtolower($https) !== 'on' ) {
+            $https = getenv('HTTPS');
+            if (empty($https) || strtolower($https) !== 'on') {
                 $referer = 'http://';
-                $referer .= getenv( 'SERVER_NAME' );
-                $port = getenv( 'SERVER_PORT' );
+                $referer .= getenv('SERVER_NAME');
+                $port = getenv('SERVER_PORT');
             }
-            $replaceArray = array( "\r" => '', "\n" => '' );
+            $replaceArray = array("\r" => '', "\n" => '');
 
             // socket connect
-            $fp = fsockopen( $host, $port, $errNumber, $errString, 1 );
-            if ( $fp ) {
+            $fp = fsockopen($host, $port, $errNumber, $errString, 1);
+            if ($fp) {
                 // send request
                 $request  = "GET $path HTTP/1.0 \r\n";
                 $request .= "Host: $host \r\n";
-                if ( $referer !== '' ) {
+                if ($referer !== '') {
                     $request .= "Referer: $referer \r\n";
                 }
-                if ( $agent !== '' ) {
+                if ($agent !== '') {
                     $request .= "User-Agent: $agent \r\n";
                 }
                 $request .= "Connection: Close \r\n\r\n";
-                stream_set_timeout( $fp, 3, 0 );
-                fwrite( $fp, $request );
+                stream_set_timeout($fp, 3, 0);
+                fwrite($fp, $request);
 
                 // get data
-                while ( ! feof($fp) ) {
-                    $buffer = fgets( $fp, 256 );
-                    if ( empty($buffer) ) {
+                while (! feof($fp)) {
+                    $buffer = fgets($fp, 256);
+                    if (empty($buffer)) {
                         continue;
                     }
-                    $buffer = strtr( $buffer, $replaceArray );
-                    if ( empty($buffer) ) {
+                    $buffer = strtr($buffer, $replaceArray);
+                    if (empty($buffer)) {
                         break;
                     }
                 }
                 $contents = '';
-                while ( ! feof($fp) ) {
-                    $contents .= fread( $fp, 8192 );
+                while (! feof($fp)) {
+                    $contents .= fread($fp, 8192);
                 }
-                stream_set_timeout( $fp, 3, 0 );
-                fclose( $fp );
+                stream_set_timeout($fp, 3, 0);
+                fclose($fp);
                 return $contents;
             }
             return '';
@@ -292,20 +292,20 @@ if ( ! class_exists('Wizin_Util_Web') ) {
             foreach ($headers as $key => $value) {
                 if (strtolower(trim($key)) === 'location') {
                     $url = trim($value);
-                    $urlFirstChar = substr( $url, 0, 1 );
-                    if ( strpos($url, WIZIN_URL) === 0 || $urlFirstChar === '.' ||
-                            $urlFirstChar === '/' || $urlFirstChar === '#' ) {
+                    $urlFirstChar = substr($url, 0, 1);
+                    if (strpos($url, WIZIN_URL) === 0 || $urlFirstChar === '.' ||
+                            $urlFirstChar === '/' || $urlFirstChar === '#') {
                         if (strpos($url, $sessionName) === false) {
-                            if ( ! strstr($url, '?') ) {
+                            if (! strstr($url, '?')) {
                                 $connector = '?';
                             } else {
                                 $connector = '&';
                             }
-                            if ( strstr($url, '#') ) {
-                                $urlArray = explode( '#', $url );
+                            if (strstr($url, '#')) {
+                                $urlArray = explode('#', $url);
                                 $url = $urlArray[0] . $connector . $sessionName .
                                     '=' . session_id();
-                                if ( ! empty($urlArray[1]) ) {
+                                if (! empty($urlArray[1])) {
                                     $url .= '#' . $urlArray[1];
                                 }
                             } else {

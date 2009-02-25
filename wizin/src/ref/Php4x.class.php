@@ -11,8 +11,8 @@
  *
  */
 
-if ( ! class_exists('Wizin_Ref') ) {
-    require dirname( dirname(__FILE__) ) . '/Wizin.class.php';
+if (! class_exists('Wizin_Ref')) {
+    require dirname(dirname(__FILE__)) . '/Wizin.class.php';
 
     /**
      * Wizin framework reference class for PHP4.x
@@ -29,7 +29,7 @@ if ( ! class_exists('Wizin_Ref') ) {
          * @param mixed $value
          * @return Wizin_Ref
          */
-        function Wizin_Ref( & $value )
+        function Wizin_Ref(& $value)
         {
             $this->_mReference =& $value;
         }
@@ -42,7 +42,7 @@ if ( ! class_exists('Wizin_Ref') ) {
         function & get()
         {
             $return = null;
-            if ( isset($this->_mReference) ) {
+            if (isset($this->_mReference)) {
                 $return = & $this->_mReference;
             }
             return $return;

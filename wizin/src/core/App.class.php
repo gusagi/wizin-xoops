@@ -11,8 +11,8 @@
  *
  */
 
-if ( ! class_exists('Wizin_Core_App') ) {
-    require dirname( dirname(__FILE__) ) . '/Wizin.class.php';
+if (! class_exists('Wizin_Core_App')) {
+    require dirname(dirname(__FILE__)) . '/Wizin.class.php';
     /**
      * Wizin framework core controller class
      *
@@ -25,7 +25,7 @@ if ( ! class_exists('Wizin_Core_App') ) {
         public function &getSingleton()
         {
             static $instance;
-            if ( ! isset($instance) ) {
+            if (! isset($instance)) {
                 $instance = new Wizin_Core_App();
             }
             return $instance;
@@ -40,8 +40,8 @@ if ( ! class_exists('Wizin_Core_App') ) {
             // set member objects
             $this->_setObjects();
             // check client
-            $lookup = ( defined('WIZ_SYS_LOOKUP') ) ? WIZ_SYS_LOOKUP : false;
-            $this->_checkClient( $lookup );
+            $lookup = (defined('WIZ_SYS_LOOKUP')) ? WIZ_SYS_LOOKUP : false;
+            $this->_checkClient($lookup);
             /* TODO : refine MVC design
              *      : write input filter in request class
              */
@@ -65,20 +65,20 @@ if ( ! class_exists('Wizin_Core_App') ) {
             $this->sExtraHeader = '';
             // set user class object
             $user =& Wizin_User::getSingleton();
-            $this->oUser = new Wizin_Ref( $user );
+            $this->oUser = new Wizin_Ref($user);
             // set filter class object
             $filter =& Wizin_Filter::getSingleton();
-            $this->oFilter = new Wizin_Ref( $filter );
+            $this->oFilter = new Wizin_Ref($filter);
         }
 
         /**
          * check user by client
          *
          */
-        protected function _checkClient( $lookup = false )
+        protected function _checkClient($lookup = false)
         {
             // check client
-            $this->oUser->checkClient( $lookup );
+            $this->oUser->checkClient($lookup);
         }
 
         /**
@@ -86,8 +86,8 @@ if ( ! class_exists('Wizin_Core_App') ) {
          */
         protected function _addInputFilter()
         {
-            $params = array( $this->oUser->sEncoding );
-            $this->oFilter->addInputFilter( array( $this->oFilter, 'filterInputEncoding' ), $params );
+            $params = array($this->oUser->sEncoding);
+            $this->oFilter->addInputFilter(array($this->oFilter, 'filterInputEncoding'), $params);
         }
 
         /**
@@ -106,19 +106,19 @@ if ( ! class_exists('Wizin_Core_App') ) {
             //
             // analyze action from 'PATH_INFO
             //
-            $pathInfo = getenv( 'PATH_INFO' );
-            if ( ! empty($pathInfo) ) {
-                if ( strpos($pathInfo, '.') !== false ) {
-                    $pathInfoArray = explode( '.', $pathInfo );
-                    array_pop( $pathInfoArray );
-                    $pathInfo = implode( '.', $pathInfoArray );
+            $pathInfo = getenv('PATH_INFO');
+            if (! empty($pathInfo)) {
+                if (strpos($pathInfo, '.') !== false) {
+                    $pathInfoArray = explode('.', $pathInfo);
+                    array_pop($pathInfoArray);
+                    $pathInfo = implode('.', $pathInfoArray);
                 }
             } else {
                 $pathInfo = '/';
             }
             $this->sPathInfo = $pathInfo;
-            $this->sPathTranslated = $this->_getPathTranslated( $pathInfo );
-            $this->_dispatch( $this->sPathTranslated );
+            $this->sPathTranslated = $this->_getPathTranslated($pathInfo);
+            $this->_dispatch($this->sPathTranslated);
         }
 
         /**
@@ -127,49 +127,49 @@ if ( ! class_exists('Wizin_Core_App') ) {
          * @param string $pathInfo
          * @return string
          */
-        protected function _getPathTranslated( $pathInfo = '/' )
+        protected function _getPathTranslated($pathInfo = '/')
         {
             $pathTranslated = $pathInfo;
             // if last character is '/', add default action
-            if ( substr($pathTranslated, -1, 1) === '/' ) {
+            if (substr($pathTranslated, -1, 1) === '/') {
                 $pathTranslated .= 'index';
             }
-            $pathTranslated = substr( dirname($pathTranslated), 1 ) . '/' .
-                ucfirst( basename($pathTranslated) );
-            if ( substr($pathTranslated, 0, 1) === '/' ) {
-                $pathTranslated = substr( $pathTranslated, 1 );
+            $pathTranslated = substr(dirname($pathTranslated), 1) . '/' .
+                ucfirst(basename($pathTranslated));
+            if (substr($pathTranslated, 0, 1) === '/') {
+                $pathTranslated = substr($pathTranslated, 1);
             }
             return $pathTranslated;
         }
 
-        protected function _dispatch( $pathTranslated )
+        protected function _dispatch($pathTranslated)
         {
-            $pathArray = explode( '/', $pathTranslated );
-            $pathArray = array_map( 'ucfirst', $pathArray );
+            $pathArray = explode('/', $pathTranslated);
+            $pathArray = array_map('ucfirst', $pathArray);
             // controller
             $controllerClass = WIZIN_DEFAULT_CONTROLLER;
             $controllerPath = WIZ_SITE_ROOT . '/controllers/' . $pathTranslated . '.php';
-            if ( file_exists($controllerPath) ) {
+            if (file_exists($controllerPath)) {
                 require $controllerPath;
-                $class = WIZ_SYS_PREFIX . '_' . implode( '_', $pathArray ) . '_Controller';
-                if ( class_exists($class) ) {
+                $class = WIZ_SYS_PREFIX . '_' . implode('_', $pathArray) . '_Controller';
+                if (class_exists($class)) {
                     $controllerClass = $class;
                 }
             }
             $controller = new $controllerClass();
-            $this->oController = new Wizin_Ref( $controller );
+            $this->oController = new Wizin_Ref($controller);
             // view
             $viewClass = WIZIN_DEFAULT_VIEW;
             $viewPath = WIZ_SITE_ROOT . '/views/' . $pathTranslated . '.php';
-            if ( file_exists($viewPath) ) {
+            if (file_exists($viewPath)) {
                 require $viewPath;
-                $class = WIZ_SYS_PREFIX . '_' . implode( '_', $pathArray ) . '_View';
-                if ( class_exists($class) ) {
+                $class = WIZ_SYS_PREFIX . '_' . implode('_', $pathArray) . '_View';
+                if (class_exists($class)) {
                     $viewClass = $class;
                 }
             }
             $view = new $viewClass();
-            $this->oController->setView( $view );
+            $this->oController->setView($view);
         }
 
     }
