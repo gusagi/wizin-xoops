@@ -1,6 +1,7 @@
 ----------------------------------
 [2009-02-13 Ver 0.38 -> 0.39]
 - Added the pattern which does not modify URL.(thx black-sawa)
+- Deleted unnecessary space in brackets.
 ----------------------------------
 [2009-02-01 Ver 0.37 -> 0.38]
 - Added logic for the problem which session will be closed the case of redirect with location header.(thx nazo and naoto_is)
