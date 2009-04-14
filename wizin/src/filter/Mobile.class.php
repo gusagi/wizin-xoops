@@ -132,9 +132,11 @@ if (! class_exists('Wizin_Filter_Mobile')) {
             Wizin_Filter::filterResizeImage($contents, $baseUri, $currentUri, $basePath, $createDir,
                 $maxWidth, array(IMAGETYPE_PNG));
             // replace input type "password" => "text"
+            /*
             $pattern = '(<input)([^>]*)(type=)([\"\'])(password)([\"\'])([^>]*)(>)';
             $replacement = '${1}${2}${3}${4}text${6} ${7}${8}';
             $contents = preg_replace("/" .$pattern ."/i", $replacement, $contents);
+            */
             $pattern = '(enctype=)([\"\'])(multipart\/form-data)([\"\'])';
             $replacement = '';
             $contents = preg_replace("/" .$pattern ."/i", $replacement, $contents);
