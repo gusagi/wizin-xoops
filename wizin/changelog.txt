@@ -1,4 +1,7 @@
 ----------------------------------
+[2009-04-15 Ver 0.40 -> 0.41]
+- Enabled guid check.
+----------------------------------
 [2009-04-15 Ver 0.39 -> 0.40]
 - Removed needless code.(Wizin core files)
 - Removed needless files.(lib)
