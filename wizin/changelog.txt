@@ -1,4 +1,9 @@
 ----------------------------------
+[2009-04-15 Ver 0.39 -> 0.40]
+- Removed needless code.(Wizin core files)
+- Removed needless files.(lib)
+- Removed needless code.(Wizin templates)
+----------------------------------
 [2009-02-13 Ver 0.38 -> 0.39]
 - Added the pattern which does not modify URL.(thx black-sawa)
 - Deleted unnecessary space in brackets.
