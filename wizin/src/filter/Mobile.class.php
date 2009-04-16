@@ -264,7 +264,7 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                 // get encode
                 if (extension_loaded('mbstring')) {
                     $encode = strtolower(mb_detect_encoding($string,
-                        'sjis-win,eucjp-win,jis,utf-8,ascii'));
+                        'ASCII,JIS,UTF-8,EUC-JP,SJIS', true));
                     switch ($encode) {
                         case 'euc-jp':
                             $encode = 'eucjp-win';
