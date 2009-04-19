@@ -580,6 +580,10 @@ if (! class_exists('Wizin_Filter_Mobile')) {
          */
         function filterInputPictogramMobile()
         {
+            if (extension_loaded('mbstring')) {
+                $internalEncoding = mb_internal_encoding();
+                mb_internal_encoding('utf-8');
+            }
             $method = strtolower(getenv('REQUEST_METHOD'));
             if ($method === 'get') {
                 $_GET = $this->_convertInputPictogram($_GET);
@@ -587,6 +591,9 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                 $_POST = $this->_convertInputPictogram($_POST);
             }
             $_REQUEST = $this->_convertInputPictogram($_REQUEST);
+            if (extension_loaded('mbstring')) {
+                mb_internal_encoding($internalEncoding);
+            }
         }
 
         function _convertInputPictogram($input)
@@ -614,11 +621,11 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                                 $carrier = ':im';
                                 break;
                         }
-                        $pattern = '/(\[emj:)(' . $picObject->getCarrier() .')(\d+)()(\])/s';
+                        $pattern = '/(\[emj:)( )?(' . $picObject->getCarrier() .')( )?(\d+)( )?(\])/s';
                         preg_match_all($pattern, $converted[$key], $matches, PREG_SET_ORDER);
                         foreach ($matches as $match) {
-                            $converted[$key] = str_replace($match[0], $match[1] . $match[3] . $carrier .
-                                $match[5], $converted[$key]);
+                            $converted[$key] = str_replace($match[0], $match[1] . $match[5] . $carrier .
+                                $match[7], $converted[$key]);
                         }
                     } else {
                         $converted[$key] = $value;
