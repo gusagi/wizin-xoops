@@ -1,6 +1,7 @@
 ----------------------------------
-[2009-04-18 Ver 0.42 -> 0.43]
+[2009-04-19 Ver 0.42 -> 0.43]
 - Modified value of socket timeout.
+- Fixed bug about preg_match pattern was invalid.
 ----------------------------------
 [2009-04-16 Ver 0.41 -> 0.42]
 - Fixed bug about wrong encoding detect.
