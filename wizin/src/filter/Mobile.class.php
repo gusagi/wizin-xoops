@@ -580,10 +580,6 @@ if (! class_exists('Wizin_Filter_Mobile')) {
          */
         function filterInputPictogramMobile()
         {
-            if (extension_loaded('mbstring')) {
-                $internalEncoding = mb_internal_encoding();
-                mb_internal_encoding('utf-8');
-            }
             $method = strtolower(getenv('REQUEST_METHOD'));
             if ($method === 'get') {
                 $_GET = $this->_convertInputPictogram($_GET);
@@ -591,9 +587,6 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                 $_POST = $this->_convertInputPictogram($_POST);
             }
             $_REQUEST = $this->_convertInputPictogram($_REQUEST);
-            if (extension_loaded('mbstring')) {
-                mb_internal_encoding($internalEncoding);
-            }
         }
 
         function _convertInputPictogram($input)
