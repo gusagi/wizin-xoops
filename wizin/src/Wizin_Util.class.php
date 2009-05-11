@@ -175,5 +175,14 @@ if (! class_exists('Wizin_Util')) {
             header('Location: ' . $url);
             exit();
         }
+
+
+        function stripslashesRecursive($value = '')
+        {
+            $value = is_array ($value) ?
+                array_map(array('Wizin_Util', 'stripslashesRecursive'), $value) :
+                stripslashes($value);
+            return $value;
+        }
     }
 }

@@ -1,7 +1,8 @@
 ----------------------------------
-[2009-04-19 Ver 0.42 -> 0.43]
+[2009-05-11 Ver 0.42 -> 0.43]
 - Modified value of socket timeout.
 - Fixed bug about preg_match pattern was invalid.
+- Added function 'stripslashesRecursive'.
 ----------------------------------
 [2009-04-16 Ver 0.41 -> 0.42]
 - Fixed bug about wrong encoding detect.
