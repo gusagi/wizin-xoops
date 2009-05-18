@@ -1,4 +1,7 @@
 ----------------------------------
+[2009-05-17 Ver 0.44 -> 0.45]
+- Modified image resize logic, use ke-tai_list.csv(special thanks http://ke-tai.org/)
+----------------------------------
 [2009-05-12 Ver 0.43 -> 0.44]
 - Updated Text_Pictogram_Mobile, it's changed license to MIT license.(special thx yudoufu!)
 ----------------------------------
