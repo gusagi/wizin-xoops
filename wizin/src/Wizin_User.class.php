@@ -85,6 +85,14 @@ if (! class_exists('Wizin_User')) {
                 } else {
                     $this->sDoctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
                 }
+                $inputMode = $data['inputmode'];
+                if (! empty($inputMode)) {
+                    $this->aInputMode = $inputMode;
+                } else {
+                    $this->aInputMode = array();
+                }
+                $this->iWidth = 240;
+                $this->sModel = '';
                 $plugin = $data['plugin'];
                 if (! empty($plugin)) {
                     if (! empty($plugin['path']) && file_exists(WIZIN_ROOT_PATH . '/' . $plugin['path'])) {
@@ -94,12 +102,6 @@ if (! class_exists('Wizin_User')) {
                         $class = $plugin['class'];
                         $instance = new $class;
                     }
-                }
-                $inputMode = $data['inputmode'];
-                if (! empty($inputMode)) {
-                    $this->aInputMode = $inputMode;
-                } else {
-                    $this->aInputMode = array();
                 }
             } else {
                 $this->iCarrierId = 99;
@@ -112,6 +114,8 @@ if (! class_exists('Wizin_User')) {
                 $this->sCharset = 'utf-8';
                 $this->sDoctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
                 $this->aInputMode = array();
+                $this->iWidth = 800;
+                $this->sModel = '';
             }
         }
 

@@ -11,14 +11,9 @@
  */
 
 if (! class_exists('Wizin_Plugin_User_Au')) {
-    class Wizin_Plugin_User_Au extends Wizin_StdClass
+    require dirname(__FILE__) .'/Mobile.class.php';
+    class Wizin_Plugin_User_Au extends Wizin_Plugin_User_Mobile
     {
-        function __construct()
-        {
-            $this->_require();
-            $this->_setup();
-        }
-
         function _require()
         {
             require_once WIZIN_ROOT_PATH . '/src/filter/Mobile.class.php';
@@ -33,6 +28,7 @@ if (! class_exists('Wizin_Plugin_User_Au')) {
                 $params = array();
                 $filter->addOutputFilter(array($this, 'filterAu'), $params);
             }
+            parent::_setup();
         }
 
         function filterAu(& $contents)
@@ -88,6 +84,17 @@ if (! class_exists('Wizin_Plugin_User_Au')) {
             $contents = str_replace('?&', '?', $contents);
             $contents = str_replace('&&', '&', $contents);
             return $contents;
+        }
+
+        function _getModel()
+        {
+            $user =& Wizin_User::getSingleton();
+            // get model name from useragent
+            $agent = getenv('HTTP_USER_AGENT');
+            $model = substr($agent, (strpos($agent, "-") + 1), (strpos($agent, ' ') - strpos($agent, '-') - 1));
+            if (! empty(trim($model))) {
+                $user->sModel = trim($model);
+            }
         }
     }
 }

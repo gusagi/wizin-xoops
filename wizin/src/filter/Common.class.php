@@ -441,6 +441,8 @@ if (! class_exists('Wizin_Filter_Common')) {
                                     $urlArray = parse_url($imageUrl);
                                     $newImageFile = str_replace('/', '_', $urlArray['path']);
                                     $newImageFile = str_replace($ext, '', $newImageFile);
+                                    $newImageFile .= ($maxImageWidth / $width) > 1 ?
+                                        $width .'.' : $maxImageWidth .'.';
                                     $newImagePath = $createDir . '/' . $newImageFile;
                                     $newImagePath .= $newExt;
                                     $newImageUrl = str_replace($basePath, $baseUri, $newImagePath);

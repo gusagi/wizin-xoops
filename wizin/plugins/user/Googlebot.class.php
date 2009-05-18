@@ -26,6 +26,7 @@ if (! class_exists('Wizin_Plugin_User_Googlebot')) {
         function _setup()
         {
             $this->_checkMobile();
+            parent::_setup();
         }
 
         function _checkMobile()

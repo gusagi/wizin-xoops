@@ -11,14 +11,9 @@
  */
 
 if (! class_exists('Wizin_Plugin_User_Docomo')) {
-    class Wizin_Plugin_User_Docomo extends Wizin_StdClass
+    require dirname(__FILE__) .'/Mobile.class.php';
+    class Wizin_Plugin_User_Docomo extends Wizin_Plugin_User_Mobile
     {
-        function __construct()
-        {
-            $this->_require();
-            $this->_setup();
-        }
-
         function _require()
         {
             require_once WIZIN_ROOT_PATH . '/src/filter/Mobile.class.php';
@@ -36,6 +31,7 @@ if (! class_exists('Wizin_Plugin_User_Docomo')) {
                 $filter->addOutputFilter(array($this, 'filterDocomo'), $params);
                 $this->_checkGuid();
             }
+            parent::_setup();
         }
 
         function _checkGuid()
@@ -189,5 +185,21 @@ if (! class_exists('Wizin_Plugin_User_Docomo')) {
             return $contents;
         }
 
+        function _getModel()
+        {
+            $user =& Wizin_User::getSingleton();
+            // get model name from useragent
+            $agent = getenv('HTTP_USER_AGENT');
+            if (strpos($agent, "DoCoMo/1.0") >= 0 && strpos($agent, "/", 11) >= 0) {
+                $model = substr($agent, 11, (strpos($agent, "/", 11) - 11));
+            } else if (strpos($agent, "DoCoMo/2.0") >= 0 && strpos($agent, "(", 11) >= 0) {
+                $model = substr($agent, 11, (strpos($agent, "(", 11) - 11));
+            } else {
+                $model = substr($agent, 11);
+            }
+            if (! empty(trim($model))) {
+                $user->sModel = trim($model);
+            }
+        }
     }
 }

@@ -11,22 +11,14 @@
  */
 
 if (! class_exists('Wizin_Plugin_User_Softbank')) {
-    class Wizin_Plugin_User_Softbank extends Wizin_StdClass
+    require dirname(__FILE__) .'/Mobile.class.php';
+    class Wizin_Plugin_User_Softbank extends Wizin_Plugin_User_Mobile
     {
-        function __construct()
-        {
-            $this->_require();
-            $this->_setup();
-        }
-
-        function _require()
-        {
-        }
-
         function _setup()
         {
             $this->_check3GC();
             $this->_updateUniqId();
+            parent::_setup();
         }
 
         function _check3GC()
@@ -45,6 +37,16 @@ if (! class_exists('Wizin_Plugin_User_Softbank')) {
             $user =& Wizin_User::getSingleton();
             if (strlen($user->sUniqId) === 16) {
                 $user->sUniqId = substr($user->sUniqId, 1);
+            }
+        }
+
+        function _getModel()
+        {
+            $user =& Wizin_User::getSingleton();
+            // get model name from request header
+            $model = getenv('HTTP_X_JPHONE_MSNAME');
+            if (! empty($model)) {
+                $user->sModel = $model;
             }
         }
     }
