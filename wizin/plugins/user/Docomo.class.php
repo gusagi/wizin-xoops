@@ -197,7 +197,7 @@ if (! class_exists('Wizin_Plugin_User_Docomo')) {
             } else {
                 $model = substr($agent, 11);
             }
-            if (! empty(trim($model))) {
+            if (! empty($model)) {
                 $user->sModel = trim($model);
             }
         }

@@ -92,7 +92,7 @@ if (! class_exists('Wizin_Plugin_User_Au')) {
             // get model name from useragent
             $agent = getenv('HTTP_USER_AGENT');
             $model = substr($agent, (strpos($agent, "-") + 1), (strpos($agent, ' ') - strpos($agent, '-') - 1));
-            if (! empty(trim($model))) {
+            if (! empty($model)) {
                 $user->sModel = trim($model);
             }
         }
