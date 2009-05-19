@@ -76,7 +76,9 @@ if (! class_exists('Wizin_Cache')) {
 
         function clear()
         {
-            unlink($this->_sCacheFile);
+            if (file_exists($this->_sCacheFile)) {
+                unlink($this->_sCacheFile);
+            }
         }
 
     }
