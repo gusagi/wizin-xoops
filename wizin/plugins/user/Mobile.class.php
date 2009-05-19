@@ -52,11 +52,13 @@ if (! class_exists('Wizin_Plugin_User_Mobile')) {
                 $specList = array();
                 if ($user->sModel !== '') {
                     $specFile = WIZIN_ROOT_PATH .'/data/user/ke-tai_list.csv';
-                    if (file_exists($specFile) && is_readable($specFile) && extension_loaded('mbstring')) {
+                    if (file_exists($specFile) && is_readable($specFile) &&
+                            extension_loaded('mbstring')) {
                         $handle = fopen($specFile, "r");
                         while (($data = fgetcsv($handle, 1024, ",")) !== false) {
                             mb_convert_variables(mb_internal_encoding(), 'sjis-win', $data);
-                            if ($data[$this->iModelIdx] == $user->sModel) {
+                            if (isset($data[$this->iModelIdx]) &&
+                                    $data[$this->iModelIdx] == $user->sModel) {
                                 $specList = $data;
                                 break;
                             }
