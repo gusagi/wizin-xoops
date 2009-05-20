@@ -1,4 +1,7 @@
 ----------------------------------
+[2009-05-21 Ver 0.46 -> 0.47]
+- Fixed bug about width/height attribute exists in resized image tag.
+----------------------------------
 [2009-05-19 Ver 0.45 -> 0.46]
 - Fixed bug about output notice message when clear cache without cache file.
 - Fixed bug about output notice message with ke-tai_list.csv first line.

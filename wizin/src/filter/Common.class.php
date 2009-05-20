@@ -486,6 +486,9 @@ if (! class_exists('Wizin_Filter_Common')) {
                                 if ($linkReplaceFlg) {
                                     $imageTag = str_replace($match[3] . $match[4] .$match[5] . $match[6],
                                         $match[3] . $match[4] . $newImageUrl . $match[6], $match[0]);
+                                    $pattern = '(width|height)=([\"\'])(\S*)([\"\'])';
+                                    $replacement = '';
+                                    $imageTag = preg_replace("/" .$pattern ."/i", $replacement, $imageTag);
                                     $replaceArray = array("'" => "\'", '"' => '\"', '\\' => '\\\\',
                                         '/' => '\/', '(' => '\(', ')' => '\)', '.' => '\.', '?' => '\?');
                                     $linkCheckPattern = '(<a)([^>]*)(href=)([^>]*)(>)((?:(?!<\/a>).)*)('
