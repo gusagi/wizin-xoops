@@ -4,6 +4,8 @@
 - Added 'Mobile Link Discovery' tag insert logic.
 - Added client plugin for 'Livedoor' and 'Mixi'.
 - Added content-type variable in Wizin_User class.
+- Fixed bug about call function of non-object.
+- Updated ke-tai_list.csv
 ----------------------------------
 [2009-05-21 Ver 0.46 -> 0.47]
 - Fixed bug about width/height attribute exists in resized image tag.
