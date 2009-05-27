@@ -9,6 +9,7 @@ googlebot-mobile:
     uniqid:""
     encoding:"sjis-win"
     charset:"shift_jis"
+    content-type:""
     doctype:""
     plugin:
         path:"plugins/user/Googlebot.class.php"
@@ -26,10 +27,45 @@ yahoo-mobile:
     uniqid:""
     encoding:"sjis-win"
     charset:"shift_jis"
+    content-type:""
     doctype:""
     plugin:
         path:""
         class:""
+
+livedoor-mobile:
+    carrierid:9
+    mobile:true
+    bot:true
+    cookie:true
+    agent:
+        - "LD_mobile_bot"
+    host:"\.data-hotel\.net$"
+    uniqid:""
+    encoding:""
+    charset:""
+    content-type:""
+    doctype:""
+    plugin:
+        path:"plugins/user/Livedoor.class.php"
+        class:"Wizin_Plugin_User_Livedoor"
+
+mixi-mobile-converter:
+    carrierid:10
+    mobile:true
+    bot:true
+    cookie:true
+    agent:
+        - "mixi-mobile-converter"
+    host:"\w*\.\.mixi\.jp$"
+    uniqid:""
+    encoding:"sjis-win"
+    charset:"shift_jis"
+    content-type:"text/html"
+    doctype:""
+    plugin:
+        path:"plugins/user/Mixi.class.php"
+        class:"Wizin_Plugin_User_Mixi"
 
 docomo:
     carrierid:1
@@ -42,6 +78,7 @@ docomo:
     uniqid:"HTTP_X_DCMGUID"
     encoding:"sjis-win"
     charset:"shift_jis"
+    content-type:""
     doctype:"<!DOCTYPE html PUBLIC \"-//i-mode group (ja)//DTD XHTML i-XHTML(Locale/Ver.=ja/2.3) 1.0//EN\" \"i-xhtml_4ja_10.dtd\">"
     plugin:
         path:"plugins/user/Docomo.class.php"
@@ -63,6 +100,7 @@ au:
     uniqid:"HTTP_X_UP_SUBNO"
     encoding:"sjis-win"
     charset:"shift_jis"
+    content-type:""
     doctype:"<!DOCTYPE html PUBLIC \"-//OPENWAVE//DTD XHTML 1.0//EN\" \"http://www.openwave.com/DTD/xhtml-basic.dtd\">"
     plugin:
         path:"plugins/user/Au.class.php"
@@ -87,6 +125,7 @@ softbank:
     uniqid:"HTTP_X_JPHONE_UID"
     encoding:"utf-8"
     charset:"utf-8"
+    content-type:""
     doctype:"<!DOCTYPE html PUBLIC \"-//J-PHONE//DTD XHTML Basic 1.0 Plus//EN\" \"xhtml-basic10-plus.dtd\">"
     plugin:
         path:"plugins/user/Softbank.class.php"
@@ -107,6 +146,7 @@ willcom:
     uniqid:""
     encoding:"sjis-win"
     charset:"shift_jis"
+    content-type:""
     doctype:""
     plugin:
         path:"plugins/user/Willcom.class.php"
@@ -125,6 +165,7 @@ emobile:
     uniqid:"HTTP_X_EM_UID"
     encoding:"sjis-win"
     charset:"shift_jis"
+    content-type:""
     doctype:""
     plugin:
         path:""
@@ -145,6 +186,7 @@ othermobile:
     uniqid:""
     encoding:"sjis-win"
     charset:"shift_jis"
+    content-type:""
     doctype:""
     plugin:
         path:""
