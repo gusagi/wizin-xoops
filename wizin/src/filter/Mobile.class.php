@@ -149,6 +149,16 @@ if (! class_exists('Wizin_Filter_Mobile')) {
             if (extension_loaded('mbstring')) {
                 $contents = mb_convert_kana($contents, 'knr');
             }
+            // delete contiguous space
+            //$contents = preg_replace('/\s\s+/', ' ', $contents);
+            // add mobile link discovery tag
+            $pattern = '(<link)([^>]*)(media=)([\"\'])(handheld)([\"\'])([^>]*)(>)';
+            if (! preg_match("/" .$pattern ."/i", $contents)) {
+                $mobileLinkDiscovery = '<link rel="alternate" media="handheld" type="text/html"' .
+                    ' href="' .$currentUri .'" />';
+                $contents = str_replace('</head>', $mobileLinkDiscovery .'</head>', $contents);
+            }
+            // return contents string
             return $contents;
         }
 
