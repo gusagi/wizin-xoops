@@ -79,6 +79,12 @@ if (! class_exists('Wizin_User')) {
                 } else {
                     $this->sCharset = 'utf-8';
                 }
+                $contentType = $data['content-type'];
+                if (! empty($contentType)) {
+                    $this->sContentType = $contentType;
+                } else {
+                    $this->sContentType = '';
+                }
                 $doctype = $data['doctype'];
                 if (! empty($doctype)) {
                     $this->sDoctype = $doctype;
@@ -112,6 +118,7 @@ if (! class_exists('Wizin_User')) {
                 $this->sUniqId = '';
                 $this->sEncoding = 'utf-8';
                 $this->sCharset = 'utf-8';
+                $this->sContentType = '';
                 $this->sDoctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
                 $this->aInputMode = array();
                 $this->iWidth = 800;

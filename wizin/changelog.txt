@@ -3,6 +3,7 @@
 - Fixed bug about resize width/height is lower than 1 pixel, imagecreatetruecolor cannot create new image.(thx takahashi)
 - Added 'Mobile Link Discovery' tag insert logic.
 - Added client plugin for 'Livedoor' and 'Mixi'.
+- Added content-type variable in Wizin_User class.
 ----------------------------------
 [2009-05-21 Ver 0.46 -> 0.47]
 - Fixed bug about width/height attribute exists in resized image tag.
