@@ -11,7 +11,8 @@
  */
 
 if (! class_exists('Wizin_Plugin_User_Googlebot')) {
-    class Wizin_Plugin_User_Googlebot extends Wizin_StdClass
+    require dirname(__FILE__) .'/Mobile.class.php';
+    class Wizin_Plugin_User_Googlebot extends Wizin_Plugin_User_Mobile
     {
         function __construct()
         {

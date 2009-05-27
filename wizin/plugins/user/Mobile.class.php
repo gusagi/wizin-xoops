@@ -35,6 +35,10 @@ if (! class_exists('Wizin_Plugin_User_Mobile')) {
             $this->_updateDevice();
         }
 
+        function _getModel()
+        {
+        }
+
         function _updateDevice()
         {
             $user =& Wizin_User::getSingleton();
