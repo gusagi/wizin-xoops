@@ -41,7 +41,13 @@ if (! class_exists('Wizin_Util_Web')) {
                 $copyFunction = 'imagecopy';
             }
             $resizeWidth = $resizeRate * $width;
+            if ($resizeWidth < 1) {
+                $resizeWidth = 1;
+            }
             $resizeHeight = $resizeRate * $height;
+            if ($resizeHeight < 1) {
+                $resizeHeight = 1;
+            }
             switch ($format) {
                 case IMAGETYPE_GIF:
                     $image = imagecreatefromgif($imagePath);
