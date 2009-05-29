@@ -482,26 +482,47 @@ if (! class_exists('Wizin_Filter_Mobile')) {
          * @param array $cssBaseDirs
          * @return string $contents
          */
-        function filterCssMobile(& $contents, $cssBaseDirs = '')
+        function filterCssMobile(& $contents, $cssBaseDirs = '', $baseUrl = '')
         {
             if (floatval(PHP_VERSION) < 5.1) {
                 return $contents;
             }
-            if (! empty($cssBaseDirs) && is_array($cssBaseDirs)) {
+            if (! extension_loaded('mbstring')) {
+                return $contents;
+            }
+            if (! empty($cssBaseDirs) ) {
+                if (! is_array($cssBaseDirs)) {
+                    $cssBaseDirs = (array)$cssBaseDirs;
+                }
                 if (! class_exists('Wizin_Filter_Css')) {
                     if (file_exists(dirname(__FILE__) . '/Css.class.php')) {
                         require dirname(__FILE__) . '/Css.class.php';
                     }
                 }
                 if (class_exists('Wizin_Filter_Css')) {
-                    if (extension_loaded('mbstring')) {
-                        $encodingSalt = mb_convert_kana(mb_internal_encoding(), 'A');
-                        for($count = 0; $count < 10; $count++) {
-                            $encodingSalt .= PHP_EOL . $encodingSalt;
-                        }
-                        $contents .= $encodingSalt;
+                    // delete base url in link tag
+                    //   forward rel
+                    $pattern = '(<link)([^>]*)(rel=)([\"\'])(stylesheet)([\"\'])([^>]*)(href=)([\"\'])(' .
+                        strtr($baseUrl, array('/' => '\/')) .')(\S*)([\"\'])([^>]*)(>)';
+                    $replacement = '${1}${2}${3}${4}${5}${6}${7}${8}${9}${11}${12} ${13}${14}';
+                    $contents = preg_replace("/" .$pattern ."/i", $replacement, $contents);
+                    //   forward href
+                    $pattern = '(<link)([^>]*)(href=)([\"\'])(' .strtr($baseUrl, array('/' => '\/')) .
+                        ')(\S*)([\"\'])([^>]*)(rel=)([\"\'])(stylesheet)([\"\'])([^>]*)(>)';
+                    $replacement = '${1}${2}${3}${4}${6}${7} ${8}${9}${10}${11}${12}${13}${14}';
+                    $contents = preg_replace("/" .$pattern ."/i", $replacement, $contents);
+                    // convert encoding to utf-8
+                    $internalEncoding = mb_internal_encoding();
+                    if (in_array(strtolower($internalEncoding), array('sjis', 'shift_jis', 'ms_kanji',
+                            'csshift_jis'))) {
+                        $internalEncoding = 'sjis-win';
+                    } else if (in_array(strtolower($internalEncoding), array('euc-jp',
+                            'extended_unix_code_packed_format_for_japanese', 'cseucpkdfmtjapanese'))) {
+                        $internalEncoding = 'eucjp-win';
                     }
+                    $contents = mb_convert_encoding($contents, 'utf-8', $internalEncoding);
                     // apply style
+                    $errorLevel = error_reporting();
                     foreach ($cssBaseDirs as $cssDir) {
                         // directory check
                         if (! file_exists($cssDir) || ! is_dir($cssDir) || ! is_readable($cssDir)) {
@@ -509,12 +530,13 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                         }
                         $filterCss = Wizin_Filter_Css::getInstance();
                         $filterCss = $filterCss->setBaseDir($cssDir);
+                        error_reporting(E_ERROR);
                         $contents = $filterCss->apply($contents);
+                        error_reporting($errorLevel);
                         unset($filterCss);
                     }
-                    if (extension_loaded('mbstring')) {
-                        $contents = str_replace($encodingSalt, '', $contents);
-                    }
+                    // convert encoding to internal encoding
+                    $contents = mb_convert_encoding($contents, $internalEncoding, 'utf-8');
                 }
             }
             return $contents;
