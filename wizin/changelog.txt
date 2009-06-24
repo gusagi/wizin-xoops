@@ -1,12 +1,15 @@
 ----------------------------------
-[2009-05-29 Ver 0.47 -> 0.48]
+[2009-06-25 Ver 0.47 -> 0.48]
 - Fixed bug about resize width/height is lower than 1 pixel, imagecreatetruecolor cannot create new image.(thx takahashi)
+- Fixed bug about preg_match pattern.(thx argon)
 - Added 'Mobile Link Discovery' tag insert logic.
 - Added client plugin for 'Livedoor' and 'Mixi'.
 - Added content-type variable in Wizin_User class.
 - Fixed bug about call function of non-object.
 - Fixed bug about needless html tag added.(thx mbxoops)
 - Updated ke-tai_list.csv
+- Updated 'HTML_CSS_Mobile'.
+- Imported 'HTML_CSS_Selecter2XPath'.
 ----------------------------------
 [2009-05-21 Ver 0.46 -> 0.47]
 - Fixed bug about width/height attribute exists in resized image tag.
