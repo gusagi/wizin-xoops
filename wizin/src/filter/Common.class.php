@@ -163,7 +163,7 @@ if (! class_exists('Wizin_Filter_Common')) {
                     }
                     mb_convert_variables($outputEncoding, $internalEncoding, $contents);
                     // convert url encoded string
-                    $pattern = '(<a)([^>]*)(href=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
+                    $pattern = '(<a)([^>]*)(href=)([\"\'])([^\"\']*)([\"\'])([^>]*)(>)';
                     preg_match_all("/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER);
                     if (! empty($matches)) {
                         foreach ($matches as $key => $match) {
@@ -221,7 +221,7 @@ if (! class_exists('Wizin_Filter_Common')) {
         function filterTransSid(& $contents, $baseUri, $currentUri)
         {
             // link
-            $pattern = '(<a)([^>]*)(href=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
+            $pattern = '(<a)([^>]*)(href=)([\"\'])([^\"\']*)([\"\'])([^>]*)(>)';
             preg_match_all("/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER);
             if (! empty($matches)) {
                 foreach ($matches as $key => $match) {
@@ -274,7 +274,7 @@ if (! class_exists('Wizin_Filter_Common')) {
             //
             // form
             //
-            $pattern = '(<form)([^>]*)(action=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
+            $pattern = '(<form)([^>]*)(action=)([\"\'])([^\"\']*)([\"\'])([^>]*)(>)';
             preg_match_all("/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER);
             if (! empty($matches)) {
                 foreach ($matches as $key => $match) {
@@ -356,7 +356,7 @@ if (! class_exists('Wizin_Filter_Common')) {
             if (extension_loaded('gd')) {
                 clearstatcache();
                 $allowImageFormat = array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG);
-                $pattern = '(<img)([^>]*)(src=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
+                $pattern = '(<img)([^>]*)(src=)([\"\'])([^\"\']*)([\"\'])([^>]*)(>)';
                 preg_match_all("/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER);
                 if (! empty($matches)) {
                     foreach ($matches as $key => $match) {
@@ -467,10 +467,12 @@ if (! class_exists('Wizin_Filter_Common')) {
                                         $linkReplaceFlg = true;
                                     }
                                 }
-                                if ($width >= $maxImageWidth && in_array($format, $allowImageFormat)) {
+                                if ($width > $maxImageWidth && in_array($format, $allowImageFormat)) {
                                     $urlArray = parse_url($imageUrl);
                                     $newImageFile = str_replace('/', '_', $urlArray['path']);
                                     $newImageFile = str_replace($ext, '', $newImageFile);
+                                    $newImageFile .= ($maxImageWidth / $width) > 1 ?
+                                        $width .'.' : $maxImageWidth .'.';
                                     $newImagePath = $createDir . '/' . $newImageFile;
                                     $newImagePath .= $newExt;
                                     $newImageUrl = str_replace($basePath, $baseUri, $newImagePath);
@@ -507,5 +509,16 @@ if (! class_exists('Wizin_Filter_Common')) {
             }
         }
 
+        /**
+         * Delete contiguous space and blank line.
+         *
+         * @param string $contents
+         */
+        function minimize(& $contents) {
+            $contents = strtr($contents, array("\t" => ' ', "\r\n" => 'PHP_EOL', "\r" => 'PHP_EOL', "\n" => 'PHP_EOL'));
+            $contents = preg_replace('/\s\s+/', ' ', $contents);
+            $contents = str_replace('PHP_EOL PHP_EOL', 'PHP_EOL', $contents);
+            $contents = str_replace('PHP_EOL', PHP_EOL, $contents);
+        }
     }
 }

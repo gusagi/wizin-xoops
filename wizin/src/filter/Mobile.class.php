@@ -150,7 +150,7 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                 $contents = mb_convert_kana($contents, 'knr');
             }
             // delete contiguous space
-            //$contents = preg_replace('/\s\s+/', ' ', $contents);
+            $this->minimize($contents);
             // add mobile link discovery tag
             $pattern = '(<link)([^>]*)(media=)([\"\'])(handheld)([\"\'])([^>]*)(>)';
             if (! preg_match("/" .$pattern ."/i", $contents)) {
@@ -191,7 +191,7 @@ if (! class_exists('Wizin_Filter_Mobile')) {
             }
             if ($final) {
                 // delete first/last '@' string in link
-                $pattern = '(<a)([^>]*)(href=)([\"\'])(@)(\S*)(@)([\"\'])([^>]*)(>)';
+                $pattern = '(<a)([^>]*)(href=)([\"\'])(@)([^\"\']*)(@)([\"\'])([^>]*)(>)';
                 preg_match_all("/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER);
                 if (! empty($matches)) {
                     foreach ($matches as $key => $match) {
@@ -215,7 +215,7 @@ if (! class_exists('Wizin_Filter_Mobile')) {
             static $callFlag;
             if (! isset($callFlag)) {
                 $callFlag = true;
-                $pattern = '(<a)([^>]*)(href=)([\"\'])(\S*)([\"\'])([^>]*)(>)';
+                $pattern = '(<a)([^>]*)(href=)([\"\'])([^\"\']*)([\"\'])([^>]*)(>)';
                 preg_match_all("/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER);
                 if (! empty($matches)) {
                     foreach ($matches as $key => $match) {
@@ -269,6 +269,8 @@ if (! class_exists('Wizin_Filter_Mobile')) {
         function filterMobilePager($string, $maxKbyte = 0)
         {
             Wizin_Filter_Mobile::filterDeleteTags($string);
+            // delete contiguous space
+            Wizin_Filter_Mobile::minimize($string);
             if (class_exists('DOMDocument') && class_exists('SimpleXMLElement') &&
                     method_exists('SimpleXMLElement','getName')) {
                 // get encode
@@ -391,7 +393,7 @@ if (! class_exists('Wizin_Filter_Mobile')) {
             $maxByte = $maxKbyte * 1024;
             $buffer = '';
             $pattern = '^<\\?xml version=[\"\']1.0[\"\']';
-            $noPartitionTag = array('form', 'tr', 'th', 'td', 'tbody', 'fieldset', 'pre');
+            $noPartitionTag = array('form', 'tr', 'th', 'td', 'tbody', 'fieldset', 'pre', 'li');
             // get html from SimpleXMLElement
             $allAttribute = $xml->asXML();
             $allAttribute = strtr($allAttribute, array('<body>' => '', '</body>' => ''));
@@ -421,7 +423,7 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                         $childXml = simplexml_load_string($string);
                         $body =& $childXml->body;
                         if (serialize($body) !== serialize($body->children())) {
-                            // bottom layer
+                            // not bottom layer
                             $pages = Wizin_Filter_Mobile::_partitionPage($body, $encode, $maxKbyte);
                             foreach ($pages as $page) {
                                 $array[] = $page;
@@ -429,13 +431,13 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                             unset($pages);
                             continue;
                         } else {
-                            // not bottom layer
+                            // bottom layer
                             $buffer .= $attribute;
                             while (strlen($buffer) > $maxByte) {
                                 if (extension_loaded('mbstring')) {
-                                        $cutString = mb_substr($buffer, 0, $maxByte, 'utf-8');
+                                    $cutString = mb_substr($buffer, 0, $maxByte, 'utf-8');
                                 } else {
-                                        $cutString = substr($buffer, 0, $maxByte);
+                                    $cutString = substr($buffer, 0, $maxByte);
                                 }
                                 $cutStringArray = explode('<', $cutString);
                                 array_pop($cutStringArray);
@@ -467,7 +469,28 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                     $buffer .= $attribute;
                 }
             }
-            $array[] = $buffer;
+            $bufferArray = explode('<', $buffer);
+            array_walk($bufferArray, 'trim');
+            for ($index = 0; $index < count($bufferArray); $index++) {
+                $breakFlg = true;
+                if ($bufferArray[$index] === '') {
+                    continue;
+                }
+                if (substr($bufferArray[$index], 0, 1) === '/') {
+                    $breakFlg = false;
+                }
+                if (strtolower(substr($bufferArray[$index], 0, 2)) === 'br') {
+                    $breakFlg = false;
+                }
+                if ($breakFlg) {
+                    break;
+                }
+                unset($bufferArray[$index]);
+            }
+            $buffer = implode('<', $bufferArray);
+            if (trim($buffer) !== '') {
+                $array[] = $buffer;
+            }
             return $array;
         }
 
@@ -503,12 +526,12 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                     // delete base url in link tag
                     //   forward rel
                     $pattern = '(<link)([^>]*)(rel=)([\"\'])(stylesheet)([\"\'])([^>]*)(href=)([\"\'])(' .
-                        strtr($baseUrl, array('/' => '\/')) .')(\S*)([\"\'])([^>]*)(>)';
+                        strtr($baseUrl, array('/' => '\/')) .')([^\"\']*)([\"\'])([^>]*)(>)';
                     $replacement = '${1}${2}${3}${4}${5}${6}${7}${8}${9}${11}${12} ${13}${14}';
                     $contents = preg_replace("/" .$pattern ."/i", $replacement, $contents);
                     //   forward href
                     $pattern = '(<link)([^>]*)(href=)([\"\'])(' .strtr($baseUrl, array('/' => '\/')) .
-                        ')(\S*)([\"\'])([^>]*)(rel=)([\"\'])(stylesheet)([\"\'])([^>]*)(>)';
+                        ')([^\"\']*)([\"\'])([^>]*)(rel=)([\"\'])(stylesheet)([\"\'])([^>]*)(>)';
                     $replacement = '${1}${2}${3}${4}${6}${7} ${8}${9}${10}${11}${12}${13}${14}';
                     $contents = preg_replace("/" .$pattern ."/i", $replacement, $contents);
                     // convert encoding to utf-8
