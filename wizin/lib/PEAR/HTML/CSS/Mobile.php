@@ -28,17 +28,20 @@
  * THE SOFTWARE.
  */
 
-require_once 'lib/selectorToXPath.php';
+require_once 'HTML/CSS/Selector2XPath.php';
 require_once 'HTML/CSS.php';
 
 /**
- * Mobile向けに外部参照/<style>タグののCSSをインラインのstyle要素に埋め込む
+ * HTML_CSS_Mobile Mobile向けに外部参照/<style>タグののCSSをインラインのstyle要素に埋め込む
  *   PerlのHTML::DoCoMoCSS
  *   ( http://search.cpan.org/~tokuhirom/HTML-DoCoMoCSS-0.01/lib/HTML/DoCoMoCSS.pm )
  *   のPHP移殖版
- *
- * @author Daichi Kamemoto
- * @version 0.1.5
+ * 
+ * @package 
+ * @version 0.1.6
+ * @copyright 2008 yudoufu
+ * @author Daichi Kamemoto(a.k.a yudoufu) <daikame@gmail.com> 
+ * @license MIT License
  */
 class HTML_CSS_Mobile
 {
@@ -47,10 +50,12 @@ class HTML_CSS_Mobile
 	private $dom;
 	private $dom_xpath;
 	private $css_files = array();
-	private $html_css = array();
+	private $html_css; 
 
 	/**
-	 * インスタンスを取得
+	 * getInstance インスタンスを取得
+	 * 
+	 * @return class
 	 */
 	public static function getInstance()
 	{
@@ -58,7 +63,10 @@ class HTML_CSS_Mobile
 	}
 
 	/**
-	 * CSSのベースディレクトリ(通常はDocumentRoot)を設定
+	 * setBaseDir CSSのベースディレクトリ(通常はDocumentRoot)を設定
+	 * 
+	 * @param string $base_dir 
+	 * @return class
 	 */
 	public function setBaseDir($base_dir)
 	{
@@ -67,8 +75,11 @@ class HTML_CSS_Mobile
 	}
 
 	/**
-	 * CSSのチェックモードを設定
+	 * setMode CSSのチェックモードを設定
 	 * #TODO: もっとしっかりモード実装
+	 * 
+	 * @param string $mode 
+	 * @return class
 	 */
 	public function setMode($mode)
 	{
@@ -77,16 +88,14 @@ class HTML_CSS_Mobile
 	}
 
 	/**
-	 * CSSのファイルをプログラム側から読み込む
+	 * addCSSFiles CSSのファイルをプログラム側から読み込む
+	 * 
+	 * @param array $files 
+	 * @return class
 	 */
 	public function addCSSFiles($files)
 	{
-		if (!is_array($files))
-		{
-			$files = array($files);
-		}
-
-		foreach ($files as $key => $file)
+		foreach ((array)$files as $file)
 		{
 			if (substr($file, 0, 1) != '/')
 			{
@@ -102,10 +111,8 @@ class HTML_CSS_Mobile
 		return $this;
 	}
 
-
-
 	/**
-	 * CSSをインライン化
+	 * apply CSSをインライン化
 	 *
 	 * @param  string $document 変換を行うHTML文書
 	 * @param  string $base_dir CSSのベースディレクトリ(setBaseDirより優先)
@@ -116,9 +123,9 @@ class HTML_CSS_Mobile
 		/****************************************
 		 * 前処理
 		 ****************************************/
-		if (!$base_dir)
+		if ($base_dir)
 		{
-			$base_dir = $this->base_dir;
+			$this->base_dir = $base_dir;
 		}
 
 		// loadHTML/saveHTMLのバグに対応。XML宣言の一時退避
@@ -165,54 +172,41 @@ class HTML_CSS_Mobile
 
 		$this->loadCSS();
 
+		// CSSをインライン化
+		$css = $this->html_css->toArray();
 		$add_style = array();
-		$psudo_classes = array('a:hover', 'a:link', 'a:focus', 'a:visited');
-		foreach ($this->html_css as $html_css)
+		foreach ($css as $selector => $style)
 		{
-			// a:hover, a:link, a:focus a:visited を退避
-			foreach ($psudo_classes as $psude_class)
+			// 疑似要素は退避。@ルールはスルー(Selector2XPath的にバグでやすい)
+			if (strpos($selector, '@') !== false) continue;
+			if (strpos($selector, ':') !== false)
 			{
-				$block = $html_css->toInline($psude_class);
-				if (!$block) continue;
-
-				$add_style[] = $psude_class . '{' . $block . '}';
+				$add_style[] = $selector . '{' . $this->html_css->toInline($selector) . '}';
+				continue;
 			}
 
-			// CSSをインライン化
-			$css = $html_css->toArray();
-			foreach ($css as $selector => $style)
+			$xpath = HTML_CSS_Selector2XPath::toXPath($selector);
+			$elements = $this->dom_xpath->query($xpath);
+
+			if ($elements->length == 0) continue;
+			// inlineにするCSS文を構成(toInline($selector)だとh2, h3 などでうまくいかない問題があったため)
+			$inline_style = '';
+			foreach ($style as $k => $v)
 			{
-				#TODO: 疑似要素のサポート
-				// 疑似要素と@ルールはスルー(selectorToXPath的にバグでやすい)
-				if (strpos($selector, '@') !== false) continue;
-				if (strpos($selector, ':') !== false) continue;
-
-				$xpath = selectorToXPath::toXPath($selector);
-				$elements = $this->dom_xpath->query($xpath);
-
-				if ($elements->length == 0) continue;
-				// inlineにするCSS文を構成(toInline($selector)だとh2, h3 などでうまくいかない問題があったため)
-				$inline_style = '';
-				foreach ($style as $k => $v)
+				$inline_style .= $k . ':' . $v . ';';
+			}
+			foreach ($elements as $element)
+			{
+				if ($attr_style = $element->attributes->getNamedItem('style'))
 				{
-					$inline_style .= $k . ':' . $v . ';';
+					// style要素が存在する場合は前方追記
+					#TODO: できれば、重複回避もしたい。少しロジックがまどろっこしい順序になってしまうのだが。。。
+					$attr_style->nodeValue = $inline_style . $attr_style->nodeValue;
 				}
-				foreach ($elements as $element)
+				else
 				{
-					if ($attr_style = $element->attributes->getNamedItem('style'))
-					{
-						// style要素が存在する場合は追記
-						if (substr($attr_style->nodeValue, -1) != ';')
-						{
-							$inline_style = ';' . $inline_style;
-						}
-						$attr_style->nodeValue .= $inline_style;
-					}
-					else
-					{
-						// style要素が存在しない場合は追加
-						$element->setAttribute('style', $inline_style);
-					}
+					// style要素が存在しない場合は追加
+					$element->setAttribute('style', $inline_style);
 				}
 			}
 		}
@@ -255,15 +249,12 @@ class HTML_CSS_Mobile
 	}
 
 	/**
-	 * 各所で指定されているCSSファイルを読み込み、HTML_CSSのオブジェクト配列として格納する
+	 * loadCSS 各所で指定されているCSSファイルを読み込み、HTML_CSSのオブジェクト配列として格納する
+	 * 
+	 * @return void
 	 */
 	private function loadCSS()
 	{
-		/****************************************
-		 * 前処理
-		 ****************************************/
-		$base_dir = $this->base_dir;
-
 		// 外部参照のCSSファイルを抽出する
 		$nodes = $this->dom_xpath->query('//link[@rel="stylesheet" or @type="text/css"] | //style[@type="text/css"]');
 
@@ -274,19 +265,13 @@ class HTML_CSS_Mobile
 			if ($node->tagName == 'link' && $href = $node->attributes->getNamedItem('href'))
 			{
 				// linkタグの場合
-				if (!file_exists($base_dir . $href->nodeValue))
+				if (!file_exists($this->base_dir . $href->nodeValue))
 				{
-					if ($this->mode == 'strict')
-					{
-						throw new UnexpectedValueException('ERROR: ' . $base_dir . $href->nodeValue . ' file does not exist');
-					}
-					else
-					{
-						continue;
-					}
+					if ($this->mode !== 'strict') continue;
+					throw new UnexpectedValueException('ERROR: ' . $this->base_dir . $href->nodeValue . ' file does not exist');
 				}
 
-				$css_string = file_get_contents($base_dir . $href->nodeValue);
+				$css_string = file_get_contents($this->base_dir . $href->nodeValue);
 			}
 			else if ($node->tagName == 'style')
 			{
@@ -304,6 +289,7 @@ class HTML_CSS_Mobile
 
 		}
 
+		// メソッドで指定したCSSファイルを読み込む
 		if (is_array($this->css_files))
 		{
 			foreach ($this->css_files as $file)
@@ -323,6 +309,12 @@ class HTML_CSS_Mobile
 		}
 	}
 
+	/**
+	 * _loadCSS 
+	 * 
+	 * @param string $css_string 
+	 * @return void
+	 */
 	private function _loadCSS($css_string)
 	{
 		// 文字コードをDOM利用のためにUTF-8化
@@ -332,13 +324,27 @@ class HTML_CSS_Mobile
 			$css_string = mb_convert_encoding($css_string, 'UTF-8', $css_encoding);
 		}
 
-		$html_css = new HTML_CSS();
-		$css_error = $html_css->parseString($css_string);
-		if ($css_error)
+		if (is_null($this->html_css))
+		{
+			$this->html_css = new HTML_CSS();
+		}
+
+		// CSSをクラスへ追加
+		$css_error = $this->html_css->parseString($css_string);
+		if ($this->mode == 'strict' && $css_error)
 		{
 			throw new RuntimeException('ERROR: css parse error');
 		}
+	}
 
-		$this->html_css[] = $html_css;
+	/**
+	 * atImportLoad
+	 *
+	 * @param HTML_CSS instance
+	 * @return void
+	 */
+	private function atImportLoad($html_css)
+	{
+		#TODO: importの取得が上手く出来ない？
 	}
 }
