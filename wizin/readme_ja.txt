@@ -1,6 +1,6 @@
 /**************************************************
  * 【ソフトウェア名】Wizin
- * 【  バージョン  】0.48
+ * 【  バージョン  】0.49
  * 【   権 利 者   】Makoto Hashiguchi a.k.a. gusagi
  * 【   作 成 者   】Makoto Hashiguchi a.k.a. gusagi
  * 【  ライセンス  】new BSD License
