@@ -13,9 +13,9 @@
 
 if (! class_exists('Wizin_User')) {
     require dirname(__FILE__) . '/Wizin.class.php';
-            if (! class_exists('Wizin_Parser_Yaml')) {
-                require WIZIN_ROOT_PATH . '/src/parser/Yaml.class.php';
-            }
+    if (! class_exists('Wizin_Parser_Yaml')) {
+        require WIZIN_ROOT_PATH . '/src/parser/Yaml.class.php';
+    }
 
     /**
      * Wizin framework user class
