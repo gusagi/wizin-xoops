@@ -14,7 +14,7 @@
  */
 
 if (! class_exists('Wizin_Filter_Pictogram')) {
-    if (floatval(PHP_VERSION) >= 5.2 && function_exists('json_encode')) {
+    if (function_exists('json_decode')) {
         if (! class_exists('Text_Pictogram_Mobile')) {
             // include Text_Pictogram_Mobile
             @ include_once 'Text/Pictogram/Mobile.php';

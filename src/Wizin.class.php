@@ -17,6 +17,7 @@ if (! defined('WIZIN_ROOT_PATH')) {
     require_once WIZIN_ROOT_PATH . '/src/Wizin_StdClass.php';
     require_once WIZIN_ROOT_PATH . '/src/Wizin_Ref.php';
     require_once WIZIN_ROOT_PATH . '/src/Wizin_Util.class.php';
+    require_once WIZIN_ROOT_PATH . '/src/Wizin_Function.php';
 
     if (class_exists('Wizin_StdClass')) {
         /**
