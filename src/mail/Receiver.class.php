@@ -116,6 +116,29 @@ if (! class_exists('Wizin_Mail_Receiver')) {
         }
 
         /**
+         * Return 'to' header
+         */
+        public function getMailTo()
+        {
+            $headers = $this->getMailHeaders();
+            $to = $headers['to'];
+            if (preg_match('/<(.*?)>$/', $to, $match)) {
+                $to = $match[1];
+            }
+            return $to;
+        }
+
+        /**
+         * Return 'subject' header
+         */
+        public function getMailSubject()
+        {
+            $headers = $this->getMailHeaders();
+            $subject = $headers['subject'];
+            return $subject;
+        }
+
+        /**
          * Return mail headers
          */
         public function getMailBody()
