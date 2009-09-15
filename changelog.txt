@@ -1,6 +1,7 @@
 ----------------------------------
 [2009-09-15 Ver 0.50 -> 0.51]
 - Added functions for get header info.
+- Added image resize logic for uploaded file.
 ----------------------------------
 [2009-09-13 Ver 0.49 -> 0.50]
 - Importd 'Jsphon'.

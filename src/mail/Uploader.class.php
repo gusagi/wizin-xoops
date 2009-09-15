@@ -13,6 +13,7 @@
 
 if (! class_exists('Wizin_Mail_Uploader')) {
     require dirname(dirname(__FILE__)) . '/Wizin.class.php';
+    require_once WIZIN_ROOT_PATH . '/src/util/Web.class.php';
     if (! class_exists('Wizin_Mail_Receiver')) {
         require dirname(__FILE__) . '/Receiver.class.php';
     }
@@ -89,6 +90,12 @@ if (! class_exists('Wizin_Mail_Uploader')) {
                     // not image file
                     if ($width == 0 || $height == 0 || ! in_array($format, $allowImageFormat)) {
                         return false;
+                    }
+                    // TODO: enable change max-width value.
+                    $maxImageWidth = 480;
+                    if ($width > $maxImageWidth) {
+                        Wizin_Util_Web::createThumbnail($filePath, $width, $height,
+                            $format, $filePath, $maxImageWidth);
                     }
                     break;
                 default:
