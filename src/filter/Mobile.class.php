@@ -126,11 +126,21 @@ if (! class_exists('Wizin_Filter_Mobile')) {
          * @param string $createDir
          * @return string $contents
          */
-        function filterOptimizeMobile(& $contents, $baseUri, $currentUri, $basePath, $createDir = WIZIN_CACHE_DIR)
+        function filterOptimizeMobile(& $contents, $params = array())
         {
-            $user =& Wizin_User::getSingleton();
-            Wizin_Filter::filterResizeImage($contents, $baseUri, $currentUri, $basePath, $createDir,
-                $user->iWidth, array(IMAGETYPE_PNG));
+            extract($params);
+            if (! isset($createDir)) {
+                $createDir = WIZIN_CACHE_DIR;
+            }
+            $resizeParams = array(
+                'baseUri' => $baseUri,
+                'currentUri' => $currentUri,
+                'basePath' => $basePath,
+                'createDir' => $createDir,
+                'maxWidth' => $maxWidth,
+                'forceResizeType' => array(IMAGETYPE_PNG)
+            );
+            Wizin_Filter::filterResizeImage($contents, $resizeParams);
             // replace input type "password" => "text"
             /*
             $pattern = '(<input)([^>]*)(type=)([\"\'])(password)([\"\'])([^>]*)(>)';
@@ -705,8 +715,18 @@ if (! class_exists('Wizin_Filter_Mobile')) {
          * @param string $contents
          * @return string $contents
          */
-        function filterOutputPictogramMobile(& $contents, $pictImgDir = '/images/emoticons', $baseType = 'typecast')
+        function filterOutputPictogramMobile(& $contents, $params = array())
         {
+            /**
+             * set variables
+             */
+            extract($params);
+            if (! isset($pictImgDir)) {
+                $pictImgDir = '/images/emoticons';
+            }
+            if (! isset($baseType)) {
+                $baseType = 'typecast';
+            }
             if (! class_exists('Wizin_User')) {
                 require WIZIN_ROOT_PATH . '/src/Wizin_User.class.php';
             }
