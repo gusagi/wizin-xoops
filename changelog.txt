@@ -1,9 +1,11 @@
 ----------------------------------
 [2009-09-18 Ver 0.51 -> 0.52]
-- Removed PEAR::Mail.
+- Removed 'PEAR::Mail'.
 - Added 'Qdmail'.
+- Added 'PEAR::Crypt_Blowfish'.
 - Renamed trans_sid filter, and modified logic for external links.
 - Modified function args type.
+- Added method 'fprefix' into Wizin_Util.
 - Fixed some notice messages in Wizin_User.
 ----------------------------------
 [2009-09-15 Ver 0.50 -> 0.51]
