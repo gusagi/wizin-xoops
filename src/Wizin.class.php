@@ -36,12 +36,6 @@ if (! defined('WIZIN_ROOT_PATH')) {
             function __construct()
             {
                 //
-                // WIZIN_SALT
-                if (! defined('WIZIN_SALT')) {
-                    define('WIZIN_SALT', substr(md5(__FILE__), 0, 8));
-                }
-
-                //
                 // REQUEST_URI
                 $requestUri = getenv('REQUEST_URI');
                 if (empty($requestUri)) {
@@ -110,6 +104,7 @@ if (! defined('WIZIN_ROOT_PATH')) {
                 }
                 return $instance;
             }
+
         }
     }
 }
