@@ -56,7 +56,8 @@ if (! class_exists('Wizin_User')) {
                 $data = $this->_basicCheck($mobileData);
             }
             if (! empty($data)) {
-                $this->iCarrierId = intval($data['carrierid']);
+                $carrierid = isset($data['carrierid']) ? $data['carrierid'] : 0;
+                $this->iCarrierId = intval($carrierid);
                 $this->bIsMobile = $data['mobile'];
                 $this->bIsBot = $data['bot'];
                 $this->bCookie = $data['cookie'];
@@ -67,31 +68,31 @@ if (! class_exists('Wizin_User')) {
                 } else {
                     $this->sUniqId = '';
                 }
-                $encoding = $data['encoding'];
+                $encoding = isset($data['encoding']) ? $data['encoding'] : null;
                 if (! empty($encoding)) {
                     $this->sEncoding = $encoding;
                 } else {
                     $this->sEncoding = 'utf-8';
                 }
-                $charset = $data['charset'];
+                $charset = isset($data['charset']) ? $data['charset'] : null;
                 if (! empty($charset)) {
                     $this->sCharset = $charset;
                 } else {
                     $this->sCharset = 'utf-8';
                 }
-                $contentType = $data['content-type'];
+                $contentType = isset($data['content-type']) ? $data['content-type'] : null;
                 if (! empty($contentType)) {
                     $this->sContentType = $contentType;
                 } else {
                     $this->sContentType = '';
                 }
-                $doctype = $data['doctype'];
+                $doctype = isset($data['doctype']) ? $data['doctype'] : null;
                 if (! empty($doctype)) {
                     $this->sDoctype = $doctype;
                 } else {
                     $this->sDoctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
                 }
-                $inputMode = $data['inputmode'];
+                $inputMode = isset($data['inputmode']) ? $data['inputmode'] : null;
                 if (! empty($inputMode)) {
                     $this->aInputMode = $inputMode;
                 } else {
@@ -99,7 +100,7 @@ if (! class_exists('Wizin_User')) {
                 }
                 $this->iWidth = 240;
                 $this->sModel = '';
-                $plugin = $data['plugin'];
+                $plugin = isset($data['plugin']) ? $data['plugin'] : null;
                 if (! empty($plugin)) {
                     if (! empty($plugin['path']) && file_exists(WIZIN_ROOT_PATH . '/' . $plugin['path'])) {
                         include WIZIN_ROOT_PATH . '/' . $plugin['path'];
