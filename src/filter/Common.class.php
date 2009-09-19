@@ -224,6 +224,26 @@ if (! class_exists('Wizin_Filter_Common')) {
              * extract params
              */
             extract($params);
+            if (! isset($extKey)) {
+                $extKey = 'ext';
+            }
+            if (! isset($backKey)) {
+                $backKey = 'back';
+            }
+
+            /**
+             * include crypt class
+             */
+            if (! class_exists('Wizin_Crypt')) {
+                require WIZIN_ROOT_PATH . '/src/Wizin_Crypt.class.php';
+            }
+            if (isset($extlinkKey) && isset($extConfirmUrl)) {
+                $blowfish =& Wizin_Crypt::getBlowfish($extlinkKey);
+            }
+
+            /**
+             * replace links and forms
+             */
             // link
             $pattern = '(<a)([^>]*)(href=)([\"\'])([^\"\']*)([\"\'])([^>]*)(>)';
             preg_match_all("/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER);
@@ -275,25 +295,17 @@ if (! class_exists('Wizin_Filter_Common')) {
                         /**
                          * external links
                          */
-                        if (isset($extlinkParam) && isset($extConfirmUrl)) {
-                            $linkKey = Wizin_Util::cipher($url);
-                            $queryString = getenv('QUERY_STRING');
-                            $pattern = '(' .SID .')(&|&amp;)?';
-                            $backUrl = preg_replace('/' . $pattern . '/', '', $currentUri);
-                            if (substr($backUrl, -1, 1) === '?') {
-                                $backUrl = substr($backUrl, 0, strlen($backUrl) -1);
-                            }
-                            $_SESSION[$extlinkParam][$linkKey] = array(
-                                'link' => $url,
-                                'back' => $backUrl
-                            );
+                        if (isset($blowfish)) {
                             if (strpos($extConfirmUrl, '?') === false) {
                                 $connector = '?';
                             } else {
                                 $connector = '&amp;';
                             }
                             $href = $extConfirmUrl .$connector .
-                                $extlinkParam .'=' .$linkKey .'&amp;' .SID;
+                                $extKey .'=' .
+                                rawurlencode(base64_encode($blowfish->encrypt($url))) .'&amp;' .
+                                $backKey .'=' .
+                                rawurlencode(base64_encode($blowfish->encrypt($currentUri)));
                             $contents = str_replace($match[3] . $match[4] .$match[5] . $match[6],
                                 $match[3] . $match[4] . $href . $match[6], $contents);
                         }
