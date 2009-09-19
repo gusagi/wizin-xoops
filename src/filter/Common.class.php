@@ -211,15 +211,19 @@ if (! class_exists('Wizin_Filter_Common')) {
         }
 
         /**
-         * insert SID(similar TransSID) filter
+         * replace link filter
          *
          * @param string $contents
          * @param string $baseUri
          * @param string $currentUri
          * @return string $contents
          */
-        function filterTransSid(& $contents, $baseUri, $currentUri)
+        function filterReplaceLinks(& $contents, $params = array())
         {
+            /**
+             * extract params
+             */
+            extract($params);
             // link
             $pattern = '(<a)([^>]*)(href=)([\"\'])([^\"\']*)([\"\'])([^>]*)(>)';
             preg_match_all("/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER);
@@ -233,10 +237,6 @@ if (! class_exists('Wizin_Filter_Common')) {
                             continue;
                         } else if (substr($url, 0, 1) === '#') {
                             continue;
-                            /*
-                            $urlArray = explode('#', $currentUri);
-                            $url = $urlArray[0] . $url;
-                            */
                         } else if (substr($url, 0, 1) === '/') {
                             $parseUrl = parse_url($baseUri);
                             $path = '';
@@ -250,6 +250,9 @@ if (! class_exists('Wizin_Filter_Common')) {
                     }
                     $check = strstr($url, $baseUri);
                     if ($check !== false) {
+                        /**
+                         * internal links
+                         */
                         if (strpos($url, session_name()) === false) {
                             if (strpos($url, '?') === false) {
                                 $connector = '?';
@@ -263,8 +266,34 @@ if (! class_exists('Wizin_Filter_Common')) {
                                     $href .= '#' . $hrefArray[1];
                                 }
                             } else {
-                                $href = $url . $connector . SID;
+                                $href = $url .$connector .SID;
                             }
+                            $contents = str_replace($match[3] . $match[4] .$match[5] . $match[6],
+                                $match[3] . $match[4] . $href . $match[6], $contents);
+                        }
+                    } else {
+                        /**
+                         * external links
+                         */
+                        if (isset($extlinkParam) && isset($extConfirmUrl)) {
+                            $linkKey = Wizin_Util::cipher($url);
+                            $queryString = getenv('QUERY_STRING');
+                            $pattern = '(' .SID .')(&|&amp;)?';
+                            $backUrl = preg_replace('/' . $pattern . '/', '', $currentUri);
+                            if (substr($backUrl, -1, 1) === '?') {
+                                $backUrl = substr($backUrl, 0, strlen($backUrl) -1);
+                            }
+                            $_SESSION[$extlinkParam][$linkKey] = array(
+                                'link' => $url,
+                                'back' => $backUrl
+                            );
+                            if (strpos($extConfirmUrl, '?') === false) {
+                                $connector = '?';
+                            } else {
+                                $connector = '&amp;';
+                            }
+                            $href = $extConfirmUrl .$connector .
+                                $extlinkParam .'=' .$linkKey .'&amp;' .SID;
                             $contents = str_replace($match[3] . $match[4] .$match[5] . $match[6],
                                 $match[3] . $match[4] . $href . $match[6], $contents);
                         }
@@ -340,8 +369,12 @@ if (! class_exists('Wizin_Filter_Common')) {
          * @param string $createDir
          * @param integer $maxWidth
          */
-        function filterResizeImage (& $contents, $baseUri, $currentUri, $basePath, $createDir = null, $maxWidth = 0, $forceResizeType = '')
+        function filterResizeImage (& $contents, $params = array())
         {
+            /**
+             * set variables
+             */
+            extract($params);
             if (is_null($createDir)) {
                 if (defined('WIZIN_CACHE_DIR')) {
                     $createDir = WIZIN_CACHE_DIR;
