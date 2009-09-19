@@ -32,12 +32,10 @@ if (! class_exists('Wizin_Util')) {
         {
             static $salt;
             if (! isset($salt)) {
-                if (empty($seed)) {
-                    $salt = getenv('SERVER_NAME');
+                if ($seed === '') {
+                    $seed = getenv('SERVER_NAME');
                 }
-                $hostSeed = getenv('SERVER_NAME');
-                $replaceArray = array('/' => '%', '.' => '%%');
-                $salt = strtr($hostSeed, $replaceArray) . '_' . Wizin_Util::cipher($seed);
+                $salt = Wizin_Util::cipher($seed);
             }
             return $salt;
         }
@@ -145,6 +143,26 @@ if (! class_exists('Wizin_Util')) {
                 }
             }
             return $files;
+        }
+
+        /**
+         * return string for something salt
+         *
+         * @param string $salt
+         * @return string $prefix
+         */
+        function fprefix($salt = '')
+        {
+            static $prefix;
+            if (! isset($prefix)) {
+                if (empty($salt)) {
+                    $salt = Wizin_Util::salt();
+                }
+                $hostSeed = getenv('SERVER_NAME');
+                $replaceArray = array('/' => '%', '.' => '%%');
+                $prefix = strtr($hostSeed, $replaceArray) . '_' .$salt;
+            }
+            return $prefix;
         }
 
         /**
