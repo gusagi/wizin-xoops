@@ -30,9 +30,9 @@ if (! class_exists('Wizin_Crypt')) {
             static $blowfish;
             if (! isset($blowfish)) {
                 if ($key === '') {
-                    $key = Wizin_Util::salt();
+                    $key = Wizin::salt();
                 }
-                $iv = substr(md5(WIZIN_SALT ."\t" .__FILE__, 1), 0, 8);
+                $iv = substr(md5(Wizin::salt() ."\t" .__FILE__, 1), 0, 8);
                 $blowfish =& Crypt_Blowfish::factory('cbc', $key, $iv);
             }
             return $blowfish;

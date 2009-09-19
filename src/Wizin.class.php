@@ -105,6 +105,23 @@ if (! defined('WIZIN_ROOT_PATH')) {
                 return $instance;
             }
 
+            /**
+             * return string for something salt
+             *
+             * @param string $salt
+             * @return string $prefix
+             */
+            function salt($seed = '')
+            {
+                static $salt;
+                if (! isset($salt)) {
+                    if ($seed === '') {
+                        $seed = md5(__FILE__);
+                    }
+                    $salt = substr(md5($seed), 0, 8);
+                }
+                return $salt;
+            }
         }
     }
 }

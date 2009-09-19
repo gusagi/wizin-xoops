@@ -23,24 +23,6 @@ if (! class_exists('Wizin_Util')) {
     class Wizin_Util
     {
         /**
-         * return string for something salt
-         *
-         * @param string $salt
-         * @return string $prefix
-         */
-        function salt($seed = '')
-        {
-            static $salt;
-            if (! isset($salt)) {
-                if ($seed === '') {
-                    $seed = getenv('SERVER_NAME');
-                }
-                $salt = Wizin_Util::cipher($seed);
-            }
-            return $salt;
-        }
-
-        /**
          * call user function with reference args
          *
          * @param string $function
@@ -98,7 +80,7 @@ if (! class_exists('Wizin_Util')) {
          */
         function cipher($string = '')
         {
-            $string = md5($string);
+            $string = md5($string ."\t" .Wizin::salt());
             $number = hexdec($string);
             $code = base_convert(floatval($number), 10, 36);
             return $code;
@@ -156,7 +138,7 @@ if (! class_exists('Wizin_Util')) {
             static $prefix;
             if (! isset($prefix)) {
                 if (empty($salt)) {
-                    $salt = Wizin_Util::salt();
+                    $salt = Wizin::salt();
                 }
                 $hostSeed = getenv('SERVER_NAME');
                 $replaceArray = array('/' => '%', '.' => '%%');
