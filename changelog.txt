@@ -1,8 +1,14 @@
 ----------------------------------
-[2009-09-16 Ver 0.50 -> 0.51]
+[2009-09-18 Ver 0.51 -> 0.52]
+- Removed PEAR::Mail.
+- Added 'Qdmail'.
+- Renamed trans_sid filter, and modified logic for external links.
+- Modified function args type.
+- Fixed some notice messages in Wizin_User.
+----------------------------------
+[2009-09-15 Ver 0.50 -> 0.51]
 - Added functions for get header info.
 - Added image resize logic for uploaded file.
-- Removed PEAR::Mail.
 ----------------------------------
 [2009-09-13 Ver 0.49 -> 0.50]
 - Importd 'Jsphon'.
