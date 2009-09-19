@@ -1,4 +1,8 @@
 ----------------------------------
+[2009-09-20 Ver 0.52 -> 0.53]
+- Deleted constant 'WIZIN_SALT'.
+- Deleted method 'Wizin_Util::salt' and Added method 'Wizin::salt'.
+----------------------------------
 [2009-09-18 Ver 0.51 -> 0.52]
 - Removed 'PEAR::Mail'.
 - Added 'Qdmail'.
