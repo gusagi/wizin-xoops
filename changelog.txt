@@ -2,6 +2,10 @@
 [2009-09-20 Ver 0.52 -> 0.53]
 - Deleted constant 'WIZIN_SALT'.
 - Deleted method 'Wizin_Util::salt' and Added method 'Wizin::salt'.
+- Modified mobile plugins, delete empty method.
+- Modified mobile plugins, call parent::_require().
+- Modified mobile plugin, call method that check location header.
+- Added logic into Wizin_Crypt, create iv from salt and filepath.
 ----------------------------------
 [2009-09-18 Ver 0.51 -> 0.52]
 - Removed 'PEAR::Mail'.
