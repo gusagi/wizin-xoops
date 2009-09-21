@@ -20,10 +20,6 @@ if (! class_exists('Wizin_Plugin_User_Googlebot')) {
             $this->_setup();
         }
 
-        function _require()
-        {
-        }
-
         function _setup()
         {
             $this->_checkMobile();
