@@ -32,7 +32,10 @@ if (! class_exists('Wizin_Crypt')) {
                 if ($key === '') {
                     $key = Wizin::salt();
                 }
-                $iv = substr(md5(Wizin::salt() ."\t" .__FILE__, 1), 0, 8);
+                /**
+                 * get seed
+                 */
+                $iv = substr(md5(Wizin::salt() ."\t" .__FILE__), (strlen(__FILE__) % 24), 8);
                 $blowfish =& Crypt_Blowfish::factory('cbc', $key, $iv);
             }
             return $blowfish;
