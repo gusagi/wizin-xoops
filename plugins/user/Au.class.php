@@ -16,6 +16,7 @@ if (! class_exists('Wizin_Plugin_User_Au')) {
     {
         function _require()
         {
+            parent::_require();
             require_once WIZIN_ROOT_PATH . '/src/filter/Mobile.class.php';
         }
 

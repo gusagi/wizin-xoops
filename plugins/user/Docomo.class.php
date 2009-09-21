@@ -16,8 +16,8 @@ if (! class_exists('Wizin_Plugin_User_Docomo')) {
     {
         function _require()
         {
+            parent::_require();
             require_once WIZIN_ROOT_PATH . '/src/filter/Mobile.class.php';
-            require_once WIZIN_ROOT_PATH . '/src/util/Web.class.php';
         }
 
         function _setup()
@@ -25,7 +25,6 @@ if (! class_exists('Wizin_Plugin_User_Docomo')) {
             static $calledFlag;
             if (! isset($calledFlag)) {
                 $calledFlag = true;
-                Wizin_Util_Web::setCheckLocationHeader();
                 $filter =& Wizin_Filter_Mobile::getSingleton();
                 $params = array();
                 $filter->addOutputFilter(array($this, 'filterDocomo'), $params);
