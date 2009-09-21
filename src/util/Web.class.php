@@ -280,6 +280,10 @@ if (! class_exists('Wizin_Util_Web')) {
             if (empty($sessionId) || empty($sessionName)) {
                 return $buf;
             }
+            $sessionName = ini_get('session.name');
+            if (empty($_GET[$sessionName]) && empty($_POST[$sessionName])) {
+                return $buf;
+            }
             $headers = array();
             if (function_exists('apache_response_headers')) {
                 $headers = apache_response_headers();
@@ -317,9 +321,6 @@ if (! class_exists('Wizin_Util_Web')) {
                             } else {
                                 $url .= $connector . $sessionName . '=' . session_id();
                             }
-                            // TODO : use param >>
-                            $url .= '&guid=on';
-                            // TODO : use param <<
                             header('Location: ' . $url);
                             exit();
                         }
