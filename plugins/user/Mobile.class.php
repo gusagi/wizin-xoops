@@ -21,6 +21,7 @@ if (! class_exists('Wizin_Plugin_User_Mobile')) {
 
         function _require()
         {
+            require_once WIZIN_ROOT_PATH . '/src/util/Web.class.php';
         }
 
         function _setup()
@@ -30,6 +31,7 @@ if (! class_exists('Wizin_Plugin_User_Mobile')) {
             static $calledFlag;
             if (! isset($calledFlag)) {
                 $calledFlag = true;
+                Wizin_Util_Web::setCheckLocationHeader();
                 $this->_getModel();
             }
             $this->_updateDevice();
