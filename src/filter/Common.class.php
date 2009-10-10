@@ -288,8 +288,11 @@ if (! class_exists('Wizin_Filter_Common')) {
                             } else {
                                 $href = $url .$connector .SID;
                             }
-                            $contents = str_replace($match[3] . $match[4] .$match[5] . $match[6],
-                                $match[3] . $match[4] . $href . $match[6], $contents);
+                            $contents = str_replace(
+                                $match[1] . $match[2] .$match[3] . $match[4] .$match[5] . $match[6],
+                                $match[1] . $match[2] .$match[3] . $match[4] . $href . $match[6],
+                                $contents
+                            );
                         }
                     } else {
                         /**
