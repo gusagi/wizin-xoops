@@ -553,15 +553,22 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                             'extended_unix_code_packed_format_for_japanese', 'cseucpkdfmtjapanese'))) {
                         $internalEncoding = 'eucjp-win';
                     }
-                    $contents = mb_convert_encoding($contents, 'utf-8', $internalEncoding);
                     // add keyword for encoding detect
-                    if (extension_loaded('mbstring')) {
-                        $encodingSalt = mb_convert_kana(mb_internal_encoding(), 'A');
-                        for($count = 0; $count < 10; $count++) {
-                            $encodingSalt .= PHP_EOL . $encodingSalt;
-                        }
-                        $contents .= $encodingSalt;
+                    $encodingSalt = mb_convert_kana($internalEncoding, 'A');
+                    for($count = 0; $count < 10; $count++) {
+                        $encodingSalt .= PHP_EOL . $encodingSalt;
                     }
+                    $contents .= $encodingSalt;
+                    // replace declaration
+                    $dummyHead = '<?xml version="1.0" encoding="utf-8" ?>' ."\n" .
+                        '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" ' .
+                        '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' ."\n";
+                    $declaration = '';
+                    if (preg_match('/^(.*?)(<head)/is', $contents, $matches)) {
+                        $declaration = $matches[1];
+                        $contents = str_replace($declaration, $dummyHead, $contents);
+                    }
+                    $contents = mb_convert_encoding($contents, 'utf-8', $internalEncoding);
                     // apply style
                     $errorLevel = error_reporting();
                     foreach ($cssBaseDirs as $cssDir) {
@@ -579,8 +586,12 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                     // convert encoding to internal encoding
                     $contents = mb_convert_encoding($contents, $internalEncoding, 'utf-8');
                     // delete keyword and environ tags
-                    if (extension_loaded('mbstring')) {
-                        $contents = array_shift(preg_split('/<\/html>/i', $contents)) .'</html>';
+                    $contents = array_shift(preg_split('/<\/html>/i', $contents)) .'</html>';
+                }
+                // revert declaration
+                if ($declaration !== '') {
+                    if (preg_match('/^(.*?)(<head)/is', $contents, $matches)) {
+                        $contents = str_replace($matches[1], $declaration, $contents);
                     }
                 }
             }

@@ -1,6 +1,7 @@
 ----------------------------------
 [2009-10-11 Ver 0.53 -> 0.54]
 - Fixed bug about session id exists in link tag for Mobile Link Discovery.
+- Fixed bug about encoding salt exists in bottom of contents.(thx Vane)
 ----------------------------------
 [2009-09-20 Ver 0.52 -> 0.53]
 - Deleted constant 'WIZIN_SALT'.
