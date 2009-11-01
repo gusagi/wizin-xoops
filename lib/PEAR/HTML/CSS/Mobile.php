@@ -36,11 +36,11 @@ require_once 'HTML/CSS.php';
  *   PerlのHTML::DoCoMoCSS
  *   ( http://search.cpan.org/~tokuhirom/HTML-DoCoMoCSS-0.01/lib/HTML/DoCoMoCSS.pm )
  *   のPHP移殖版
- * 
- * @package 
+ *
+ * @package
  * @version 0.1.6
  * @copyright 2008 yudoufu
- * @author Daichi Kamemoto(a.k.a yudoufu) <daikame@gmail.com> 
+ * @author Daichi Kamemoto(a.k.a yudoufu) <daikame@gmail.com>
  * @license MIT License
  */
 class HTML_CSS_Mobile
@@ -50,11 +50,11 @@ class HTML_CSS_Mobile
 	private $dom;
 	private $dom_xpath;
 	private $css_files = array();
-	private $html_css; 
+	private $html_css;
 
 	/**
 	 * getInstance インスタンスを取得
-	 * 
+	 *
 	 * @return class
 	 */
 	public static function getInstance()
@@ -64,8 +64,8 @@ class HTML_CSS_Mobile
 
 	/**
 	 * setBaseDir CSSのベースディレクトリ(通常はDocumentRoot)を設定
-	 * 
-	 * @param string $base_dir 
+	 *
+	 * @param string $base_dir
 	 * @return class
 	 */
 	public function setBaseDir($base_dir)
@@ -77,8 +77,8 @@ class HTML_CSS_Mobile
 	/**
 	 * setMode CSSのチェックモードを設定
 	 * #TODO: もっとしっかりモード実装
-	 * 
-	 * @param string $mode 
+	 *
+	 * @param string $mode
 	 * @return class
 	 */
 	public function setMode($mode)
@@ -89,8 +89,8 @@ class HTML_CSS_Mobile
 
 	/**
 	 * addCSSFiles CSSのファイルをプログラム側から読み込む
-	 * 
-	 * @param array $files 
+	 *
+	 * @param array $files
 	 * @return class
 	 */
 	public function addCSSFiles($files)
@@ -250,7 +250,7 @@ class HTML_CSS_Mobile
 
 	/**
 	 * loadCSS 各所で指定されているCSSファイルを読み込み、HTML_CSSのオブジェクト配列として格納する
-	 * 
+	 *
 	 * @return void
 	 */
 	private function loadCSS()
@@ -310,13 +310,22 @@ class HTML_CSS_Mobile
 	}
 
 	/**
-	 * _loadCSS 
-	 * 
-	 * @param string $css_string 
+	 * _loadCSS
+	 *
+	 * @param string $css_string
 	 * @return void
 	 */
 	private function _loadCSS($css_string)
 	{
+		// css_stringが文字列以外
+		if (! is_string($css_string)) {
+			// strictモードならエラー処理、それ以外は処理をスキップ
+			if ($this->mode == 'strict') {
+				throw new RuntimeException('ERROR: css content is not string');
+			}
+			return ;
+		}
+
 		// 文字コードをDOM利用のためにUTF-8化
 		$css_encoding = mb_detect_encoding($css_string, 'UTF-8, eucjp-win, sjis-win, iso-2022-jp');
 		if ($css_encoding != 'UTF-8')
