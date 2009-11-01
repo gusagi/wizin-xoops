@@ -533,18 +533,35 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                     }
                 }
                 if (class_exists('Wizin_Filter_Css')) {
-                    // delete base url in link tag
-                    //   forward rel
+                    /**
+                     * delete base url in link tag
+                     */
+                    // forward rel
                     $pattern = '(<link)([^>]*)(rel=)([\"\'])(stylesheet)([\"\'])([^>]*)(href=)([\"\'])(' .
                         strtr($baseUrl, array('/' => '\/')) .')([^\"\']*)([\"\'])([^>]*)(>)';
                     $replacement = '${1}${2}${3}${4}${5}${6}${7}${8}${9}${11}${12} ${13}${14}';
                     $contents = preg_replace("/" .$pattern ."/i", $replacement, $contents);
-                    //   forward href
+                    // forward href
                     $pattern = '(<link)([^>]*)(href=)([\"\'])(' .strtr($baseUrl, array('/' => '\/')) .
                         ')([^\"\']*)([\"\'])([^>]*)(rel=)([\"\'])(stylesheet)([\"\'])([^>]*)(>)';
                     $replacement = '${1}${2}${3}${4}${6}${7} ${8}${9}${10}${11}${12}${13}${14}';
                     $contents = preg_replace("/" .$pattern ."/i", $replacement, $contents);
-                    // convert encoding to utf-8
+                    /**
+                     * delete empty link tag
+                     */
+                    // forward rel
+                    $pattern = '(<link)([^>]*)(rel=)([\"\'])(stylesheet)([\"\'])([^>]*)(href=)' .
+                        '([\"\'])([\"\'])([^>]*)(>)';
+                    $replacement = '';
+                    $contents = preg_replace("/" .$pattern ."/i", $replacement, $contents);
+                    // forward href
+                    $pattern = '(<link)([^>]*)(href=)([\"\'])([\"\'])([^>]*)(rel=)([\"\'])' .
+                        '(stylesheet)([\"\'])([^>]*)(>)';
+                    $replacement = '${1}${2}${3}${4}${6}${7} ${8}${9}${10}${11}${12}${13}${14}';
+                    $contents = preg_replace("/" .$pattern ."/i", $replacement, $contents);
+                    /**
+                     * convert encoding to utf-8
+                     */
                     $internalEncoding = mb_internal_encoding();
                     if (in_array(strtolower($internalEncoding), array('sjis', 'shift_jis', 'ms_kanji',
                             'csshift_jis'))) {
@@ -553,13 +570,16 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                             'extended_unix_code_packed_format_for_japanese', 'cseucpkdfmtjapanese'))) {
                         $internalEncoding = 'eucjp-win';
                     }
-                    // add keyword for encoding detect
-                    $encodingSalt = mb_convert_kana($internalEncoding, 'A');
-                    for($count = 0; $count < 10; $count++) {
-                        $encodingSalt .= PHP_EOL . $encodingSalt;
-                    }
+                    /**
+                     * add keyword for encoding detect
+                     */
+                    $_encodingSalt = mb_convert_kana($internalEncoding, 'A');
+                    $encodingSalt = str_repeat($_encodingSalt .PHP_EOL, 10);
+                    unset($_encodingSalt);
                     $contents .= $encodingSalt;
-                    // replace declaration
+                    /**
+                     * replace declaration
+                     */
                     $dummyHead = '<?xml version="1.0" encoding="utf-8" ?>' ."\n" .
                         '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" ' .
                         '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' ."\n";
@@ -569,7 +589,9 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                         $contents = str_replace($declaration, $dummyHead, $contents);
                     }
                     $contents = mb_convert_encoding($contents, 'utf-8', $internalEncoding);
-                    // apply style
+                    /**
+                     * apply style
+                     */
                     $errorLevel = error_reporting();
                     foreach ($cssBaseDirs as $cssDir) {
                         // directory check
@@ -583,12 +605,18 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                         error_reporting($errorLevel);
                         unset($filterCss);
                     }
-                    // convert encoding to internal encoding
+                    /**
+                     * convert encoding to internal encoding
+                     */
                     $contents = mb_convert_encoding($contents, $internalEncoding, 'utf-8');
-                    // delete keyword and environ tags
+                    /**
+                     * delete keyword and environ tags
+                     */
                     $contents = array_shift(preg_split('/<\/html>/i', $contents)) .'</html>';
                 }
-                // revert declaration
+                /**
+                 * revert declaration
+                 */
                 if ($declaration !== '') {
                     if (preg_match('/^(.*?)(<head)/is', $contents, $matches)) {
                         $contents = str_replace($matches[1], $declaration, $contents);

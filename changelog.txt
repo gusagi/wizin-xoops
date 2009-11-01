@@ -1,4 +1,7 @@
 ----------------------------------
+[2009-11-01 Ver 0.54 -> 0.55]
+- Fixed bug about raised exception by PEAR when empty value exists in link tag.(thx hiro1613)
+----------------------------------
 [2009-10-11 Ver 0.53 -> 0.54]
 - Fixed bug about session id exists in link tag for Mobile Link Discovery.
 - Fixed bug about encoding salt exists in bottom of contents.(thx Vane)
