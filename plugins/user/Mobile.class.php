@@ -26,6 +26,7 @@ if (! class_exists('Wizin_Plugin_User_Mobile')) {
 
         function _setup()
         {
+            $this->iReleaseDateIdx = 2;
             $this->iModelIdx = 3;
             $this->iWidthIdx = 7;
             static $calledFlag;
@@ -45,7 +46,7 @@ if (! class_exists('Wizin_Plugin_User_Mobile')) {
         {
             $user =& Wizin_User::getSingleton();
             $specList = $this->_getSpecList();
-            if (! empty($specList)) {
+            if (! empty($specList) && ! empty($specList[$this->iWidthIdx])) {
                 $user->iWidth = intval($specList[$this->iWidthIdx]);
             }
         }
@@ -63,7 +64,7 @@ if (! class_exists('Wizin_Plugin_User_Mobile')) {
                         $handle = fopen($specFile, "r");
                         while (($data = fgetcsv($handle, 1024, ",")) !== false) {
                             mb_convert_variables(mb_internal_encoding(), 'sjis-win', $data);
-                            if (isset($data[$this->iModelIdx]) &&
+                            if (isset($data[$this->iModelIdx]) && isset($data[$this->iReleaseDateIdx]) &&
                                     $data[$this->iModelIdx] == $user->sModel) {
                                 $specList = $data;
                                 break;
