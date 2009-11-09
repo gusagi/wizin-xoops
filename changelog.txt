@@ -1,4 +1,7 @@
 ----------------------------------
+[2009-11-09 Ver 0.55 -> 0.56]
+- Fixed bug about width value in spec data is empty, resize image width will be 0px.(thx pik)
+----------------------------------
 [2009-11-01 Ver 0.54 -> 0.55]
 - Fixed bug about raised exception by PEAR when empty value exists in link tag.(thx hiro1613)
 - Patched for css content is not string.
