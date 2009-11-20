@@ -1,4 +1,7 @@
 ----------------------------------
+[2009-11-20 Ver 0.56 -> 0.57]
+- replace '&' string for mobile link discovery.(thx jidaikobo)
+----------------------------------
 [2009-11-09 Ver 0.55 -> 0.56]
 - Fixed bug about width value in spec data is empty, resize image width will be 0px.(thx pik)
 ----------------------------------
