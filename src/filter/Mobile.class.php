@@ -165,7 +165,7 @@ if (! class_exists('Wizin_Filter_Mobile')) {
             $pattern = '(<link)([^>]*)(media=)([\"\'])(handheld)([\"\'])([^>]*)(>)';
             if (! preg_match("/" .$pattern ."/i", $contents)) {
                 $mobileLinkDiscovery = '<link rel="alternate" media="handheld" type="text/html"' .
-                    ' href="' .$currentUri .'" />';
+                    ' href="' .str_replace('&', '&amp;',$currentUri) .'" />';
                 $contents = str_replace('</head>', $mobileLinkDiscovery .'</head>', $contents);
             }
             // return contents string
