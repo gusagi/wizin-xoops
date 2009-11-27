@@ -58,7 +58,7 @@ if (! class_exists('Wizin_Plugin_User_Mobile')) {
             if (! isset($specList)) {
                 $specList = array();
                 if ($user->sModel !== '') {
-                    $specFile = WIZIN_ROOT_PATH .'/data/user/ke-tai_list.csv';
+                    $specFile = $this->_getSpecFile();
                     if (file_exists($specFile) && is_readable($specFile) &&
                             extension_loaded('mbstring')) {
                         $handle = fopen($specFile, "r");
@@ -75,6 +75,28 @@ if (! class_exists('Wizin_Plugin_User_Mobile')) {
                 }
             }
             return $specList;
+        }
+
+        function _getSpecFile()
+        {
+            $specFile = WIZIN_ROOT_PATH .'/data/user/ke-tai_list.csv';
+            if (defined('WIZIN_SPEC_DOWNLOAD_URL')) {
+                $cacheFile = WIZIN_CACHE_DIR .DS .'ke-tai_list.csv';
+                if (file_exists($cacheFile) === false ||
+                        filemtime($cacheFile) < (time() - 86400)) {
+                    // download new spec file
+                    $tmpFile = Wizin_Util_Web::getFileByHttp(
+                        WIZIN_SPEC_DOWNLOAD_URL, null, false
+                    );
+                    if (is_null($tmpFile) === false && $tmpFile !== '') {
+                        rename($tmpFile, $cacheFile);
+                    }
+                }
+                if (file_exists($cacheFile) === true && is_readable($cacheFile) === true) {
+                    $specFile = $cacheFile;
+                }
+            }
+            return $specFile;
         }
     }
 }

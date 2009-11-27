@@ -1,4 +1,7 @@
 ----------------------------------
+[2009-11-28 Ver 0.57 -> 0.58]
+- added logic into Wizin_Plugin_User_Mobile, check file time and download new spec file.
+----------------------------------
 [2009-11-20 Ver 0.56 -> 0.57]
 - replace '&' string for mobile link discovery.(thx jidaikobo)
 ----------------------------------

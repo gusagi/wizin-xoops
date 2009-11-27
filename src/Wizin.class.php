@@ -35,7 +35,6 @@ if (! defined('WIZIN_ROOT_PATH')) {
              */
             function __construct()
             {
-                //
                 // REQUEST_URI
                 $requestUri = getenv('REQUEST_URI');
                 if (empty($requestUri)) {
@@ -59,31 +58,30 @@ if (! defined('WIZIN_ROOT_PATH')) {
                     putenv('REQUEST_URI=' . $requestUri);
                     $_SERVER['REQUEST_URI'] = $requestUri;
                 }
-                //
+                // DIRECTORY_SEPARATOR
+                if (! defined('DS')) {
+                    define('DS', DIRECTORY_SEPARATOR);
+                }
+                // WIZIN_WORK_DIR
+                if (! defined('WIZIN_WORK_DIR')) {
+                    define('WIZIN_WORK_DIR', WIZIN_ROOT_PATH .DS .'work');
+                }
                 // WIZIN_CACHE_DIR
                 if (! defined('WIZIN_CACHE_DIR')) {
-                    define('WIZIN_CACHE_DIR', WIZIN_ROOT_PATH . '/work/cache');
+                    define('WIZIN_CACHE_DIR', WIZIN_WORK_DIR .DS .'cache');
                 }
-
-                //
                 // WIZIN_COMPILE_DIR
                 if (! defined('WIZIN_COMPILE_DIR')) {
-                    define('WIZIN_COMPILE_DIR', WIZIN_ROOT_PATH . '/work/compile');
+                    define('WIZIN_COMPILE_DIR', WIZIN_WORK_DIR .DS .'compile');
                 }
-
-                //
                 // WIZIN_PEAR_DIR
                 if (! defined('WIZIN_PEAR_DIR')) {
-                    define('WIZIN_PEAR_DIR', WIZIN_ROOT_PATH . '/lib/PEAR');
+                    define('WIZIN_PEAR_DIR', WIZIN_ROOT_PATH .DS .'lib' .DS .'PEAR');
                 }
-
-                //
                 // WIZIN_UPLOAD_DIR
                 if (! defined('WIZIN_UPLOAD_DIR')) {
-                    define('WIZIN_UPLOAD_DIR', WIZIN_ROOT_PATH . '/work/uploads');
+                    define('WIZIN_UPLOAD_DIR', WIZIN_WORK_DIR .DS .'uploads');
                 }
-
-                //
                 // WIZIN_URL
                 if (! defined('WIZIN_URL')) {
                     define('WIZIN_URL', 'http://' . getenv('SERVER_NAME') . '/');
