@@ -85,9 +85,7 @@ if (! class_exists('Wizin_Plugin_User_Mobile')) {
                 if (file_exists($cacheFile) === false ||
                         filemtime($cacheFile) < (time() - 86400)) {
                     // download new spec file
-                    $tmpFile = Wizin_Util_Web::getFileByHttp(
-                        WIZIN_SPEC_DOWNLOAD_URL, null, false
-                    );
+                    $tmpFile = Wizin_Util_Web::getFileByHttp(WIZIN_SPEC_DOWNLOAD_URL);
                     if (is_null($tmpFile) === false && $tmpFile !== '') {
                         rename($tmpFile, $cacheFile);
                     }
