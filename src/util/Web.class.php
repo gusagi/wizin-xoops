@@ -109,7 +109,7 @@ if (! class_exists('Wizin_Util_Web')) {
          * @param string $createDir
          * @return string $filePath
          */
-        function getFileByHttp($url = null, $createDir = null)
+        function getFileByHttp($url = null, $createDir = null, $sendReferer = true)
         {
             if (empty($url)) {
                 return null;
@@ -143,7 +143,7 @@ if (! class_exists('Wizin_Util_Web')) {
             $path .= (! empty($urlArray['fragment'])) ? '#' . $urlArray['fragment'] : '';
             $referer = '';
             $https = getenv('HTTPS');
-            if (empty($https) || strtolower($https) !== 'on') {
+            if ($sendReferer === true && (empty($https) || strtolower($https) !== 'on')) {
                 $referer = 'http://';
                 $referer .= getenv('SERVER_NAME');
                 $port = getenv('SERVER_PORT');
