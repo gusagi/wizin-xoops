@@ -1,4 +1,7 @@
 ----------------------------------
+[2009-11-30 Ver 0.59 -> 0.60]
+- fixed bug about domdocument return empty when charset in meta tag and encoding are different.
+----------------------------------
 [2009-11-28 Ver 0.58 -> 0.59]
 - modified 'Wizin_Util_Web::getFileByHttp' and 'Wizin_Util_Web::getContentsByHttp', change default value for send referer.
 ----------------------------------

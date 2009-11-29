@@ -588,6 +588,16 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                         $declaration = $matches[1];
                         $contents = str_replace($declaration, $dummyHead, $contents);
                     }
+                    $contents = mb_convert_kana($contents, 'K');
+                    // exchange meta header
+                    $pattern = '(<meta)([^>]*)(http-equiv=)([^>]*)(charset=)(\S*)([\"\'])([^>]*)(>)';
+                    preg_match("/" .$pattern ."/is", $contents, $match);
+                    $exchangeHeader = '';
+                    if (! empty($match) && ! empty($match[0])) {
+                        $exchangeHeader = $match[0];
+                        $replacement = '<meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />';
+                        $contents = preg_replace("/" .$pattern ."/i", $replacement, $contents);
+                    }
                     $contents = mb_convert_encoding($contents, 'utf-8', $internalEncoding);
                     /**
                      * apply style
@@ -609,6 +619,7 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                      * convert encoding to internal encoding
                      */
                     $contents = mb_convert_encoding($contents, $internalEncoding, 'utf-8');
+                    $contents = mb_convert_kana($contents, 'k');
                     /**
                      * delete keyword and environ tags
                      */
@@ -621,6 +632,10 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                     if (preg_match('/^(.*?)(<head)/is', $contents, $matches)) {
                         $contents = str_replace($matches[1], $declaration, $contents);
                     }
+                }
+                if ($exchangeHeader !== '') {
+                    $replacement = '<meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />';
+                    $contents = str_replace($replacement, $exchangeHeader, $contents);
                 }
             }
             return $contents;
