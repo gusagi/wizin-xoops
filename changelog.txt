@@ -1,4 +1,7 @@
 ----------------------------------
+[2009-12-01 Ver 0.60 -> 0.61]
+- updated ke-tai_list.csv
+----------------------------------
 [2009-11-30 Ver 0.59 -> 0.60]
 - fixed bug about domdocument return empty when charset in meta tag and encoding are different.
 ----------------------------------
