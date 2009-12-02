@@ -285,8 +285,13 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                     method_exists('SimpleXMLElement','getName')) {
                 // get encode
                 if (extension_loaded('mbstring')) {
-                    $encode = strtolower(mb_detect_encoding($string,
-                        'ASCII,JIS,UTF-8,EUC-JP,SJIS', true));
+                    if (function_exists('detect_encoding_ja')) {
+                        $encode = detect_encoding_ja($string);
+                    } else {
+                        $encode = strtolower(mb_detect_encoding($string,
+                            'ASCII,JIS,UTF-8,EUC-JP,SJIS', true));
+                    }
+                    $encode = strtolower($encode);
                     switch ($encode) {
                         case 'euc-jp':
                             $encode = 'eucjp-win';

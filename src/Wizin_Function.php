@@ -46,4 +46,14 @@ if (! defined('WIZIN_LOAD_FUNCTIONS')) {
             }
         }
     }
+
+    if (extension_loaded('mbstring')) {
+        /**
+         * Thanks a lot for t_komura's original function !
+         * Ref : http://www.asahi-net.or.jp/~wv7y-kmr/memo/php_mbstring.html#detect_encoding_ja
+         */
+        if (file_exists(WIZIN_ROOT_PATH . '/lib/t_komura/detect_encoding_ja.php')) {
+            require WIZIN_ROOT_PATH . '/lib/t_komura/detect_encoding_ja.php';
+        }
+    }
 }
