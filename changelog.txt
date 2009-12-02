@@ -1,4 +1,7 @@
 ----------------------------------
+[2009-12-03 Ver 0.61 -> 0.62]
+- import t_komura's script 'detect_encoding_ja'. Thanks a lot for t_komura's original function !
+----------------------------------
 [2009-12-01 Ver 0.60 -> 0.61]
 - updated ke-tai_list.csv
 ----------------------------------
