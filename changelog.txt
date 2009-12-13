@@ -1,4 +1,8 @@
 ----------------------------------
+[2009-12-13 Ver 0.62 -> 0.63]
+- moved method 'Wizin_Filter::filterReplaceLinks()' to 'Wizin_Filter_Mobile::filterReplaceLinks()'
+- fixed bug about replace link filter delete current dirname when current uri is '***/dirname/' (thx uemera)
+----------------------------------
 [2009-12-03 Ver 0.61 -> 0.62]
 - import t_komura's script 'detect_encoding_ja'. Thanks a lot for t_komura's original function !
 ----------------------------------

@@ -880,5 +880,174 @@ if (! class_exists('Wizin_Filter_Mobile')) {
             }
             return $contents;
         }
+
+        /**
+         * replace link filter
+         *
+         * @param string $contents
+         * @param string $baseUri
+         * @param string $currentUri
+         * @return string $contents
+         */
+        function filterReplaceLinks(& $contents, $params = array())
+        {
+            /**
+             * extract params
+             */
+            extract($params);
+            if (! isset($extKey)) {
+                $extKey = 'ext';
+            }
+            if (! isset($backKey)) {
+                $backKey = 'back';
+            }
+
+            /**
+             * include crypt class
+             */
+            if (! class_exists('Wizin_Crypt')) {
+                require WIZIN_ROOT_PATH . '/src/Wizin_Crypt.class.php';
+            }
+            if (isset($extlinkKey) && isset($extConfirmUrl)) {
+                $blowfish =& Wizin_Crypt::getBlowfish($extlinkKey);
+            }
+
+            /**
+             * replace links and forms
+             */
+            // link
+            $pattern = '(<a)([^>]*)(href=)([\"\'])([^\"\']*)([\"\'])([^>]*)(>)';
+            preg_match_all("/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER);
+            if (! empty($matches)) {
+                foreach ($matches as $key => $match) {
+                    $href = '';
+                    $hrefArray = array();
+                    $url = $match[5];
+                    if (substr($url, 0, 4) !== 'http') {
+                        if (strpos($url, ':') !== false) {
+                            continue;
+                        } else if (substr($url, 0, 1) === '#') {
+                            continue;
+                        } else if (substr($url, 0, 1) === '/') {
+                            $parseUrl = parse_url($baseUri);
+                            $path = '';
+                            if (isset($parseUrl['path'])) {
+                                $path = $parseUrl['path'];
+                            }
+                            $url = str_replace($path, '', $baseUri) . $url;
+                        } else {
+                            if (substr($currentUri, -1, 1) === '/') {
+                                $url = $currentUri .$url;
+                            } else {
+                                $url = dirname($currentUri) .'/' .$url;
+                            }
+                        }
+                    }
+                    $check = strstr($url, $baseUri);
+                    if ($check !== false) {
+                        /**
+                         * internal links
+                         */
+                        if (strpos($url, session_name()) === false) {
+                            if (strpos($url, '?') === false) {
+                                $connector = '?';
+                            } else {
+                                $connector = '&amp;';
+                            }
+                            if (strpos($url, '#') !== false) {
+                                $hrefArray = explode('#', $url);
+                                $href .= $hrefArray[0] . $connector . SID;
+                                if (! empty($hrefArray[1])) {
+                                    $href .= '#' . $hrefArray[1];
+                                }
+                            } else {
+                                $href = $url .$connector .SID;
+                            }
+                            $contents = str_replace(
+                                $match[1] . $match[2] .$match[3] . $match[4] .$match[5] . $match[6],
+                                $match[1] . $match[2] .$match[3] . $match[4] . $href . $match[6],
+                                $contents
+                            );
+                        }
+                    } else {
+                        /**
+                         * external links
+                         */
+                        if (isset($blowfish)) {
+                            if (strpos($extConfirmUrl, '?') === false) {
+                                $connector = '?';
+                            } else {
+                                $connector = '&amp;';
+                            }
+                            $href = $extConfirmUrl .$connector .
+                                $extKey .'=' .
+                                rawurlencode(base64_encode($blowfish->encrypt($url))) .'&amp;' .
+                                $backKey .'=' .
+                                rawurlencode(base64_encode($blowfish->encrypt($currentUri)));
+                            $contents = str_replace($match[3] . $match[4] .$match[5] . $match[6],
+                                $match[3] . $match[4] . $href . $match[6], $contents);
+                        }
+                    }
+                }
+            }
+            //
+            // form
+            //
+            $pattern = '(<form)([^>]*)(action=)([\"\'])([^\"\']*)([\"\'])([^>]*)(>)';
+            preg_match_all("/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER);
+            if (! empty($matches)) {
+                foreach ($matches as $key => $match) {
+                    if (! empty($match[5])) {
+                        $form = $match[0];
+                        $action = $match[5];
+                        if (substr($action, 0, 4) !== 'http') {
+                            if (strpos($action, ':') !== false) {
+                                continue;
+                            } else if (substr($action, 0, 1) === '#') {
+                                $urlArray = explode('#', $currentUri);
+                                $action = $urlArray[0] . $action;
+                            } else if (substr($action, 0, 1) === '/') {
+                                $parseUrl = parse_url($baseUri);
+                                $path = '';
+                                if (isset($parseUrl['path'])) {
+                                    $path = $parseUrl['path'];
+                                }
+                                $action = str_replace($path, '', $baseUri) . $action;
+                            } else {
+                                $action = dirname($currentUri) . '/' . $action;
+                            }
+                        }
+                    } else {
+                        $url = dirname($currentUri);
+                        if (substr($url, -1, 1) !== '/') {
+                            $url .= '/';
+                        }
+                        $url .= basename(getenv('SCRIPT_NAME'));
+                        $queryString = getenv('QUERY_STRING');
+                        if (isset($queryString) && $queryString !== '') {
+                            $queryString = str_replace('&' . SID, '', $queryString);
+                            $queryString = str_replace(SID, '', $queryString);
+                            if ($queryString !== '') {
+                                $url .= '?' . $queryString;
+                            }
+                        }
+                        $form = str_replace($match[3] . $match[4] . $match[5] . $match[6],
+                            $match[3] . $match[4] . $url . $match[6], $match[0]);
+                        $action = $url;
+                    }
+                    $check = strstr($action, $baseUri);
+                    if ($check !== false) {
+                        $tag = '<input type="hidden" name="' . session_name() . '" value="' . session_id() . '" />';
+                        $contents = str_replace($match[0], $form . $tag, $contents);
+                    }
+                    $action = '';
+                }
+            }
+            // delete needless strings
+            $contents = str_replace('?&', '?', $contents);
+            $contents = str_replace('&&', '&', $contents);
+            return $contents;
+        }
+
     }
 }
