@@ -1014,13 +1014,18 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                                 }
                                 $action = str_replace($path, '', $baseUri) . $action;
                             } else {
-                                $action = dirname($currentUri) . '/' . $action;
+                                if (substr($currentUri, -1, 1) === '/') {
+                                    $action = $currentUri .$action;
+                                } else {
+                                    $action = dirname($currentUri) .'/' .$action;
+                                }
                             }
                         }
                     } else {
-                        $url = dirname($currentUri);
-                        if (substr($url, -1, 1) !== '/') {
-                            $url .= '/';
+                        if (substr($currentUri, -1, 1) === '/') {
+                            $url = $currentUri;
+                        } else {
+                            $url = dirname($currentUri) .'/';
                         }
                         $url .= basename(getenv('SCRIPT_NAME'));
                         $queryString = getenv('QUERY_STRING');
