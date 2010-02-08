@@ -1,4 +1,7 @@
 ----------------------------------
+[2010-02-06 Ver 0.63 -> 0.64]
+- Fixed notice about return not reference value (thx plus9)'
+----------------------------------
 [2009-12-13 Ver 0.62 -> 0.63]
 - moved method 'Wizin_Filter::filterReplaceLinks()' to 'Wizin_Filter_Mobile::filterReplaceLinks()'
 - fixed bug about replace link filter delete current dirname when current uri is '***/dirname/' (thx uemera)
