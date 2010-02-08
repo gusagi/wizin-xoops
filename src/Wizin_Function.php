@@ -32,14 +32,17 @@ if (! defined('WIZIN_LOAD_FUNCTIONS')) {
         if (file_exists(WIZIN_ROOT_PATH . '/lib/PEAR/Jsphon/Decoder.php')) {
             require_once WIZIN_ROOT_PATH . '/lib/PEAR/Jsphon/Decoder.php';
             function json_decode($json = '', $assoc = false, $depth = 512) {
-                $decorder = new Jsphon_Decoder(true);
-                if ($assoc) {
-                    $values = $decorder->decode($json);
-                } else {
-                    $values = new stdClass();
-                    $array = $decorder->decode($json);
-                    foreach ($array as $key => $value) {
-                        $values->$key = $value;
+                $values = null;
+                if (is_null($json) === false && is_string($json) === true) {
+                    $decorder = new Jsphon_Decoder(true);
+                    if ($assoc) {
+                        $values = $decorder->decode($json);
+                    } else {
+                        $values = new stdClass();
+                        $array = $decorder->decode($json);
+                        foreach ($array as $key => $value) {
+                            $values->$key = $value;
+                        }
                     }
                 }
                 return $values;
