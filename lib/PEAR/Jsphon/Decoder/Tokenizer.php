@@ -24,6 +24,7 @@ define('JSPHON_TOKEN_RBRACE',   5);
 define('JSPHON_TOKEN_RBRACKET', 6);
 define('JSPHON_TOKEN_COMMA',    7);
 define('JSPHON_TOKEN_COLON',    8);
+define('JSPHON_ERROR_DECODE_SYNTAX', 1);
 
 /**
  * Jsphon_Decoder_Tokenizer
