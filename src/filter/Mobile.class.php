@@ -454,9 +454,21 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                                 } else {
                                     $cutString = substr($buffer, 0, $maxByte);
                                 }
-                                $cutStringArray = explode('<', $cutString);
-                                array_pop($cutStringArray);
-                                $cutString = implode('<', $cutStringArray);
+                                if (stripos($cutString, '<form') !== false) {
+                                    if (stripos($cutString, '</form>') !== false) {
+                                        // form close tag exists in $cutString
+                                        $cutStringArray = preg_split('/<\/form>/i', $cutString);
+                                        array_pop($cutStringArray);
+                                        $cutString = implode('</form>', $cutStringArray);
+                                    } else {
+                                        // form close tag not exists in $cutString
+                                        $cutString = array_shift(preg_split('/<\/form>/i', $buffer)) .'</form>';
+                                    }
+                                } else {
+                                    $cutStringArray = explode('<', $cutString);
+                                    array_pop($cutStringArray);
+                                    $cutString = implode('<', $cutStringArray);
+                                }
                                 $html = '<html><meta http-equiv="content-type" content="text/html; charset=utf-8">' .
                                     '<body>' . $cutString . '</body></html>';
                                 $domDoc = new DOMDocument('1.0', 'utf-8');
