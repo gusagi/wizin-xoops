@@ -1,15 +1,18 @@
 ----------------------------------
+[2010-02-16 Ver 0.66 -> 0.67]
+- Added image resize option by class name
+----------------------------------
 [2010-02-08 Ver 0.65 -> 0.66]
-- Fixed bug that form tag is divided'
+- Fixed bug that form tag is divided
 ----------------------------------
 [2010-02-08 Ver 0.64 -> 0.65]
-- Fixed some bugs with Jsphon call (thx naoto_is)'
+- Fixed some bugs with Jsphon call (thx naoto_is)
 ----------------------------------
 [2010-02-06 Ver 0.63 -> 0.64]
-- Fixed notice about return not reference value (thx plus9)'
+- Fixed notice about return not reference value (thx plus9)
 ----------------------------------
 [2009-12-13 Ver 0.62 -> 0.63]
-- moved method 'Wizin_Filter::filterReplaceLinks()' to 'Wizin_Filter_Mobile::filterReplaceLinks()'
+- moved method 'Wizin_Filter::filterReplaceLinks()' to 'Wizin_Filter_Mobile::filterReplaceLinks()
 - fixed bug about replace link filter delete current dirname when current uri is '***/dirname/' (thx uemera)
 ----------------------------------
 [2009-12-03 Ver 0.61 -> 0.62]

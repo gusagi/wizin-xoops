@@ -243,6 +243,7 @@ if (! class_exists('Wizin_Filter_Common')) {
                 $pattern = '(<img)([^>]*)(src=)([\"\'])([^\"\']*)([\"\'])([^>]*)(>)';
                 preg_match_all("/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER);
                 if (! empty($matches)) {
+                    $imgClassPattern = '(class=)([\"\'])([^\"\']*)(wiz-img-)(\w+)(-)(\w+)([^\"\']*)([\"\'])';
                     foreach ($matches as $key => $match) {
                         $linkReplaceFlg = false;
                         $maxImageWidth = $maxWidth;
@@ -262,6 +263,23 @@ if (! class_exists('Wizin_Filter_Common')) {
                                 $imageUrl = dirname($currentUri) . '/' . $imageUrl;
                             }
                         }
+                        /**
+                         * check image setting in class name
+                         */
+                        preg_match("/" .$imgClassPattern ."/i", $match[0], $imgMatch);
+                        if (! empty($imgMatch)) {
+                            switch ($imgMatch[5]) {
+                            	case 'width':
+                            	    if (is_numeric($imgMatch[7])) {
+                            	        $maxImageWidth = intval($imgMatch[7]);
+                            	    }
+                            		break;
+                            	default:
+                            }
+                        }
+                        /**
+                         * resize image in own site
+                         */
                         if (strpos($imageUrl, $baseUri) === 0) {
                             if (strpos($imageUrl, './') !== false) {
                                 $urlArray = parse_url($imageUrl);
