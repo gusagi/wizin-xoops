@@ -269,14 +269,14 @@ if (! class_exists('Wizin_Filter_Common')) {
                          */
                         preg_match("/" .$imgClassPattern ."/i", $match[0], $imgMatch);
                         if (! empty($imgMatch)) {
-                            preg_match_all("/(wiz-img-)(\w+)(-)(\w+)/i", $imgMatch[0], $imgClasses, PREG_SET_ORDER);
-                            if ($imgClasses[5]) {
+                            preg_match_all("/(wiz-img-)(\w+)(-)(\w+)/i", $imgMatch[3], $imgClasses, PREG_SET_ORDER);
+                            if (! empty($imgClasses)) {
                                 foreach ($imgClasses as $imgClass) {
                                     switch ($imgClass[2]) {
                                         // resize by width
                                     	case 'width':
-                                    	    if (is_numeric($imgMatch[4])) {
-                                    	        $maxImageWidth = intval($imgMatch[4]);
+                                    	    if (is_numeric($imgClass[4])) {
+                                    	        $maxImageWidth = intval($imgClass[4]);
                                     	    }
                                     		break;
                                     	default:
