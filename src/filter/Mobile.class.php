@@ -406,6 +406,7 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                 $maxKbyte = 1;
             }
             $maxByte = $maxKbyte * 1024;
+            $admissibleByte = 256;
             $buffer = '';
             $pattern = '^<\\?xml version=[\"\']1.0[\"\']';
             $noPartitionTag = array('form', 'tr', 'th', 'td', 'tbody', 'fieldset', 'pre', 'li');
@@ -421,7 +422,9 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                     $attribute = $child->asXML();
                     $attribute = strtr($attribute, array('<body>' => '', '</body>' => ''));
                     if (strlen($attribute) > $maxByte && ! in_array(strtolower($nodeName), $noPartitionTag)) {
-                        $array[] = $buffer;
+                        if (strlen($buffer) > 0) {
+                            $array[] = $buffer;
+                        }
                         $buffer = '';
                         $html = '<html><meta http-equiv="content-type" content="text/html; charset=utf-8">' .
                             '<body>' . $attribute . '</body></html>';
@@ -450,7 +453,7 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                             $buffer .= $attribute;
                             while (strlen($buffer) > $maxByte) {
                                 if (extension_loaded('mbstring')) {
-                                    $cutString = mb_substr($buffer, 0, $maxByte, 'utf-8');
+                                    $cutString = mb_strcut($buffer, 0, $maxByte, 'utf-8');
                                 } else {
                                     $cutString = substr($buffer, 0, $maxByte);
                                 }
@@ -483,13 +486,26 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                                 $cutXml = simplexml_load_string($string);
                                 $string = $cutXml->body->asXML();
                                 $string = strtr($string, array('<body>' => '', '</body>' => ''));
-                                $array[] = $string;
+                                // If length for the total of the last element of $array and $string to exceed $maxByte is less than $admissibleByte,
+                                // the one that $string was added to last element of $array is considered to be 1 page.
+                                if (empty($array) === false &&
+                                    strlen($array[count($array) -1]) + strlen($string) < $maxByte + $admissibleByte) {
+                                    $array[count($array) -1] .= $string;
+                                } else {
+                                    $array[] = $string;
+                                }
                                 $buffer = str_replace($cutString, '', $buffer);
                             }
                             $attribute = '';
                         }
                         unset($childXml);
                     } else if ((strlen($buffer) + strlen($attribute)) > $maxByte) {
+                        // If length for the total of $buffer and $attribute to exceed $maxByte is less than $admissibleByte,
+                        // the one that $attribute was added to $buffer is considered to be 1 page.
+                        if ((strlen($buffer) + strlen($attribute)) < $maxByte + $admissibleByte) {
+                            $buffer .= $attribute;
+                            $attribute = '';
+                        }
                         $array[] = $buffer;
                         $buffer = '';
                     }
@@ -509,14 +525,21 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                 if (strtolower(substr($bufferArray[$index], 0, 2)) === 'br') {
                     $breakFlg = false;
                 }
-                if ($breakFlg) {
+                if ($breakFlg === true) {
                     break;
                 }
                 unset($bufferArray[$index]);
             }
             $buffer = implode('<', $bufferArray);
             if (trim($buffer) !== '') {
-                $array[] = $buffer;
+                // If length for the total of the last element of $array and $buffer to exceed $maxByte is less than $admissibleByte,
+                // the one that $buffer was added to last element of $array is considered to be 1 page.
+                if (empty($array) === false &&
+                    strlen($array[count($array) -1]) + strlen($buffer) < $maxByte + $admissibleByte) {
+                    $array[count($array) -1] .= $buffer;
+                } else {
+                    $array[] = $buffer;
+                }
             }
             return $array;
         }
