@@ -401,6 +401,10 @@ if (! class_exists('Wizin_Filter_Mobile')) {
          */
         function _partitionPage(& $xml, $encode = 'ascii', $maxKbyte = 0 )
         {
+            static $depth;
+            if (isset($depth) === false) {
+                $depth = 0;
+            }
             // set valiable
             if (empty($maxKbyte)) {
                 $maxKbyte = 1;
@@ -442,7 +446,9 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                         $body =& $childXml->body;
                         if (serialize($body) !== serialize($body->children())) {
                             // not bottom layer
+                            $depth ++;
                             $pages = Wizin_Filter_Mobile::_partitionPage($body, $encode, $maxKbyte);
+                            $depth --;
                             foreach ($pages as $page) {
                                 $array[] = $page;
                             }
