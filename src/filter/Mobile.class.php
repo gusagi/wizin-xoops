@@ -309,8 +309,8 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                     '</textarea>' => Wizin_Util::cipher(__FILE__) . '</textarea>',
                     '</TEXTAREA>' => Wizin_Util::cipher(__FILE__) . '</TEXTAREA>'));
                 // convert XML(step1)
-                $string = '<html><meta http-equiv="content-type" content="text/html; charset=utf-8"><body>' .
-                    $string . '</body></html>';
+                $string = '<html><meta http-equiv="content-type" content="text/html; charset=utf-8">' .
+                    '<body><div>' .$string . '</div></body></html>';
                 $domDoc = new DOMDocument('1.0', 'utf-8');
                 @ $domDoc->loadHTML($string);
                 $xml = simplexml_import_dom($domDoc);
