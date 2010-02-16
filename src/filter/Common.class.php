@@ -243,7 +243,8 @@ if (! class_exists('Wizin_Filter_Common')) {
                 $pattern = '(<img)([^>]*)(src=)([\"\'])([^\"\']*)([\"\'])([^>]*)(>)';
                 preg_match_all("/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER);
                 if (! empty($matches)) {
-                    $imgClassPattern = '(class=)([\"\'])([^\"\']*)(wiz-img-)(\w+)(-)(\w+)([^\"\']*)([\"\'])';
+                    //$imgClassPattern = '(class=)([\"\'])([^\"\']*)(wiz-img-)(\w+)(-)(\w+)([^\"\']*)([\"\'])';
+                    $imgClassPattern = '(class=)([\"\'])([^\"\']*)([\"\'])';
                     foreach ($matches as $key => $match) {
                         $linkReplaceFlg = false;
                         $maxImageWidth = $maxWidth;
@@ -268,13 +269,19 @@ if (! class_exists('Wizin_Filter_Common')) {
                          */
                         preg_match("/" .$imgClassPattern ."/i", $match[0], $imgMatch);
                         if (! empty($imgMatch)) {
-                            switch ($imgMatch[5]) {
-                            	case 'width':
-                            	    if (is_numeric($imgMatch[7])) {
-                            	        $maxImageWidth = intval($imgMatch[7]);
-                            	    }
-                            		break;
-                            	default:
+                            preg_match_all("/(wiz-img-)(\w+)(-)(\w+)/i", $imgMatch[0], $imgClasses, PREG_SET_ORDER);
+                            if ($imgClasses[5]) {
+                                foreach ($imgClasses as $imgClass) {
+                                    switch ($imgClass[2]) {
+                                        // resize by width
+                                    	case 'width':
+                                    	    if (is_numeric($imgMatch[4])) {
+                                    	        $maxImageWidth = intval($imgMatch[4]);
+                                    	    }
+                                    		break;
+                                    	default:
+                                    }
+                                }
                             }
                         }
                         /**
