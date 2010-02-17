@@ -427,6 +427,9 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                     $nodeName = $child->getName();
                     $attribute = $child->asXML();
                     $attribute = strtr($attribute, array('<body>' => '', '</body>' => ''));
+                    if ($nodeName === 'tr') {
+                        $attribute = '<table>' .$attribute .'</table>';
+                    }
                     if (strlen($attribute) > $maxByte && ! in_array(strtolower($nodeName), $noPartitionTag)) {
                         if (strlen($buffer) > 0) {
                             if (empty($array) === false &&
