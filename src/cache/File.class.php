@@ -27,7 +27,7 @@ if (! class_exists('Wizin_Cache')) {
                 $prefix = 'wizin_cache_';
             }
             if (empty($suffix)) {
-                $suffix = Wizin_Util::seed();
+                $suffix = Wizin_Util::cipher();
             }
             $cache = $prefix . $suffix;
             if (empty($cacheDir) || ! file_exists($cacheDir) ||
