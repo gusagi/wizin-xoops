@@ -1,4 +1,9 @@
 ----------------------------------
+[2010-03-08 Ver 0.67 -> 0.68]
+- Added timestamp setter/getter
+- Enabled set time limit
+- Added image link option by class name
+----------------------------------
 [2010-02-16 Ver 0.66 -> 0.67]
 - Added image resize option by class name
 - Added admissible byte logic into Wizin_Filter_Mobile::_partitionPage()

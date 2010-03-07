@@ -243,10 +243,10 @@ if (! class_exists('Wizin_Filter_Common')) {
                 $pattern = '(<img)([^>]*)(src=)([\"\'])([^\"\']*)([\"\'])([^>]*)(>)';
                 preg_match_all("/" .$pattern ."/i", $contents, $matches, PREG_SET_ORDER);
                 if (! empty($matches)) {
-                    //$imgClassPattern = '(class=)([\"\'])([^\"\']*)(wiz-img-)(\w+)(-)(\w+)([^\"\']*)([\"\'])';
                     $imgClassPattern = '(class=)([\"\'])([^\"\']*)([\"\'])';
                     foreach ($matches as $key => $match) {
-                        $linkReplaceFlg = false;
+                        $addLinkFlg = true;
+                        $imgReplaceFlg = false;
                         $maxImageWidth = $maxWidth;
                         $getFileFlag = false;
                         $imageUrl = $match[5];
@@ -279,6 +279,11 @@ if (! class_exists('Wizin_Filter_Common')) {
                                     	        $maxImageWidth = intval($imgClass[4]);
                                     	    }
                                     		break;
+                                    	case 'link':
+                                    	    if ($imgClass[4] === 'unnecessary') {
+                                    	        $addLinkFlg = false;
+                                    	    }
+                                    	    break;
                                     	default:
                                     }
                                 }
@@ -373,7 +378,7 @@ if (! class_exists('Wizin_Filter_Common')) {
                                                 $format = IMAGETYPE_JPEG;
                                                 break;
                                         }
-                                        $linkReplaceFlg = true;
+                                        $imgReplaceFlg = true;
                                     }
                                 }
                                 if ($width > $maxImageWidth && in_array($format, $allowImageFormat)) {
@@ -391,10 +396,10 @@ if (! class_exists('Wizin_Filter_Common')) {
                                             $format, $newImagePath, $maxImageWidth);
                                     }
                                     if (file_exists($newImagePath)) {
-                                        $linkReplaceFlg = true;
+                                        $imgReplaceFlg = true;
                                     }
                                 }
-                                if ($linkReplaceFlg) {
+                                if ($imgReplaceFlg) {
                                     $imageTag = str_replace($match[3] . $match[4] .$match[5] . $match[6],
                                         $match[3] . $match[4] . $newImageUrl . $match[6], $match[0]);
                                     $pattern = '(width|height)=([\"\'])(\S*)([\"\'])';
@@ -407,8 +412,10 @@ if (! class_exists('Wizin_Filter_Common')) {
                                     if (preg_match("/" .$linkCheckPattern ."/is", $contents)) {
                                         $contents = str_replace($match[0], $imageTag, $contents);
                                     } else {
-                                        $imageLink = '<a href="' . $imageUrl . '">' . $imageTag . '</a>';
-                                        $contents = str_replace($match[0], $imageLink, $contents);
+                                        if ($addLinkFlg) {
+                                            $imageTag = '<a href="' . $imageUrl . '">' . $imageTag . '</a>';
+                                        }
+                                        $contents = str_replace($match[0], $imageTag, $contents);
                                     }
                                 }
                             }
