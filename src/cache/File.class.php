@@ -38,6 +38,16 @@ if (! class_exists('Wizin_Cache')) {
             clearstatcache();
         }
 
+        function getTimestamp()
+        {
+            return filemtime($this->_sCacheFile);
+        }
+
+        function setTimeStamp()
+        {
+            touch($this->_sCacheFile);
+        }
+
         function isCached($file)
         {
             $return = true;
