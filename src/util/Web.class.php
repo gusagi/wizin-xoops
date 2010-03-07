@@ -109,7 +109,7 @@ if (! class_exists('Wizin_Util_Web')) {
          * @param string $createDir
          * @return string $filePath
          */
-        function getFileByHttp($url = null, $createDir = null, $sendReferer = false)
+        function getFileByHttp($url = null, $createDir = null, $sendReferer = false, $second = 2, $microSecond = 0)
         {
             if (empty($url)) {
                 return null;
@@ -165,7 +165,7 @@ if (! class_exists('Wizin_Util_Web')) {
                 }
                 $request .= "User-Agent: $agent \r\n";
                 $request .= "Connection: Close \r\n\r\n";
-                stream_set_timeout($fp, 5, 0);
+                stream_set_timeout($fp, $second, $microSecond);
                 fwrite($fp, $request);
 
                 // get data
@@ -183,7 +183,7 @@ if (! class_exists('Wizin_Util_Web')) {
                 while (! feof($fp)) {
                     $data .= fread($fp, 8192);
                 }
-                stream_set_timeout($fp, 5, 0);
+                stream_set_timeout($fp, $second, $microSecond);
                 fclose($fp);
 
                 // save file
@@ -202,7 +202,7 @@ if (! class_exists('Wizin_Util_Web')) {
          * @param string $url
          * @return string $contents
          */
-        function getContentsByHttp($url = null, $agent = '', $referer = '', $sendReferer = false)
+        function getContentsByHttp($url = null, $agent = '', $referer = '', $sendReferer = false, $second = 2, $microSecond = 0)
         {
             if (empty($url)) {
                 return null;
@@ -239,7 +239,7 @@ if (! class_exists('Wizin_Util_Web')) {
                     $request .= "User-Agent: $agent \r\n";
                 }
                 $request .= "Connection: Close \r\n\r\n";
-                stream_set_timeout($fp, 5, 0);
+                stream_set_timeout($fp, $second, $microSecond);
                 fwrite($fp, $request);
 
                 // get data
@@ -257,7 +257,7 @@ if (! class_exists('Wizin_Util_Web')) {
                 while (! feof($fp)) {
                     $contents .= fread($fp, 8192);
                 }
-                stream_set_timeout($fp, 5, 0);
+                stream_set_timeout($fp, $second, $microSecond);
                 fclose($fp);
                 return $contents;
             }
