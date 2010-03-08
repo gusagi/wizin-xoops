@@ -170,17 +170,43 @@ if (! class_exists('Wizin_Util_Web')) {
                 stream_set_timeout($fp, $second, $microSecond);
                 fwrite($fp, $request);
 
-                // get data
+                // get header
+                $header = '';
                 while (! feof($fp)) {
-                    $buffer = fgets($fp, 256);
+                    $buffer = fgets($fp, 1024);
                     if (empty($buffer)) {
                         continue;
                     }
+                    $header .= str_replace("\r", '', $buffer);
                     $buffer = strtr($buffer, $replaceArray);
                     if (empty($buffer)) {
                         break;
                     }
                 }
+                $headers = explode("\n", $header);
+                $header = null;
+                // check header
+                $status = explode(' ', $headers[0]);
+                if (strtolower(substr($status[0], 0, 5)) === 'http/') {
+                    // request failed
+                    if (substr($status[1], 0, 1) !== '2') {
+                        // if headers include 'Location: ', retry request
+                        foreach ($headers as $header) {
+                            if (stristr($header, 'location:') !== false) {
+                                $redirect = trim(preg_replace('/location:/i', '', $header));
+                                fclose($fp);
+                                fclose($saveHandler);
+                                unlink($filePath);
+                                return Wizin_Util_Web::getFileByHttp($redirect, $createDir, $sendReferer, $second, $microSecond);
+                            }
+                        }
+                        fclose($fp);
+                        fclose($saveHandler);
+                        unlink($filePath);
+                        return '';
+                    }
+                }
+                // get data
                 while (! feof($fp)) {
                     // write file
                     fwrite($saveHandler, fread($fp, 8192));
@@ -243,7 +269,7 @@ if (! class_exists('Wizin_Util_Web')) {
 
                 // get data
                 while (! feof($fp)) {
-                    $buffer = fgets($fp, 256);
+                    $buffer = fgets($fp, 1024);
                     if (empty($buffer)) {
                         continue;
                     }
