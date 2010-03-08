@@ -3,6 +3,7 @@
 - Added timestamp setter/getter
 - Enabled set time limit
 - Added image link option by class name
+- Fixed bug about invalid HTTP request
 ----------------------------------
 [2010-02-16 Ver 0.66 -> 0.67]
 - Added image resize option by class name

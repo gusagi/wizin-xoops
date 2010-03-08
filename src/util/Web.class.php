@@ -157,14 +157,16 @@ if (! class_exists('Wizin_Util_Web')) {
             // socket connect
             $fp = fsockopen($host, $port, $errNumber, $errString, 1);
             if ($fp) {
+                // open save file handler
+                $saveHandler = fopen($filePath, 'wb');
                 // send request
-                $request  = "GET $path HTTP/1.1 \r\n";
-                $request .= "Host: $host \r\n";
+                $request  = "GET {$path} HTTP/1.1\r\n";
+                $request .= "Host: {$host}\r\n";
                 if ($referer !== '') {
-                    $request .= "Referer: $referer \r\n";
+                    $request .= "Referer: {$referer}\r\n";
                 }
-                $request .= "User-Agent: $agent \r\n";
-                $request .= "Connection: Close \r\n\r\n";
+                $request .= "User-Agent: {$agent}\r\n";
+                $request .= "Connection: Close\r\n\r\n";
                 stream_set_timeout($fp, $second, $microSecond);
                 fwrite($fp, $request);
 
@@ -179,16 +181,13 @@ if (! class_exists('Wizin_Util_Web')) {
                         break;
                     }
                 }
-                $data = '';
                 while (! feof($fp)) {
-                    $data .= fread($fp, 8192);
+                    // write file
+                    fwrite($saveHandler, fread($fp, 8192));
                 }
                 stream_set_timeout($fp, $second, $microSecond);
                 fclose($fp);
-
                 // save file
-                $saveHandler = fopen($filePath, 'wb');
-                fwrite($saveHandler, $data);
                 fclose($saveHandler);
                 chmod($filePath, 0666);
                 return $filePath;
@@ -230,15 +229,15 @@ if (! class_exists('Wizin_Util_Web')) {
             $fp = fsockopen($host, $port, $errNumber, $errString, 1);
             if ($fp) {
                 // send request
-                $request  = "GET $path HTTP/1.0 \r\n";
-                $request .= "Host: $host \r\n";
+                $request  = "GET {$path} HTTP/1.1\r\n";
+                $request .= "Host: {$host}\r\n";
                 if ($referer !== '') {
-                    $request .= "Referer: $referer \r\n";
+                    $request .= "Referer: {$referer}\r\n";
                 }
                 if ($agent !== '') {
-                    $request .= "User-Agent: $agent \r\n";
+                    $request .= "User-Agent: {$agent}\r\n";
                 }
-                $request .= "Connection: Close \r\n\r\n";
+                $request .= "Connection: Close\r\n\r\n";
                 stream_set_timeout($fp, $second, $microSecond);
                 fwrite($fp, $request);
 
