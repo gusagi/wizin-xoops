@@ -1,10 +1,12 @@
 ----------------------------------
+[2010-03-08 Ver 0.68 -> 0.69]
+- Added HTTP Location follow
+- Fixed bug about invalid HTTP request
+----------------------------------
 [2010-03-08 Ver 0.67 -> 0.68]
 - Added timestamp setter/getter
 - Enabled set time limit
 - Added image link option by class name
-- Added HTTP Location follow
-- Fixed bug about invalid HTTP request
 ----------------------------------
 [2010-02-16 Ver 0.66 -> 0.67]
 - Added image resize option by class name
