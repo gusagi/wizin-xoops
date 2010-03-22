@@ -313,6 +313,7 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                     '<body><div>' .$string . '</div></body></html>';
                 $domDoc = new DOMDocument('1.0', 'utf-8');
                 @ $domDoc->loadHTML($string);
+                $domDoc->normalizeDocument();
                 $xml = simplexml_import_dom($domDoc);
                 // add XML header
                 $string = $xml->asXML();
@@ -327,9 +328,9 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                 $array = array();
                 $pageArray = Wizin_Filter_Mobile::_partitionPage($body, $encode, $maxKbyte);
                 foreach ($pageArray as $key => $value) {
-                	if (isset($value) && trim($value) !== '') {
-                	    $array[] = $value;
-                	}
+                    if (isset($value) && trim($value) !== '') {
+                        $array[] = $value;
+                    }
                 }
                 unset($pageArray);
                 unset($domDoc);
@@ -401,6 +402,10 @@ if (! class_exists('Wizin_Filter_Mobile')) {
          */
         function _partitionPage(& $xml, $encode = 'ascii', $maxKbyte = 0 )
         {
+            static $depth;
+            if (isset($depth) === false) {
+                $depth = 0;
+            }
             // set valiable
             if (empty($maxKbyte)) {
                 $maxKbyte = 1;
@@ -408,6 +413,7 @@ if (! class_exists('Wizin_Filter_Mobile')) {
             $maxByte = $maxKbyte * 1024;
             $admissibleByte = 256;
             $buffer = '';
+            $array = array();
             $pattern = '^<\\?xml version=[\"\']1.0[\"\']';
             $noPartitionTag = array('form', 'tr', 'th', 'td', 'tbody', 'fieldset', 'pre', 'li');
             // get html from SimpleXMLElement
@@ -421,15 +427,24 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                     $nodeName = $child->getName();
                     $attribute = $child->asXML();
                     $attribute = strtr($attribute, array('<body>' => '', '</body>' => ''));
+                    if ($nodeName === 'tr') {
+                        $attribute = '<table>' .$attribute .'</table>';
+                    }
                     if (strlen($attribute) > $maxByte && ! in_array(strtolower($nodeName), $noPartitionTag)) {
                         if (strlen($buffer) > 0) {
-                            $array[] = $buffer;
+                            if (empty($array) === false &&
+                                strlen($array[count($array) -1]) + strlen($buffer) < $maxByte + $admissibleByte) {
+                                $array[count($array) -1] .= $buffer;
+                            } else {
+                                $array[] = $buffer;
+                            }
                         }
                         $buffer = '';
                         $html = '<html><meta http-equiv="content-type" content="text/html; charset=utf-8">' .
                             '<body>' . $attribute . '</body></html>';
                         $domDoc = new DOMDocument('1.0', 'utf-8');
                         @ $domDoc->loadHTML($html);
+                        $domDoc->normalizeDocument();
                         $childXml = simplexml_import_dom($domDoc);
                         unset($html);
                         unset($domDoc);
@@ -439,14 +454,31 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                             $string = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $string;
                         }
                         $childXml = simplexml_load_string($string);
-                        $body =& $childXml->body;
-                        if (serialize($body) !== serialize($body->children())) {
+                        $childDomElm = dom_import_simplexml($childXml->body);
+                        if ($childDomElm->hasChildNodes() === true) {
                             // not bottom layer
-                            $pages = Wizin_Filter_Mobile::_partitionPage($body, $encode, $maxKbyte);
-                            foreach ($pages as $page) {
-                                $array[] = $page;
+                            foreach ($childDomElm->childNodes as $grandchildNode) {
+                                $grandchildXml = simplexml_import_dom($grandchildNode);
+                                $depth ++;
+                                $pages = Wizin_Filter_Mobile::_partitionPage(
+                                    $grandchildXml,
+                                    $encode,
+                                    $maxKbyte
+                                );
+                                $depth --;
+                                foreach ($pages as $page) {
+                                    if (empty($array) === false &&
+                                        strlen($array[count($array) -1]) + strlen($page) < $maxByte + $admissibleByte) {
+                                        $array[count($array) -1] .= $page;
+                                    } else {
+                                        $array[] = $page;
+                                    }
+                                }
+                                unset($pages);
+                                unset($grandchildXml);
                             }
-                            unset($pages);
+                            unset($childXml);
+                            unset($childDomElm);
                             continue;
                         } else {
                             // bottom layer
@@ -476,6 +508,7 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                                     '<body>' . $cutString . '</body></html>';
                                 $domDoc = new DOMDocument('1.0', 'utf-8');
                                 @ $domDoc->loadHTML($html);
+                                $domDoc->normalizeDocument();
                                 $cutXml = simplexml_import_dom($domDoc);
                                 unset($domDoc);
                                 // add XML header
@@ -499,6 +532,7 @@ if (! class_exists('Wizin_Filter_Mobile')) {
                             $attribute = '';
                         }
                         unset($childXml);
+                        unset($childDomElm);
                     } else if ((strlen($buffer) + strlen($attribute)) > $maxByte) {
                         // If length for the total of $buffer and $attribute to exceed $maxByte is less than $admissibleByte,
                         // the one that $attribute was added to $buffer is considered to be 1 page.
@@ -534,6 +568,17 @@ if (! class_exists('Wizin_Filter_Mobile')) {
             if (trim($buffer) !== '') {
                 // If length for the total of the last element of $array and $buffer to exceed $maxByte is less than $admissibleByte,
                 // the one that $buffer was added to last element of $array is considered to be 1 page.
+                $html = '<html><meta http-equiv="content-type" content="text/html; charset=utf-8">' .
+                    '<body>' . $buffer . '</body></html>';
+                $domDoc = new DOMDocument('1.0', 'utf-8');
+                @ $domDoc->loadHTML($html);
+                $domDoc->normalizeDocument();
+                $bufXml = simplexml_import_dom($domDoc);
+                // add XML header
+                $buffer = $bufXml->body->asXML();
+                $buffer = strtr($buffer, array('<body>' => '', '</body>' => ''));
+                unset($domDoc);
+                unset($bufXml);
                 if (empty($array) === false &&
                     strlen($array[count($array) -1]) + strlen($buffer) < $maxByte + $admissibleByte) {
                     $array[count($array) -1] .= $buffer;
