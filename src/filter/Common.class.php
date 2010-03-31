@@ -59,7 +59,8 @@ if (! class_exists('Wizin_Filter_Common')) {
         function executeInputFilter()
         {
             $inputFilter = $this->_aInputFilter;
-            for ($index = 0; $index < count($inputFilter); $index ++) {
+            $count = count($inputFilter);
+            for ($index = 0; $index < $count; $index ++) {
                 $filter = & $inputFilter[$index];
                 $function =& $filter[0];
                 $params =& $filter[1];
@@ -86,7 +87,8 @@ if (! class_exists('Wizin_Filter_Common')) {
                 $function =& $filter[0];
                 $params = array();
                 $params[] =& $contents;
-                for ($argIndex = 0; $argIndex < count($filter[1]); $argIndex ++) {
+                $count = count($filter[1]);
+                for ($argIndex = 0; $argIndex < $count; $argIndex ++) {
                     $params[] =& $filter[1][$argIndex];
                 }
                 Wizin_Util::callUserFuncArrayReference($function, $params);

@@ -1,7 +1,7 @@
 ----------------------------------
-[2010-03-22 Ver 0.69 -> 0.70]
+[2010-04-01 Ver 0.69 -> 0.70]
 - Fixed bug about layer depth check in partition page
-- Fixed bug about 'table' tag lost
+- Fixed bug about memory leak in output filter
 ----------------------------------
 [2010-03-08 Ver 0.68 -> 0.69]
 - Added HTTP Location follow
